@@ -1,0 +1,35 @@
+{
+  "format_version": 1,
+  "project_name": "{{PROJECT_NAME}}",
+  "system": {
+    "name": "Floppy Project Interaction System",
+    "version": "0.2.0-dev",
+    "source_repository": "{{SOURCE_REPOSITORY}}",
+    "source_read_only_during_project_work": true
+  },
+  "status": "onboarding-required",
+  "required_read_order": [
+    ".floppy/START-HERE.md",
+    ".floppy/floppies/Floppy-A-HITL.md",
+    ".floppy/floppies/Floppy-E-Current-Section.md",
+    ".floppy/floppies/Floppy-D-Project-Map.md",
+    ".floppy/floppies/Floppy-C-Project-Baseline.md",
+    ".floppy/floppies/Floppy-B-Development-Issues.md"
+  ],
+  "protocols": {
+    "intake": "{{SOURCE_REPOSITORY}}/protocols/02-project-intake.md",
+    "active_session": "{{SOURCE_REPOSITORY}}/protocols/03-active-session.md",
+    "closeout": "{{SOURCE_REPOSITORY}}/protocols/04-everyday-closeout.md",
+    "revision_application": "{{SOURCE_REPOSITORY}}/protocols/05-revision-application.md"
+  },
+  "floppies": {
+    "A": ".floppy/floppies/Floppy-A-HITL.md",
+    "B": ".floppy/floppies/Floppy-B-Development-Issues.md",
+    "C": ".floppy/floppies/Floppy-C-Project-Baseline.md",
+    "D": ".floppy/floppies/Floppy-D-Project-Map.md",
+    "E": ".floppy/floppies/Floppy-E-Current-Section.md"
+  },
+  "floppy_a_sealed": false,
+  "last_applied_revision": null,
+  "last_handoff": null
+}
