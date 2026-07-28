@@ -1,0 +1,19 @@
+{
+  "system_name": "Floppy Project Interaction System",
+  "system_version": "0.2.0-dev",
+  "status": "development-source",
+  "source_repository_role": "canonical method and project seed; no project-specific writes during ordinary project work",
+  "entrypoints": {
+    "new_project_onboarding": "protocols/01-new-project-onboarding.md",
+    "project_intake": "protocols/02-project-intake.md",
+    "active_session": "protocols/03-active-session.md",
+    "everyday_closeout": "protocols/04-everyday-closeout.md",
+    "revision_application": "protocols/05-revision-application.md",
+    "source_policy": "protocols/00-source-repository-policy.md"
+  },
+  "project_seed": "project-seed/.floppy",
+  "tooling": {
+    "initializer": "tools/initialize_project.py",
+    "validator": "tools/validate_floppy.py"
+  }
+}
