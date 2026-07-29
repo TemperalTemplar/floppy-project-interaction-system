@@ -9,7 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 
-SYSTEM_VERSION = "0.2.0-dev"
+SYSTEM_VERSION = "0.4.0-dev"
 TOKEN_PROJECT = "{{PROJECT_NAME}}"
 TOKEN_SOURCE = "{{SOURCE_REPOSITORY}}"
 
@@ -85,7 +85,7 @@ def main() -> int:
         raise
 
     print("Initialization complete.")
-    print("Next action: run the new-project onboarding protocol; project implementation is not yet authorized.")
+    print("Next action: load canonical Floppy 1E and run new-project roadmap onboarding; project implementation is not yet authorized.")
     return 0
 
 
