@@ -1,9 +1,12 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.2.0-dev",
+  "system_version": "0.3.0-dev",
   "status": "development-source",
-  "source_repository_role": "canonical method and project seed; no project-specific writes during ordinary project work",
+  "source_repository_role": "canonical method, orchestrator, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
+    "orchestrator": "orchestrator/Floppy_Z.md",
+    "orchestrator_readme": "orchestrator/README.md",
+    "bootstrap": "BOOTSTRAP.md",
     "new_project_onboarding": "protocols/01-new-project-onboarding.md",
     "project_intake": "protocols/02-project-intake.md",
     "active_session": "protocols/03-active-session.md",
@@ -11,9 +14,25 @@
     "revision_application": "protocols/05-revision-application.md",
     "source_policy": "protocols/00-source-repository-policy.md"
   },
+  "orchestrator": {
+    "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
+    "canonical_path": "orchestrator/Floppy_Z.md",
+    "readme_path": "orchestrator/README.md",
+    "sha256": "9c5cc655280da1cc6a4844941083e150b741615d5ae805878a88cddc5f30df1f",
+    "default_mode": "project-model-briefing",
+    "default_action": "read-reconstruct-evaluate-instruct",
+    "project_state_file": false,
+    "copied_into_project_seed": false,
+    "mutable_during_project_work": false,
+    "direct_execution_requires_explicit_named_override": true
+  },
   "project_seed": "project-seed/.floppy",
   "tooling": {
     "initializer": "tools/initialize_project.py",
     "validator": "tools/validate_floppy.py"
+  },
+  "migration": {
+    "from": "0.2.0-dev",
+    "impact": "Existing projects are unchanged. Load Floppy Z from the source repository when coordinator behavior is required; do not copy or alter it as project state."
   }
 }
