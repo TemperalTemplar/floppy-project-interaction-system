@@ -1,67 +1,195 @@
-# New Project Onboarding and Initial Floppy Creation
+# New Project Onboarding and Initial Roadmap Creation
 
-Use this protocol only when a project is adopting the Floppy system for the first time or when the user explicitly orders a clean new project instance.
+Use this protocol only when a project is adopting the Floppy system for the first time or when the user explicitly orders controlled re-onboarding.
+
+Canonical controller:
+
+```text
+onboarding/Floppy_1E.md
+```
+
+Floppy 1E is read-only source-system infrastructure. It guides onboarding but does not become project state and does not authorize implementation.
 
 ## Goal
 
-Convert the project's real, verified state and the user's operating requirements into the first complete project-owned Floppy set without allowing the roadmap or current work section to absorb every future idea.
+Convert the project's real, verified state and the user's operating requirements into:
+
+- A project outcome contract
+- A bounded, dependency-aware section roadmap
+- Testable acceptance criteria
+- The first complete project-owned Floppy set
+- A closed active Floppy E
+- An inactive first-section draft
+- Machine-readable and user-readable roadmap records
+
+The roadmap must help the user understand the path to completion and help later models execute one accepted section at a time.
 
 ## Preconditions
 
 - The project repository is identified.
 - The `.floppy/` seed has been copied into that repository.
-- The source repository is treated as read-only.
+- The source repository is pinned and treated as read-only.
+- Canonical Floppy 1E is loaded and its digest is verified when practical.
 - The user has authorized onboarding, not implementation.
+
+## Required load order
+
+When the project manifest status is `onboarding_required`:
+
+1. Read `system-manifest.json` from the pinned source version.
+2. Read canonical `onboarding/Floppy_1E.md`.
+3. Read this onboarding protocol.
+4. Read the project's `.floppy/manifest.json`.
+5. Read the project's local files in `required_read_order`.
+6. Inspect only the project evidence required for onboarding.
+
+After onboarding is accepted, ordinary sessions do not reload Floppy 1E unless the user explicitly orders controlled re-onboarding.
 
 ## Discovery
 
 Inspect available project evidence before drafting. Identify:
 
-- Project name and purpose
+- Project name, purpose, and primary operator
+- Desired observable final outcome
 - Repository and environment boundaries
 - Existing architecture and working components
 - Known defects, blockers, risks, and deferred work
 - User communication and approval requirements
+- Security, production, budget, hardware, platform, and support constraints
 - Major deliverables and dependencies
 - The smallest useful first work section
-- Facts that are verified, user-reported, proposed, or unknown
+- Facts that are verified, user-reported, proposed, assumed, deferred, excluded, or unknown
 
-Do not ask the user to repeat information that is already available in the repository, supplied documents, or connected evidence.
+Do not ask the user to repeat information already available in the repository, supplied documents, connected evidence, or prior accepted records.
 
-## Classification
+## Question control
 
-Place information according to role:
+Ask only questions that materially change purpose, scope, architecture, security, cost, production behavior, acceptance criteria, or section order.
 
-- **Floppy A:** durable Human-in-the-Loop rules for this project relationship
-- **Floppy B:** known development issues and unresolved risks
-- **Floppy C:** verified starting baseline, including already accepted or demonstrably working project state
-- **Floppy D:** bounded roadmap, section order, dependencies, future ideas, deferred areas, and explicit out-of-scope areas
-- **Floppy E:** exactly one current or proposed first work section
+Recommend routine technical decisions. Do not force the user to translate requirements into modules, functions, schemas, tests, or deployment commands.
 
-A future idea may be recorded in Floppy D without becoming authorized work. Visibility is not authorization.
+## Project definition
+
+Create the project outcome contract required by Floppy 1E. The project-level acceptance statement must be observable and must identify what the user will be able to do when the project is complete.
+
+Record the accepted definition in:
+
+```text
+.floppy/onboarding/initial-project-definition.md
+```
+
+## Roadmap construction
+
+Create sections with coherent acceptance boundaries. Each section must define:
+
+- Purpose and user-visible outcome
+- Dependencies and starting evidence
+- Permitted and prohibited actions
+- Scope and exclusions
+- Deliverables
+- Automated and manual validation
+- Safety controls and stop conditions
+- Recovery or safe-abort path
+- Required user decisions
+- Testable acceptance criteria
+- Closeout artifacts
+- Inactive next-section draft requirement
+
+Separate read-only discovery, local writes, production writes, credential work, destructive operations, packaging, release, and final validation when combining them would weaken safety or acceptance.
+
+Record the roadmap in:
+
+```text
+.floppy/roadmap/roadmap.json
+.floppy/roadmap/roadmap.md
+```
+
+The JSON is authoritative for machine-readable section identity, dependencies, statuses, and authorization. The Markdown file is the user-readable explanation.
+
+## Classification into project Floppies
+
+- **Floppy A:** durable Human-in-the-Loop rules for the project relationship
+- **Floppy B:** known development issues, risks, and unresolved decisions with stable identifiers
+- **Floppy C:** verified and explicitly accepted starting baseline
+- **Floppy D:** project map and bounded roadmap summary referencing the roadmap files
+- **Floppy E:** exactly one current authorization, which remains closed unless the user separately authorizes the first section
+
+A future idea may be recorded in Floppy D or the deferred backlog without becoming authorized work. Visibility is not authorization.
 
 ## Draft review
 
-Before final acceptance, present:
+Before writing accepted state, present:
 
-- Important assumptions and unknowns
-- Proposed section boundaries
-- Proposed first section and its acceptance criteria
-- Items intentionally deferred or excluded
-- Any conflict between project evidence and user statements
+- Project definition
+- Verified starting state
+- Assumptions and unknowns
+- Recommended section roadmap
+- Section dependencies
+- Proposed first section
+- Acceptance evidence for the first section
+- Items intentionally deferred, excluded, or rejected
+- Risks requiring later approval
+- Exact user decisions still required
+
+Use a compact roadmap table with section, outcome, dependency, acceptance evidence, and status.
+
+## Roadmap acceptance
+
+The roadmap becomes accepted only when the user explicitly approves it or approves a revised final version.
+
+Record acceptance in:
+
+```text
+.floppy/onboarding/roadmap-acceptance.md
+```
+
+The record must preserve the roadmap version, accepted sections, deferred and excluded items, remaining unknowns, evidence boundary, acceptance authority, and first-section authorization status.
+
+Do not manufacture an acceptance phrase or infer acceptance from silence.
 
 ## Initial creation rule
 
-Onboarding is the normal time to create all five complete Floppies. After the user accepts them:
+Onboarding is the normal time to create or finalize all five complete project Floppies. After the user accepts the roadmap:
 
 - Mark Floppy A as sealed.
 - Establish issue identifiers in Floppy B.
 - Establish the accepted starting baseline in Floppy C.
-- Establish section identifiers and dependencies in Floppy D.
-- Establish exactly one current section in Floppy E, or state that no work is yet authorized.
+- Establish section identifiers and dependencies in Floppy D and the roadmap files.
+- Keep active Floppy E at `NO_ACTIVE_WORK_AUTHORIZATION` unless the user separately authorizes Section 01.
+- Create `.floppy/templates/Floppy-E-Section-01.draft.md` with `STATUS: DRAFT_NOT_AUTHORIZED`.
+- Update the project manifest onboarding and roadmap status.
+- Preserve the canonical Floppy 1E source path and digest as provenance.
 
-Do not begin implementation merely because onboarding is complete. Produce an intake readiness report and wait for explicit authorization.
+Do not begin implementation merely because onboarding is complete.
+
+## Completion report
+
+After accepted project-file creation, report:
+
+```text
+Onboarding:
+ACCEPTED AND RECORDED
+
+Roadmap version:
+[VERSION]
+
+Project Floppies:
+A–E CREATED OR FINALIZED
+
+Current active section:
+NONE, unless separately authorized
+
+First section draft:
+CREATED — NOT AUTHORIZED
+
+Next action:
+User reviews and explicitly authorizes the first Floppy E work package.
+```
 
 ## Existing project adoption
 
-For an established codebase, onboarding must describe the verified current state rather than pretending the project is starting from zero. Historical uncertainty should be labeled; it should not be invented or erased.
+For an established codebase, onboarding must describe the verified current state rather than pretending the project starts from zero. Existing working behavior belongs in Floppy C and must be preserved. Historical uncertainty must be labeled, not invented or erased.
+
+## Re-onboarding boundary
+
+Ordinary roadmap revisions do not rerun Floppy 1E. Load it again only when the user explicitly orders controlled re-onboarding because the project purpose or completion path has materially changed. Preserve the earlier accepted roadmap as historical evidence.
