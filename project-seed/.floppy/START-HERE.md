@@ -1,22 +1,54 @@
 # Project Floppy Start Here
 
-This `.floppy/` directory belongs to **{{PROJECT_NAME}}**. It was initialized from Floppy Project Interaction System version `0.2.0-dev`.
+This `.floppy/` directory belongs to **{{PROJECT_NAME}}**. It was initialized from Floppy Project Interaction System version `0.4.0-dev`.
 
-## Model startup
+## Current lifecycle state
+
+```text
+PROJECT ONBOARDING:
+REQUIRED
+
+ROADMAP:
+NOT ACCEPTED
+
+IMPLEMENTATION AUTHORIZATION:
+NONE
+```
+
+## Initial-project startup
 
 1. Read `manifest.json`.
-2. Follow `required_read_order`.
-3. Apply the source-system intake protocol.
-4. Produce a readiness report.
-5. Wait for explicit authorization before implementation.
+2. Confirm the pinned source repository and system version.
+3. Load canonical `onboarding/Floppy_1E.md` from the source repository.
+4. Verify the Floppy 1E digest recorded in the source and project manifests when practical.
+5. Read the onboarding protocol and local files in the manifest order.
+6. Inspect available project evidence before asking the user questions.
+7. Build and present the project definition and section roadmap.
+8. Wait for explicit roadmap acceptance.
+9. Finalize project-owned Floppies A–E and roadmap records.
+10. Leave Floppy E closed and create the first section only as an inactive draft unless the user separately authorizes it.
+
+Do not begin project implementation during onboarding.
+
+## Roadmap files
+
+```text
+.floppy/roadmap/roadmap.json
+.floppy/roadmap/roadmap.md
+```
+
+The JSON file provides machine-readable section identity, dependencies, statuses, and authorization. The Markdown file explains the roadmap to the user.
 
 ## Repository boundary
 
 - Project-specific records belong here.
 - The source repository is read-only during ordinary project work.
+- Canonical Floppy 1E and Floppy Z are loaded from the pinned source; do not alter them for this project.
 - Do not copy project data back into the source.
 - Do not store secret values here.
 
 ## Lifecycle
 
-During initial onboarding, create complete Floppies A–E. After onboarding, use delta revision packets. Do not regenerate all five Floppies during routine closeout.
+During initial onboarding, create or finalize complete Floppies A–E and accept the first roadmap version. After onboarding, ordinary sessions use delta revision packets and section closeouts. Do not regenerate all five Floppies or rerun Floppy 1E during routine work.
+
+A material project redefinition requires explicit controlled re-onboarding and must preserve the earlier accepted roadmap as historical evidence.
