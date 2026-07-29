@@ -1,12 +1,38 @@
 # Bootstrap Instructions
 
-The system supports two separate conversation roles. Do not silently combine them.
+The system supports three separate conversation roles. Do not silently combine them.
 
-## 1. Floppy Z coordinator mode
+## 1. Floppy 1E initial-project onboarding mode
 
-Use this when Alva wants a coordinator to reconstruct project state and tell the active project model what to do.
+Use this when a project is adopting the system for the first time or the user explicitly orders controlled re-onboarding.
 
 Replace the bracketed values:
+
+```text
+Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version, tag, or commit [SOURCE_VERSION_OR_COMMIT].
+
+Load `onboarding/Floppy_1E.md` from the source repository as the canonical initial-project definition and roadmap controller. Verify it against the Floppy 1E digest in `system-manifest.json`. Treat the source repository as read-only.
+
+Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json`, the onboarding source controls it names, and the project files in the required order. Inspect available project evidence before asking questions.
+
+Remain in onboarding mode. Do not modify project code, contact production, access credentials, deploy, commit implementation changes, or begin the first work section.
+
+Guide me through:
+1. Project identity and observable final outcome.
+2. Verified starting state, assumptions, unknowns, and constraints.
+3. A bounded section roadmap with dependencies and testable acceptance evidence.
+4. The first proposed work section.
+5. Deferred, excluded, and rejected work.
+6. The exact decisions that require my approval.
+
+Ask only questions that materially change purpose, scope, architecture, security, cost, production behavior, acceptance criteria, or section order. Recommend routine technical choices rather than forcing me to design the implementation.
+
+Roadmap acceptance must not authorize implementation. After I explicitly accept the roadmap, create or finalize the project-owned Floppies and roadmap records, leave active Floppy E at NO_ACTIVE_WORK_AUTHORIZATION, create the first-section package as DRAFT_NOT_AUTHORIZED, and stop with the onboarding completion report.
+```
+
+## 2. Floppy Z coordinator mode
+
+Use this when Alva wants a coordinator to reconstruct accepted project state and tell the active project model what to do.
 
 ```text
 Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version, tag, or commit [SOURCE_VERSION_OR_COMMIT].
@@ -26,18 +52,25 @@ Tell me:
 
 Floppy Z may perform direct work only after Alva gives an explicit, named execution override as defined in `orchestrator/Floppy_Z.md`.
 
-## 2. Direct project-model mode
+## 3. Direct project-model mode
 
-Use this only when the current conversation is intended to perform the authorized project work.
+Use this only when the current conversation is intended to perform the explicitly authorized project work.
 
 ```text
 Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version [SOURCE_VERSION].
 
-Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first, then read the files in its `required_read_order` exactly as listed. Treat the source repository as read-only and the project repository as the only location for project-specific Floppies, revisions, handoffs, and evidence.
+Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first, then read the files in its `required_read_order` exactly as listed. Treat the source repository as read-only and the project repository as the only location for project-specific Floppies, roadmap records, revisions, handoffs, and evidence.
 
 Produce the intake readiness report required by the project protocol. Do not begin implementation, edit files, create commits, or advance sections until I explicitly authorize the current Floppy E section.
 
 When I request closeout, load the closeout protocol named in the project manifest and produce delta revisions only. Do not recreate unchanged Floppies. Create the next section's work package only as an inactive draft unless I explicitly authorize that section.
 ```
 
-The project manifest is the authority for project-file locations and read order. Do not scan or load the entire repository when the manifest and active section identify a smaller sufficient set.
+## Role boundaries
+
+- Floppy 1E creates the initial project definition and roadmap.
+- Floppy Z tells the responsible project model what to do next.
+- The direct project model performs the currently authorized Floppy E work.
+- Project Floppy E is the only execution authorization.
+
+The project manifest is the authority for project-file locations, onboarding state, roadmap paths, and read order. Do not scan or load the entire repository when the manifest and lifecycle state identify a smaller sufficient set.
