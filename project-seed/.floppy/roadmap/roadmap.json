@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "project_name": "{{PROJECT_NAME}}",
+  "roadmap_version": "0.1-draft",
+  "roadmap_status": "onboarding_required",
+  "accepted_at": null,
+  "accepted_by": null,
+  "source_controller": {
+    "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
+    "path": "onboarding/Floppy_1E.md",
+    "source_repository": "{{SOURCE_REPOSITORY}}",
+    "source_version_or_commit": null,
+    "sha256": null,
+    "mutable_in_project": false
+  },
+  "project_outcome_contract": {
+    "purpose": null,
+    "primary_operator": null,
+    "core_use_case": null,
+    "required_final_capabilities": [],
+    "required_quality_attributes": [],
+    "operational_environment": [],
+    "security_boundary": null,
+    "data_ownership_and_persistence": null,
+    "deployment_or_distribution_target": null,
+    "documentation_requirement": null,
+    "project_acceptance_statement": null,
+    "non_goals": [],
+    "known_unknowns": []
+  },
+  "sections": [],
+  "deferred_backlog": [],
+  "out_of_scope": [],
+  "rejected": [],
+  "current_authorized_section": null,
+  "last_accepted_section": null,
+  "next_proposed_section": null,
+  "change_control_history": [],
+  "next_required_user_decision": "Complete Floppy 1E onboarding and accept or revise the proposed roadmap."
+}
