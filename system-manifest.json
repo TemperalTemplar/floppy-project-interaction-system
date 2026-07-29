@@ -1,11 +1,13 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.3.0-dev",
+  "system_version": "0.4.0-dev",
   "status": "development-source",
-  "source_repository_role": "canonical method, orchestrator, and project seed; no project-specific writes during ordinary project work",
+  "source_repository_role": "canonical method, orchestrators, onboarding controls, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
     "orchestrator": "orchestrator/Floppy_Z.md",
     "orchestrator_readme": "orchestrator/README.md",
+    "initial_project_roadmap_builder": "onboarding/Floppy_1E.md",
+    "initial_project_roadmap_readme": "onboarding/README.md",
     "bootstrap": "BOOTSTRAP.md",
     "new_project_onboarding": "protocols/01-new-project-onboarding.md",
     "project_intake": "protocols/02-project-intake.md",
@@ -26,13 +28,30 @@
     "mutable_during_project_work": false,
     "direct_execution_requires_explicit_named_override": true
   },
+  "initial_project_roadmap_builder": {
+    "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
+    "canonical_path": "onboarding/Floppy_1E.md",
+    "readme_path": "onboarding/README.md",
+    "sha256": "e693f12373ead374d90ad576696fcd68482a3e10fcf6305f0d4cc2ed59070b9b",
+    "default_action": "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
+    "project_state_file": false,
+    "copied_into_project_seed": false,
+    "mutable_during_project_work": false,
+    "implementation_authority": false,
+    "normal_use_condition": "project onboarding required or explicit controlled re-onboarding",
+    "normal_completion_state": "complete_for_current_roadmap_version"
+  },
   "project_seed": "project-seed/.floppy",
+  "project_seed_roadmap_templates": {
+    "machine_readable": "project-seed/.floppy/roadmap/roadmap.json",
+    "user_readable": "project-seed/.floppy/roadmap/roadmap.md"
+  },
   "tooling": {
     "initializer": "tools/initialize_project.py",
     "validator": "tools/validate_floppy.py"
   },
   "migration": {
-    "from": "0.2.0-dev",
-    "impact": "Existing projects are unchanged. Load Floppy Z from the source repository when coordinator behavior is required; do not copy or alter it as project state."
+    "from": "0.3.0-dev",
+    "impact": "Existing projects are unchanged. New projects use canonical Floppy 1E during onboarding and receive roadmap templates. Existing projects use Floppy 1E only through explicit controlled re-onboarding; do not overwrite accepted roadmaps automatically."
   }
 }
