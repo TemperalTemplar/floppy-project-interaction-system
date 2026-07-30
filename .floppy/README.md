@@ -12,6 +12,7 @@ Floppy source system itself.
 - Source-system version: `0.4.1-dev`
 - Accepted starting checkpoint: `main` at `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
 - Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
+- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 
 ## Separation boundary
 
@@ -59,9 +60,14 @@ authorized reusable source-product changes, but a commit must never mix them.
 ## Current lifecycle state
 
 - Development roadmap: `ACCEPTED`
-- FS-01: `DRAFT_NOT_AUTHORIZED`
+- FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
+- FS-01 activation: `NOT AUTHORIZED`
 - Active implementation section: `NONE`
 - FS-01 implementation: `NOT STARTED`
 - Active work authorization: `NO_ACTIVE_WORK_AUTHORIZATION`
+
+Work-package acceptance does not replace the active no-authority Floppy E and does
+not authorize an FS-01 branch, worktree, product write, control write, commit,
+push, integration, merge, tag, release, or later section.
 
 Read `.floppy/START-HERE.md` before using this BCE.
