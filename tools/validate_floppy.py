@@ -12,6 +12,7 @@ from pathlib import Path
 SOURCE_REQUIRED = [
     "VERSION",
     "README.md",
+    "ABOUT.md",
     "BOOTSTRAP.md",
     "system-manifest.json",
     "orchestrator/Floppy_Z.md",
@@ -78,6 +79,14 @@ def main() -> int:
         if manifest and manifest.get("system_version") != version:
             errors.append("VERSION and system-manifest.json disagree")
         if manifest:
+            if manifest.get("entrypoints", {}).get("about") != "ABOUT.md":
+                errors.append("system manifest does not register canonical ABOUT.md")
+            architecture = manifest.get("architecture", {})
+            if architecture.get("name") != "BCE — Bootable Context Environment":
+                errors.append("system manifest does not identify the BCE architecture")
+            if architecture.get("about_path") != "ABOUT.md":
+                errors.append("system manifest BCE about path is invalid")
+
             orchestrator = manifest.get("orchestrator", {})
             orchestrator_path = orchestrator.get("canonical_path")
             if not orchestrator_path or not (root / orchestrator_path).is_file():
@@ -103,8 +112,13 @@ def main() -> int:
             for relative in manifest.get("required_read_order", []):
                 if not (root / relative).is_file():
                     errors.append(f"manifest read-order file missing: {relative}")
-            if manifest.get("system", {}).get("source_read_only_during_project_work") is not True:
+            system = manifest.get("system", {})
+            if system.get("source_read_only_during_project_work") is not True:
                 errors.append("project manifest does not enforce source read-only boundary")
+            if system.get("about") != "ABOUT.md":
+                errors.append("project manifest does not preserve canonical ABOUT provenance")
+            if system.get("architecture") != "BCE — Bootable Context Environment":
+                errors.append("project manifest does not identify the BCE architecture")
             floppies = manifest.get("floppies", {})
             if set(floppies) != {"A", "B", "C", "D", "E"}:
                 errors.append("project manifest must map project Floppies A through E only")
