@@ -1,6 +1,8 @@
 # Project Floppy Start Here
 
-This `.floppy/` directory belongs to **{{PROJECT_NAME}}**. It was initialized from Floppy Project Interaction System version `0.4.0-dev`.
+This `.floppy/` directory belongs to **{{PROJECT_NAME}}**. It was initialized from Floppy Project Interaction System version `0.4.1-dev`.
+
+The Floppy Project Interaction System implements a **BCE — Bootable Context Environment** for AI-assisted projects. The canonical conceptual explanation is stored in the source repository at `ABOUT.md`.
 
 ## Current lifecycle state
 
@@ -19,14 +21,15 @@ NONE
 
 1. Read `manifest.json`.
 2. Confirm the pinned source repository and system version.
-3. Load canonical `onboarding/Floppy_1E.md` from the source repository.
-4. Verify the Floppy 1E digest recorded in the source and project manifests when practical.
-5. Read the onboarding protocol and local files in the manifest order.
-6. Inspect available project evidence before asking the user questions.
-7. Build and present the project definition and section roadmap.
-8. Wait for explicit roadmap acceptance.
-9. Finalize project-owned Floppies A–E and roadmap records.
-10. Leave Floppy E closed and create the first section only as an inactive draft unless the user separately authorizes it.
+3. Read source `ABOUT.md` when the model or user needs the BCE and system concepts explained.
+4. Load canonical `onboarding/Floppy_1E.md` from the source repository.
+5. Verify the Floppy 1E digest recorded in the source and project manifests when practical.
+6. Read the onboarding protocol and local files in the manifest order.
+7. Inspect available project evidence before asking the user questions.
+8. Build and present the project definition and section roadmap.
+9. Wait for explicit roadmap acceptance.
+10. Finalize project-owned Floppies A–E and roadmap records.
+11. Leave Floppy E closed and create the first section only as an inactive draft unless the user separately authorizes it.
 
 Do not begin project implementation during onboarding.
 
@@ -44,6 +47,7 @@ The JSON file provides machine-readable section identity, dependencies, statuses
 - Project-specific records belong here.
 - The source repository is read-only during ordinary project work.
 - Canonical Floppy 1E and Floppy Z are loaded from the pinned source; do not alter them for this project.
+- The source `ABOUT.md` explains the architecture but is not project state or execution authorization.
 - Do not copy project data back into the source.
 - Do not store secret values here.
 
