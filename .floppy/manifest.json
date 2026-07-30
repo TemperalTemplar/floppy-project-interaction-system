@@ -1,0 +1,76 @@
+{
+  "format_version": 2,
+  "bce_instance": {
+    "project_name": "Floppy Project Interaction System — BCE Control Layer",
+    "repository": "TemperalTemplar/floppy-project-interaction-system",
+    "project_role": "canonical_source_system_development",
+    "self_hosted_control_state": true,
+    "control_state_root": ".floppy",
+    "reusable_seed_root": "project-seed/.floppy",
+    "reusable_seed_is_active_project_state": false
+  },
+  "source_system": {
+    "name": "Floppy Project Interaction System",
+    "version": "0.4.1-dev",
+    "accepted_starting_branch": "main",
+    "accepted_starting_commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
+    "onboarding_branch": "control/source-development-bce-onboarding"
+  },
+  "status": "ROADMAP_ACCEPTED_NO_ACTIVE_IMPLEMENTATION",
+  "authority": {
+    "human_authority_required": true,
+    "accepted_operation": "SOURCE_DEVELOPMENT_BCE_ONBOARDING",
+    "implementation_authority": "NONE",
+    "active_implementation_section": null,
+    "current_authorized_section": null,
+    "prohibited_inference": true
+  },
+  "onboarding": {
+    "status": "COMPLETE",
+    "project_definition_record": ".floppy/onboarding/initial-project-definition.md",
+    "roadmap_acceptance_record": ".floppy/onboarding/roadmap-acceptance.md",
+    "next_proposed_section": "FS-01",
+    "next_section_status": "DRAFT_NOT_AUTHORIZED",
+    "next_section_draft": ".floppy/templates/Floppy-E-FS-01.draft.md"
+  },
+  "required_read_order": [
+    ".floppy/START-HERE.md",
+    ".floppy/floppies/Floppy-A-HITL.md",
+    ".floppy/floppies/Floppy-E-Current-Section.md",
+    ".floppy/floppies/Floppy-D-Project-Map.md",
+    ".floppy/floppies/Floppy-C-Project-Baseline.md",
+    ".floppy/floppies/Floppy-B-Development-Issues.md",
+    ".floppy/roadmap/roadmap.md",
+    ".floppy/onboarding/roadmap-acceptance.md"
+  ],
+  "floppies": {
+    "A": ".floppy/floppies/Floppy-A-HITL.md",
+    "B": ".floppy/floppies/Floppy-B-Development-Issues.md",
+    "C": ".floppy/floppies/Floppy-C-Project-Baseline.md",
+    "D": ".floppy/floppies/Floppy-D-Project-Map.md",
+    "E": ".floppy/floppies/Floppy-E-Current-Section.md"
+  },
+  "roadmap": {
+    "machine_readable": ".floppy/roadmap/roadmap.json",
+    "user_readable": ".floppy/roadmap/roadmap.md",
+    "status": "ACCEPTED",
+    "section_count": 12,
+    "first_section": "FS-01",
+    "last_section": "FS-12",
+    "current_authorized_section": null,
+    "active_implementation_section": null,
+    "next_proposed_section": "FS-01",
+    "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
+    "fs_01_implementation": "NOT_STARTED"
+  },
+  "records": {
+    "evidence": ".floppy/evidence/README.md",
+    "handoffs": ".floppy/handoffs/README.md",
+    "revisions": ".floppy/revisions/README.md"
+  },
+  "continuation_point": {
+    "state": "WAITING_FOR_ADMINISTRATOR_DECISION",
+    "decision_required": "Accept, revise, or reject the FS-01 draft; acceptance alone must not be treated as implementation authorization.",
+    "implementation_may_begin": false
+  }
+}
