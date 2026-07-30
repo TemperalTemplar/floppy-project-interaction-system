@@ -8,21 +8,31 @@
     "commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
     "source_version": "0.4.1-dev"
   },
+  "accepted_fs_01_work_package_checkpoint": {
+    "branch": "control/source-development-bce-onboarding",
+    "commit": "6f79872fa563a7a9c4820bad10ab86edc13782cd",
+    "source_version": "0.4.1-dev"
+  },
   "active_implementation_section": null,
   "current_authorized_section": null,
   "next_proposed_section": "FS-01",
   "fs_01": {
-    "status": "DRAFT_NOT_AUTHORIZED",
-    "implementation": "NOT_STARTED"
+    "status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
+    "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+    "activation_status": "NOT AUTHORIZED",
+    "implementation": "NOT STARTED",
+    "active": false
   },
   "sections": [
     {
       "id": "FS-01",
       "sequence": 1,
       "title": "Formal Lifecycle and State-Transition Specification",
-      "status": "DRAFT_NOT_AUTHORIZED",
+      "status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": []
+      "depends_on": [],
+      "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+      "activation_status": "NOT AUTHORIZED"
     },
     {
       "id": "FS-02",
@@ -30,7 +40,9 @@
       "title": "Normative Machine-Readable BCE Schemas",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-01"]
+      "depends_on": [
+        "FS-01"
+      ]
     },
     {
       "id": "FS-03",
@@ -38,7 +50,9 @@
       "title": "Semantic Validator 2.0 Engine",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-02"]
+      "depends_on": [
+        "FS-02"
+      ]
     },
     {
       "id": "FS-04",
@@ -46,7 +60,9 @@
       "title": "Read-Only floppyctl Core",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-03"]
+      "depends_on": [
+        "FS-03"
+      ]
     },
     {
       "id": "FS-05",
@@ -54,7 +70,9 @@
       "title": "Closeout-Completeness Validator",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-04"]
+      "depends_on": [
+        "FS-04"
+      ]
     },
     {
       "id": "FS-06",
@@ -62,7 +80,9 @@
       "title": "Structured Authorization, Work-Package Integrity, and Git Checkpoints",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-05"]
+      "depends_on": [
+        "FS-05"
+      ]
     },
     {
       "id": "FS-07",
@@ -70,7 +90,9 @@
       "title": "Secret and Unsafe-Content Scanning",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-06"]
+      "depends_on": [
+        "FS-06"
+      ]
     },
     {
       "id": "FS-08",
@@ -78,7 +100,9 @@
       "title": "Boot-Package Generation and Verification",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-07"]
+      "depends_on": [
+        "FS-07"
+      ]
     },
     {
       "id": "FS-09",
@@ -86,7 +110,9 @@
       "title": "Controlled Lifecycle Write Commands",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-08"]
+      "depends_on": [
+        "FS-08"
+      ]
     },
     {
       "id": "FS-10",
@@ -94,7 +120,9 @@
       "title": "Migration Planning and Application",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-09"]
+      "depends_on": [
+        "FS-09"
+      ]
     },
     {
       "id": "FS-11",
@@ -102,7 +130,9 @@
       "title": "Final-Project Closure",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-10"]
+      "depends_on": [
+        "FS-10"
+      ]
     },
     {
       "id": "FS-12",
@@ -110,15 +140,20 @@
       "title": "BCE Export, Integrity, and History Compaction",
       "status": "PLANNED_NOT_AUTHORIZED",
       "implementation_started": false,
-      "depends_on": ["FS-11"]
+      "depends_on": [
+        "FS-11"
+      ]
     }
   ],
   "constraints": {
     "one_active_implementation_section_maximum": true,
     "roadmap_acceptance_is_not_implementation_authorization": true,
+    "work_package_acceptance_is_not_implementation_authorization": true,
     "draft_creation_is_not_activation": true,
     "project_seed_is_not_active_project_state": true,
-    "adopting_projects_unchanged": true
+    "adopting_projects_unchanged": true,
+    "mixed_control_and_product_commits_permitted": false,
+    "root_control_state_integrates_to_main": false
   },
-  "continuation_point": "Administrator must accept, revise, or reject the FS-01 draft. A separate exact FS-01 implementation authorization is required before work."
+  "continuation_point": "Administrator may issue, revise, or withhold a separate exact FS-01 implementation authorization. Until then, FS-01 remains inactive and implementation must not begin."
 }
