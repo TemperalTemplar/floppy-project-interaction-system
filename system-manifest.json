@@ -1,9 +1,10 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.4.0-dev",
+  "system_version": "0.4.1-dev",
   "status": "development-source",
-  "source_repository_role": "canonical method, orchestrators, onboarding controls, and project seed; no project-specific writes during ordinary project work",
+  "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
+    "about": "ABOUT.md",
     "orchestrator": "orchestrator/Floppy_Z.md",
     "orchestrator_readme": "orchestrator/README.md",
     "initial_project_roadmap_builder": "onboarding/Floppy_1E.md",
@@ -15,6 +16,11 @@
     "everyday_closeout": "protocols/04-everyday-closeout.md",
     "revision_application": "protocols/05-revision-application.md",
     "source_policy": "protocols/00-source-repository-policy.md"
+  },
+  "architecture": {
+    "name": "BCE — Bootable Context Environment",
+    "about_path": "ABOUT.md",
+    "definition": "A versioned, externally stored context package that allows a new AI instance to reconstruct a project's accepted knowledge, operating rules, current authority, and exact continuation state without relying on prior conversation memory."
   },
   "orchestrator": {
     "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
@@ -51,7 +57,7 @@
     "validator": "tools/validate_floppy.py"
   },
   "migration": {
-    "from": "0.3.0-dev",
-    "impact": "Existing projects are unchanged. New projects use canonical Floppy 1E during onboarding and receive roadmap templates. Existing projects use Floppy 1E only through explicit controlled re-onboarding; do not overwrite accepted roadmaps automatically."
+    "from": "0.4.0-dev",
+    "impact": "Adds canonical ABOUT.md and BCE terminology. Existing project Floppies and accepted roadmaps are unchanged. Newly initialized projects record source version 0.4.1-dev."
   }
 }
