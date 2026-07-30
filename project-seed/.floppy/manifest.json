@@ -3,9 +3,11 @@
   "project_name": "{{PROJECT_NAME}}",
   "system": {
     "name": "Floppy Project Interaction System",
-    "version": "0.4.0-dev",
+    "version": "0.4.1-dev",
     "source_repository": "{{SOURCE_REPOSITORY}}",
-    "source_read_only_during_project_work": true
+    "source_read_only_during_project_work": true,
+    "about": "ABOUT.md",
+    "architecture": "BCE — Bootable Context Environment"
   },
   "status": "onboarding_required",
   "onboarding": {
