@@ -1,4 +1,4 @@
-# Roadmap Acceptance Record
+# Roadmap and FS-01 Work-Package Acceptance Record
 
 ## Accepted roadmap
 
@@ -50,24 +50,72 @@ product changes, but the accepted integration controls require:
 `control/source-development-bce-onboarding` must not be merged wholesale into
 `main`.
 
+## Accepted FS-01 work package
+
+On 2026-07-30, the administrator accepted the definition, scope, controls,
+completion criteria, and acceptance criteria contained in:
+
+`.floppy/templates/Floppy-E-FS-01.draft.md`
+
+Accepted section:
+
+`FS-01 — Formal Lifecycle and State-Transition Specification`
+
+Accepted source-development BCE checkpoint:
+
+`6f79872fa563a7a9c4820bad10ab86edc13782cd`
+
+Acceptance status:
+
+`ACCEPTED AS PLANNING BASELINE`
+
+The `.draft.md` filename is retained for provenance. The accepted document remains
+a non-active work-package record and is not the active Floppy E.
+
 ## Acceptance boundary
 
 ```text
-Roadmap acceptance does not authorize FS-01 implementation.
-FS-01 remains DRAFT_NOT_AUTHORIZED.
-Active implementation section remains NONE.
-Active work authorization remains NO_ACTIVE_WORK_AUTHORIZATION.
+FS-01 work package:
+ACCEPTED AS PLANNING BASELINE
+
+FS-01 activation:
+NOT AUTHORIZED
+
+FS-01 implementation:
+NOT STARTED
+
+Active implementation section:
+NONE
+
+Active work authorization:
+NO_ACTIVE_WORK_AUTHORIZATION
 ```
 
-## Accepted checkpoint
+This acceptance does not authorize:
+
+- FS-01 activation or implementation;
+- replacement of the active no-authority Floppy E;
+- creation of an FS-01 branch or worktree;
+- reusable product or root control-state changes;
+- version changes;
+- commits or pushes except the separately authorized acceptance-record update;
+- integration into `main`;
+- a pull request, merge, tag, or release;
+- FS-02 or a later section; or
+- modification or migration of an adopting project.
+
+## Accepted checkpoints
 
 - Repository: `TemperalTemplar/floppy-project-interaction-system`
 - Starting branch: `main`
 - Starting commit: `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
 - Source version: `0.4.1-dev`
 - Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
+- Accepted clean-source-policy checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
+- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 
 ## Next administrator decision
 
-Accept, revise, or reject the FS-01 draft. A separate exact implementation
-authorization remains mandatory after work-package acceptance.
+Issue, revise, or withhold a separate exact FS-01 implementation authorization.
+Until that authorization is issued, FS-01 remains inactive and no implementation
+work may begin.
