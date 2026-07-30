@@ -1,11 +1,33 @@
-# Draft Floppy E — FS-01
+# FS-01 Work Package — Accepted Planning Baseline
 
-## Draft status
+## Work-package status
 
-`DRAFT_NOT_AUTHORIZED`
+`ACCEPTED AS PLANNING BASELINE`
 
-This document is a proposed work package only. It is not the active Floppy E and
-does not authorize implementation.
+## Activation and implementation state
+
+```text
+FS-01 activation:
+NOT AUTHORIZED
+
+FS-01 implementation:
+NOT STARTED
+
+Active implementation section:
+NONE
+
+Active work authorization:
+NO_ACTIVE_WORK_AUTHORIZATION
+```
+
+The administrator accepted this document's definition, scope, controls, completion
+criteria, and acceptance criteria at source-development BCE checkpoint:
+
+`6f79872fa563a7a9c4820bad10ab86edc13782cd`
+
+The `.draft.md` filename is retained for provenance. This document is not the active
+Floppy E, does not replace `.floppy/floppies/Floppy-E-Current-Section.md`, and does
+not authorize implementation.
 
 ## Section
 
@@ -30,9 +52,10 @@ one status field:
 - migration state;
 - final-project state.
 
-## Proposed files in scope
+## Accepted planning scope
 
-Product and specification files proposed for a later, separately authorized FS-01:
+Product and specification files accepted as the planning scope for a later,
+separately authorized FS-01 implementation:
 
 - `VERSION`
 - `README.md`
@@ -48,12 +71,13 @@ Product and specification files proposed for a later, separately authorized FS-0
 - minimal `tools/validate_floppy.py` changes only when required to register,
   parse, or integrity-check the new canonical specification artifacts
 
-Exact filenames for new schema and fixture files must be fixed during work-package
-acceptance before activation.
+Exact filenames for new schema and fixture files must be fixed in the future exact
+implementation authorization before activation. Work-package acceptance does not
+satisfy that requirement.
 
 Root `.floppy/` control records are not reusable FS-01 product files. Any separately
 authorized control-state update made during FS-01 must use a root `.floppy/`-only
-commit and must not be mixed with the product commits listed above.
+commit and must not be mixed with product commits.
 
 ## Explicitly outside FS-01 product scope
 
@@ -75,6 +99,7 @@ commit and must not be mixed with the product commits listed above.
 The specification must make these implications invalid:
 
 - roadmap accepted ⇒ section authorized;
+- work package accepted ⇒ section authorized;
 - draft created ⇒ section active;
 - implementation complete ⇒ accepted;
 - accepted ⇒ closed without closeout;
@@ -110,24 +135,26 @@ New projects receive only the generic `project-seed/.floppy/` and never receive 
 source system's own development roadmap, authorizations, revisions, handoffs,
 evidence, or closeouts.
 
-## Proposed implementation controls
+## Accepted implementation controls
 
 Before any FS-01 write:
 
 1. Reverify repository `TemperalTemplar/floppy-project-interaction-system`.
-2. Reverify accepted base and source-development BCE state.
-3. Create only the separately authorized FS-01 branch and worktree.
-4. Confirm no active implementation authorization exists for another section.
-5. Activate FS-01 only through an exact administrator statement.
-6. Limit changes to the finally accepted FS-01 file list.
-7. Separate every root `.floppy/` control commit from every reusable product
+2. Reverify the exact accepted source-development BCE checkpoint and source version.
+3. Fix and authorize the exact FS-01 product-file list, including every new schema,
+   fixture, and test filename.
+4. Create only the separately authorized FS-01 branch and worktree.
+5. Confirm no active implementation authorization exists for another section.
+6. Activate FS-01 only through an exact administrator statement.
+7. Limit changes to the finally authorized FS-01 file list.
+8. Separate every root `.floppy/` control commit from every reusable product
    commit.
-8. Reject any commit that mixes control and product paths.
-9. Run JSON parsing, fixture tests, source validation, and exact diff review.
-10. Stop before integration, merge, tag, release, FS-02, seed migration, or
+9. Reject any commit that mixes control and product paths.
+10. Run JSON parsing, fixture tests, source validation, and exact diff review.
+11. Stop before integration, merge, tag, release, FS-02, seed migration, or
     adopting-project work.
 
-## Proposed completion criteria
+## Accepted completion criteria
 
 FS-01 implementation may be reported complete only when:
 
@@ -135,18 +162,19 @@ FS-01 implementation may be reported complete only when:
 - every allowed transition names prerequisites, authority, inputs, outputs, and
   forbidden side effects;
 - invalid transitions are explicit;
-- roadmap acceptance, authorization, implementation, verification, acceptance,
-  closeout, migration, and final closure are demonstrably separate;
+- roadmap acceptance, work-package acceptance, authorization, implementation,
+  verification, acceptance, closeout, migration, and final closure are
+  demonstrably separate;
 - all new JSON artifacts parse;
 - all accepted tests pass;
-- the final product diff is limited to the accepted FS-01 product scope;
+- the final product diff is limited to the authorized FS-01 product scope;
 - root control-state and product commits remain separate;
 - each product commit is independently reviewable and transferable;
 - source version and format-version effects match the accepted versioning plan;
 - no seed or adopting-project migration has occurred; and
 - no integration, merge, tag, or release has occurred without separate authority.
 
-## Proposed acceptance criteria
+## Accepted acceptance criteria
 
 Administrator acceptance must be separate from implementation completion and
 verification. Acceptance does not itself authorize integration, merge, release,
@@ -156,13 +184,21 @@ Any later integration plan must start from clean `main`, identify the exact acce
 product commits to transfer, exclude root `.floppy/` commits, and prove through the
 final comparison that no root `.floppy/` path is present.
 
-## Activation statement required
+## Separate activation statement required
 
-A future activation must explicitly authorize **FS-01 implementation**, name the
-repository, accepted base commit, branch/worktree strategy, final file scope,
-allowed validation, control/product commit separation, commit/push boundary, and
-all prohibited actions.
+A future activation must explicitly authorize **FS-01 implementation** and name:
 
-Until that separate statement is issued:
+- the repository;
+- the accepted source-development BCE checkpoint;
+- the source version;
+- the exact FS-01 branch and worktree;
+- the exact product-file list, including every new filename;
+- any separately permitted root `.floppy/` control writes;
+- allowed validation;
+- control/product commit separation;
+- commit and push boundaries; and
+- all prohibited actions.
+
+Until that separate exact statement is issued:
 
 `NO_ACTIVE_WORK_AUTHORIZATION`
