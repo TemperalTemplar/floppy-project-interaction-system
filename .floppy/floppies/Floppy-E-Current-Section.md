@@ -8,37 +8,44 @@
 
 `NONE`
 
-## Current authorized operation
+## Most recent authorized control operation
 
-The completed onboarding operation was:
+The completed control-state operation was:
 
-`SOURCE_DEVELOPMENT_BCE_ONBOARDING`
+`FS_01_WORK_PACKAGE_ACCEPTANCE_RECORDING`
 
-Its scope was limited to establishing the root source-development BCE. It grants
-no continuing implementation authority.
+Its scope was limited to recording administrator acceptance of the FS-01 work
+package as a planning baseline. It grants no continuing implementation authority.
 
-## Next proposed section
+## Next implementation candidate
 
 - Section: `FS-01`
-- Status: `DRAFT_NOT_AUTHORIZED`
+- Work package: `ACCEPTED AS PLANNING BASELINE`
+- Activation: `NOT AUTHORIZED`
 - Implementation: `NOT STARTED`
-- Draft: `.floppy/templates/Floppy-E-FS-01.draft.md`
+- Accepted work-package record: `.floppy/templates/Floppy-E-FS-01.draft.md`
+- Accepted work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 
 ## Explicit non-authorization
 
 This Floppy E does not authorize:
 
+- creation of an FS-01 branch or worktree;
 - FS-01 implementation or activation;
 - lifecycle schemas or transition tables;
 - `floppyctl`;
+- reusable product or root control-state changes;
 - source-version changes;
+- commits or pushes;
 - project-seed changes;
 - adopting-project changes or migrations;
 - FS-02 or later work;
-- merge, pull request, tag, or release actions.
+- integration into `main`;
+- pull request, merge, tag, or release actions.
 
 ## Continuation rule
 
-The administrator must next accept, revise, or reject the FS-01 draft. Even an
-accepted FS-01 work package requires a separate exact implementation activation
-before any product or specification file may change.
+The administrator may next issue, revise, or withhold a separate exact FS-01
+implementation authorization. Until that exact authorization is issued, no FS-01
+branch, worktree, product write, control write, commit, push, or implementation
+activity may begin.
