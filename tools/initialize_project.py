@@ -9,7 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 
-SYSTEM_VERSION = "0.4.0-dev"
+SYSTEM_VERSION = "0.4.1-dev"
 TOKEN_PROJECT = "{{PROJECT_NAME}}"
 TOKEN_SOURCE = "{{SOURCE_REPOSITORY}}"
 
