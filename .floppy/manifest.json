@@ -7,14 +7,16 @@
     "self_hosted_control_state": true,
     "control_state_root": ".floppy",
     "reusable_seed_root": "project-seed/.floppy",
-    "reusable_seed_is_active_project_state": false
+    "reusable_seed_is_active_project_state": false,
+    "control_state_is_reusable_source_product": false
   },
   "source_system": {
     "name": "Floppy Project Interaction System",
     "version": "0.4.1-dev",
     "accepted_starting_branch": "main",
     "accepted_starting_commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
-    "onboarding_branch": "control/source-development-bce-onboarding"
+    "onboarding_branch": "control/source-development-bce-onboarding",
+    "accepted_onboarding_checkpoint": "05cc098699b51b1018d729126042270fd6451eda"
   },
   "status": "ROADMAP_ACCEPTED_NO_ACTIVE_IMPLEMENTATION",
   "authority": {
@@ -32,6 +34,29 @@
     "next_proposed_section": "FS-01",
     "next_section_status": "DRAFT_NOT_AUTHORIZED",
     "next_section_draft": ".floppy/templates/Floppy-E-FS-01.draft.md"
+  },
+  "clean_source_integration_policy": {
+    "status": "ACCEPTED",
+    "root_control_state_branch_only": true,
+    "root_control_state_merge_to_main_permitted": false,
+    "onboarding_branch_wholesale_merge_permitted": false,
+    "copy_root_control_state_to_project_seed_permitted": false,
+    "include_root_control_state_in_source_packages": false,
+    "include_root_control_state_in_release_archives": false,
+    "install_root_control_state_into_adopting_projects": false,
+    "treat_root_control_state_as_reusable_seed_content": false,
+    "include_root_control_state_in_cross_project_bce_exports": false,
+    "new_project_bce_source": "project-seed/.floppy",
+    "new_projects_receive_source_development_records": false,
+    "development_branches_may_contain_control_and_product_changes": true,
+    "mixed_control_and_product_commits_permitted": false,
+    "product_commits_must_be_independently_reviewable": true,
+    "product_commits_must_be_independently_transferable": true,
+    "canonical_integration_base": "clean_main",
+    "canonical_integration_accepts_only_accepted_product_commits": true,
+    "canonical_integration_excludes_root_control_state_commits": true,
+    "final_integration_forbidden_path": ".floppy",
+    "integration_merge_tag_release_require_separate_administrator_authorization": true
   },
   "required_read_order": [
     ".floppy/START-HERE.md",
