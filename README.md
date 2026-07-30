@@ -1,10 +1,14 @@
 # Floppy Project Interaction System
 
-**Status:** development source, version `0.4.0-dev`
+**Status:** development source, version `0.4.1-dev`
 
 The Floppy Project Interaction System is a reusable Human-in-the-Loop project-control layer for AI-assisted development. This repository is the **source of the system**, not the active record for every project that uses it.
 
 A project adopts the system by copying the project seed into that project's own repository. From that point forward, the project owns its Floppies, roadmap, revisions, handoffs, and evidence. Normal project sessions must not write project data back to this source repository.
+
+## About the system
+
+Read [`ABOUT.md`](ABOUT.md) for the conceptual overview: why the system was created, the problem it solves, how the AI and repositories interact, the definition of a **BCE — Bootable Context Environment**, and how the method is applied to projects.
 
 ## Core model
 
@@ -63,6 +67,7 @@ Neither Floppy 1E nor Floppy Z is a sixth project-state Floppy. Load them read-o
 ## Repository layout
 
 ```text
+ABOUT.md                         Conceptual overview and BCE architecture
 BOOTSTRAP.md                     Startup instructions for onboarding, coordinator, and direct project modes
 system-manifest.json             Machine-readable source map and controller digests
 onboarding/                      Canonical Floppy 1E and onboarding replication instructions
