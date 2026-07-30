@@ -19,8 +19,11 @@ This BCE controls development of the canonical Floppy Project Interaction System
 Development roadmap:
 ACCEPTED
 
-FS-01:
-DRAFT_NOT_AUTHORIZED
+FS-01 work package:
+ACCEPTED AS PLANNING BASELINE
+
+FS-01 activation:
+NOT AUTHORIZED
 
 Active implementation section:
 NONE
@@ -34,11 +37,20 @@ NO_ACTIVE_WORK_AUTHORIZATION
 
 ## Authority boundary
 
-The accepted operation was only `SOURCE_DEVELOPMENT_BCE_ONBOARDING`.
+The administrator accepted the FS-01 definition, scope, controls, completion
+criteria, and acceptance criteria at source-development BCE checkpoint:
 
-No implementation may begin from roadmap acceptance, draft creation, branch
-existence, or this onboarding record. Implementation requires a separate,
-exact, administrator-issued authorization naming the section and permitted scope.
+`6f79872fa563a7a9c4820bad10ab86edc13782cd`
+
+That acceptance is a planning-baseline decision only. It does not replace the
+active no-authority Floppy E and does not authorize implementation, an FS-01 branch
+or worktree, source-product changes, root control-state changes, version changes,
+commits, pushes, integration, merge, tag, release, FS-02, or adopting-project work.
+
+FS-01 implementation requires a separate exact administrator-issued authorization
+naming the section, repository, accepted control-state checkpoint, source version,
+branch, worktree, final file scope, validation, commit and push limits, and
+prohibited actions.
 
 ## Repository boundary
 
@@ -74,8 +86,8 @@ Never merge `control/source-development-bce-onboarding` wholesale into `main`.
 
 ## Exact continuation point
 
-Review `.floppy/templates/Floppy-E-FS-01.draft.md`.
+The FS-01 work package is accepted but inactive.
 
-The next administrator decision is to **accept, revise, or reject the FS-01
-draft**. Acceptance of that draft must remain separate from implementation
-authorization.
+The next administrator decision is to issue, revise, or withhold a separate exact
+FS-01 implementation authorization. Until such authorization is issued, no FS-01
+work may begin.
