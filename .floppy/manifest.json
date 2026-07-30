@@ -16,12 +16,13 @@
     "accepted_starting_branch": "main",
     "accepted_starting_commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
     "onboarding_branch": "control/source-development-bce-onboarding",
-    "accepted_onboarding_checkpoint": "05cc098699b51b1018d729126042270fd6451eda"
+    "accepted_onboarding_checkpoint": "05cc098699b51b1018d729126042270fd6451eda",
+    "accepted_fs_01_work_package_checkpoint": "6f79872fa563a7a9c4820bad10ab86edc13782cd"
   },
-  "status": "ROADMAP_ACCEPTED_NO_ACTIVE_IMPLEMENTATION",
+  "status": "FS_01_WORK_PACKAGE_ACCEPTED_NO_ACTIVE_IMPLEMENTATION",
   "authority": {
     "human_authority_required": true,
-    "accepted_operation": "SOURCE_DEVELOPMENT_BCE_ONBOARDING",
+    "last_authorized_control_operation": "FS_01_WORK_PACKAGE_ACCEPTANCE_RECORDING",
     "implementation_authority": "NONE",
     "active_implementation_section": null,
     "current_authorized_section": null,
@@ -32,7 +33,9 @@
     "project_definition_record": ".floppy/onboarding/initial-project-definition.md",
     "roadmap_acceptance_record": ".floppy/onboarding/roadmap-acceptance.md",
     "next_proposed_section": "FS-01",
-    "next_section_status": "DRAFT_NOT_AUTHORIZED",
+    "next_section_status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
+    "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+    "implementation_status": "NOT STARTED",
     "next_section_draft": ".floppy/templates/Floppy-E-FS-01.draft.md"
   },
   "clean_source_integration_policy": {
@@ -85,17 +88,19 @@
     "current_authorized_section": null,
     "active_implementation_section": null,
     "next_proposed_section": "FS-01",
-    "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
-    "fs_01_implementation": "NOT_STARTED"
+    "next_proposed_section_status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
+    "fs_01_work_package": "ACCEPTED AS PLANNING BASELINE",
+    "fs_01_implementation": "NOT STARTED"
   },
   "records": {
     "evidence": ".floppy/evidence/README.md",
     "handoffs": ".floppy/handoffs/README.md",
-    "revisions": ".floppy/revisions/README.md"
+    "revisions": ".floppy/revisions/README.md",
+    "fs_01_work_package_acceptance": ".floppy/onboarding/roadmap-acceptance.md"
   },
   "continuation_point": {
-    "state": "WAITING_FOR_ADMINISTRATOR_DECISION",
-    "decision_required": "Accept, revise, or reject the FS-01 draft; acceptance alone must not be treated as implementation authorization.",
+    "state": "WAITING_FOR_FS_01_IMPLEMENTATION_AUTHORIZATION_DECISION",
+    "decision_required": "Issue, revise, or withhold a separate exact FS-01 implementation authorization. Work-package acceptance alone is not activation.",
     "implementation_may_begin": false
   }
 }
