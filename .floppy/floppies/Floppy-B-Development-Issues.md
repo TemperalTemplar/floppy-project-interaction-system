@@ -21,6 +21,16 @@ This file records unresolved issues and risks. It grants no authority.
 
 ## Current disposition
 
-FS-01 is the proposed first section for resolving the formal lifecycle gap.
+FS-01 is the next implementation candidate for resolving the formal lifecycle gap.
 
-Status: `DRAFT_NOT_AUTHORIZED`
+FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
+
+FS-01 status: `WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED`
+
+FS-01 activation: `NOT AUTHORIZED`
+
+FS-01 implementation: `NOT STARTED`
+
+Active implementation section: `NONE`
+
+Active work authorization: `NO_ACTIVE_WORK_AUTHORIZATION`
