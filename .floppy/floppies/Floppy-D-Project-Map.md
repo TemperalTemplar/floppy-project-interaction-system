@@ -21,11 +21,13 @@
 
 ## Current position
 
-- Next proposed section: `FS-01`
-- FS-01 status: `DRAFT_NOT_AUTHORIZED`
+- Next implementation candidate: `FS-01`
+- FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
+- FS-01 activation: `NOT AUTHORIZED`
 - Active implementation section: `NONE`
 - Active work authorization: `NO_ACTIVE_WORK_AUTHORIZATION`
 - FS-01 implementation: `NOT STARTED`
+- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 
 ## Permanent development and integration path
 
@@ -53,8 +55,11 @@ and release each require separate administrator authorization.
 New projects receive only generic `project-seed/.floppy/` content and never receive
 this source-development project's control records.
 
-## Ordering control
+## Ordering and authority control
 
 Sections are executed in order unless a later accepted roadmap revision explicitly
-changes dependencies. No section becomes active merely because its predecessor is
-accepted, completed, verified, or closed.
+changes dependencies. No section becomes active merely because its work package,
+predecessor, implementation, verification, acceptance, or closeout is complete.
+
+FS-01 remains inactive until an exact administrator implementation authorization
+is issued.
