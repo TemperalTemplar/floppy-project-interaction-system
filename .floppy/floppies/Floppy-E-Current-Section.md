@@ -2,88 +2,66 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
 
 ## Applied transition
 
-`TR-007-ACCEPT-SECTION`
+`TR-008-PROPOSE-SECTION-CLOSEOUT`
 
-## Active authority
+## Authority
 
-```text
-Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+`NO_ACTIVE_WORK_AUTHORIZATION`
 
-Active implementation section:
-NONE
+## Active implementation section
 
-Current authorized section:
-NONE
-```
+`NONE`
 
-## Administrator acceptance
+## Current authorized section
 
-The administrator accepted the completed and verified implementation of:
+`NONE`
 
-`FS-01 — Formal Lifecycle and State-Transition Specification`
-
-Accepted final FS-01 implementation checkpoint:
-
-`d03969aa93debb6b705098483c8b59bb9d37d58f`
-
-Resulting state:
+## Section status
 
 ```text
-FS-01 implementation:
-COMPLETE
-
-FS-01 verification:
-COMPLETE
-
-FS-01 administrator acceptance:
-ACCEPTED
-
-Section closeout:
-NOT_PROPOSED
-
-Closeout execution:
-NOT AUTHORIZED
-
-Additional product writes:
-NOT AUTHORIZED
-
-Integration:
-NOT AUTHORIZED
+FS-01:
+ACCEPTED — CLOSEOUT PROPOSED, NOT APPLIED
 
 FS-02:
-NOT AUTHORIZED
+DRAFT ONLY — NOT AUTHORIZED
 ```
 
-## Completed FS-01 scope
+## Fixed FS-01 evidence
 
-FS-01 produced the formal lifecycle model, declarative transition table, draft
-non-normative schema candidates, lifecycle fixtures and tests, integrity
-registration, validator support, and lifecycle-boundary documentation.
+- Implementation: `COMPLETE`
+- Verification: `COMPLETE`
+- Administrator acceptance: `ACCEPTED`
+- Accepted implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
+- Acceptance-recording checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
+- Source version: `0.4.1-dev`
 
-The accepted implementation includes the UTF-8 completion-record correction at
-the accepted final checkpoint.
+## Closeout boundary
 
-## Historical authorization evidence
+The formal proposal is:
 
-The completed authorization `FS_01_IMPLEMENTATION` remains recorded as historical
-evidence with its exact repository, branch, worktree, authorized files, commit
-sequence, validation state, and accepted checkpoints.
+`.floppy/closeouts/FS-01-closeout.md`
 
-It no longer grants active authority. It cannot authorize additional product
-writes, closeout, integration, merge, release, migration, FS-02, or later work.
+Its status is `PROPOSED_NOT_APPLIED`.
 
-## Acceptance and closeout boundary
+Closeout application remains `NOT AUTHORIZED`. The proposal does not close FS-01
+and does not activate FS-02.
 
-FS-01 is accepted but not closed.
+## FS-02 draft boundary
 
-Acceptance did not propose closeout and did not authorize closeout execution.
+`.floppy/templates/Floppy-E-FS-02.draft.md` is a non-authoritative proposed work
+package only.
 
-The next possible operation is a separately authorized FS-01 closeout proposal or
-a decision to withhold closeout.
+It does not accept the work package, authorize implementation, create a branch or
+worktree, make draft schemas normative, or begin FS-02.
 
-FS-02 remains inactive and unauthorized.
+## Required next decision
+
+The administrator must review the committed and unchanged Stage 1 proposal and
+send the exact Stage 2 approval naming its SHA.
+
+Until then, stop.

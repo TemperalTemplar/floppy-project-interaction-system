@@ -4,7 +4,7 @@
 
 `ACCEPTED`
 
-## Ordered development sections
+## Ordered source-development sections
 
 1. **FS-01 — Formal Lifecycle and State-Transition Specification**
 2. **FS-02 — Normative Machine-Readable BCE Schemas**
@@ -19,57 +19,41 @@
 11. **FS-11 — Final-Project Closure**
 12. **FS-12 — BCE Export, Integrity, and History Compaction**
 
+## Established repository facts
+
+- Canonical source branch checkpoint: `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
+- Source-development feature branch: `feature/fs-01-lifecycle-specification`
+- Accepted FS-01 implementation: `d03969aa93debb6b705098483c8b59bb9d37d58f`
+- FS-01 acceptance recording: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Source version: `0.4.1-dev`
+- Root `.floppy/` and reusable product paths remain separately committed.
+- Root `.floppy/` is excluded from canonical product integration.
+- No adopting project, deployment, production service, or environment was changed.
+
 ## Current position
 
-- Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
-- Applied transition: `TR-007-ACCEPT-SECTION`
-- Active implementation section: `NONE`
-- Current authorized section: `NONE`
-- Authority: `NO_ACTIVE_WORK_AUTHORIZATION`
-- FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
-- FS-01 implementation: `COMPLETE`
-- FS-01 verification: `COMPLETE`
-- FS-01 administrator acceptance: `ACCEPTED`
-- Accepted final FS-01 checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- Section closeout: `NOT_PROPOSED`
-- Closeout execution: `NOT AUTHORIZED`
-- Additional product writes: `NOT AUTHORIZED`
-- Integration: `NOT AUTHORIZED`
-- FS-02: `NOT AUTHORIZED`
-
-## Historical implementation path
-
-The completed `FS_01_IMPLEMENTATION` authorization remains historical evidence.
-It was issued against:
-
-`b12928e7365149813c00c65c1e409fe2a5d0d36f`
-
-and used:
-
 ```text
-Branch:
-feature/fs-01-lifecycle-specification
+Lifecycle state:
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
-Worktree:
-D:\A\Floppy\floppy-fs-01-lifecycle-specification
+Authority:
+NO_ACTIVE_WORK_AUTHORIZATION
+
+Active implementation section:
+NONE
+
+Current authorized section:
+NONE
+
+FS-01:
+ACCEPTED — CLOSEOUT PROPOSED, NOT APPLIED
+
+FS-02:
+DRAFT ONLY — NOT AUTHORIZED
 ```
 
-It no longer represents active authority.
+The next possible transition is `TR-009-APPLY-SECTION-CLOSEOUT`, but it is not
+authorized. Administrator approval naming the committed proposal SHA is required.
 
-## Permanent development and integration path
-
-Root `.floppy/` control commits and reusable source-product commits remain
-separate. Root control records never integrate into canonical `main`.
-
-Canonical integration may begin only under separate administrator authorization
-from clean `main`, using only accepted reusable-product commits.
-
-## Ordering and continuation boundary
-
-No section becomes active merely because its predecessor was accepted.
-
-FS-01 is accepted but not closed. The next possible operation is a separately
-authorized FS-01 closeout proposal or a decision to withhold closeout.
-
-Closeout has neither been proposed nor applied. Integration, merge, tag, release,
-migration, FS-02, FS-03, and every later section remain unauthorized.
+No integration, merge, tag, release, migration, or later-section operation is
+implied.

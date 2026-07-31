@@ -1,42 +1,50 @@
 # Floppy C — Accepted Project Baseline
 
-This file contains only accepted starting and planning state.
+This file preserves accepted historical source-development baseline information.
+It does not imply integration into canonical `main`.
 
 ## Accepted identity
 
 - Project: **Floppy Project Interaction System — BCE Control Layer**
 - Repository: `TemperalTemplar/floppy-project-interaction-system`
 - Project role: `canonical_source_system_development`
-- Self-hosted control state: `TRUE`
 - Active control-state root: `.floppy/`
 - Reusable seed root: `project-seed/.floppy/`
 - Reusable seed is active project state: `FALSE`
 
 ## Accepted source checkpoints
 
-- Starting branch: `main`
-- Starting commit: `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
-- Source-system version: `0.4.1-dev`
-- Onboarding branch: `control/source-development-bce-onboarding`
-- Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
-- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
+```text
+Canonical main:
+3efc15a9c232669ddcd3b49cee3ff99f9459dbc3
 
-## Accepted planning state
+Onboarding control branch:
+b12928e7365149813c00c65c1e409fe2a5d0d36f
 
-- Twelve-section roadmap FS-01 through FS-12: `ACCEPTED`
-- FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
-- FS-01 activation: `NOT AUTHORIZED`
-- Active implementation section: `NONE`
-- Active implementation authorization: `NONE`
-- FS-01 implementation: `NOT STARTED`
+Accepted FS-01 implementation checkpoint:
+d03969aa93debb6b705098483c8b59bb9d37d58f
 
-## Accepted boundaries
+Acceptance-recording checkpoint:
+5eeb3435644653534a6a430714a84b840ca497c0
 
-- Roadmap acceptance does not authorize implementation.
-- Work-package acceptance does not authorize implementation or activation.
-- The accepted work package does not replace the active no-authority Floppy E.
-- Root `.floppy/` and `project-seed/.floppy/` have separate roles.
-- Root control commits and reusable product commits remain separate.
-- Root `.floppy/` must not enter canonical `main` or reusable source distribution.
-- Existing adopting projects are not modified or migrated.
-- Product files remain unchanged by this acceptance recording.
+FS-01 product completion checkpoint:
+d907643874f9aa278f31311527f3e7ec907c6cb6
+
+Source version:
+0.4.1-dev
+```
+
+## Accepted FS-01 result
+
+- Implementation: `COMPLETE`
+- Verification: `COMPLETE`
+- Administrator acceptance: `ACCEPTED`
+- Root control and reusable-product commits: `SEPARATE`
+- Existing adopting projects changed: `FALSE`
+- Canonical `main` changed by FS-01 control recording: `FALSE`
+
+## Current boundary
+
+FS-01 closeout is proposed but not applied. The accepted baseline remains
+historical evidence and does not authorize integration, merge, release, migration,
+FS-02, or additional FS-01 product writes.

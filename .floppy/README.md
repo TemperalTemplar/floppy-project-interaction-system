@@ -8,59 +8,30 @@ Floppy source system itself.
 - Project: **Floppy Project Interaction System — BCE Control Layer**
 - Repository: `TemperalTemplar/floppy-project-interaction-system`
 - Role: `canonical_source_system_development`
-- Self-hosted control state: `TRUE`
 - Source-system version: `0.4.1-dev`
-- Accepted starting checkpoint: `main` at `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
-- Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
-- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
-- Accepted FS-01 pre-activation BCE checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
-- FS-01 reusable-product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
-- Accepted final FS-01 implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- Implementation branch: `feature/fs-01-lifecycle-specification`
-- FS-01 worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
+- Canonical starting checkpoint: `main` at `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
+- Onboarding control checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- Accepted FS-01 implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
+- FS-01 administrator-acceptance checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
+- FS-01 product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
+- Feature branch: `feature/fs-01-lifecycle-specification`
 
-## Separation boundary
+## Repository boundary
 
-This root `.floppy/` directory is distinct from `project-seed/.floppy/`.
+Root `.floppy/` is source-development control state. It is not reusable source
+product and must not enter canonical `main`, source packages, release archives,
+`project-seed/.floppy/`, adopting projects, or cross-project BCE exports.
 
-`project-seed/.floppy/` is reusable initialization media. It is not active project
-state for this source-development project and was not modified by FS-01
-administrator acceptance recording.
-
-Existing adopting projects remain independent and unchanged.
-
-## Permanent clean-source integration policy
-
-Root `.floppy/` is control-branch-only project state. It is not reusable source
-product and must not be:
-
-- merged into canonical `main`;
-- copied into `project-seed/.floppy/`;
-- included in source packages or release archives;
-- installed into adopting projects;
-- treated as reusable project-seed content; or
-- embedded in BCE exports intended for other projects.
-
-Product integration, merge, tagging, and release require separate administrator
-authorization.
+Root control commits and reusable-product commits remain separate.
 
 ## Current lifecycle state
 
 ```text
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Applied transition:
-TR-007-ACCEPT-SECTION
-
-FS-01 implementation:
-COMPLETE
-
-FS-01 verification:
-COMPLETE
-
-FS-01 administrator acceptance:
-ACCEPTED
+TR-008-PROPOSE-SECTION-CLOSEOUT
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -71,31 +42,32 @@ NONE
 Current authorized section:
 NONE
 
-Section closeout:
-NOT_PROPOSED
+FS-01 implementation:
+COMPLETE
 
-Closeout execution:
-NOT AUTHORIZED
+FS-01 verification:
+COMPLETE
 
-Additional product writes:
+FS-01 administrator acceptance:
+ACCEPTED
+
+FS-01 closeout:
+PROPOSED
+
+FS-01 closeout application:
 NOT AUTHORIZED
 
 Integration:
 NOT AUTHORIZED
 
 FS-02:
-NOT AUTHORIZED
+INACTIVE AND NOT AUTHORIZED
 ```
 
-FS-01 is accepted but not closed.
+FS-01 closeout is proposed but not applied.
 
-The completed `FS_01_IMPLEMENTATION` authorization and its exact file and commit
-scope remain in the machine-readable records as historical evidence. They are not
-active authority and permit no additional work.
+The formal proposal is `.floppy/closeouts/FS-01-closeout.md`. Administrator
+approval naming the committed and unchanged proposal checkpoint is required before
+`TR-009-APPLY-SECTION-CLOSEOUT` may be prepared.
 
-The next possible operation is a separately authorized FS-01 closeout proposal or
-a decision to withhold closeout. Neither option is implied by acceptance.
-
-FS-02 remains inactive and unauthorized.
-
-Read `.floppy/START-HERE.md` before using this BCE.
+The FS-02 draft is non-authoritative. It does not accept, activate, or begin FS-02.
