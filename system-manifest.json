@@ -18,12 +18,12 @@
     "source_policy": "protocols/00-source-repository-policy.md"
   },
   "architecture": {
-    "name": "BCE — Bootable Context Environment",
+    "name": "BCE \u2014 Bootable Context Environment",
     "about_path": "ABOUT.md",
     "definition": "A versioned, externally stored context package that allows a new AI instance to reconstruct a project's accepted knowledge, operating rules, current authority, and exact continuation state without relying on prior conversation memory."
   },
   "orchestrator": {
-    "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
+    "name": "Floppy Z \u2014 Project Model Orchestrator and Instruction-Transfer Protocol",
     "canonical_path": "orchestrator/Floppy_Z.md",
     "readme_path": "orchestrator/README.md",
     "sha256": "9c5cc655280da1cc6a4844941083e150b741615d5ae805878a88cddc5f30df1f",
@@ -35,7 +35,7 @@
     "direct_execution_requires_explicit_named_override": true
   },
   "initial_project_roadmap_builder": {
-    "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
+    "name": "Floppy 1E \u2014 Initial Project Definition and Roadmap Builder",
     "canonical_path": "onboarding/Floppy_1E.md",
     "readme_path": "onboarding/README.md",
     "sha256": "e693f12373ead374d90ad576696fcd68482a3e10fcf6305f0d4cc2ed59070b9b",
@@ -55,6 +55,40 @@
   "tooling": {
     "initializer": "tools/initialize_project.py",
     "validator": "tools/validate_floppy.py"
+  },
+  "lifecycle_specification": {
+    "section": "FS-01",
+    "status": "formal_specification",
+    "declarative_only": true,
+    "execution_capability": false,
+    "applies_transitions": false,
+    "writes_lifecycle_state": false,
+    "production_enforcement": false,
+    "artifacts": {
+      "state_model": {
+        "path": "specs/lifecycle-state-model.md",
+        "sha256": "b3db61a84eb93b213b9a989307f91369ea79099123a37ae1c949a54cb8a09075"
+      },
+      "transition_table": {
+        "path": "specs/lifecycle-transition-table.json",
+        "sha256": "9220087507f3ed22adefc8dade1af60cc85db1d563f212a8b1a35207fb7b0ef3"
+      },
+      "draft_lifecycle_state_schema": {
+        "path": "schemas/drafts/bce-lifecycle-state.schema.json",
+        "sha256": "e3c4577379ba26ff651211c70f18346da7123f74c25babb1c8e3e25e27b8e449",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-lifecycle-state:fs-01"
+      },
+      "draft_work_authorization_schema": {
+        "path": "schemas/drafts/bce-work-authorization.schema.json",
+        "sha256": "30c701bff15cad9b63151c6297f1b685b030f2aa77d1a495af0cf75b8d5fbe70",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-work-authorization:fs-01"
+      },
+      "draft_lifecycle_transition_schema": {
+        "path": "schemas/drafts/bce-lifecycle-transition.schema.json",
+        "sha256": "e04260566ce3ca294e8f84229468bc36eae809c2e8a131842049f71684e9969a",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-lifecycle-transition:fs-01"
+      }
+    }
   },
   "migration": {
     "from": "0.4.0-dev",
