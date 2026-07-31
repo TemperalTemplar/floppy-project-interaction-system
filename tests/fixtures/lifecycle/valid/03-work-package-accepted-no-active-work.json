@@ -1,0 +1,39 @@
+{
+  "fixture_id": "valid-03-work-package-accepted-no-active-work",
+  "expected_valid": true,
+  "description": "The FS-01 work package is a planning baseline only.",
+  "current_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+  "state": {
+    "state_id": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+    "section": "FS-01",
+    "authorization_id": null,
+    "base_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "ACCEPTED_PLANNING_BASELINE",
+      "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+      "implementation": "NOT_STARTED",
+      "verification": "NOT_STARTED",
+      "acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": []
+  },
+  "authorization": null,
+  "transition_record": null,
+  "assertions": {
+    "roadmap_acceptance_authorizes_section": false,
+    "work_package_acceptance_authorizes_section": false,
+    "draft_creation_activates_section": false,
+    "implementation_completion_accepts_section": false,
+    "section_acceptance_closes_section": false,
+    "section_closeout_authorizes_next_section": false,
+    "stale_base_checkpoint_permits_write": false,
+    "final_closure_permits_active_authority": false,
+    "proposed_closeout_is_applied": false
+  },
+  "next_section_authorized": false,
+  "draft_artifact_status": null
+}

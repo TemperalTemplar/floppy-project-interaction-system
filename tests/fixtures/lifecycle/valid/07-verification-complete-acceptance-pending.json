@@ -1,0 +1,50 @@
+{
+  "fixture_id": "valid-07-verification-complete-acceptance-pending",
+  "expected_valid": true,
+  "description": "Verification is complete while administrator acceptance remains pending.",
+  "current_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+  "state": {
+    "state_id": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "section": "FS-01",
+    "authorization_id": "FS_01_IMPLEMENTATION",
+    "base_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "ACCEPTED_PLANNING_BASELINE",
+      "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+      "implementation": "COMPLETE",
+      "verification": "COMPLETE",
+      "acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": [
+      "FS-01"
+    ]
+  },
+  "authorization": {
+    "authorization_id": "FS_01_IMPLEMENTATION",
+    "kind": "section_implementation",
+    "section": "FS-01",
+    "base_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+    "exact_file_scope": [
+      "specs/lifecycle-state-model.md",
+      "specs/lifecycle-transition-table.json"
+    ]
+  },
+  "transition_record": null,
+  "assertions": {
+    "roadmap_acceptance_authorizes_section": false,
+    "work_package_acceptance_authorizes_section": false,
+    "draft_creation_activates_section": false,
+    "implementation_completion_accepts_section": false,
+    "section_acceptance_closes_section": false,
+    "section_closeout_authorizes_next_section": false,
+    "stale_base_checkpoint_permits_write": false,
+    "final_closure_permits_active_authority": false,
+    "proposed_closeout_is_applied": false
+  },
+  "next_section_authorized": false,
+  "draft_artifact_status": null
+}
