@@ -24,15 +24,15 @@
         "fs_01_product_completion_checkpoint": "d907643874f9aa278f31311527f3e7ec907c6cb6",
         "accepted_fs_01_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f"
     },
-    "status": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+    "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
     "authority": {
         "human_authority_required": true,
-        "last_authorized_control_operation": "FS_01_SECTION_CLOSEOUT_PROPOSAL",
+        "last_authorized_control_operation": "FS_01_SECTION_CLOSEOUT_APPLICATION",
         "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "active_implementation_section": null,
         "current_authorized_section": null,
         "prohibited_inference": true,
-        "last_applied_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
+        "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
         "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION"
     },
     "onboarding": {
@@ -40,7 +40,7 @@
         "project_definition_record": ".floppy/onboarding/initial-project-definition.md",
         "roadmap_acceptance_record": ".floppy/onboarding/roadmap-acceptance.md",
         "next_proposed_section": null,
-        "next_section_status": "FS_01_CLOSEOUT_PROPOSED_NOT_APPLIED",
+        "next_section_status": "FS_01_CLOSED_FS_02_INACTIVE",
         "work_package_status": "ACCEPTED AS PLANNING BASELINE",
         "implementation_status": "COMPLETE",
         "next_section_draft": ".floppy/templates/Floppy-E-FS-02.draft.md"
@@ -95,13 +95,14 @@
         "current_authorized_section": null,
         "active_implementation_section": null,
         "next_proposed_section": null,
-        "next_proposed_section_status": "FS_02_DRAFT_NOT_AUTHORIZED",
+        "next_proposed_section_status": "FS_02_WORK_PACKAGE_DRAFT_NOT_ACCEPTED",
         "fs_01_work_package": "ACCEPTED AS PLANNING BASELINE",
         "fs_01_implementation": "COMPLETE",
         "fs_01_verification": "COMPLETE",
         "fs_01_administrator_acceptance": "ACCEPTED",
-        "fs_01_section_closeout": "PROPOSED",
-        "fs_01_closeout_execution": "NOT AUTHORIZED"
+        "fs_01_section_closeout": "APPLIED",
+        "fs_01_closeout_execution": "APPLIED",
+        "fs_01_status": "CLOSED"
     },
     "records": {
         "evidence": ".floppy/evidence/README.md",
@@ -113,17 +114,20 @@
         "fs_02_work_package_draft": ".floppy/templates/Floppy-E-FS-02.draft.md"
     },
     "continuation_point": {
-        "state": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
-        "decision_required": "Administrator review and exact application approval naming the committed and unchanged FS-01 closeout proposal SHA.",
+        "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "decision_required": "Prepare, revise, accept, or withhold the FS-02 work package. Implementation is not authorized.",
         "implementation_may_begin": false,
-        "administrator_acceptance": "ACCEPTED",
-        "section_closeout": "PROPOSED",
-        "closeout_application": "NOT AUTHORIZED",
-        "closeout_execution_may_begin": false,
+        "fs_01_status": "CLOSED",
+        "fs_01_section_closeout": "APPLIED",
+        "additional_fs_01_product_writes_may_begin": false,
         "integration_may_begin": false,
-        "fs_02_work_package_status": "DRAFT_NOT_AUTHORIZED",
-        "fs_02_may_begin": false,
-        "additional_product_writes_may_begin": false
+        "merge_may_begin": false,
+        "tag_or_release_may_begin": false,
+        "migration_may_begin": false,
+        "fs_02_work_package_status": "NOT_ACCEPTED",
+        "fs_02_activation_authorized": false,
+        "fs_02_implementation_started": false,
+        "fs_02_active": false
     },
     "active_work_authorization": null,
     "historical_work_authorizations": [
@@ -227,7 +231,7 @@
             "push_branch": "feature/fs-01-lifecycle-specification",
             "force_push_permitted": false,
             "administrator_acceptance": "ACCEPTED",
-            "section_closeout": "PROPOSED",
+            "section_closeout": "APPLIED",
             "integration": "NOT AUTHORIZED",
             "merge": "NOT AUTHORIZED",
             "release": "NOT AUTHORIZED",
@@ -238,31 +242,38 @@
             "implementation_completion_checkpoint": "d907643874f9aa278f31311527f3e7ec907c6cb6",
             "additional_product_writes_permitted": false,
             "final_branch_push_pending": false,
-            "historical_status": "COMPLETED_VERIFIED_ACCEPTED",
+            "historical_status": "COMPLETED_VERIFIED_ACCEPTED_CLOSED",
             "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
             "acceptance_transition": "TR-007-ACCEPT-SECTION",
             "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-            "closeout_execution": "NOT AUTHORIZED",
-            "closeout_proposal_status": "PROPOSED_NOT_APPLIED",
-            "closeout_proposal_base_checkpoint": "5eeb3435644653534a6a430714a84b840ca497c0"
+            "closeout_execution": "APPLIED",
+            "closeout_proposal_status": "APPLIED",
+            "closeout_proposal_base_checkpoint": "5eeb3435644653534a6a430714a84b840ca497c0",
+            "approved_closeout_proposal_checkpoint": "6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479",
+            "closeout_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+            "closed_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
         }
     ],
     "closeout_proposal": {
         "transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
         "section": "FS-01",
         "section_title": "Formal Lifecycle and State-Transition Specification",
-        "status": "PROPOSED_NOT_APPLIED",
+        "status": "APPLIED",
         "record": ".floppy/closeouts/FS-01-closeout.md",
         "proposal_base_checkpoint": "5eeb3435644653534a6a430714a84b840ca497c0",
         "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
         "administrator_acceptance_checkpoint": "5eeb3435644653534a6a430714a84b840ca497c0",
         "product_completion_checkpoint": "d907643874f9aa278f31311527f3e7ec907c6cb6",
-        "application_authorized": false,
+        "application_authorized": true,
         "integration": "NOT AUTHORIZED",
         "merge": "NOT AUTHORIZED",
         "release": "NOT AUTHORIZED",
         "migration": "NOT AUTHORIZED",
-        "fs_02": "NOT AUTHORIZED"
+        "fs_02": "NOT AUTHORIZED",
+        "approved_proposal_checkpoint": "6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479",
+        "application_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "fs_01_status": "CLOSED"
     },
     "fs_02_draft": {
         "path": ".floppy/templates/Floppy-E-FS-02.draft.md",
@@ -272,5 +283,20 @@
         "implementation_authorized": false,
         "implementation_started": false,
         "active": false
+    },
+    "closeout_application": {
+        "transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "section": "FS-01",
+        "approved_proposal_checkpoint": "6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479",
+        "status": "APPLIED",
+        "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "active_implementation_section": null,
+        "current_authorized_section": null,
+        "integration": "NOT AUTHORIZED",
+        "merge": "NOT AUTHORIZED",
+        "tag_or_release": "NOT AUTHORIZED",
+        "migration": "NOT AUTHORIZED",
+        "fs_02": "NOT AUTHORIZED"
     }
 }

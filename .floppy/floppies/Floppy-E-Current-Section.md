@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -20,48 +20,57 @@
 
 `NONE`
 
-## Section status
+## Historical FS-01 state
 
 ```text
-FS-01:
-ACCEPTED — CLOSEOUT PROPOSED, NOT APPLIED
+Implementation:
+COMPLETE
 
-FS-02:
-DRAFT ONLY — NOT AUTHORIZED
+Verification:
+COMPLETE
+
+Administrator acceptance:
+ACCEPTED
+
+Closeout:
+APPLIED
+
+Status:
+CLOSED
 ```
 
 ## Fixed FS-01 evidence
 
-- Implementation: `COMPLETE`
-- Verification: `COMPLETE`
-- Administrator acceptance: `ACCEPTED`
 - Accepted implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
 - Acceptance-recording checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Approved closeout-proposal checkpoint: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
 - Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
 - Source version: `0.4.1-dev`
 
-## Closeout boundary
+## FS-02 state
 
-The formal proposal is:
+```text
+Draft:
+PRESENT
 
-`.floppy/closeouts/FS-01-closeout.md`
+Draft status:
+DRAFT_NOT_AUTHORIZED
 
-Its status is `PROPOSED_NOT_APPLIED`.
+Work package:
+NOT ACCEPTED
 
-Closeout application remains `NOT AUTHORIZED`. The proposal does not close FS-01
-and does not activate FS-02.
+Activation:
+NOT AUTHORIZED
 
-## FS-02 draft boundary
+Implementation:
+NOT STARTED
 
-`.floppy/templates/Floppy-E-FS-02.draft.md` is a non-authoritative proposed work
-package only.
+Active:
+FALSE
+```
 
-It does not accept the work package, authorize implementation, create a branch or
-worktree, make draft schemas normative, or begin FS-02.
+The next legal operation is preparation, revision, acceptance, or withholding of
+the FS-02 work package—not implementation.
 
-## Required next decision
-
-The administrator must review the committed and unchanged Stage 1 proposal and
-send the exact Stage 2 approval naming its SHA.
-
-Until then, stop.
+No integration, pull request, merge, tag, release, migration, or later-section
+authority exists.

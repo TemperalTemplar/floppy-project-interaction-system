@@ -2,22 +2,16 @@
 
 This file records unresolved issues and risks. It grants no authority.
 
-## Resolved by accepted FS-01
+## Closed FS-01 issue
 
-The formal lifecycle and state-transition specification issue is resolved by the
-accepted FS-01 implementation at:
+The formal lifecycle and state-transition specification issue was resolved,
+verified, accepted, and formally closed.
 
-`d03969aa93debb6b705098483c8b59bb9d37d58f`
-
-Implementation, verification, and administrator acceptance are complete.
-
-## Current closeout issue
-
-FS-01 closeout is `PROPOSED_NOT_APPLIED`.
-
-The closeout proposal must remain unchanged and must receive explicit
-administrator application approval naming its committed SHA before
-`TR-009-APPLY-SECTION-CLOSEOUT` may occur.
+- Accepted implementation: `d03969aa93debb6b705098483c8b59bb9d37d58f`
+- Acceptance recording: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Approved closeout proposal: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
+- FS-01 status: `CLOSED`
+- FS-01 closeout: `APPLIED`
 
 ## Remaining roadmap obligations
 
@@ -39,19 +33,26 @@ administrator application approval naming its committed SHA before
 
 ```text
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
 
-FS-01 closeout:
-PROPOSED
+FS-01:
+CLOSED
 
-Closeout application:
+FS-02 work package:
+NOT ACCEPTED
+
+FS-02 activation:
 NOT AUTHORIZED
 
-FS-02:
-DRAFT ONLY — NOT AUTHORIZED
+FS-02 implementation:
+NOT STARTED
+
+FS-02 active:
+FALSE
 ```
 
-No unresolved obligation grants implementation authority.
+The next legal operation is preparation, revision, acceptance, or withholding of
+the FS-02 work package—not implementation.

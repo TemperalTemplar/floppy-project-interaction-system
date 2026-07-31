@@ -5,6 +5,16 @@ STATUS: DRAFT_NOT_AUTHORIZED
 This file is a proposed work package only.
 It does not authorize implementation.
 
+## Dependency state
+
+FS-01 is formally closed at the control-state transition following approved
+proposal checkpoint:
+
+`6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
+
+This satisfies only the roadmap ordering prerequisite. It does not accept or
+activate FS-02.
+
 ## Proposed section
 
 `FS-02 — Normative Machine-Readable BCE Schemas`
@@ -27,5 +37,10 @@ This draft does not:
 - start FS-02 implementation;
 - authorize integration, merge, release, or migration; or
 - permit planning beyond this non-authoritative draft.
+
+## Next legal operation
+
+The next legal operation is preparation, revision, acceptance, or withholding of
+the FS-02 work package—not implementation.
 
 FS-02 remains inactive and unauthorized.

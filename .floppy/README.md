@@ -13,25 +13,24 @@ Floppy source system itself.
 - Onboarding control checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
 - Accepted FS-01 implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
 - FS-01 administrator-acceptance checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Approved FS-01 closeout-proposal checkpoint: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
 - FS-01 product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
 - Feature branch: `feature/fs-01-lifecycle-specification`
 
 ## Repository boundary
 
-Root `.floppy/` is source-development control state. It is not reusable source
-product and must not enter canonical `main`, source packages, release archives,
-`project-seed/.floppy/`, adopting projects, or cross-project BCE exports.
-
-Root control commits and reusable-product commits remain separate.
+Root `.floppy/` remains source-development control state, not reusable source
+product. It must not enter canonical `main`, product packages,
+`project-seed/.floppy/`, adopting projects, or releases.
 
 ## Current lifecycle state
 
 ```text
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Applied transition:
-TR-008-PROPOSE-SECTION-CLOSEOUT
+TR-009-APPLY-SECTION-CLOSEOUT
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -42,32 +41,51 @@ NONE
 Current authorized section:
 NONE
 
-FS-01 implementation:
+FS-01 historical implementation:
 COMPLETE
 
-FS-01 verification:
+FS-01 historical verification:
 COMPLETE
 
-FS-01 administrator acceptance:
+FS-01 historical administrator acceptance:
 ACCEPTED
 
 FS-01 closeout:
-PROPOSED
+APPLIED
 
-FS-01 closeout application:
+FS-01 status:
+CLOSED
+
+Additional FS-01 product writes:
 NOT AUTHORIZED
+
+FS-02 work package:
+NOT ACCEPTED
+
+FS-02 activation:
+NOT AUTHORIZED
+
+FS-02 implementation:
+NOT STARTED
+
+FS-02 active:
+FALSE
 
 Integration:
 NOT AUTHORIZED
 
-FS-02:
-INACTIVE AND NOT AUTHORIZED
+Merge:
+NOT AUTHORIZED
+
+Tag or release:
+NOT AUTHORIZED
+
+Migration:
+NOT AUTHORIZED
 ```
 
-FS-01 closeout is proposed but not applied.
+FS-01 is formally closed.
 
-The formal proposal is `.floppy/closeouts/FS-01-closeout.md`. Administrator
-approval naming the committed and unchanged proposal checkpoint is required before
-`TR-009-APPLY-SECTION-CLOSEOUT` may be prepared.
-
-The FS-02 draft is non-authoritative. It does not accept, activate, or begin FS-02.
+The FS-02 draft remains non-authoritative. The next legal operation is
+preparation, revision, acceptance, or withholding of the FS-02 work package—not
+implementation.

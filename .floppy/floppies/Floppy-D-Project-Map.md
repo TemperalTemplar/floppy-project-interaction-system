@@ -25,16 +25,16 @@
 - Source-development feature branch: `feature/fs-01-lifecycle-specification`
 - Accepted FS-01 implementation: `d03969aa93debb6b705098483c8b59bb9d37d58f`
 - FS-01 acceptance recording: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Approved closeout proposal: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
 - Source version: `0.4.1-dev`
-- Root `.floppy/` and reusable product paths remain separately committed.
-- Root `.floppy/` is excluded from canonical product integration.
-- No adopting project, deployment, production service, or environment was changed.
+- Root control and reusable-product commits remained separate.
+- No adopting project, deployment, production service, or environment changed.
 
 ## Current position
 
 ```text
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -46,14 +46,14 @@ Current authorized section:
 NONE
 
 FS-01:
-ACCEPTED — CLOSEOUT PROPOSED, NOT APPLIED
+CLOSED
 
 FS-02:
-DRAFT ONLY — NOT AUTHORIZED
+DRAFT PRESENT — WORK PACKAGE NOT ACCEPTED — NOT AUTHORIZED
 ```
 
-The next possible transition is `TR-009-APPLY-SECTION-CLOSEOUT`, but it is not
-authorized. Administrator approval naming the committed proposal SHA is required.
+The next legal operation is preparation, revision, acceptance, or withholding of
+the FS-02 work package—not implementation.
 
-No integration, merge, tag, release, migration, or later-section operation is
-implied.
+Integration, merge, tag, release, migration, FS-02 implementation, and later
+sections remain unauthorized.

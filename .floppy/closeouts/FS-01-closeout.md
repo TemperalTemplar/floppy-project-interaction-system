@@ -2,7 +2,7 @@
 
 ## Controlling status
 
-`PROPOSED_NOT_APPLIED`
+`APPLIED`
 
 ## Section identity
 
@@ -16,35 +16,43 @@
 
 - Accepted implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
 - Administrator-acceptance recording checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
+- Approved closeout-proposal checkpoint: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
 - Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
 - Canonical main checkpoint: `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
 - Onboarding control checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
 
-## Lifecycle position
+## Applied lifecycle transition
 
 ```text
-Applied transition:
-TR-008-PROPOSE-SECTION-CLOSEOUT
+Approved proposal:
+6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479
 
-Current lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Applied transition:
+TR-009-APPLY-SECTION-CLOSEOUT
+
+Final lifecycle state:
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
 
-FS-01 closeout:
-PROPOSED
+FS-01 status:
+CLOSED
 
-Closeout application:
-NOT AUTHORIZED
+FS-01 closeout:
+APPLIED
 ```
 
-This proposal is not an applied closeout.
+## Historical FS-01 evidence
+
+- Implementation: `COMPLETE`
+- Verification: `COMPLETE`
+- Administrator acceptance: `ACCEPTED`
+- Additional FS-01 product writes: `NOT AUTHORIZED`
 
 ## Validation and test evidence
 
-The accepted FS-01 implementation and later control-record operations were
-validated with:
+The closeout application is validated with:
 
 - source validation using `tools/validate_floppy.py . --mode source`;
 - tooling tests;
@@ -52,12 +60,10 @@ validated with:
 - lifecycle fixture tests;
 - full test discovery with all 15 tests passing;
 - JSON parsing;
-- strict UTF-8 validation and mojibake scanning; and
+- strict UTF-8 validation and mojibake scanning;
+- exact authorized-path comparison;
+- protected-path and checkpoint comparison; and
 - `git diff --check`.
-
-Stage 1 repeats the source validator, all 15 tests, UTF-8 checks, JSON parsing,
-mojibake scanning, exact-path checks, excluded-path checks, and
-`git diff --check` before committing this proposal.
 
 ## Exact accepted deliverables
 
@@ -101,82 +107,50 @@ mojibake scanning, exact-path checks, excluded-path checks, and
 - `docs/Migration-Notes.md`
 - `schemas/floppy-fields.md`
 
-## Commit separation evidence
+## Commit separation and unchanged boundaries
 
-The accepted implementation preserved separate root-control and reusable-product
-commits. Root `.floppy/` records remain excluded from canonical source-product
-integration.
-
-## Unchanged external boundaries
-
+- Root control and reusable-product commits remained separate.
 - Existing adopting projects changed: `FALSE`
-- Canonical `main` changed by FS-01 control records: `FALSE`
-- Onboarding control branch changed by Stage 1: `FALSE`
+- Canonical `main` changed: `FALSE`
+- Onboarding control branch changed: `FALSE`
 - `project-seed/.floppy/` changed: `FALSE`
 - `tools/initialize_project.py` changed: `FALSE`
 - Deployment or production environment changed: `FALSE`
 
-## Remaining unimplemented roadmap obligations
+## Remaining roadmap obligations
 
-- FS-02: normative machine-readable BCE schemas
-- FS-03: semantic validator 2.0 engine
-- FS-04: read-only `floppyctl` core
-- FS-05: closeout-completeness validator
-- FS-06: structured authorization, work-package integrity, and Git checkpoints
-- FS-07: secret and unsafe-content scanning
-- FS-08: boot-package generation and verification
-- FS-09: controlled lifecycle write commands
-- FS-10: migration planning and application
-- FS-11: final-project closure
-- FS-12: BCE export, integrity, and history compaction
+FS-02 through FS-12 remain separate future roadmap obligations. None is activated
+or authorized by FS-01 closeout.
 
-None is authorized by this proposal.
+## FS-02 boundary
 
-## Closeout prerequisites
+```text
+Draft status:
+DRAFT_NOT_AUTHORIZED
 
-Before `TR-009-APPLY-SECTION-CLOSEOUT`:
+Work package:
+NOT ACCEPTED
 
-1. Stage 1 must be committed and pushed normally to the feature branch.
-2. Local and remote feature heads must equal the proposal SHA.
-3. The worktree must be clean.
-4. This record and the proposal commit must remain unchanged.
-5. FS-01 must remain accepted.
-6. No active implementation or migration authority may exist.
-7. FS-02 must remain inactive and unauthorized.
-8. The administrator must send the exact application approval naming the proposal
-   SHA.
+Activation:
+NOT AUTHORIZED
 
-## Closeout stop conditions
+Implementation:
+NOT STARTED
 
-Stop without applying closeout if:
+Active:
+FALSE
+```
 
-- the proposal SHA differs locally or remotely;
-- this record or proposal commit changed;
-- the worktree is not clean;
-- any validation or test fails;
-- an unauthorized path changed;
-- UTF-8 or JSON validation fails;
-- a mojibake sequence appears;
-- `VERSION`, canonical `main`, the onboarding control branch, the initializer, or
-  project seed differs;
-- active implementation or migration authority exists;
-- FS-01 is no longer accepted;
-- FS-02 is accepted, active, or authorized; or
-- the exact administrator application approval is absent.
+FS-02 remains inactive and unauthorized.
+
+The next legal operation is preparation, revision, acceptance, or withholding of
+the FS-02 work package—not implementation.
 
 ## Explicit prohibitions
 
-This proposal does not authorize integration, pull-request creation, merge, tag,
-release, migration, additional FS-01 product writes, FS-02 activation,
-FS-02 implementation, or any later work.
+FS-01 closure does not authorize integration, pull-request creation, merge, tag,
+release, migration, additional FS-01 product writes, FS-02 implementation, or any
+later work.
 
 No secrets, credentials, tokens, private keys, environment-file contents, or
 infrastructure secret values are included in this record.
-
-## Required administrator decision
-
-Administrator application approval is still required.
-
-`TR-009-APPLY-SECTION-CLOSEOUT` must not be prepared or applied until the
-administrator reviews the committed and unchanged proposal and names its exact SHA
-in the required approval sentence.
