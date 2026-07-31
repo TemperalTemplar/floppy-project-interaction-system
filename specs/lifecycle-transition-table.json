@@ -1,0 +1,1108 @@
+{
+  "format_version": 1,
+  "specification": "FS-01 Formal Lifecycle and State-Transition Specification",
+  "status": "formal_specification",
+  "current_section": "FS-01",
+  "declarative_only": true,
+  "execution_capability": false,
+  "applies_transitions": false,
+  "writes_lifecycle_state": false,
+  "production_schema_enforcement": false,
+  "one_active_implementation_section_maximum": 1,
+  "dimensions": {
+    "roadmap": [
+      "ONBOARDING_REQUIRED",
+      "ACCEPTED"
+    ],
+    "work_package": [
+      "NOT_ACCEPTED",
+      "ACCEPTED_PLANNING_BASELINE"
+    ],
+    "authority": [
+      "NO_ACTIVE_WORK_AUTHORIZATION",
+      "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+      "EXACT_MIGRATION_AUTHORIZATION"
+    ],
+    "implementation": [
+      "NOT_STARTED",
+      "IN_PROGRESS",
+      "COMPLETE"
+    ],
+    "verification": [
+      "NOT_STARTED",
+      "PENDING",
+      "COMPLETE",
+      "FAILED"
+    ],
+    "acceptance": [
+      "PENDING",
+      "ACCEPTED",
+      "REJECTED"
+    ],
+    "closeout": [
+      "NOT_PROPOSED",
+      "PROPOSED",
+      "APPLIED"
+    ],
+    "migration": [
+      "NONE",
+      "PLANNED_NOT_AUTHORIZED",
+      "AUTHORIZED_NOT_APPLIED",
+      "APPLIED_VERIFICATION_PENDING",
+      "APPLIED_VERIFICATION_COMPLETE"
+    ],
+    "final_closure": [
+      "OPEN",
+      "PROPOSED",
+      "FINALLY_CLOSED"
+    ]
+  },
+  "global_invariants": [
+    {
+      "id": "INV-001",
+      "statement": "At most one implementation section may be active.",
+      "machine_rule": "active_implementation_section_count <= 1"
+    },
+    {
+      "id": "INV-002",
+      "statement": "An active implementation section requires exact section implementation authority.",
+      "machine_rule": "active_implementation_section != null implies authority == EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION"
+    },
+    {
+      "id": "INV-003",
+      "statement": "A finally closed project cannot have active implementation or migration authority.",
+      "machine_rule": "final_closure == FINALLY_CLOSED implies authority == NO_ACTIVE_WORK_AUTHORIZATION and active_implementation_section == null"
+    },
+    {
+      "id": "INV-004",
+      "statement": "No lifecycle state or decision silently implies another lifecycle state or decision.",
+      "machine_rule": "dimension changes are limited to changed_dimensions named by one explicit transition record"
+    },
+    {
+      "id": "INV-005",
+      "statement": "The transition table is declarative and never executes or applies a transition.",
+      "machine_rule": "execution_capability == false and applies_transitions == false and writes_lifecycle_state == false"
+    }
+  ],
+  "prohibited_implications": [
+    {
+      "id": "PI-001",
+      "statement": "Roadmap acceptance does not imply section authorization.",
+      "source_dimension": "roadmap",
+      "forbidden_target_dimension": "authority"
+    },
+    {
+      "id": "PI-002",
+      "statement": "Work-package acceptance does not imply section authorization.",
+      "source_dimension": "work_package",
+      "forbidden_target_dimension": "authority"
+    },
+    {
+      "id": "PI-003",
+      "statement": "Draft creation does not imply section activation.",
+      "source_dimension": "draft_status",
+      "forbidden_target_dimension": "authority"
+    },
+    {
+      "id": "PI-004",
+      "statement": "Implementation completion does not imply verification completion.",
+      "source_dimension": "implementation",
+      "forbidden_target_dimension": "verification"
+    },
+    {
+      "id": "PI-005",
+      "statement": "Implementation completion does not imply administrator acceptance.",
+      "source_dimension": "implementation",
+      "forbidden_target_dimension": "acceptance"
+    },
+    {
+      "id": "PI-006",
+      "statement": "Verification completion does not imply administrator acceptance.",
+      "source_dimension": "verification",
+      "forbidden_target_dimension": "acceptance"
+    },
+    {
+      "id": "PI-007",
+      "statement": "Section acceptance does not imply section closeout.",
+      "source_dimension": "acceptance",
+      "forbidden_target_dimension": "closeout"
+    },
+    {
+      "id": "PI-008",
+      "statement": "A closeout proposal does not imply closeout application.",
+      "source_dimension": "closeout",
+      "forbidden_target_dimension": "closeout"
+    },
+    {
+      "id": "PI-009",
+      "statement": "Section closeout does not imply next-section authorization.",
+      "source_dimension": "closeout",
+      "forbidden_target_dimension": "authority"
+    },
+    {
+      "id": "PI-010",
+      "statement": "A migration plan does not imply migration authorization.",
+      "source_dimension": "migration",
+      "forbidden_target_dimension": "authority"
+    },
+    {
+      "id": "PI-011",
+      "statement": "Migration application does not imply migration verification.",
+      "source_dimension": "migration",
+      "forbidden_target_dimension": "verification"
+    },
+    {
+      "id": "PI-012",
+      "statement": "A final-closure proposal does not imply final closure.",
+      "source_dimension": "final_closure",
+      "forbidden_target_dimension": "final_closure"
+    }
+  ],
+  "states": [
+    {
+      "id": "LC-ONBOARDING-REQUIRED",
+      "title": "Onboarding required",
+      "dimensions": {
+        "roadmap": "ONBOARDING_REQUIRED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The project has not accepted its development roadmap and no implementation work is active."
+    },
+    {
+      "id": "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+      "title": "Roadmap accepted with no active work",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The roadmap is accepted, but no section work package or implementation authority is active."
+    },
+    {
+      "id": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+      "title": "Work package accepted with no active work",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The section work package is accepted as a planning baseline, but implementation remains unauthorized."
+    },
+    {
+      "id": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+      "title": "Section authorized but not started",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": "$authorized_section",
+      "description": "An exact section authorization exists, but implementation has not started."
+    },
+    {
+      "id": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+      "title": "Section implementation in progress",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+        "implementation": "IN_PROGRESS",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": "$authorized_section",
+      "description": "The authorized section is being implemented within its exact scope."
+    },
+    {
+      "id": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+      "title": "Implementation complete with verification pending",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+        "implementation": "COMPLETE",
+        "verification": "PENDING",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": "$authorized_section",
+      "description": "Implementation is recorded complete, but required verification has not completed."
+    },
+    {
+      "id": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+      "title": "Verification complete with acceptance pending",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+        "implementation": "COMPLETE",
+        "verification": "COMPLETE",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": "$authorized_section",
+      "description": "Required verification is complete, but the administrator has not accepted the section."
+    },
+    {
+      "id": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+      "title": "Section accepted with closeout not proposed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "COMPLETE",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The administrator accepted the verified section, but closeout has not been proposed."
+    },
+    {
+      "id": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+      "title": "Section accepted with closeout proposed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "COMPLETE",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "A closeout record has been proposed but has not been applied."
+    },
+    {
+      "id": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+      "title": "Section closed with next section inactive",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "APPLIED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The previous section is closed. No later section is automatically authorized."
+    },
+    {
+      "id": "LC-MIGRATION-PLANNED-NOT-AUTHORIZED",
+      "title": "Migration planned but not authorized",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "APPLIED",
+        "migration": "PLANNED_NOT_AUTHORIZED",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "A migration plan exists, but no migration execution authority exists."
+    },
+    {
+      "id": "LC-MIGRATION-AUTHORIZED-NOT-APPLIED",
+      "title": "Migration authorized but not applied",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "EXACT_MIGRATION_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "APPLIED",
+        "migration": "AUTHORIZED_NOT_APPLIED",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "An exact migration authorization exists, but the migration has not been applied."
+    },
+    {
+      "id": "LC-MIGRATION-APPLIED-VERIFICATION-PENDING",
+      "title": "Migration applied with verification pending",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "EXACT_MIGRATION_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "PENDING",
+        "acceptance": "PENDING",
+        "closeout": "APPLIED",
+        "migration": "APPLIED_VERIFICATION_PENDING",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The authorized migration was applied, but migration verification is pending."
+    },
+    {
+      "id": "LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE",
+      "title": "Migration applied and verified",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "COMPLETE",
+        "acceptance": "PENDING",
+        "closeout": "APPLIED",
+        "migration": "APPLIED_VERIFICATION_COMPLETE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null,
+      "description": "The migration was applied and verified. This does not itself close the project."
+    },
+    {
+      "id": "LC-PROJECT-CLOSURE-PROPOSED",
+      "title": "Final project closure proposed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "APPLIED",
+        "migration": "APPLIED_VERIFICATION_COMPLETE",
+        "final_closure": "PROPOSED"
+      },
+      "active_implementation_section": null,
+      "description": "Final closure is proposed but has not been applied by the administrator."
+    },
+    {
+      "id": "LC-PROJECT-FINALLY-CLOSED",
+      "title": "Project finally closed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "APPLIED",
+        "migration": "APPLIED_VERIFICATION_COMPLETE",
+        "final_closure": "FINALLY_CLOSED"
+      },
+      "active_implementation_section": null,
+      "description": "The administrator applied final project closure. No active implementation or migration authority may coexist."
+    }
+  ],
+  "transitions": [
+    {
+      "id": "TR-001-ACCEPT-ROADMAP",
+      "title": "Accept development roadmap",
+      "from_state_ids": [
+        "LC-ONBOARDING-REQUIRED"
+      ],
+      "to_state_id": "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+      "changed_dimensions": [
+        "roadmap"
+      ],
+      "preconditions": [
+        "Onboarding evidence is complete.",
+        "The proposed roadmap is reviewable.",
+        "No implementation section is active."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_roadmap_acceptance"
+      },
+      "required_inputs": [
+        "accepted roadmap document",
+        "onboarding evidence",
+        "current BCE checkpoint"
+      ],
+      "required_outputs": [
+        "roadmap acceptance record",
+        "updated roadmap status"
+      ],
+      "stop_conditions": [
+        "Missing onboarding evidence.",
+        "Unresolved roadmap scope.",
+        "Any active implementation authority."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Roadmap acceptance must not authorize a section.",
+        "Roadmap acceptance must not accept a work package."
+      ]
+    },
+    {
+      "id": "TR-002-ACCEPT-WORK-PACKAGE",
+      "title": "Accept section work package as planning baseline",
+      "from_state_ids": [
+        "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+      ],
+      "to_state_id": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+      "changed_dimensions": [
+        "work_package"
+      ],
+      "preconditions": [
+        "The roadmap identifies the section.",
+        "The work package names exact scope and completion criteria.",
+        "No active implementation section exists."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_work_package_acceptance"
+      },
+      "required_inputs": [
+        "section work package",
+        "accepted roadmap",
+        "current BCE checkpoint"
+      ],
+      "required_outputs": [
+        "work package acceptance record",
+        "planning baseline checkpoint"
+      ],
+      "stop_conditions": [
+        "Unnamed files or actions.",
+        "Unresolved dependencies.",
+        "Any attempt to treat acceptance as activation."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Work-package acceptance must not authorize implementation.",
+        "Work-package acceptance must not create or push an implementation branch."
+      ]
+    },
+    {
+      "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+      "title": "Authorize exact section implementation",
+      "from_state_ids": [
+        "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+      ],
+      "to_state_id": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+      "changed_dimensions": [
+        "authority",
+        "active_implementation_section"
+      ],
+      "preconditions": [
+        "The accepted work package is unchanged.",
+        "The authorization names the section, base checkpoint, branch, worktree, exact files, validation, commits, push boundary, and prohibited actions.",
+        "No other implementation section is active.",
+        "The project is not finally closed."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "exact_section_implementation_authorization"
+      },
+      "required_inputs": [
+        "accepted work package checkpoint",
+        "exact implementation authorization",
+        "clean repository evidence"
+      ],
+      "required_outputs": [
+        "active authorization record",
+        "authorized branch and worktree identity",
+        "activation control commit"
+      ],
+      "stop_conditions": [
+        "Stale base checkpoint.",
+        "Missing exact file scope.",
+        "Another active implementation section.",
+        "Version mismatch.",
+        "Final project closure."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Authorization must not imply implementation has started.",
+        "Authorization must not imply administrator acceptance.",
+        "Authorization must not authorize integration unless explicitly named."
+      ]
+    },
+    {
+      "id": "TR-004-START-SECTION-IMPLEMENTATION",
+      "title": "Start authorized section implementation",
+      "from_state_ids": [
+        "LC-SECTION-AUTHORIZED-NOT-STARTED"
+      ],
+      "to_state_id": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+      "changed_dimensions": [
+        "implementation"
+      ],
+      "preconditions": [
+        "The exact authorization remains active.",
+        "The repository and worktree match the authorized checkpoint.",
+        "The first write is within the exact file scope."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_implementer",
+        "decision": "start_within_existing_exact_authority"
+      },
+      "required_inputs": [
+        "active authorization record",
+        "clean worktree evidence"
+      ],
+      "required_outputs": [
+        "implementation progress record"
+      ],
+      "stop_conditions": [
+        "Authorization mismatch.",
+        "Dirty or stale worktree.",
+        "First required action is outside scope."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Starting implementation must not widen authority.",
+        "Starting implementation must not modify adopting projects."
+      ]
+    },
+    {
+      "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+      "title": "Record implementation completion",
+      "from_state_ids": [
+        "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+      ],
+      "to_state_id": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+      "changed_dimensions": [
+        "implementation",
+        "verification"
+      ],
+      "preconditions": [
+        "Every authorized implementation output exists.",
+        "Required implementation commits are present in order.",
+        "No unauthorized file changed.",
+        "Implementation validations required before completion have passed."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_implementer",
+        "decision": "implementation_completion_record"
+      },
+      "required_inputs": [
+        "implementation commit list",
+        "changed-file scope report",
+        "validation output"
+      ],
+      "required_outputs": [
+        "implementation completion record",
+        "verification pending state"
+      ],
+      "stop_conditions": [
+        "Any failed required check.",
+        "Uncommitted changes.",
+        "Unauthorized path or mixed control/product commit.",
+        "Missing required output."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Implementation completion must not imply verification completion.",
+        "Implementation completion must not imply administrator acceptance.",
+        "Implementation completion must not close the section."
+      ]
+    },
+    {
+      "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+      "title": "Record verification completion",
+      "from_state_ids": [
+        "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
+      ],
+      "to_state_id": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+      "changed_dimensions": [
+        "verification"
+      ],
+      "preconditions": [
+        "All required verification commands passed.",
+        "The implementation checkpoint is immutable during verification.",
+        "Local and remote evidence required by the work package agree."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_verifier",
+        "decision": "verification_completion_record"
+      },
+      "required_inputs": [
+        "required test output",
+        "scope comparison",
+        "checkpoint evidence"
+      ],
+      "required_outputs": [
+        "verification completion record",
+        "acceptance pending state"
+      ],
+      "stop_conditions": [
+        "Any failed test.",
+        "Checkpoint changed during verification.",
+        "Incomplete scope evidence.",
+        "Local and remote mismatch where equality is required."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Verification completion must not imply administrator acceptance.",
+        "Verification completion must not propose or apply closeout."
+      ]
+    },
+    {
+      "id": "TR-007-ACCEPT-SECTION",
+      "title": "Accept verified section",
+      "from_state_ids": [
+        "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING"
+      ],
+      "to_state_id": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+      "changed_dimensions": [
+        "authority",
+        "acceptance",
+        "active_implementation_section"
+      ],
+      "preconditions": [
+        "Verification is complete.",
+        "The administrator has reviewed the implementation and evidence.",
+        "No unresolved deviation blocks acceptance."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_section_acceptance"
+      },
+      "required_inputs": [
+        "implementation checkpoint",
+        "verification record",
+        "completion report"
+      ],
+      "required_outputs": [
+        "section acceptance record",
+        "no active implementation authority"
+      ],
+      "stop_conditions": [
+        "Verification incomplete.",
+        "Unresolved material deviation.",
+        "Acceptance conditions not met."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Section acceptance must not imply section closeout.",
+        "Section acceptance must not authorize the next section.",
+        "Section acceptance must not authorize integration unless separately stated."
+      ]
+    },
+    {
+      "id": "TR-008-PROPOSE-SECTION-CLOSEOUT",
+      "title": "Propose accepted section closeout",
+      "from_state_ids": [
+        "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED"
+      ],
+      "to_state_id": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+      "changed_dimensions": [
+        "closeout"
+      ],
+      "preconditions": [
+        "The section is explicitly accepted.",
+        "Required closeout artifacts are complete.",
+        "The proposal identifies the exact accepted checkpoint."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_closeout_preparer",
+        "decision": "closeout_proposal"
+      },
+      "required_inputs": [
+        "section acceptance record",
+        "closeout evidence",
+        "accepted checkpoint"
+      ],
+      "required_outputs": [
+        "proposed closeout record"
+      ],
+      "stop_conditions": [
+        "Section not accepted.",
+        "Missing closeout artifact.",
+        "Checkpoint mismatch."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "A closeout proposal must not be marked applied.",
+        "A closeout proposal must not authorize the next section."
+      ]
+    },
+    {
+      "id": "TR-009-APPLY-SECTION-CLOSEOUT",
+      "title": "Apply accepted section closeout",
+      "from_state_ids": [
+        "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED"
+      ],
+      "to_state_id": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+      "changed_dimensions": [
+        "work_package",
+        "implementation",
+        "verification",
+        "acceptance",
+        "closeout"
+      ],
+      "preconditions": [
+        "The proposed closeout is complete and unchanged.",
+        "The administrator has reviewed the closeout record.",
+        "No active implementation or migration authority exists."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_closeout_application"
+      },
+      "required_inputs": [
+        "proposed closeout record",
+        "section acceptance record",
+        "final section checkpoint"
+      ],
+      "required_outputs": [
+        "applied closeout record",
+        "next section inactive state"
+      ],
+      "stop_conditions": [
+        "Proposal changed after review.",
+        "Active authority exists.",
+        "Closeout evidence incomplete."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Applying closeout must not authorize the next section.",
+        "Applying closeout must not accept a later work package."
+      ]
+    },
+    {
+      "id": "TR-010-PLAN-MIGRATION",
+      "title": "Record migration plan without authority",
+      "from_state_ids": [
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+      ],
+      "to_state_id": "LC-MIGRATION-PLANNED-NOT-AUTHORIZED",
+      "changed_dimensions": [
+        "migration"
+      ],
+      "preconditions": [
+        "The migration scope and affected records are documented.",
+        "The plan is explicitly non-executing.",
+        "No migration authority exists."
+      ],
+      "required_human_authority": {
+        "actor": "migration_planner",
+        "decision": "migration_plan_record"
+      },
+      "required_inputs": [
+        "migration analysis",
+        "affected-version inventory",
+        "rollback concept"
+      ],
+      "required_outputs": [
+        "migration plan marked not authorized"
+      ],
+      "stop_conditions": [
+        "Unknown affected versions.",
+        "Missing rollback boundary.",
+        "Plan contains execution instructions presented as already authorized."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Planning must not apply a migration.",
+        "Planning must not alter project lifecycle state.",
+        "Planning must not imply migration authorization."
+      ]
+    },
+    {
+      "id": "TR-011-AUTHORIZE-MIGRATION",
+      "title": "Authorize exact migration",
+      "from_state_ids": [
+        "LC-MIGRATION-PLANNED-NOT-AUTHORIZED"
+      ],
+      "to_state_id": "LC-MIGRATION-AUTHORIZED-NOT-APPLIED",
+      "changed_dimensions": [
+        "authority",
+        "migration"
+      ],
+      "preconditions": [
+        "The migration plan is accepted.",
+        "The authorization names exact targets, checkpoint, commands, backups, rollback, verification, and prohibited side effects.",
+        "No active implementation section exists."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "exact_migration_authorization"
+      },
+      "required_inputs": [
+        "accepted migration plan",
+        "exact migration authorization",
+        "pre-migration evidence"
+      ],
+      "required_outputs": [
+        "active migration authorization record"
+      ],
+      "stop_conditions": [
+        "Missing exact targets.",
+        "Missing backup or rollback evidence.",
+        "Active implementation section.",
+        "Stale checkpoint."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Migration authorization must not mark migration applied.",
+        "Migration authorization must not authorize unrelated implementation."
+      ]
+    },
+    {
+      "id": "TR-012-APPLY-MIGRATION",
+      "title": "Apply exact authorized migration",
+      "from_state_ids": [
+        "LC-MIGRATION-AUTHORIZED-NOT-APPLIED"
+      ],
+      "to_state_id": "LC-MIGRATION-APPLIED-VERIFICATION-PENDING",
+      "changed_dimensions": [
+        "migration",
+        "verification"
+      ],
+      "preconditions": [
+        "The exact migration authorization remains active.",
+        "Backups and rollback prerequisites are verified.",
+        "Target checkpoint and targets match the authorization."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_migration_operator",
+        "decision": "apply_within_existing_exact_authority"
+      },
+      "required_inputs": [
+        "active migration authorization",
+        "backup evidence",
+        "pre-migration checkpoint"
+      ],
+      "required_outputs": [
+        "migration application record",
+        "post-migration checkpoint",
+        "verification pending state"
+      ],
+      "stop_conditions": [
+        "Target mismatch.",
+        "Backup failure.",
+        "Unexpected side effect.",
+        "Any step outside authorization."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Migration application must not imply migration verification.",
+        "Migration application must not imply project closure."
+      ]
+    },
+    {
+      "id": "TR-013-VERIFY-MIGRATION",
+      "title": "Verify applied migration",
+      "from_state_ids": [
+        "LC-MIGRATION-APPLIED-VERIFICATION-PENDING"
+      ],
+      "to_state_id": "LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE",
+      "changed_dimensions": [
+        "authority",
+        "migration",
+        "verification"
+      ],
+      "preconditions": [
+        "Every required migration verification check passed.",
+        "The post-migration checkpoint is stable.",
+        "No rollback condition is active."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_verifier",
+        "decision": "migration_verification_completion_record"
+      },
+      "required_inputs": [
+        "migration application record",
+        "verification output",
+        "post-migration checkpoint"
+      ],
+      "required_outputs": [
+        "migration verification record",
+        "no active migration authority"
+      ],
+      "stop_conditions": [
+        "Any failed verification.",
+        "Unexpected target drift.",
+        "Rollback condition present."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Migration verification must not imply final project closure.",
+        "Migration verification must not authorize a section."
+      ]
+    },
+    {
+      "id": "TR-014-PROPOSE-FINAL-CLOSURE",
+      "title": "Propose final project closure",
+      "from_state_ids": [
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE"
+      ],
+      "to_state_id": "LC-PROJECT-CLOSURE-PROPOSED",
+      "changed_dimensions": [
+        "acceptance",
+        "final_closure"
+      ],
+      "preconditions": [
+        "All required roadmap sections are accepted and closed.",
+        "Required migrations are applied and verified or explicitly not required.",
+        "No active implementation or migration authority exists.",
+        "Final closure evidence is complete."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_closeout_preparer",
+        "decision": "final_closure_proposal"
+      },
+      "required_inputs": [
+        "section closeout records",
+        "migration disposition",
+        "final evidence inventory"
+      ],
+      "required_outputs": [
+        "proposed final closure record"
+      ],
+      "stop_conditions": [
+        "Any open required section.",
+        "Any active authority.",
+        "Incomplete migration disposition.",
+        "Missing final evidence."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Final closure proposal must not be marked applied.",
+        "Final closure proposal must not delete history."
+      ]
+    },
+    {
+      "id": "TR-015-APPLY-FINAL-CLOSURE",
+      "title": "Apply final project closure",
+      "from_state_ids": [
+        "LC-PROJECT-CLOSURE-PROPOSED"
+      ],
+      "to_state_id": "LC-PROJECT-FINALLY-CLOSED",
+      "changed_dimensions": [
+        "final_closure"
+      ],
+      "preconditions": [
+        "The proposed final closure is complete and unchanged.",
+        "The administrator has reviewed all final evidence.",
+        "No active authority exists."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_final_closure_application"
+      },
+      "required_inputs": [
+        "proposed final closure record",
+        "final evidence inventory",
+        "final checkpoint"
+      ],
+      "required_outputs": [
+        "applied final closure record",
+        "finally closed state"
+      ],
+      "stop_conditions": [
+        "Proposal changed after review.",
+        "Active authority exists.",
+        "Missing required final evidence."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not apply a migration unless the transition explicitly authorizes migration.",
+        "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
+        "Final closure must not create new implementation authority.",
+        "Final closure must not silently compact or delete history.",
+        "A finally closed project must reject active section or migration authority."
+      ]
+    }
+  ]
+}
