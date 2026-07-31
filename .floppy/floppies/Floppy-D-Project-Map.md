@@ -24,12 +24,19 @@
 - Active implementation section: `FS-01`
 - FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
 - FS-01 activation: `AUTHORIZED`
-- Active work authorization: `FS_01_IMPLEMENTATION`
-- FS-01 implementation: `IN PROGRESS`
+- Active authorization record: `FS_01_IMPLEMENTATION`
+- FS-01 implementation: `COMPLETE`
+- FS-01 verification: `COMPLETE`
+- Administrator acceptance: `PENDING`
+- Additional product writes: `NOT AUTHORIZED`
 - Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 - Authorization base checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
 - Implementation branch: `feature/fs-01-lifecycle-specification`
 - Implementation worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
+- Section closeout: `NOT AUTHORIZED`
+- Integration: `NOT AUTHORIZED`
+- FS-02: `NOT AUTHORIZED`
 
 ## Permanent development and integration path
 
@@ -63,6 +70,10 @@ Sections are executed in order unless a later accepted roadmap revision explicit
 changes dependencies. No section becomes active merely because its work package,
 predecessor, implementation, verification, acceptance, or closeout is complete.
 
-FS-01 is active only under the exact `FS_01_IMPLEMENTATION` authorization.
-Implementation completion, verification, administrator acceptance, closeout,
-integration, and FS-02 remain separate states and decisions.
+FS-01 implementation and verification are complete. Administrator acceptance is
+still a separate pending decision. The FS-01 authorization record remains attached
+to the active section for review, but it permits no additional product-file
+changes.
+
+Section closeout, clean-main integration, merge, tag, release, migration, and
+FS-02 remain separately controlled and unauthorized.

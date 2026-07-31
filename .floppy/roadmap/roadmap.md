@@ -14,13 +14,28 @@ Active implementation section:
 FS-01
 
 FS-01 implementation:
-IN PROGRESS
+COMPLETE
 
-Active work authorization:
+FS-01 verification:
+COMPLETE
+
+Administrator acceptance:
+PENDING
+
+Active authorization record:
 FS_01_IMPLEMENTATION
 
-Authorization base checkpoint:
-b12928e7365149813c00c65c1e409fe2a5d0d36f
+Additional product writes:
+NOT AUTHORIZED
+
+Section closeout:
+NOT AUTHORIZED
+
+Integration:
+NOT AUTHORIZED
+
+FS-02:
+NOT AUTHORIZED
 ```
 
 ## Sections
@@ -40,20 +55,20 @@ b12928e7365149813c00c65c1e409fe2a5d0d36f
 
 ## Section status
 
-| Section | Work package / plan | Activation | Implementation |
-|---|---|---|---|
-| FS-01 | `ACCEPTED AS PLANNING BASELINE` | `AUTHORIZED` | `IN PROGRESS` |
-| FS-02 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-03 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-04 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-05 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-06 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-07 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-08 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-09 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-10 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-11 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
-| FS-12 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
+| Section | Work package / plan | Activation | Implementation | Verification | Acceptance |
+|---|---|---|---|---|---|
+| FS-01 | `ACCEPTED AS PLANNING BASELINE` | `AUTHORIZED` | `COMPLETE` | `COMPLETE` | `PENDING` |
+| FS-02 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-03 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-04 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-05 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-06 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-07 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-08 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-09 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-10 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-11 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
+| FS-12 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` | `NOT STARTED` | `PENDING` |
 
 ## Dependency and activation rules
 
@@ -66,16 +81,20 @@ b12928e7365149813c00c65c1e409fe2a5d0d36f
 - Draft creation never activates a section.
 - Section acceptance, implementation completion, verification, closeout, and next
   activation remain separate states and decisions.
-- FS-01 implementation is active only under the exact `FS_01_IMPLEMENTATION`
-  authorization based on checkpoint
-  `b12928e7365149813c00c65c1e409fe2a5d0d36f`.
+- FS-01 implementation and verification are complete at product checkpoint
+  `d907643874f9aa278f31311527f3e7ec907c6cb6`.
+- Administrator acceptance remains pending.
+- FS-02 remains inactive and unauthorized.
 
-## Active authorization boundary
+## Current continuation boundary
 
-The authorized branch is `feature/fs-01-lifecycle-specification` and the authorized
-worktree is `D:\A\Floppy\floppy-fs-01-lifecycle-specification`.
+No additional product-file change is authorized.
 
-Implementation completion remains distinct from verification, administrator
-acceptance, closeout, integration, and later-section authorization.
+After C2, run final source validation, all required tests, exact commit-history and
+path comparison, and `git diff --check`. Then perform only the authorized
+non-force push of `feature/fs-01-lifecycle-specification` and verify local and
+remote equality.
+
+Do not begin integration, closeout, migration, FS-02, FS-03, or any later work.
 
 The machine-readable companion is `.floppy/roadmap/roadmap.json`.

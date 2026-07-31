@@ -29,13 +29,28 @@ Active implementation section:
 FS-01
 
 FS-01 implementation:
-IN PROGRESS
+COMPLETE
 
-Active work authorization:
+FS-01 verification:
+COMPLETE
+
+Administrator acceptance:
+PENDING
+
+Active authorization record:
 FS_01_IMPLEMENTATION
 
-Authorization base checkpoint:
-b12928e7365149813c00c65c1e409fe2a5d0d36f
+Additional product writes:
+NOT AUTHORIZED
+
+Section closeout:
+NOT AUTHORIZED
+
+Integration:
+NOT AUTHORIZED
+
+FS-02:
+NOT AUTHORIZED
 ```
 
 ## Authority boundary
@@ -58,9 +73,15 @@ Source version:
 0.4.1-dev
 ```
 
-Authority is limited to the exact named root-control files, reusable product files,
-commit sequence, validator scope, tests, validation operations, push boundary, and
-prohibited actions recorded by the active Floppy E and manifest.
+The authorized product sequence P1 through P5 is complete at:
+
+`d907643874f9aa278f31311527f3e7ec907c6cb6`
+
+C2 records implementation and verification completion only. No additional
+product-file changes are authorized under this completed implementation sequence.
+
+The feature branch may be pushed only after final post-C2 validation and exact
+history and scope comparison. Force-push is prohibited.
 
 No state or decision silently implies administrator acceptance, section closeout,
 integration, merge, release, migration authority, FS-02 authority, or later work.
@@ -99,10 +120,17 @@ Never merge `control/source-development-bce-onboarding` wholesale into `main`.
 
 ## Exact continuation point
 
-FS-01 implementation is active under `FS_01_IMPLEMENTATION`.
+FS-01 implementation and verification are complete. Administrator acceptance is
+pending.
 
-After the separate C1 activation commit, continue only through the authorized
-product commits P1 through P5, required parsing and validation, and the separate
-C2 implementation-completion control commit.
+Continue only through:
 
-Implementation completion will remain distinct from administrator acceptance.
+1. final post-C2 source validation and test execution;
+2. exact commit-history and changed-path comparison;
+3. authorized non-force push of
+   `feature/fs-01-lifecycle-specification`;
+4. local and remote checkpoint equality verification; and
+5. presentation of the completed FS-01 evidence for an explicit administrator
+   acceptance decision.
+
+Do not begin integration, closeout, migration, FS-02, FS-03, or any later work.

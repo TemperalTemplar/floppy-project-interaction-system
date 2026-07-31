@@ -14,7 +14,8 @@ Floppy source system itself.
 - Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
 - Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
 - Accepted FS-01 pre-activation BCE checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
-- Active implementation branch: `feature/fs-01-lifecycle-specification`
+- FS-01 reusable-product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
+- Implementation branch: `feature/fs-01-lifecycle-specification`
 - Authorized FS-01 worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
 
 ## Separation boundary
@@ -66,15 +67,25 @@ authorized reusable source-product changes, but a commit must never mix them.
 - FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
 - FS-01 activation: `AUTHORIZED`
 - Active implementation section: `FS-01`
-- FS-01 implementation: `IN PROGRESS`
-- Active work authorization: `FS_01_IMPLEMENTATION`
-- Authorization base checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- FS-01 implementation: `COMPLETE`
+- FS-01 verification: `COMPLETE`
+- Administrator acceptance: `PENDING`
+- Active authorization record: `FS_01_IMPLEMENTATION`
+- Additional product writes: `NOT AUTHORIZED`
+- Section closeout: `NOT AUTHORIZED`
+- Integration: `NOT AUTHORIZED`
+- FS-02: `NOT AUTHORIZED`
 
-The active authorization is limited to the exact FS-01 file scope, ordered commit
-sequence, validation requirements, branch, worktree, and prohibited actions
-recorded in `.floppy/manifest.json` and `.floppy/floppies/Floppy-E-Current-Section.md`.
+The exact FS-01 product commits P1 through P5 are complete at
+`d907643874f9aa278f31311527f3e7ec907c6cb6`. Required source validation and test
+suites passed before C2 recorded completion.
 
-It does not authorize integration into `main`, a pull request, merge, tag, release,
-migration, adopting-project changes, FS-02, FS-03, or any later section.
+The authorization record remains attached to FS-01 while administrator acceptance
+is pending, but it does not permit additional product-file changes. Final
+post-C2 validation, the authorized feature-branch push, remote equality
+verification, and presentation for administrator acceptance remain.
+
+No acceptance, closeout, integration, merge, tag, release, migration, adopting-
+project change, FS-02, FS-03, or later-section authority is implied.
 
 Read `.floppy/START-HERE.md` before using this BCE.
