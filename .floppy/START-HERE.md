@@ -23,34 +23,47 @@ FS-01 work package:
 ACCEPTED AS PLANNING BASELINE
 
 FS-01 activation:
-NOT AUTHORIZED
+AUTHORIZED
 
 Active implementation section:
-NONE
+FS-01
 
 FS-01 implementation:
-NOT STARTED
+IN PROGRESS
 
 Active work authorization:
-NO_ACTIVE_WORK_AUTHORIZATION
+FS_01_IMPLEMENTATION
+
+Authorization base checkpoint:
+b12928e7365149813c00c65c1e409fe2a5d0d36f
 ```
 
 ## Authority boundary
 
-The administrator accepted the FS-01 definition, scope, controls, completion
-criteria, and acceptance criteria at source-development BCE checkpoint:
+The administrator issued the exact `FS_01_IMPLEMENTATION` authorization against
+the accepted source-development BCE checkpoint:
 
-`6f79872fa563a7a9c4820bad10ab86edc13782cd`
+`b12928e7365149813c00c65c1e409fe2a5d0d36f`
 
-That acceptance is a planning-baseline decision only. It does not replace the
-active no-authority Floppy E and does not authorize implementation, an FS-01 branch
-or worktree, source-product changes, root control-state changes, version changes,
-commits, pushes, integration, merge, tag, release, FS-02, or adopting-project work.
+The authorized implementation branch and worktree are:
 
-FS-01 implementation requires a separate exact administrator-issued authorization
-naming the section, repository, accepted control-state checkpoint, source version,
-branch, worktree, final file scope, validation, commit and push limits, and
-prohibited actions.
+```text
+Branch:
+feature/fs-01-lifecycle-specification
+
+Worktree:
+D:\A\Floppy\floppy-fs-01-lifecycle-specification
+
+Source version:
+0.4.1-dev
+```
+
+Authority is limited to the exact named root-control files, reusable product files,
+commit sequence, validator scope, tests, validation operations, push boundary, and
+prohibited actions recorded by the active Floppy E and manifest.
+
+No state or decision silently implies administrator acceptance, section closeout,
+integration, merge, release, migration authority, FS-02 authority, or later work.
 
 ## Repository boundary
 
@@ -86,8 +99,10 @@ Never merge `control/source-development-bce-onboarding` wholesale into `main`.
 
 ## Exact continuation point
 
-The FS-01 work package is accepted but inactive.
+FS-01 implementation is active under `FS_01_IMPLEMENTATION`.
 
-The next administrator decision is to issue, revise, or withhold a separate exact
-FS-01 implementation authorization. Until such authorization is issued, no FS-01
-work may begin.
+After the separate C1 activation commit, continue only through the authorized
+product commits P1 through P5, required parsing and validation, and the separate
+C2 implementation-completion control commit.
+
+Implementation completion will remain distinct from administrator acceptance.

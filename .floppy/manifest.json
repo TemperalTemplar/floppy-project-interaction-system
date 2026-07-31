@@ -1,106 +1,219 @@
 {
-  "format_version": 2,
-  "bce_instance": {
-    "project_name": "Floppy Project Interaction System — BCE Control Layer",
-    "repository": "TemperalTemplar/floppy-project-interaction-system",
-    "project_role": "canonical_source_system_development",
-    "self_hosted_control_state": true,
-    "control_state_root": ".floppy",
-    "reusable_seed_root": "project-seed/.floppy",
-    "reusable_seed_is_active_project_state": false,
-    "control_state_is_reusable_source_product": false
-  },
-  "source_system": {
-    "name": "Floppy Project Interaction System",
-    "version": "0.4.1-dev",
-    "accepted_starting_branch": "main",
-    "accepted_starting_commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
-    "onboarding_branch": "control/source-development-bce-onboarding",
-    "accepted_onboarding_checkpoint": "05cc098699b51b1018d729126042270fd6451eda",
-    "accepted_fs_01_work_package_checkpoint": "6f79872fa563a7a9c4820bad10ab86edc13782cd"
-  },
-  "status": "FS_01_WORK_PACKAGE_ACCEPTED_NO_ACTIVE_IMPLEMENTATION",
-  "authority": {
-    "human_authority_required": true,
-    "last_authorized_control_operation": "FS_01_WORK_PACKAGE_ACCEPTANCE_RECORDING",
-    "implementation_authority": "NONE",
-    "active_implementation_section": null,
-    "current_authorized_section": null,
-    "prohibited_inference": true
-  },
-  "onboarding": {
-    "status": "COMPLETE",
-    "project_definition_record": ".floppy/onboarding/initial-project-definition.md",
-    "roadmap_acceptance_record": ".floppy/onboarding/roadmap-acceptance.md",
-    "next_proposed_section": "FS-01",
-    "next_section_status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
-    "work_package_status": "ACCEPTED AS PLANNING BASELINE",
-    "implementation_status": "NOT STARTED",
-    "next_section_draft": ".floppy/templates/Floppy-E-FS-01.draft.md"
-  },
-  "clean_source_integration_policy": {
-    "status": "ACCEPTED",
-    "root_control_state_branch_only": true,
-    "root_control_state_merge_to_main_permitted": false,
-    "onboarding_branch_wholesale_merge_permitted": false,
-    "copy_root_control_state_to_project_seed_permitted": false,
-    "include_root_control_state_in_source_packages": false,
-    "include_root_control_state_in_release_archives": false,
-    "install_root_control_state_into_adopting_projects": false,
-    "treat_root_control_state_as_reusable_seed_content": false,
-    "include_root_control_state_in_cross_project_bce_exports": false,
-    "new_project_bce_source": "project-seed/.floppy",
-    "new_projects_receive_source_development_records": false,
-    "development_branches_may_contain_control_and_product_changes": true,
-    "mixed_control_and_product_commits_permitted": false,
-    "product_commits_must_be_independently_reviewable": true,
-    "product_commits_must_be_independently_transferable": true,
-    "canonical_integration_base": "clean_main",
-    "canonical_integration_accepts_only_accepted_product_commits": true,
-    "canonical_integration_excludes_root_control_state_commits": true,
-    "final_integration_forbidden_path": ".floppy",
-    "integration_merge_tag_release_require_separate_administrator_authorization": true
-  },
-  "required_read_order": [
-    ".floppy/START-HERE.md",
-    ".floppy/floppies/Floppy-A-HITL.md",
-    ".floppy/floppies/Floppy-E-Current-Section.md",
-    ".floppy/floppies/Floppy-D-Project-Map.md",
-    ".floppy/floppies/Floppy-C-Project-Baseline.md",
-    ".floppy/floppies/Floppy-B-Development-Issues.md",
-    ".floppy/roadmap/roadmap.md",
-    ".floppy/onboarding/roadmap-acceptance.md"
-  ],
-  "floppies": {
-    "A": ".floppy/floppies/Floppy-A-HITL.md",
-    "B": ".floppy/floppies/Floppy-B-Development-Issues.md",
-    "C": ".floppy/floppies/Floppy-C-Project-Baseline.md",
-    "D": ".floppy/floppies/Floppy-D-Project-Map.md",
-    "E": ".floppy/floppies/Floppy-E-Current-Section.md"
-  },
-  "roadmap": {
-    "machine_readable": ".floppy/roadmap/roadmap.json",
-    "user_readable": ".floppy/roadmap/roadmap.md",
-    "status": "ACCEPTED",
-    "section_count": 12,
-    "first_section": "FS-01",
-    "last_section": "FS-12",
-    "current_authorized_section": null,
-    "active_implementation_section": null,
-    "next_proposed_section": "FS-01",
-    "next_proposed_section_status": "WORK_PACKAGE_ACCEPTED_NOT_AUTHORIZED",
-    "fs_01_work_package": "ACCEPTED AS PLANNING BASELINE",
-    "fs_01_implementation": "NOT STARTED"
-  },
-  "records": {
-    "evidence": ".floppy/evidence/README.md",
-    "handoffs": ".floppy/handoffs/README.md",
-    "revisions": ".floppy/revisions/README.md",
-    "fs_01_work_package_acceptance": ".floppy/onboarding/roadmap-acceptance.md"
-  },
-  "continuation_point": {
-    "state": "WAITING_FOR_FS_01_IMPLEMENTATION_AUTHORIZATION_DECISION",
-    "decision_required": "Issue, revise, or withhold a separate exact FS-01 implementation authorization. Work-package acceptance alone is not activation.",
-    "implementation_may_begin": false
-  }
+    "format_version":  2,
+    "bce_instance":  {
+                         "project_name":  "Floppy Project Interaction System — BCE Control Layer",
+                         "repository":  "TemperalTemplar/floppy-project-interaction-system",
+                         "project_role":  "canonical_source_system_development",
+                         "self_hosted_control_state":  true,
+                         "control_state_root":  ".floppy",
+                         "reusable_seed_root":  "project-seed/.floppy",
+                         "reusable_seed_is_active_project_state":  false,
+                         "control_state_is_reusable_source_product":  false
+                     },
+    "source_system":  {
+                          "name":  "Floppy Project Interaction System",
+                          "version":  "0.4.1-dev",
+                          "accepted_starting_branch":  "main",
+                          "accepted_starting_commit":  "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
+                          "onboarding_branch":  "control/source-development-bce-onboarding",
+                          "accepted_onboarding_checkpoint":  "05cc098699b51b1018d729126042270fd6451eda",
+                          "accepted_fs_01_work_package_checkpoint":  "6f79872fa563a7a9c4820bad10ab86edc13782cd",
+                          "accepted_fs_01_pre_activation_bce_checkpoint":  "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+                          "active_implementation_branch":  "feature/fs-01-lifecycle-specification",
+                          "active_implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
+                      },
+    "status":  "FS_01_IMPLEMENTATION_ACTIVE",
+    "authority":  {
+                      "human_authority_required":  true,
+                      "last_authorized_control_operation":  "FS_01_IMPLEMENTATION_ACTIVATION",
+                      "implementation_authority":  "FS_01_IMPLEMENTATION",
+                      "active_implementation_section":  "FS-01",
+                      "current_authorized_section":  "FS-01",
+                      "prohibited_inference":  true
+                  },
+    "onboarding":  {
+                       "status":  "COMPLETE",
+                       "project_definition_record":  ".floppy/onboarding/initial-project-definition.md",
+                       "roadmap_acceptance_record":  ".floppy/onboarding/roadmap-acceptance.md",
+                       "next_proposed_section":  "FS-01",
+                       "next_section_status":  "IMPLEMENTATION_ACTIVE",
+                       "work_package_status":  "ACCEPTED AS PLANNING BASELINE",
+                       "implementation_status":  "IN PROGRESS",
+                       "next_section_draft":  ".floppy/templates/Floppy-E-FS-01.draft.md"
+                   },
+    "clean_source_integration_policy":  {
+                                            "status":  "ACCEPTED",
+                                            "root_control_state_branch_only":  true,
+                                            "root_control_state_merge_to_main_permitted":  false,
+                                            "onboarding_branch_wholesale_merge_permitted":  false,
+                                            "copy_root_control_state_to_project_seed_permitted":  false,
+                                            "include_root_control_state_in_source_packages":  false,
+                                            "include_root_control_state_in_release_archives":  false,
+                                            "install_root_control_state_into_adopting_projects":  false,
+                                            "treat_root_control_state_as_reusable_seed_content":  false,
+                                            "include_root_control_state_in_cross_project_bce_exports":  false,
+                                            "new_project_bce_source":  "project-seed/.floppy",
+                                            "new_projects_receive_source_development_records":  false,
+                                            "development_branches_may_contain_control_and_product_changes":  true,
+                                            "mixed_control_and_product_commits_permitted":  false,
+                                            "product_commits_must_be_independently_reviewable":  true,
+                                            "product_commits_must_be_independently_transferable":  true,
+                                            "canonical_integration_base":  "clean_main",
+                                            "canonical_integration_accepts_only_accepted_product_commits":  true,
+                                            "canonical_integration_excludes_root_control_state_commits":  true,
+                                            "final_integration_forbidden_path":  ".floppy",
+                                            "integration_merge_tag_release_require_separate_administrator_authorization":  true
+                                        },
+    "required_read_order":  [
+                                ".floppy/START-HERE.md",
+                                ".floppy/floppies/Floppy-A-HITL.md",
+                                ".floppy/floppies/Floppy-E-Current-Section.md",
+                                ".floppy/floppies/Floppy-D-Project-Map.md",
+                                ".floppy/floppies/Floppy-C-Project-Baseline.md",
+                                ".floppy/floppies/Floppy-B-Development-Issues.md",
+                                ".floppy/roadmap/roadmap.md",
+                                ".floppy/onboarding/roadmap-acceptance.md"
+                            ],
+    "floppies":  {
+                     "A":  ".floppy/floppies/Floppy-A-HITL.md",
+                     "B":  ".floppy/floppies/Floppy-B-Development-Issues.md",
+                     "C":  ".floppy/floppies/Floppy-C-Project-Baseline.md",
+                     "D":  ".floppy/floppies/Floppy-D-Project-Map.md",
+                     "E":  ".floppy/floppies/Floppy-E-Current-Section.md"
+                 },
+    "roadmap":  {
+                    "machine_readable":  ".floppy/roadmap/roadmap.json",
+                    "user_readable":  ".floppy/roadmap/roadmap.md",
+                    "status":  "ACCEPTED",
+                    "section_count":  12,
+                    "first_section":  "FS-01",
+                    "last_section":  "FS-12",
+                    "current_authorized_section":  "FS-01",
+                    "active_implementation_section":  "FS-01",
+                    "next_proposed_section":  "FS-01",
+                    "next_proposed_section_status":  "IMPLEMENTATION_ACTIVE",
+                    "fs_01_work_package":  "ACCEPTED AS PLANNING BASELINE",
+                    "fs_01_implementation":  "IN PROGRESS"
+                },
+    "records":  {
+                    "evidence":  ".floppy/evidence/README.md",
+                    "handoffs":  ".floppy/handoffs/README.md",
+                    "revisions":  ".floppy/revisions/README.md",
+                    "fs_01_work_package_acceptance":  ".floppy/onboarding/roadmap-acceptance.md"
+                },
+    "continuation_point":  {
+                               "state":  "FS_01_IMPLEMENTATION_ACTIVE",
+                               "decision_required":  "Complete only the authorized FS-01 files and ordered commits, then perform required validation and record implementation completion.",
+                               "implementation_may_begin":  true,
+                               "administrator_acceptance":  "PENDING",
+                               "integration_may_begin":  false,
+                               "fs_02_may_begin":  false
+                           },
+    "active_work_authorization":  {
+                                      "authorization_id":  "FS_01_IMPLEMENTATION",
+                                      "section":  "FS-01",
+                                      "administrator_issued":  true,
+                                      "accepted_bce_checkpoint":  "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+                                      "implementation_branch":  "feature/fs-01-lifecycle-specification",
+                                      "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification",
+                                      "starting_version":  "0.4.1-dev",
+                                      "target_version":  "0.4.1-dev",
+                                      "authorized_root_control_files":  [
+                                                                            ".floppy/README.md",
+                                                                            ".floppy/START-HERE.md",
+                                                                            ".floppy/manifest.json",
+                                                                            ".floppy/floppies/Floppy-D-Project-Map.md",
+                                                                            ".floppy/floppies/Floppy-E-Current-Section.md",
+                                                                            ".floppy/roadmap/roadmap.json",
+                                                                            ".floppy/roadmap/roadmap.md"
+                                                                        ],
+                                      "authorized_reusable_product_files":  [
+                                                                                "README.md",
+                                                                                "system-manifest.json",
+                                                                                "docs/Architecture.md",
+                                                                                "docs/Migration-Notes.md",
+                                                                                "schemas/floppy-fields.md",
+                                                                                "tools/validate_floppy.py",
+                                                                                "specs/lifecycle-state-model.md",
+                                                                                "specs/lifecycle-transition-table.json",
+                                                                                "schemas/drafts/bce-lifecycle-state.schema.json",
+                                                                                "schemas/drafts/bce-work-authorization.schema.json",
+                                                                                "schemas/drafts/bce-lifecycle-transition.schema.json",
+                                                                                "tests/fixtures/lifecycle/valid/01-onboarding-required.json",
+                                                                                "tests/fixtures/lifecycle/valid/02-roadmap-accepted-no-active-work.json",
+                                                                                "tests/fixtures/lifecycle/valid/03-work-package-accepted-no-active-work.json",
+                                                                                "tests/fixtures/lifecycle/valid/04-section-authorized-not-started.json",
+                                                                                "tests/fixtures/lifecycle/valid/05-section-implementation-in-progress.json",
+                                                                                "tests/fixtures/lifecycle/valid/06-implementation-complete-verification-pending.json",
+                                                                                "tests/fixtures/lifecycle/valid/07-verification-complete-acceptance-pending.json",
+                                                                                "tests/fixtures/lifecycle/valid/08-section-accepted-closeout-proposed.json",
+                                                                                "tests/fixtures/lifecycle/valid/09-section-closed-next-section-inactive.json",
+                                                                                "tests/fixtures/lifecycle/valid/10-migration-planned-not-authorized.json",
+                                                                                "tests/fixtures/lifecycle/valid/11-migration-applied-verification-complete.json",
+                                                                                "tests/fixtures/lifecycle/valid/12-project-finally-closed.json",
+                                                                                "tests/fixtures/lifecycle/valid/13-exact-section-implementation-authorization.json",
+                                                                                "tests/fixtures/lifecycle/valid/14-section-authorization-transition.json",
+                                                                                "tests/fixtures/lifecycle/invalid/01-roadmap-acceptance-implies-section-authorization.json",
+                                                                                "tests/fixtures/lifecycle/invalid/02-work-package-acceptance-implies-section-authorization.json",
+                                                                                "tests/fixtures/lifecycle/invalid/03-draft-created-implies-section-active.json",
+                                                                                "tests/fixtures/lifecycle/invalid/04-implementation-complete-implies-acceptance.json",
+                                                                                "tests/fixtures/lifecycle/invalid/05-section-accepted-implies-closed-without-closeout.json",
+                                                                                "tests/fixtures/lifecycle/invalid/06-section-closed-implies-next-section-authorization.json",
+                                                                                "tests/fixtures/lifecycle/invalid/07-stale-base-checkpoint-allows-write.json",
+                                                                                "tests/fixtures/lifecycle/invalid/08-project-closed-allows-active-authorization.json",
+                                                                                "tests/fixtures/lifecycle/invalid/09-proposed-closeout-marked-applied.json",
+                                                                                "tests/fixtures/lifecycle/invalid/10-multiple-active-sections.json",
+                                                                                "tests/fixtures/lifecycle/invalid/11-authorization-missing-exact-file-scope.json",
+                                                                                "tests/fixtures/lifecycle/invalid/12-transition-missing-forbidden-side-effects.json",
+                                                                                "tests/test_lifecycle_specification.py",
+                                                                                "tests/test_lifecycle_fixtures.py"
+                                                                            ],
+                                      "authorized_commit_sequence":  [
+                                                                         {
+                                                                             "id":  "C1",
+                                                                             "kind":  "root_control",
+                                                                             "message":  "chore(bce): activate FS-01 implementation"
+                                                                         },
+                                                                         {
+                                                                             "id":  "P1",
+                                                                             "kind":  "reusable_product",
+                                                                             "message":  "docs(fs-01): add formal lifecycle specification"
+                                                                         },
+                                                                         {
+                                                                             "id":  "P2",
+                                                                             "kind":  "reusable_product",
+                                                                             "message":  "docs(fs-01): add draft lifecycle schema candidates"
+                                                                         },
+                                                                         {
+                                                                             "id":  "P3",
+                                                                             "kind":  "reusable_product",
+                                                                             "message":  "test(fs-01): add lifecycle specification fixtures"
+                                                                         },
+                                                                         {
+                                                                             "id":  "P4",
+                                                                             "kind":  "reusable_product",
+                                                                             "message":  "chore(fs-01): register lifecycle artifact integrity checks"
+                                                                         },
+                                                                         {
+                                                                             "id":  "P5",
+                                                                             "kind":  "reusable_product",
+                                                                             "message":  "docs(fs-01): document lifecycle specification boundaries"
+                                                                         },
+                                                                         {
+                                                                             "id":  "C2",
+                                                                             "kind":  "root_control",
+                                                                             "message":  "chore(bce): record FS-01 implementation completion"
+                                                                         }
+                                                                     ],
+                                      "mixed_control_and_product_commits_permitted":  false,
+                                      "push_branch":  "feature/fs-01-lifecycle-specification",
+                                      "force_push_permitted":  false,
+                                      "administrator_acceptance":  "PENDING",
+                                      "section_closeout":  "NOT AUTHORIZED",
+                                      "integration":  "NOT AUTHORIZED",
+                                      "merge":  "NOT AUTHORIZED",
+                                      "release":  "NOT AUTHORIZED",
+                                      "migration":  "NOT AUTHORIZED",
+                                      "fs_02":  "NOT AUTHORIZED"
+                                  }
 }

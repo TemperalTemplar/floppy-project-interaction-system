@@ -2,50 +2,100 @@
 
 ## Authorization state
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`FS_01_IMPLEMENTATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-01`
 
-## Most recent authorized control operation
+## Administrator-issued authorization
 
-The completed control-state operation was:
-
-`FS_01_WORK_PACKAGE_ACCEPTANCE_RECORDING`
-
-Its scope was limited to recording administrator acceptance of the FS-01 work
-package as a planning baseline. It grants no continuing implementation authority.
-
-## Next implementation candidate
-
+- Repository: `TemperalTemplar/floppy-project-interaction-system`
 - Section: `FS-01`
-- Work package: `ACCEPTED AS PLANNING BASELINE`
-- Activation: `NOT AUTHORIZED`
-- Implementation: `NOT STARTED`
-- Accepted work-package record: `.floppy/templates/Floppy-E-FS-01.draft.md`
-- Accepted work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
+- Authorization: `FS_01_IMPLEMENTATION`
+- Accepted BCE checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- Implementation branch: `feature/fs-01-lifecycle-specification`
+- Implementation worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
+- Starting source version: `0.4.1-dev`
+- Target source version: `0.4.1-dev`
+
+## Authorized purpose
+
+Implement the FS-01 formal lifecycle and state-transition specification, draft
+non-normative FS-02 schema candidates, exact valid and invalid fixtures, scoped
+integrity validation, tests, and documentation boundaries.
+
+The transition table remains declarative and cannot execute or apply transitions.
+
+The draft schema candidates remain:
+
+```text
+status: draft_non_normative
+normative_section: FS-02
+current_section: FS-01
+production_enforcement: false
+```
+
+They are not normative schemas and do not activate or complete FS-02.
+
+## Exact path scope
+
+The exact authorized root-control and reusable-product path lists are recorded in:
+
+`.floppy/manifest.json` under `active_work_authorization`
+
+No unnamed file is authorized.
+
+## Required commit sequence
+
+1. `C1` — `chore(bce): activate FS-01 implementation`
+2. `P1` — `docs(fs-01): add formal lifecycle specification`
+3. `P2` — `docs(fs-01): add draft lifecycle schema candidates`
+4. `P3` — `test(fs-01): add lifecycle specification fixtures`
+5. `P4` — `chore(fs-01): register lifecycle artifact integrity checks`
+6. `P5` — `docs(fs-01): document lifecycle specification boundaries`
+7. `C2` — `chore(bce): record FS-01 implementation completion`
+
+A commit must never mix a root `.floppy/` path with a reusable-product path.
 
 ## Explicit non-authorization
 
-This Floppy E does not authorize:
+This authorization does not permit:
 
-- creation of an FS-01 branch or worktree;
-- FS-01 implementation or activation;
-- lifecycle schemas or transition tables;
-- `floppyctl`;
-- reusable product or root control-state changes;
-- source-version changes;
-- commits or pushes;
-- project-seed changes;
-- adopting-project changes or migrations;
-- FS-02 or later work;
+- modification of `main`;
 - integration into `main`;
-- pull request, merge, tag, or release actions.
+- a pull request;
+- merge, tag, or release;
+- a `VERSION` change;
+- modification of `tools/initialize_project.py`;
+- modification of `project-seed/.floppy/`;
+- modification of an adopting project;
+- modification of an unauthorized root-control file;
+- normative or production schema enforcement;
+- lifecycle write commands;
+- `floppyctl`;
+- FS-02, FS-03, or later-section implementation;
+- force-pushing; or
+- any file or commit outside the exact authorization.
 
-## Continuation rule
+## Completion boundary
 
-The administrator may next issue, revise, or withhold a separate exact FS-01
-implementation authorization. Until that exact authorization is issued, no FS-01
-branch, worktree, product write, control write, commit, push, or implementation
-activity may begin.
+C2 may record implementation and validation completion only.
+
+The controlling completion state must preserve:
+
+```text
+Administrator acceptance:
+PENDING
+
+Section closeout:
+NOT AUTHORIZED
+
+Integration:
+NOT AUTHORIZED
+
+FS-02:
+NOT AUTHORIZED
+```
+
+Implementation completion does not constitute administrator acceptance.

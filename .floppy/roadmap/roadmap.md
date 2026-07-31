@@ -8,16 +8,19 @@ FS-01 work package:
 ACCEPTED AS PLANNING BASELINE
 
 FS-01 activation:
-NOT AUTHORIZED
+AUTHORIZED
 
 Active implementation section:
-NONE
+FS-01
 
 FS-01 implementation:
-NOT STARTED
+IN PROGRESS
 
 Active work authorization:
-NO_ACTIVE_WORK_AUTHORIZATION
+FS_01_IMPLEMENTATION
+
+Authorization base checkpoint:
+b12928e7365149813c00c65c1e409fe2a5d0d36f
 ```
 
 ## Sections
@@ -39,7 +42,7 @@ NO_ACTIVE_WORK_AUTHORIZATION
 
 | Section | Work package / plan | Activation | Implementation |
 |---|---|---|---|
-| FS-01 | `ACCEPTED AS PLANNING BASELINE` | `NOT AUTHORIZED` | `NOT STARTED` |
+| FS-01 | `ACCEPTED AS PLANNING BASELINE` | `AUTHORIZED` | `IN PROGRESS` |
 | FS-02 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
 | FS-03 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
 | FS-04 | `PLANNED_NOT_AUTHORIZED` | `NOT AUTHORIZED` | `NOT STARTED` |
@@ -63,6 +66,16 @@ NO_ACTIVE_WORK_AUTHORIZATION
 - Draft creation never activates a section.
 - Section acceptance, implementation completion, verification, closeout, and next
   activation remain separate states and decisions.
-- FS-01 implementation requires a separate exact administrator authorization.
+- FS-01 implementation is active only under the exact `FS_01_IMPLEMENTATION`
+  authorization based on checkpoint
+  `b12928e7365149813c00c65c1e409fe2a5d0d36f`.
+
+## Active authorization boundary
+
+The authorized branch is `feature/fs-01-lifecycle-specification` and the authorized
+worktree is `D:\A\Floppy\floppy-fs-01-lifecycle-specification`.
+
+Implementation completion remains distinct from verification, administrator
+acceptance, closeout, integration, and later-section authorization.
 
 The machine-readable companion is `.floppy/roadmap/roadmap.json`.

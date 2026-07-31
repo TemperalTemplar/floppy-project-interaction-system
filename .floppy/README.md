@@ -13,6 +13,9 @@ Floppy source system itself.
 - Accepted starting checkpoint: `main` at `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
 - Accepted onboarding checkpoint: `05cc098699b51b1018d729126042270fd6451eda`
 - Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
+- Accepted FS-01 pre-activation BCE checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- Active implementation branch: `feature/fs-01-lifecycle-specification`
+- Authorized FS-01 worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
 
 ## Separation boundary
 
@@ -61,13 +64,17 @@ authorized reusable source-product changes, but a commit must never mix them.
 
 - Development roadmap: `ACCEPTED`
 - FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
-- FS-01 activation: `NOT AUTHORIZED`
-- Active implementation section: `NONE`
-- FS-01 implementation: `NOT STARTED`
-- Active work authorization: `NO_ACTIVE_WORK_AUTHORIZATION`
+- FS-01 activation: `AUTHORIZED`
+- Active implementation section: `FS-01`
+- FS-01 implementation: `IN PROGRESS`
+- Active work authorization: `FS_01_IMPLEMENTATION`
+- Authorization base checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
 
-Work-package acceptance does not replace the active no-authority Floppy E and does
-not authorize an FS-01 branch, worktree, product write, control write, commit,
-push, integration, merge, tag, release, or later section.
+The active authorization is limited to the exact FS-01 file scope, ordered commit
+sequence, validation requirements, branch, worktree, and prohibited actions
+recorded in `.floppy/manifest.json` and `.floppy/floppies/Floppy-E-Current-Section.md`.
+
+It does not authorize integration into `main`, a pull request, merge, tag, release,
+migration, adopting-project changes, FS-02, FS-03, or any later section.
 
 Read `.floppy/START-HERE.md` before using this BCE.

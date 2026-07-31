@@ -21,13 +21,15 @@
 
 ## Current position
 
-- Next implementation candidate: `FS-01`
+- Active implementation section: `FS-01`
 - FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
-- FS-01 activation: `NOT AUTHORIZED`
-- Active implementation section: `NONE`
-- Active work authorization: `NO_ACTIVE_WORK_AUTHORIZATION`
-- FS-01 implementation: `NOT STARTED`
+- FS-01 activation: `AUTHORIZED`
+- Active work authorization: `FS_01_IMPLEMENTATION`
+- FS-01 implementation: `IN PROGRESS`
 - Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
+- Authorization base checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
+- Implementation branch: `feature/fs-01-lifecycle-specification`
+- Implementation worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
 
 ## Permanent development and integration path
 
@@ -61,5 +63,6 @@ Sections are executed in order unless a later accepted roadmap revision explicit
 changes dependencies. No section becomes active merely because its work package,
 predecessor, implementation, verification, acceptance, or closeout is complete.
 
-FS-01 remains inactive until an exact administrator implementation authorization
-is issued.
+FS-01 is active only under the exact `FS_01_IMPLEMENTATION` authorization.
+Implementation completion, verification, administrator acceptance, closeout,
+integration, and FS-02 remain separate states and decisions.
