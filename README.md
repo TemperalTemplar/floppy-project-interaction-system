@@ -134,6 +134,45 @@ Every accepted section closeout should create the next section's work package as
 
 When Floppy Z is coordinating, it prepares the closeout directive for the active project model. It does not perform the closeout writes itself by default.
 
+## FS-01 formal lifecycle specification
+
+FS-01 defines the system's formal lifecycle vocabulary and explicit transition
+boundaries:
+
+```text
+specs/lifecycle-state-model.md
+specs/lifecycle-transition-table.json
+```
+
+The model keeps roadmap, work-package, authority, implementation, verification,
+acceptance, closeout, migration, and final-closure state separate. A decision or
+status in one dimension does not silently change another dimension.
+
+In particular:
+
+- Roadmap acceptance does not authorize a section.
+- Work-package acceptance does not authorize implementation.
+- Draft creation does not activate a section.
+- Implementation completion does not complete verification or create
+  administrator acceptance.
+- Verification completion does not create administrator acceptance.
+- Section acceptance does not apply closeout.
+- Section closeout does not authorize the next section.
+- Migration planning does not authorize or apply migration.
+- A final-closure proposal does not finally close the project.
+
+At most one implementation section may be active. Active implementation requires
+exact section authority tied to its section, checkpoint, branch, worktree, file
+scope, validation, commit sequence, push boundary, and forbidden side effects.
+
+FS-01 also supplies three candidate schemas under `schemas/drafts/`. They are
+marked `draft_non_normative`, identify FS-02 as the future normative section, and
+set `production_enforcement` to `false`. They are review artifacts only.
+
+The transition table is declarative data. It cannot execute a transition, write
+lifecycle state, apply a migration, authorize a section, or implement controlled
+write commands. Those capabilities require separately authorized later sections.
+
 ## Source-repository boundary
 
 This repository may change only when the Floppy system itself is deliberately developed. It is read-only during normal use of an adopting project. Canonical Floppy 1E and Floppy Z must not be edited for an individual project. See `protocols/00-source-repository-policy.md`, `onboarding/README.md`, and `orchestrator/README.md`.
