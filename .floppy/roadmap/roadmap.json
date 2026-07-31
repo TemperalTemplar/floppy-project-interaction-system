@@ -1,198 +1,224 @@
 {
-    "format_version":  1,
-    "project_name":  "Floppy Project Interaction System — BCE Control Layer",
-    "repository":  "TemperalTemplar/floppy-project-interaction-system",
-    "roadmap_status":  "ACCEPTED",
-    "accepted_starting_checkpoint":  {
-                                         "branch":  "main",
-                                         "commit":  "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
-                                         "source_version":  "0.4.1-dev"
-                                     },
-    "accepted_fs_01_work_package_checkpoint":  {
-                                                   "branch":  "control/source-development-bce-onboarding",
-                                                   "commit":  "6f79872fa563a7a9c4820bad10ab86edc13782cd",
-                                                   "source_version":  "0.4.1-dev"
-                                               },
-    "active_implementation_section":  "FS-01",
-    "current_authorized_section":  "FS-01",
-    "next_proposed_section":  "FS-01",
-    "fs_01":  {
-                  "status":  "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
-                  "work_package_status":  "ACCEPTED AS PLANNING BASELINE",
-                  "activation_status":  "AUTHORIZED",
-                  "implementation":  "COMPLETE",
-                  "active":  true,
-                  "verification":  "COMPLETE",
-                  "administrator_acceptance":  "PENDING",
-                  "section_closeout":  "NOT AUTHORIZED"
-              },
-    "sections":  [
-                     {
-                         "id":  "FS-01",
-                         "sequence":  1,
-                         "title":  "Formal Lifecycle and State-Transition Specification",
-                         "status":  "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
-                         "implementation_started":  true,
-                         "depends_on":  [
-
-                                        ],
-                         "work_package_status":  "ACCEPTED AS PLANNING BASELINE",
-                         "activation_status":  "AUTHORIZED",
-                         "implementation":  "COMPLETE",
-                         "verification":  "COMPLETE",
-                         "administrator_acceptance":  "PENDING",
-                         "section_closeout":  "NOT AUTHORIZED"
-                     },
-                     {
-                         "id":  "FS-02",
-                         "sequence":  2,
-                         "title":  "Normative Machine-Readable BCE Schemas",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-01"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-03",
-                         "sequence":  3,
-                         "title":  "Semantic Validator 2.0 Engine",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-02"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-04",
-                         "sequence":  4,
-                         "title":  "Read-Only floppyctl Core",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-03"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-05",
-                         "sequence":  5,
-                         "title":  "Closeout-Completeness Validator",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-04"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-06",
-                         "sequence":  6,
-                         "title":  "Structured Authorization, Work-Package Integrity, and Git Checkpoints",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-05"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-07",
-                         "sequence":  7,
-                         "title":  "Secret and Unsafe-Content Scanning",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-06"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-08",
-                         "sequence":  8,
-                         "title":  "Boot-Package Generation and Verification",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-07"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-09",
-                         "sequence":  9,
-                         "title":  "Controlled Lifecycle Write Commands",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-08"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-10",
-                         "sequence":  10,
-                         "title":  "Migration Planning and Application",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-09"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-11",
-                         "sequence":  11,
-                         "title":  "Final-Project Closure",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-10"
-                                        ]
-                     },
-                     {
-                         "id":  "FS-12",
-                         "sequence":  12,
-                         "title":  "BCE Export, Integrity, and History Compaction",
-                         "status":  "PLANNED_NOT_AUTHORIZED",
-                         "implementation_started":  false,
-                         "depends_on":  [
-                                            "FS-11"
-                                        ]
-                     }
-                 ],
-    "constraints":  {
-                        "one_active_implementation_section_maximum":  true,
-                        "roadmap_acceptance_is_not_implementation_authorization":  true,
-                        "work_package_acceptance_is_not_implementation_authorization":  true,
-                        "draft_creation_is_not_activation":  true,
-                        "project_seed_is_not_active_project_state":  true,
-                        "adopting_projects_unchanged":  true,
-                        "mixed_control_and_product_commits_permitted":  false,
-                        "root_control_state_integrates_to_main":  false
-                    },
-    "continuation_point":  "FS-01 implementation and verification are complete. Run final post-C2 validation, exact history and path comparison, push only feature/fs-01-lifecycle-specification without force, verify local and remote equality, and present the evidence for explicit administrator acceptance. Integration, closeout, migration, and FS-02 remain unauthorized.",
-    "accepted_fs_01_implementation_authorization_checkpoint":  {
-                                                                   "branch":  "control/source-development-bce-onboarding",
-                                                                   "commit":  "b12928e7365149813c00c65c1e409fe2a5d0d36f",
-                                                                   "source_version":  "0.4.1-dev",
-                                                                   "implementation_branch":  "feature/fs-01-lifecycle-specification",
-                                                                   "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
-                                                               },
-    "active_work_authorization":  {
-                                      "authorization_id":  "FS_01_IMPLEMENTATION",
-                                      "accepted_bce_checkpoint":  "b12928e7365149813c00c65c1e409fe2a5d0d36f",
-                                      "implementation_branch":  "feature/fs-01-lifecycle-specification",
-                                      "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification",
-                                      "administrator_acceptance":  "PENDING",
-                                      "section_closeout":  "NOT AUTHORIZED",
-                                      "integration":  "NOT AUTHORIZED",
-                                      "fs_02":  "NOT AUTHORIZED",
-                                      "implementation_status":  "COMPLETE",
-                                      "verification_status":  "COMPLETE",
-                                      "implementation_completion_checkpoint":  "d907643874f9aa278f31311527f3e7ec907c6cb6",
-                                      "additional_product_writes_permitted":  false,
-                                      "final_branch_push_pending":  true
-                                  },
-    "fs_01_product_completion_checkpoint":  {
-                                                "branch":  "feature/fs-01-lifecycle-specification",
-                                                "commit":  "d907643874f9aa278f31311527f3e7ec907c6cb6",
-                                                "source_version":  "0.4.1-dev",
-                                                "implementation":  "COMPLETE",
-                                                "verification":  "COMPLETE",
-                                                "administrator_acceptance":  "PENDING"
-                                            }
+    "format_version": 1,
+    "project_name": "Floppy Project Interaction System — BCE Control Layer",
+    "repository": "TemperalTemplar/floppy-project-interaction-system",
+    "roadmap_status": "ACCEPTED",
+    "accepted_starting_checkpoint": {
+        "branch": "main",
+        "commit": "3efc15a9c232669ddcd3b49cee3ff99f9459dbc3",
+        "source_version": "0.4.1-dev"
+    },
+    "accepted_fs_01_work_package_checkpoint": {
+        "branch": "control/source-development-bce-onboarding",
+        "commit": "6f79872fa563a7a9c4820bad10ab86edc13782cd",
+        "source_version": "0.4.1-dev"
+    },
+    "active_implementation_section": null,
+    "current_authorized_section": null,
+    "next_proposed_section": null,
+    "fs_01": {
+        "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+        "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+        "activation_status": "COMPLETED_HISTORICAL",
+        "implementation": "COMPLETE",
+        "active": false,
+        "verification": "COMPLETE",
+        "administrator_acceptance": "ACCEPTED",
+        "section_closeout": "NOT_PROPOSED",
+        "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
+        "closeout_execution": "NOT AUTHORIZED",
+        "additional_product_writes": "NOT AUTHORIZED",
+        "integration": "NOT AUTHORIZED",
+        "fs_02": "NOT AUTHORIZED"
+    },
+    "sections": [
+        {
+            "id": "FS-01",
+            "sequence": 1,
+            "title": "Formal Lifecycle and State-Transition Specification",
+            "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+            "implementation_started": true,
+            "depends_on": [],
+            "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+            "activation_status": "COMPLETED_HISTORICAL",
+            "implementation": "COMPLETE",
+            "verification": "COMPLETE",
+            "administrator_acceptance": "ACCEPTED",
+            "section_closeout": "NOT_PROPOSED",
+            "active": false,
+            "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
+            "closeout_execution": "NOT AUTHORIZED"
+        },
+        {
+            "id": "FS-02",
+            "sequence": 2,
+            "title": "Normative Machine-Readable BCE Schemas",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-01"
+            ]
+        },
+        {
+            "id": "FS-03",
+            "sequence": 3,
+            "title": "Semantic Validator 2.0 Engine",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-02"
+            ]
+        },
+        {
+            "id": "FS-04",
+            "sequence": 4,
+            "title": "Read-Only floppyctl Core",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-03"
+            ]
+        },
+        {
+            "id": "FS-05",
+            "sequence": 5,
+            "title": "Closeout-Completeness Validator",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-04"
+            ]
+        },
+        {
+            "id": "FS-06",
+            "sequence": 6,
+            "title": "Structured Authorization, Work-Package Integrity, and Git Checkpoints",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-05"
+            ]
+        },
+        {
+            "id": "FS-07",
+            "sequence": 7,
+            "title": "Secret and Unsafe-Content Scanning",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-06"
+            ]
+        },
+        {
+            "id": "FS-08",
+            "sequence": 8,
+            "title": "Boot-Package Generation and Verification",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-07"
+            ]
+        },
+        {
+            "id": "FS-09",
+            "sequence": 9,
+            "title": "Controlled Lifecycle Write Commands",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-08"
+            ]
+        },
+        {
+            "id": "FS-10",
+            "sequence": 10,
+            "title": "Migration Planning and Application",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-09"
+            ]
+        },
+        {
+            "id": "FS-11",
+            "sequence": 11,
+            "title": "Final-Project Closure",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-10"
+            ]
+        },
+        {
+            "id": "FS-12",
+            "sequence": 12,
+            "title": "BCE Export, Integrity, and History Compaction",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-11"
+            ]
+        }
+    ],
+    "constraints": {
+        "one_active_implementation_section_maximum": true,
+        "roadmap_acceptance_is_not_implementation_authorization": true,
+        "work_package_acceptance_is_not_implementation_authorization": true,
+        "draft_creation_is_not_activation": true,
+        "project_seed_is_not_active_project_state": true,
+        "adopting_projects_unchanged": true,
+        "mixed_control_and_product_commits_permitted": false,
+        "root_control_state_integrates_to_main": false
+    },
+    "continuation_point": "FS-01 is accepted but not closed. The next possible operation is a separately authorized FS-01 closeout proposal or a decision to withhold closeout. Closeout has neither been proposed nor applied. FS-02 remains inactive and unauthorized.",
+    "accepted_fs_01_implementation_authorization_checkpoint": {
+        "branch": "control/source-development-bce-onboarding",
+        "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+        "source_version": "0.4.1-dev",
+        "implementation_branch": "feature/fs-01-lifecycle-specification",
+        "implementation_worktree": "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
+    },
+    "active_work_authorization": null,
+    "fs_01_product_completion_checkpoint": {
+        "branch": "feature/fs-01-lifecycle-specification",
+        "commit": "d907643874f9aa278f31311527f3e7ec907c6cb6",
+        "source_version": "0.4.1-dev",
+        "implementation": "COMPLETE",
+        "verification": "COMPLETE",
+        "administrator_acceptance": "ACCEPTED"
+    },
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+    "last_applied_transition": "TR-007-ACCEPT-SECTION",
+    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+    "accepted_fs_01_implementation_checkpoint": {
+        "branch": "feature/fs-01-lifecycle-specification",
+        "commit": "d03969aa93debb6b705098483c8b59bb9d37d58f",
+        "source_version": "0.4.1-dev",
+        "implementation": "COMPLETE",
+        "verification": "COMPLETE",
+        "administrator_acceptance": "ACCEPTED",
+        "section_closeout": "NOT_PROPOSED"
+    },
+    "historical_work_authorizations": [
+        {
+            "authorization_id": "FS_01_IMPLEMENTATION",
+            "accepted_bce_checkpoint": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
+            "implementation_branch": "feature/fs-01-lifecycle-specification",
+            "implementation_worktree": "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification",
+            "administrator_acceptance": "ACCEPTED",
+            "section_closeout": "NOT_PROPOSED",
+            "integration": "NOT AUTHORIZED",
+            "fs_02": "NOT AUTHORIZED",
+            "implementation_status": "COMPLETE",
+            "verification_status": "COMPLETE",
+            "implementation_completion_checkpoint": "d907643874f9aa278f31311527f3e7ec907c6cb6",
+            "additional_product_writes_permitted": false,
+            "final_branch_push_pending": false,
+            "historical_status": "COMPLETED_VERIFIED_ACCEPTED",
+            "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "closeout_execution": "NOT AUTHORIZED"
+        }
+    ]
 }

@@ -16,17 +16,11 @@ This BCE controls development of the canonical Floppy Project Interaction System
 ## Present state
 
 ```text
-Development roadmap:
-ACCEPTED
+Lifecycle state:
+LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 
-FS-01 work package:
-ACCEPTED AS PLANNING BASELINE
-
-FS-01 activation:
-AUTHORIZED
-
-Active implementation section:
-FS-01
+Applied transition:
+TR-007-ACCEPT-SECTION
 
 FS-01 implementation:
 COMPLETE
@@ -34,16 +28,25 @@ COMPLETE
 FS-01 verification:
 COMPLETE
 
-Administrator acceptance:
-PENDING
+FS-01 administrator acceptance:
+ACCEPTED
 
-Active authorization record:
-FS_01_IMPLEMENTATION
+Authority:
+NO_ACTIVE_WORK_AUTHORIZATION
 
-Additional product writes:
-NOT AUTHORIZED
+Active implementation section:
+NONE
+
+Current authorized section:
+NONE
 
 Section closeout:
+NOT_PROPOSED
+
+Closeout execution:
+NOT AUTHORIZED
+
+Additional product writes:
 NOT AUTHORIZED
 
 Integration:
@@ -53,14 +56,31 @@ FS-02:
 NOT AUTHORIZED
 ```
 
-## Authority boundary
+## Administrator acceptance record
 
-The administrator issued the exact `FS_01_IMPLEMENTATION` authorization against
-the accepted source-development BCE checkpoint:
+The administrator accepted the completed and verified FS-01 implementation at:
+
+`d03969aa93debb6b705098483c8b59bb9d37d58f`
+
+The acceptance recording applies only `TR-007-ACCEPT-SECTION`, transitioning from:
+
+`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
+
+to:
+
+`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+
+Acceptance does not propose or apply closeout and does not authorize product
+writes, integration, merge, release, migration, FS-02, or any later section.
+
+## Historical implementation authorization
+
+The completed authorization `FS_01_IMPLEMENTATION` remains historical evidence
+against the accepted BCE checkpoint:
 
 `b12928e7365149813c00c65c1e409fe2a5d0d36f`
 
-The authorized implementation branch and worktree are:
+Its implementation branch and worktree were:
 
 ```text
 Branch:
@@ -73,18 +93,8 @@ Source version:
 0.4.1-dev
 ```
 
-The authorized product sequence P1 through P5 is complete at:
-
-`d907643874f9aa278f31311527f3e7ec907c6cb6`
-
-C2 records implementation and verification completion only. No additional
-product-file changes are authorized under this completed implementation sequence.
-
-The feature branch may be pushed only after final post-C2 validation and exact
-history and scope comparison. Force-push is prohibited.
-
-No state or decision silently implies administrator acceptance, section closeout,
-integration, merge, release, migration authority, FS-02 authority, or later work.
+That authorization is no longer active. No active implementation section or
+current authorized section exists.
 
 ## Repository boundary
 
@@ -92,45 +102,14 @@ integration, merge, release, migration authority, FS-02 authority, or later work
 - Reusable seed media: `project-seed/.floppy/`
 - Adopting-project BCEs: owned by their respective project repositories
 
-Do not treat `project-seed/.floppy/` as active state.
-
-## Clean-source integration gate
-
-Root `.floppy/` is control-branch-only state. It must not enter canonical `main`,
-source packages, release archives, adopting projects, reusable seed content, or
-cross-project BCE exports.
-
-New projects receive only `project-seed/.floppy/`. They never receive this source
-system's roadmap, authorizations, revisions, handoffs, evidence, or closeouts.
-
-For every FS section:
-
-1. Commit root `.floppy/` control-state changes separately.
-2. Commit reusable source-product changes separately.
-3. Never mix control-state and product files in one commit.
-4. Keep product commits independently reviewable and transferable.
-5. Begin canonical integration from clean `main`.
-6. Apply only accepted product commits to the integration branch.
-7. Exclude all root `.floppy/` commits and require a final comparison with no
-   `.floppy/` path.
-8. Obtain separate administrator authorization for integration, merge, tag, or
-   release.
-
-Never merge `control/source-development-bce-onboarding` wholesale into `main`.
+Root `.floppy/` remains excluded from clean-main product integration.
 
 ## Exact continuation point
 
-FS-01 implementation and verification are complete. Administrator acceptance is
-pending.
+FS-01 is accepted but not closed.
 
-Continue only through:
+The next possible operation is a separately authorized FS-01 closeout proposal or
+a decision to withhold closeout.
 
-1. final post-C2 source validation and test execution;
-2. exact commit-history and changed-path comparison;
-3. authorized non-force push of
-   `feature/fs-01-lifecycle-specification`;
-4. local and remote checkpoint equality verification; and
-5. presentation of the completed FS-01 evidence for an explicit administrator
-   acceptance decision.
-
-Do not begin integration, closeout, migration, FS-02, FS-03, or any later work.
+Do not silently propose or apply closeout. Do not begin integration, pull-request
+creation, merge, tag, release, migration, FS-02, FS-03, or any later work.

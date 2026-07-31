@@ -21,59 +21,55 @@
 
 ## Current position
 
-- Active implementation section: `FS-01`
+- Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+- Applied transition: `TR-007-ACCEPT-SECTION`
+- Active implementation section: `NONE`
+- Current authorized section: `NONE`
+- Authority: `NO_ACTIVE_WORK_AUTHORIZATION`
 - FS-01 work package: `ACCEPTED AS PLANNING BASELINE`
-- FS-01 activation: `AUTHORIZED`
-- Active authorization record: `FS_01_IMPLEMENTATION`
 - FS-01 implementation: `COMPLETE`
 - FS-01 verification: `COMPLETE`
-- Administrator acceptance: `PENDING`
+- FS-01 administrator acceptance: `ACCEPTED`
+- Accepted final FS-01 checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
+- Section closeout: `NOT_PROPOSED`
+- Closeout execution: `NOT AUTHORIZED`
 - Additional product writes: `NOT AUTHORIZED`
-- Accepted FS-01 work-package checkpoint: `6f79872fa563a7a9c4820bad10ab86edc13782cd`
-- Authorization base checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
-- Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
-- Implementation branch: `feature/fs-01-lifecycle-specification`
-- Implementation worktree: `D:\A\Floppy\floppy-fs-01-lifecycle-specification`
-- Section closeout: `NOT AUTHORIZED`
 - Integration: `NOT AUTHORIZED`
 - FS-02: `NOT AUTHORIZED`
 
+## Historical implementation path
+
+The completed `FS_01_IMPLEMENTATION` authorization remains historical evidence.
+It was issued against:
+
+`b12928e7365149813c00c65c1e409fe2a5d0d36f`
+
+and used:
+
+```text
+Branch:
+feature/fs-01-lifecycle-specification
+
+Worktree:
+D:\A\Floppy\floppy-fs-01-lifecycle-specification
+```
+
+It no longer represents active authority.
+
 ## Permanent development and integration path
 
-For every FS section, source-development control state and reusable source product
-follow separate commit and integration paths.
+Root `.floppy/` control commits and reusable source-product commits remain
+separate. Root control records never integrate into canonical `main`.
 
-### Control-state path
+Canonical integration may begin only under separate administrator authorization
+from clean `main`, using only accepted reusable-product commits.
 
-- Root `.floppy/` commits record authorization, progress, acceptance, and closeout.
-- Control commits contain only root `.floppy/` paths.
-- Root `.floppy/` remains on source-development control branches.
-- Root `.floppy/` commits are never integrated into canonical `main`.
+## Ordering and continuation boundary
 
-### Reusable product path
+No section becomes active merely because its predecessor was accepted.
 
-- Product commits contain only reusable source-system files.
-- Product commits must be independently reviewable and transferable.
-- Canonical integration begins from clean `main`.
-- Only accepted product commits may be applied to the clean integration branch.
-- The final integration comparison must show no root `.floppy/` path.
+FS-01 is accepted but not closed. The next possible operation is a separately
+authorized FS-01 closeout proposal or a decision to withhold closeout.
 
-The onboarding branch must not be merged wholesale. Integration, merge, tagging,
-and release each require separate administrator authorization.
-
-New projects receive only generic `project-seed/.floppy/` content and never receive
-this source-development project's control records.
-
-## Ordering and authority control
-
-Sections are executed in order unless a later accepted roadmap revision explicitly
-changes dependencies. No section becomes active merely because its work package,
-predecessor, implementation, verification, acceptance, or closeout is complete.
-
-FS-01 implementation and verification are complete. Administrator acceptance is
-still a separate pending decision. The FS-01 authorization record remains attached
-to the active section for review, but it permits no additional product-file
-changes.
-
-Section closeout, clean-main integration, merge, tag, release, migration, and
-FS-02 remain separately controlled and unauthorized.
+Closeout has neither been proposed nor applied. Integration, merge, tag, release,
+migration, FS-02, FS-03, and every later section remain unauthorized.
