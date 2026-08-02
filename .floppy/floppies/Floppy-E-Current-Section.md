@@ -51,34 +51,34 @@ CLOSED
 
 ```text
 Work package:
-ACCEPTED AS PLANNING BASELINE
+COMPLETED AND ACCEPTED
 
 Control-work state:
-CTRL-WORK-AUTHORIZED-NOT-STARTED
+CTRL-WORK-CLOSED
 
 Activation:
 AUTHORIZED
 
 Implementation:
-NOT STARTED
+COMPLETE
+
+Verification:
+COMPLETE
+
+Administrator acceptance:
+ACCEPTED
+
+Closure:
+APPLIED
 
 Active control work item:
-CTRL-01
+NONE
 
 Active control authorization:
-CTRL_01_IMPLEMENTATION
-
-Implementation branch:
-feature/ctrl-01-orchestrator-registration-handoff
-
-Implementation worktree:
-D:\A\Floppy\floppy-ctrl-01-orchestrator-registration-handoff
+NONE
 
 Repository writer:
-CTRL_01_IMPLEMENTATION_MODEL
-
-Writer authorization reference:
-CTRL_01_IMPLEMENTATION
+NONE
 ```
 
 Accepted work-package record:
@@ -89,8 +89,18 @@ Accepted work-package checkpoint:
 
 `c58066af0b3c0241b632ca161670f331b0804986`
 
-CTRL-01 control work is orthogonal to the accepted FS lifecycle. It does not
-reopen FS-01, activate an implementation section, or authorize FS-02.
+CTRL-01 implementation checkpoint:
+
+`9031b0ea190aa6b3f35d42bfe46a5792fd491e28`
+
+Verification evidence:
+
+- CTRL-01 tests: `10 PASSED`
+- Full test suite: `25 PASSED`
+- Administrator acceptance: `ACCEPTED`
+
+CTRL-01 control work is complete and closed. It did not reopen FS-01,
+activate an FS implementation section, or authorize FS-02.
 
 ## FS-02 state
 
@@ -114,8 +124,8 @@ Active:
 FALSE
 ```
 
-The next legal operation is implementation and validation of exactly the seven
-accepted reusable-product files under `CTRL_01_IMPLEMENTATION`.
+The next legal operation is to remain paused until the administrator or
+orchestrator supplies an exact continuation directive.
 
 Integration, merge, release, migration, force-push, and FS-02 resumption remain
 unauthorized.

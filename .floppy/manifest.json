@@ -27,7 +27,7 @@
     "status":  "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
     "authority":  {
                       "human_authority_required":  true,
-                      "last_authorized_control_operation":  "CTRL_01_IMPLEMENTATION_ACTIVATION",
+                      "last_authorized_control_operation":  "CTRL_01_COMPLETION_CLOSURE",
                       "implementation_authority":  "NO_ACTIVE_WORK_AUTHORIZATION",
                       "active_implementation_section":  null,
                       "current_authorized_section":  null,
@@ -116,7 +116,7 @@
                 },
     "continuation_point":  {
                                "state":  "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-                               "decision_required":  "Implement and validate exactly the seven accepted CTRL-01 reusable-product files. FS-02 remains paused.",
+                               "decision_required":  "CTRL-01 is complete and closed. Remain paused. FS-02 requires a separate exact continuation directive.",
                                "implementation_may_begin":  false,
                                "fs_01_status":  "CLOSED",
                                "fs_01_section_closeout":  "APPLIED",
@@ -131,11 +131,15 @@
                                "fs_02_active":  false,
                                "ctrl_01_work_package_status":  "ACCEPTED AS PLANNING BASELINE",
                                "ctrl_01_activation_authorized":  true,
-                               "ctrl_01_implementation_started":  false,
-                               "active_control_work_item":  "CTRL-01",
-                               "active_control_authorization":  "CTRL_01_IMPLEMENTATION",
-                               "control_work_state":  "CTRL-WORK-AUTHORIZED-NOT-STARTED",
-                               "ctrl_01_implementation_may_begin":  true
+                               "ctrl_01_implementation_started":  true,
+                               "active_control_work_item":  null,
+                               "active_control_authorization":  null,
+                               "control_work_state":  "CTRL-WORK-CLOSED",
+                               "ctrl_01_implementation_may_begin":  false,
+                               "ctrl_01_verification_complete":  true,
+                               "ctrl_01_administrator_acceptance":  "ACCEPTED",
+                               "ctrl_01_closure_applied":  true,
+                               "ctrl_01_implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28"
                            },
     "active_work_authorization":  null,
     "historical_work_authorizations":  [
@@ -310,12 +314,12 @@
     "ctrl_01_work_package":  {
                                  "title":  "Project Orchestrator Registration and Handoff",
                                  "path":  ".floppy/templates/Floppy-E-CTRL-01.draft.md",
-                                 "status":  "ACCEPTED AS PLANNING BASELINE",
+                                 "status":  "COMPLETED AND ACCEPTED",
                                  "accepted_on":  "2026-08-02",
                                  "accepted_base_checkpoint":  "cec7e0c16b8a2a15fbcc9b0ff5ab13c47901d149",
                                  "acceptance_checkpoint":  "c58066af0b3c0241b632ca161670f331b0804986",
                                  "activation_authorized":  true,
-                                 "implementation_started":  false,
+                                 "implementation_started":  true,
                                  "reusable_product_files":  [
                                                                 "BOOTSTRAP.md",
                                                                 "orchestrator/Floppy_Z.md",
@@ -326,62 +330,42 @@
                                                                 "system-manifest.json"
                                                             ],
                                  "reusable_product_commit":  "feat(ctrl-01): add orchestrator registration and handoff",
-                                 "repository_writer":  "CTRL_01_IMPLEMENTATION_MODEL",
+                                 "repository_writer":  null,
                                  "fs_02_remains_paused":  true,
-                                 "control_work_state":  "CTRL-WORK-AUTHORIZED-NOT-STARTED",
+                                 "control_work_state":  "CTRL-WORK-CLOSED",
                                  "authorization_reference":  "CTRL_01_IMPLEMENTATION",
                                  "implementation_branch":  "feature/ctrl-01-orchestrator-registration-handoff",
-                                 "implementation_worktree":  "D:\\A\\Floppy\\floppy-ctrl-01-orchestrator-registration-handoff"
+                                 "implementation_worktree":  "D:\\A\\Floppy\\floppy-ctrl-01-orchestrator-registration-handoff",
+                                 "implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28",
+                                 "verification_status":  "COMPLETE",
+                                 "administrator_acceptance":  "ACCEPTED",
+                                 "closure_applied":  true
                              },
     "control_work":  {
-                         "active_control_work_item":  "CTRL-01",
-                         "active_control_authorization":  "CTRL_01_IMPLEMENTATION",
-                         "control_work_state":  "CTRL-WORK-AUTHORIZED-NOT-STARTED",
+                         "active_control_work_item":  null,
+                         "active_control_authorization":  null,
+                         "control_work_state":  "CTRL-WORK-CLOSED",
                          "accepted_work_package_checkpoint":  "c58066af0b3c0241b632ca161670f331b0804986",
                          "implementation_branch":  "feature/ctrl-01-orchestrator-registration-handoff",
                          "implementation_worktree":  "D:\\A\\Floppy\\floppy-ctrl-01-orchestrator-registration-handoff",
-                         "implementation_started":  false,
-                         "verification_status":  "NOT_STARTED",
-                         "administrator_acceptance":  "PENDING",
-                         "repository_writer":  "CTRL_01_IMPLEMENTATION_MODEL",
-                         "writer_authorization_reference":  "CTRL_01_IMPLEMENTATION",
+                         "implementation_started":  true,
+                         "verification_status":  "COMPLETE",
+                         "administrator_acceptance":  "ACCEPTED",
+                         "repository_writer":  null,
+                         "writer_authorization_reference":  null,
                          "integration":  "NOT AUTHORIZED",
                          "merge":  "NOT AUTHORIZED",
                          "release":  "NOT AUTHORIZED",
                          "migration":  "NOT AUTHORIZED",
-                         "fs_02":  "NOT AUTHORIZED"
+                         "fs_02":  "NOT AUTHORIZED",
+                         "implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28",
+                         "closure_applied":  true,
+                         "verification_evidence":  {
+                                                       "ctrl_01_tests":  10,
+                                                       "full_test_suite":  25,
+                                                       "result":  "PASSED",
+                                                       "administrator_accepted":  true
+                                                   }
                      },
-    "active_control_work_authorization":  {
-                                              "authorization_id":  "CTRL_01_IMPLEMENTATION",
-                                              "authorization_kind":  "CONTROL_WORK",
-                                              "administrator_issued":  true,
-                                              "accepted_work_package_checkpoint":  "c58066af0b3c0241b632ca161670f331b0804986",
-                                              "implementation_branch":  "feature/ctrl-01-orchestrator-registration-handoff",
-                                              "implementation_worktree":  "D:\\A\\Floppy\\floppy-ctrl-01-orchestrator-registration-handoff",
-                                              "source_version":  "0.4.1-dev",
-                                              "authorized_root_control_files":  [
-                                                                                    ".floppy/manifest.json",
-                                                                                    ".floppy/floppies/Floppy-E-Current-Section.md"
-                                                                                ],
-                                              "authorized_reusable_product_files":  [
-                                                                                        "BOOTSTRAP.md",
-                                                                                        "orchestrator/Floppy_Z.md",
-                                                                                        "project-seed/.floppy/orchestrator-registry.json",
-                                                                                        "project-seed/.floppy/templates/orchestrator-handoff.md",
-                                                                                        "project-seed/.floppy/manifest.json",
-                                                                                        "tests/test_orchestrator_registry.py",
-                                                                                        "system-manifest.json"
-                                                                                    ],
-                                              "reusable_product_commit":  "feat(ctrl-01): add orchestrator registration and handoff",
-                                              "repository_writer":  "CTRL_01_IMPLEMENTATION_MODEL",
-                                              "writer_authorization_reference":  "CTRL_01_IMPLEMENTATION",
-                                              "mixed_control_and_product_commits_permitted":  false,
-                                              "push_branch":  "feature/ctrl-01-orchestrator-registration-handoff",
-                                              "force_push_permitted":  false,
-                                              "integration":  "NOT AUTHORIZED",
-                                              "merge":  "NOT AUTHORIZED",
-                                              "release":  "NOT AUTHORIZED",
-                                              "migration":  "NOT AUTHORIZED",
-                                              "fs_02":  "NOT AUTHORIZED"
-                                          }
+    "active_control_work_authorization":  null
 }
