@@ -24,10 +24,10 @@
                           "fs_01_product_completion_checkpoint":  "d907643874f9aa278f31311527f3e7ec907c6cb6",
                           "accepted_fs_01_implementation_checkpoint":  "d03969aa93debb6b705098483c8b59bb9d37d58f"
                       },
-    "status":  "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "status":  "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
     "authority":  {
                       "human_authority_required":  true,
-                      "last_authorized_control_operation":  "CTRL_01_COMPLETION_CLOSURE",
+                      "last_authorized_control_operation":  "FS_02_WORK_PACKAGE_ACCEPTANCE_AND_AUTHORIZED_NOT_STARTED",
                       "implementation_authority":  "NO_ACTIVE_WORK_AUTHORIZATION",
                       "active_implementation_section":  null,
                       "current_authorized_section":  null,
@@ -92,8 +92,6 @@
                     "section_count":  12,
                     "first_section":  "FS-01",
                     "last_section":  "FS-12",
-                    "current_authorized_section":  null,
-                    "active_implementation_section":  null,
                     "next_proposed_section":  null,
                     "next_proposed_section_status":  "FS_02_WORK_PACKAGE_DRAFT_NOT_ACCEPTED",
                     "fs_01_work_package":  "ACCEPTED AS PLANNING BASELINE",
@@ -102,7 +100,12 @@
                     "fs_01_administrator_acceptance":  "ACCEPTED",
                     "fs_01_section_closeout":  "APPLIED",
                     "fs_01_closeout_execution":  "APPLIED",
-                    "fs_01_status":  "CLOSED"
+                    "fs_01_status":  "CLOSED",
+                    "current_authorized_section":  null,
+                    "active_implementation_section":  null,
+                    "fs_02_work_package":  "ACCEPTED AS PLANNING BASELINE",
+                    "fs_02_activation_state":  "AUTHORIZED_NOT_STARTED",
+                    "fs_02_implementation":  "NOT AUTHORIZED"
                 },
     "records":  {
                     "evidence":  ".floppy/evidence/README.md",
@@ -115,9 +118,6 @@
                     "ctrl_01_work_package_acceptance":  ".floppy/templates/Floppy-E-CTRL-01.draft.md"
                 },
     "continuation_point":  {
-                               "state":  "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-                               "decision_required":  "CTRL-01 is complete and closed. Remain paused. FS-02 requires a separate exact continuation directive.",
-                               "implementation_may_begin":  false,
                                "fs_01_status":  "CLOSED",
                                "fs_01_section_closeout":  "APPLIED",
                                "additional_fs_01_product_writes_may_begin":  false,
@@ -125,10 +125,6 @@
                                "merge_may_begin":  false,
                                "tag_or_release_may_begin":  false,
                                "migration_may_begin":  false,
-                               "fs_02_work_package_status":  "NOT_ACCEPTED",
-                               "fs_02_activation_authorized":  false,
-                               "fs_02_implementation_started":  false,
-                               "fs_02_active":  false,
                                "ctrl_01_work_package_status":  "ACCEPTED AS PLANNING BASELINE",
                                "ctrl_01_activation_authorized":  true,
                                "ctrl_01_implementation_started":  true,
@@ -139,7 +135,16 @@
                                "ctrl_01_verification_complete":  true,
                                "ctrl_01_administrator_acceptance":  "ACCEPTED",
                                "ctrl_01_closure_applied":  true,
-                               "ctrl_01_implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28"
+                               "ctrl_01_implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28",
+                               "state":  "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+                               "decision_required":  "Issue, revise, or withhold separate exact P1/P2 reusable-product implementation authorization.",
+                               "implementation_may_begin":  false,
+                               "fs_02_work_package_status":  "ACCEPTED AS PLANNING BASELINE",
+                               "fs_02_activation_state":  "AUTHORIZED_NOT_STARTED",
+                               "fs_02_activation_authorized":  true,
+                               "fs_02_implementation_authorized":  false,
+                               "fs_02_implementation_started":  false,
+                               "fs_02_active":  false
                            },
     "active_work_authorization":  null,
     "historical_work_authorizations":  [
@@ -367,5 +372,55 @@
                                                        "administrator_accepted":  true
                                                    }
                      },
-    "active_control_work_authorization":  null
+    "active_control_work_authorization":  null,
+    "fs_02_work_package":  {
+                               "title":  "Normative Machine-Readable BCE Schemas",
+                               "section":  "FS-02",
+                               "path":  ".floppy/templates/Floppy-E-FS-02.draft.md",
+                               "status":  "ACCEPTED AS PLANNING BASELINE",
+                               "accepted_on":  "2026-08-02",
+                               "accepted_base_checkpoint":  "e10c4a04ca7f1bee546767f60247c4aaf66eabf8",
+                               "acceptance_checkpoint":  "PENDING_ROOT_CONTROL_COMMIT",
+                               "activation_state":  "AUTHORIZED_NOT_STARTED",
+                               "implementation_authorized":  false,
+                               "implementation_started":  false,
+                               "active":  false,
+                               "implementation_branch":  "feature/fs-02-normative-bce-schemas",
+                               "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-02-normative-bce-schemas",
+                               "source_version":  "0.4.1-dev",
+                               "authorized_reusable_product_files":  [
+                                                                         "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+                                                                         "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+                                                                         "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+                                                                         "tools/validate_floppy.py",
+                                                                         "system-manifest.json",
+                                                                         "tests/test_bce_schemas.py",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-state.json",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-state.json",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/valid/work-authorization.json",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/invalid/work-authorization.json",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-transition.json",
+                                                                         "tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-transition.json"
+                                                                     ],
+                               "maximum_reusable_product_commits":  2,
+                               "reusable_product_commits":  [
+                                                                "feat(fs-02): add normative BCE schema contracts",
+                                                                "test(fs-02): register and validate normative BCE schemas"
+                                                            ],
+                               "validation":  [
+                                                  "Verify Draft 2020-12 jsonschema support",
+                                                  "Run tests/test_bce_schemas.py",
+                                                  "Run full test_*.py discovery",
+                                                  "Run git diff --check",
+                                                  "Verify the twelve reusable-product paths and preserved artifacts"
+                                              ],
+                               "repository_writer":  null,
+                               "writer_authorization_reference":  null,
+                               "push":  "NOT AUTHORIZED",
+                               "integration":  "NOT AUTHORIZED",
+                               "merge":  "NOT AUTHORIZED",
+                               "release":  "NOT AUTHORIZED",
+                               "migration":  "NOT AUTHORIZED",
+                               "fs_03":  "NOT AUTHORIZED"
+                           }
 }

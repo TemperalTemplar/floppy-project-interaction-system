@@ -2,13 +2,9 @@
 
 ## Lifecycle state
 
-`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
+`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
 
-## Applied lifecycle transition
-
-`TR-009-APPLY-SECTION-CLOSEOUT`
-
-## FS lifecycle authority
+## Authority
 
 `NO_ACTIVE_WORK_AUTHORIZATION`
 
@@ -16,7 +12,7 @@
 
 `NONE`
 
-## Current authorized implementation section
+## Current authorized section
 
 `NONE`
 
@@ -39,26 +35,9 @@ Status:
 CLOSED
 ```
 
-## Fixed FS-01 evidence
-
-- Accepted implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- Acceptance-recording checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
-- Approved closeout-proposal checkpoint: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
-- Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
-- Source version: `0.4.1-dev`
-
-## CTRL-01 control-work state
+## CTRL-01 state
 
 ```text
-Work package:
-COMPLETED AND ACCEPTED
-
-Control-work state:
-CTRL-WORK-CLOSED
-
-Activation:
-AUTHORIZED
-
 Implementation:
 COMPLETE
 
@@ -71,8 +50,8 @@ ACCEPTED
 Closure:
 APPLIED
 
-Active control work item:
-NONE
+Control-work state:
+CTRL-WORK-CLOSED
 
 Active control authorization:
 NONE
@@ -81,40 +60,24 @@ Repository writer:
 NONE
 ```
 
-Accepted work-package record:
-
-`.floppy/templates/Floppy-E-CTRL-01.draft.md`
-
-Accepted work-package checkpoint:
-
-`c58066af0b3c0241b632ca161670f331b0804986`
-
-CTRL-01 implementation checkpoint:
+CTRL-01 product checkpoint:
 
 `9031b0ea190aa6b3f35d42bfe46a5792fd491e28`
 
-Verification evidence:
+CTRL-01 closure checkpoint:
 
-- CTRL-01 tests: `10 PASSED`
-- Full test suite: `25 PASSED`
-- Administrator acceptance: `ACCEPTED`
-
-CTRL-01 control work is complete and closed. It did not reopen FS-01,
-activate an FS implementation section, or authorize FS-02.
+`e10c4a04ca7f1bee546767f60247c4aaf66eabf8`
 
 ## FS-02 state
 
 ```text
-Draft:
-PRESENT
-
-Draft status:
-DRAFT_NOT_AUTHORIZED
-
 Work package:
-NOT ACCEPTED
+ACCEPTED AS PLANNING BASELINE
 
-Activation:
+Activation state:
+AUTHORIZED_NOT_STARTED
+
+Implementation authority:
 NOT AUTHORIZED
 
 Implementation:
@@ -122,10 +85,29 @@ NOT STARTED
 
 Active:
 FALSE
+
+Implementation branch:
+feature/fs-02-normative-bce-schemas
+
+Implementation worktree:
+D:\A\Floppy\floppy-fs-02-normative-bce-schemas
+
+Base checkpoint:
+e10c4a04ca7f1bee546767f60247c4aaf66eabf8
+
+Repository writer:
+NONE
+
+Writer authorization reference:
+NONE
 ```
 
-The next legal operation is to remain paused until the administrator or
-orchestrator supplies an exact continuation directive.
+Accepted work-package record:
 
-Integration, merge, release, migration, force-push, and FS-02 resumption remain
-unauthorized.
+`.floppy/templates/Floppy-E-FS-02.draft.md`
+
+The next legal operation is issuance, revision, or withholding of a separate
+exact P1/P2 reusable-product implementation authorization.
+
+P1 and P2 implementation, push, integration, merge, release, migration,
+production changes, and FS-03 remain unauthorized.

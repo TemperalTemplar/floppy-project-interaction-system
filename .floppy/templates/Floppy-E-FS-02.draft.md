@@ -1,46 +1,95 @@
-STATUS: DRAFT_NOT_AUTHORIZED
+STATUS: ACCEPTED AS PLANNING BASELINE
+ACTIVATION_STATE: AUTHORIZED_NOT_STARTED
+IMPLEMENTATION_AUTHORITY: NOT AUTHORIZED
 
-# Floppy E Draft — FS-02 Proposed Work Package
+# Floppy E - FS-02 Accepted Work Package
 
-This file is a proposed work package only.
-It does not authorize implementation.
+## Objective
 
-## Dependency state
+Produce normative, versioned contracts from the three FS-01 draft schema
+candidates, register them in `system-manifest.json`, add only the read-only
+validator support needed to load and validate them, and add focused tests proving
+each schema accepts one valid record and rejects one invalid record.
 
-FS-01 is formally closed at the control-state transition following approved
-proposal checkpoint:
+## Exact reusable-product scope
 
-`6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
+```text
+schemas/bce/1.0.0/bce-lifecycle-state.schema.json
+schemas/bce/1.0.0/bce-work-authorization.schema.json
+schemas/bce/1.0.0/bce-lifecycle-transition.schema.json
+tools/validate_floppy.py
+system-manifest.json
+tests/test_bce_schemas.py
+tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-state.json
+tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-state.json
+tests/fixtures/bce-schemas/1.0.0/valid/work-authorization.json
+tests/fixtures/bce-schemas/1.0.0/invalid/work-authorization.json
+tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-transition.json
+tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-transition.json
+```
 
-This satisfies only the roadmap ordering prerequisite. It does not accept or
-activate FS-02.
+Exactly twelve reusable-product paths are accepted.
 
-## Proposed section
+## Reusable-product commit limit
 
-`FS-02 — Normative Machine-Readable BCE Schemas`
+No more than two reusable-product commits are permitted:
 
-## Fixed roadmap objective
+```text
+feat(fs-02): add normative BCE schema contracts
+test(fs-02): register and validate normative BCE schemas
+```
 
-A future, separately accepted and authorized FS-02 may define normative
-machine-readable BCE schemas consistent with the accepted FS-01 lifecycle model.
+Reusable-product changed-path verification must inspect the P1 and P2 commit
+objects directly. Root `.floppy/**` control commits are excluded.
 
-## Non-authority boundary
+## Accepted validation set
 
-This draft does not:
+```text
+Verify Draft 2020-12 jsonschema support.
+Run tests/test_bce_schemas.py.
+Run full test_*.py discovery.
+Run git diff --check.
+Verify the twelve reusable-product paths and preserved artifacts.
+```
 
-- accept the FS-02 work package;
-- activate FS-02;
-- create an FS-02 branch or worktree;
-- authorize implementation;
-- make the FS-01 draft schema candidates normative;
-- modify product schemas;
-- start FS-02 implementation;
-- authorize integration, merge, release, or migration; or
-- permit planning beyond this non-authoritative draft.
+## Preserved artifacts
 
-## Next legal operation
+```text
+VERSION
+schemas/drafts/bce-lifecycle-state.schema.json
+schemas/drafts/bce-work-authorization.schema.json
+schemas/drafts/bce-lifecycle-transition.schema.json
+CTRL-01 artifacts
+project-seed/.floppy/**
+```
 
-The next legal operation is preparation, revision, acceptance, or withholding of
-the FS-02 work package—not implementation.
+`VERSION` remains `0.4.1-dev`.
 
-FS-02 remains inactive and unauthorized.
+## Authorized repository context
+
+```text
+Repository:
+TemperalTemplar/floppy-project-interaction-system
+
+Branch:
+feature/fs-02-normative-bce-schemas
+
+Worktree:
+D:\A\Floppy\floppy-fs-02-normative-bce-schemas
+
+Base checkpoint:
+e10c4a04ca7f1bee546767f60247c4aaf66eabf8
+```
+
+## Current authority boundary
+
+The work package is accepted as the planning baseline.
+
+The activation state is `AUTHORIZED_NOT_STARTED`.
+
+P1 and P2 reusable-product implementation are not authorized.
+
+Repository writer remains `NONE`.
+
+Push, integration, merge, release, migration, production changes, and FS-03 are
+not authorized.
