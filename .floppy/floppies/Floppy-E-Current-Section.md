@@ -1,14 +1,14 @@
-# Floppy E — Current Section State
+# Floppy E - Current Section State
 
 ## Lifecycle state
 
 `LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
-## Applied transition
+## Applied lifecycle transition
 
 `TR-009-APPLY-SECTION-CLOSEOUT`
 
-## Authority
+## FS lifecycle authority
 
 `NO_ACTIVE_WORK_AUTHORIZATION`
 
@@ -16,7 +16,7 @@
 
 `NONE`
 
-## Current authorized section
+## Current authorized implementation section
 
 `NONE`
 
@@ -47,31 +47,50 @@ CLOSED
 - Product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
 - Source version: `0.4.1-dev`
 
-## CTRL-01 work-package state
+## CTRL-01 control-work state
 
 ```text
 Work package:
 ACCEPTED AS PLANNING BASELINE
 
+Control-work state:
+CTRL-WORK-AUTHORIZED-NOT-STARTED
+
 Activation:
-NOT AUTHORIZED
+AUTHORIZED
 
 Implementation:
 NOT STARTED
 
+Active control work item:
+CTRL-01
+
+Active control authorization:
+CTRL_01_IMPLEMENTATION
+
 Implementation branch:
-NOT CREATED
+feature/ctrl-01-orchestrator-registration-handoff
 
 Implementation worktree:
-NOT CREATED
+D:\A\Floppy\floppy-ctrl-01-orchestrator-registration-handoff
+
+Repository writer:
+CTRL_01_IMPLEMENTATION_MODEL
+
+Writer authorization reference:
+CTRL_01_IMPLEMENTATION
 ```
 
-Accepted record:
+Accepted work-package record:
 
 `.floppy/templates/Floppy-E-CTRL-01.draft.md`
 
-The Git commit containing that record is the required base for any future
-CTRL-01 implementation branch and worktree.
+Accepted work-package checkpoint:
+
+`c58066af0b3c0241b632ca161670f331b0804986`
+
+CTRL-01 control work is orthogonal to the accepted FS lifecycle. It does not
+reopen FS-01, activate an implementation section, or authorize FS-02.
 
 ## FS-02 state
 
@@ -95,9 +114,8 @@ Active:
 FALSE
 ```
 
-The next legal operation is issuance, revision, or withholding of a separate
-exact `CTRL_01_IMPLEMENTATION` authorization.
+The next legal operation is implementation and validation of exactly the seven
+accepted reusable-product files under `CTRL_01_IMPLEMENTATION`.
 
-CTRL-01 work-package acceptance does not authorize branch or worktree creation,
-activation, implementation, product changes, push, integration, merge, release,
-migration, or FS-02 resumption.
+Integration, merge, release, migration, force-push, and FS-02 resumption remain
+unauthorized.
