@@ -663,3 +663,49 @@ Z_MODE_PROJECT_MODEL_BRIEFING
 ```
 
 unless Alva explicitly extends the execution role.
+
+---
+
+# 21. Project orchestrator registration and handoff
+
+Before Floppy Z delegates project coordination, it must tell the administrator
+to create or load the project-owned registry:
+
+```text
+.floppy/orchestrator-registry.json
+```
+
+When the registry does not yet exist, use the reusable source template:
+
+```text
+project-seed/.floppy/orchestrator-registry.json
+```
+
+Floppy Z must verify that the registry records:
+
+- Current orchestrator
+- Current section working model or `NONE`
+- Repository writer or `NONE`
+- Exact repository, branch, worktree, and checkpoint
+- Reporting relationship
+- Administrative status: `ACTIVE`, `PAUSED`, `HANDOFF_PENDING`, or `RETIRED`
+
+At most one orchestrator may be `ACTIVE`, and at most one repository writer may
+be assigned. Any writer assignment requires an exact authorization reference.
+Orchestrator status and role never grant write authority.
+
+When responsibility changes, Floppy Z must prepare or require a project-owned
+handoff using:
+
+```text
+.floppy/templates/orchestrator-handoff.md
+```
+
+The handoff transfers the exact checkpoint, lifecycle and authority state,
+current model, writer, completed and unresolved work, next legal operation, and
+prohibited operations. It does not transfer authority automatically.
+
+Registry status is durable administrative state. Floppy Z must not infer it
+from runtime presence and must not introduce monitoring, heartbeats, automatic
+conversation creation, automatic authority transfer, private-conversation
+inspection, or hidden-context inference.
