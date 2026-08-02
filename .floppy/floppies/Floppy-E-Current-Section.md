@@ -2,19 +2,19 @@
 
 ## Lifecycle state
 
-`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+`LC-SECTION-AUTHORIZED-NOT-STARTED`
 
 ## Authority
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-02`
 
 ## Current authorized section
 
-`NONE`
+`FS-02`
 
 ## Historical FS-01 state
 
@@ -55,59 +55,50 @@ CTRL-WORK-CLOSED
 
 Active control authorization:
 NONE
-
-Repository writer:
-NONE
 ```
 
-CTRL-01 product checkpoint:
-
-`9031b0ea190aa6b3f35d42bfe46a5792fd491e28`
-
-CTRL-01 closure checkpoint:
-
-`e10c4a04ca7f1bee546767f60247c4aaf66eabf8`
-
-## FS-02 state
+## FS-02 implementation authorization
 
 ```text
-Work package:
-ACCEPTED AS PLANNING BASELINE
-
-Activation state:
-AUTHORIZED_NOT_STARTED
-
-Implementation authority:
-NOT AUTHORIZED
-
-Implementation:
-NOT STARTED
-
-Active:
-FALSE
-
-Implementation branch:
-feature/fs-02-normative-bce-schemas
-
-Implementation worktree:
-D:\A\Floppy\floppy-fs-02-normative-bce-schemas
-
-Base checkpoint:
-e10c4a04ca7f1bee546767f60247c4aaf66eabf8
+Authorization reference:
+FS_02_IMPLEMENTATION
 
 Repository writer:
-NONE
+FS_02_WORKING_MODEL
 
-Writer authorization reference:
-NONE
+Repository:
+TemperalTemplar/floppy-project-interaction-system
+
+Branch:
+feature/fs-02-normative-bce-schemas
+
+Worktree:
+D:\A\Floppy\floppy-fs-02-normative-bce-schemas
+
+Starting checkpoint:
+3f75d97b29abddd9684cb0d428b4770c9c4fd622
+
+State:
+AUTHORIZED_NOT_STARTED
+
+Implementation started:
+FALSE
+
+Maximum reusable-product commits:
+2
 ```
 
-Accepted work-package record:
+The exact reusable-product scope is the twelve paths recorded in the accepted
+FS-02 work package and active authorization.
 
-`.floppy/templates/Floppy-E-FS-02.draft.md`
+Required commit sequence:
 
-The next legal operation is issuance, revision, or withholding of a separate
-exact P1/P2 reusable-product implementation authorization.
+```text
+feat(fs-02): add normative BCE schema contracts
+test(fs-02): register and validate normative BCE schemas
+```
 
-P1 and P2 implementation, push, integration, merge, release, migration,
-production changes, and FS-03 remain unauthorized.
+Root-control changes during P1 or P2 are prohibited.
+
+Push, pull request, integration, merge, tag, release, migration, production
+changes, and FS-03 remain unauthorized.

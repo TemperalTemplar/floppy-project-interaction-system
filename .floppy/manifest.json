@@ -24,13 +24,13 @@
                           "fs_01_product_completion_checkpoint":  "d907643874f9aa278f31311527f3e7ec907c6cb6",
                           "accepted_fs_01_implementation_checkpoint":  "d03969aa93debb6b705098483c8b59bb9d37d58f"
                       },
-    "status":  "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+    "status":  "LC-SECTION-AUTHORIZED-NOT-STARTED",
     "authority":  {
                       "human_authority_required":  true,
-                      "last_authorized_control_operation":  "FS_02_WORK_PACKAGE_ACCEPTANCE_AND_AUTHORIZED_NOT_STARTED",
-                      "implementation_authority":  "NO_ACTIVE_WORK_AUTHORIZATION",
-                      "active_implementation_section":  null,
-                      "current_authorized_section":  null,
+                      "last_authorized_control_operation":  "FS_02_IMPLEMENTATION_AUTHORIZATION",
+                      "implementation_authority":  "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+                      "active_implementation_section":  "FS-02",
+                      "current_authorized_section":  "FS-02",
                       "prohibited_inference":  true,
                       "last_applied_transition":  "TR-009-APPLY-SECTION-CLOSEOUT",
                       "authority_state":  "NO_ACTIVE_WORK_AUTHORIZATION"
@@ -101,11 +101,11 @@
                     "fs_01_section_closeout":  "APPLIED",
                     "fs_01_closeout_execution":  "APPLIED",
                     "fs_01_status":  "CLOSED",
-                    "current_authorized_section":  null,
-                    "active_implementation_section":  null,
                     "fs_02_work_package":  "ACCEPTED AS PLANNING BASELINE",
                     "fs_02_activation_state":  "AUTHORIZED_NOT_STARTED",
-                    "fs_02_implementation":  "NOT AUTHORIZED"
+                    "current_authorized_section":  "FS-02",
+                    "active_implementation_section":  "FS-02",
+                    "fs_02_implementation":  "AUTHORIZED_NOT_STARTED"
                 },
     "records":  {
                     "evidence":  ".floppy/evidence/README.md",
@@ -136,17 +136,18 @@
                                "ctrl_01_administrator_acceptance":  "ACCEPTED",
                                "ctrl_01_closure_applied":  true,
                                "ctrl_01_implementation_checkpoint":  "9031b0ea190aa6b3f35d42bfe46a5792fd491e28",
-                               "state":  "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-                               "decision_required":  "Issue, revise, or withhold separate exact P1/P2 reusable-product implementation authorization.",
-                               "implementation_may_begin":  false,
                                "fs_02_work_package_status":  "ACCEPTED AS PLANNING BASELINE",
                                "fs_02_activation_state":  "AUTHORIZED_NOT_STARTED",
                                "fs_02_activation_authorized":  true,
-                               "fs_02_implementation_authorized":  false,
+                               "state":  "LC-SECTION-AUTHORIZED-NOT-STARTED",
+                               "decision_required":  "Implement, validate, and commit P1 followed by P2 within the exact twelve-path scope.",
+                               "implementation_may_begin":  true,
+                               "fs_02_implementation_authorized":  true,
                                "fs_02_implementation_started":  false,
-                               "fs_02_active":  false
+                               "fs_02_active":  true,
+                               "repository_writer":  "FS_02_WORKING_MODEL",
+                               "writer_authorization_reference":  "FS_02_IMPLEMENTATION"
                            },
-    "active_work_authorization":  null,
     "historical_work_authorizations":  [
                                            {
                                                "authorization_id":  "FS_01_IMPLEMENTATION",
@@ -382,9 +383,6 @@
                                "accepted_base_checkpoint":  "e10c4a04ca7f1bee546767f60247c4aaf66eabf8",
                                "acceptance_checkpoint":  "PENDING_ROOT_CONTROL_COMMIT",
                                "activation_state":  "AUTHORIZED_NOT_STARTED",
-                               "implementation_authorized":  false,
-                               "implementation_started":  false,
-                               "active":  false,
                                "implementation_branch":  "feature/fs-02-normative-bce-schemas",
                                "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-02-normative-bce-schemas",
                                "source_version":  "0.4.1-dev",
@@ -414,13 +412,68 @@
                                                   "Run git diff --check",
                                                   "Verify the twelve reusable-product paths and preserved artifacts"
                                               ],
-                               "repository_writer":  null,
-                               "writer_authorization_reference":  null,
                                "push":  "NOT AUTHORIZED",
                                "integration":  "NOT AUTHORIZED",
                                "merge":  "NOT AUTHORIZED",
                                "release":  "NOT AUTHORIZED",
                                "migration":  "NOT AUTHORIZED",
-                               "fs_03":  "NOT AUTHORIZED"
-                           }
+                               "fs_03":  "NOT AUTHORIZED",
+                               "authorization_reference":  "FS_02_IMPLEMENTATION",
+                               "implementation_authorized":  true,
+                               "implementation_started":  false,
+                               "active":  true,
+                               "repository_writer":  "FS_02_WORKING_MODEL",
+                               "writer_authorization_reference":  "FS_02_IMPLEMENTATION"
+                           },
+    "active_work_authorization":  {
+                                      "authorization_id":  "FS_02_IMPLEMENTATION",
+                                      "authorization_kind":  "section_implementation",
+                                      "administrator_issued":  true,
+                                      "accepted_work_package_checkpoint":  "3f75d97b29abddd9684cb0d428b4770c9c4fd622",
+                                      "section":  "FS-02",
+                                      "repository":  "TemperalTemplar/floppy-project-interaction-system",
+                                      "implementation_branch":  "feature/fs-02-normative-bce-schemas",
+                                      "implementation_worktree":  "D:\\A\\Floppy\\floppy-fs-02-normative-bce-schemas",
+                                      "base_checkpoint":  "3f75d97b29abddd9684cb0d428b4770c9c4fd622",
+                                      "source_version":  "0.4.1-dev",
+                                      "authorized_reusable_product_files":  [
+                                                                                "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+                                                                                "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+                                                                                "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+                                                                                "tools/validate_floppy.py",
+                                                                                "system-manifest.json",
+                                                                                "tests/test_bce_schemas.py",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-state.json",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-state.json",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/valid/work-authorization.json",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/invalid/work-authorization.json",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/valid/lifecycle-transition.json",
+                                                                                "tests/fixtures/bce-schemas/1.0.0/invalid/lifecycle-transition.json"
+                                                                            ],
+                                      "maximum_reusable_product_commits":  2,
+                                      "required_commit_sequence":  [
+                                                                       "feat(fs-02): add normative BCE schema contracts",
+                                                                       "test(fs-02): register and validate normative BCE schemas"
+                                                                   ],
+                                      "required_validation":  [
+                                                                  "Verify Draft 2020-12 jsonschema support",
+                                                                  "Run tests/test_bce_schemas.py",
+                                                                  "Run full test_*.py discovery",
+                                                                  "Run git diff --check",
+                                                                  "Verify P1 and P2 together changed exactly the twelve authorized reusable-product paths",
+                                                                  "Verify historical draft schemas, CTRL-01 artifacts, project-seed files, and VERSION remain unchanged"
+                                                              ],
+                                      "repository_writer":  "FS_02_WORKING_MODEL",
+                                      "writer_authorization_reference":  "FS_02_IMPLEMENTATION",
+                                      "root_control_changes_during_product_commits":  "NOT AUTHORIZED",
+                                      "push":  "NOT AUTHORIZED",
+                                      "pull_request":  "NOT AUTHORIZED",
+                                      "integration":  "NOT AUTHORIZED",
+                                      "merge":  "NOT AUTHORIZED",
+                                      "tag":  "NOT AUTHORIZED",
+                                      "release":  "NOT AUTHORIZED",
+                                      "migration":  "NOT AUTHORIZED",
+                                      "production_changes":  "NOT AUTHORIZED",
+                                      "fs_03":  "NOT AUTHORIZED"
+                                  }
 }
