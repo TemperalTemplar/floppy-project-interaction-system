@@ -74,3 +74,51 @@ When I request closeout, load the closeout protocol named in the project manifes
 - Project Floppy E is the only execution authorization.
 
 The project manifest is the authority for project-file locations, onboarding state, roadmap paths, and read order. Do not scan or load the entire repository when the manifest and lifecycle state identify a smaller sufficient set.
+
+## 4. Project orchestrator registration and handoff mode
+
+Use this before delegating ongoing project coordination to a project
+orchestrator or transferring that responsibility to another model or
+conversation.
+
+The administrator must create or load:
+
+```text
+.floppy/orchestrator-registry.json
+```
+
+Use the source template:
+
+```text
+project-seed/.floppy/orchestrator-registry.json
+```
+
+The registry must identify the current orchestrator, current section working
+model or `NONE`, repository writer or `NONE`, exact repository, branch,
+worktree, checkpoint, reporting relationship, and one of these administrative
+statuses:
+
+```text
+ACTIVE
+PAUSED
+HANDOFF_PENDING
+RETIRED
+```
+
+Before responsibility changes, create a handoff from:
+
+```text
+.floppy/templates/orchestrator-handoff.md
+```
+
+The handoff must preserve the exact repository checkpoint, lifecycle and
+authority state, current model, writer, completed and unresolved work, next
+legal operation, and prohibited operations.
+
+At most one orchestrator may be `ACTIVE`. At most one repository writer may be
+assigned. A writer requires an exact authorization reference. Orchestrator
+status and role never grant write authority.
+
+These records are administrative state, not runtime detection. Do not add
+monitoring, heartbeats, automatic conversation creation, automatic authority
+transfer, private-conversation inspection, or hidden-context inference.
