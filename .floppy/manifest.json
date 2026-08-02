@@ -27,7 +27,7 @@
     "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
     "authority": {
         "human_authority_required": true,
-        "last_authorized_control_operation": "FS_01_SECTION_CLOSEOUT_APPLICATION",
+        "last_authorized_control_operation": "CTRL_01_WORK_PACKAGE_ACCEPTANCE",
         "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "active_implementation_section": null,
         "current_authorized_section": null,
@@ -111,11 +111,12 @@
         "fs_01_work_package_acceptance": ".floppy/onboarding/roadmap-acceptance.md",
         "fs_01_administrator_acceptance": ".floppy/floppies/Floppy-E-Current-Section.md",
         "fs_01_closeout": ".floppy/closeouts/FS-01-closeout.md",
-        "fs_02_work_package_draft": ".floppy/templates/Floppy-E-FS-02.draft.md"
+        "fs_02_work_package_draft": ".floppy/templates/Floppy-E-FS-02.draft.md",
+        "ctrl_01_work_package_acceptance": ".floppy/templates/Floppy-E-CTRL-01.draft.md"
     },
     "continuation_point": {
         "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "decision_required": "Prepare, revise, accept, or withhold the FS-02 work package. Implementation is not authorized.",
+        "decision_required": "Issue, revise, or withhold exact CTRL_01_IMPLEMENTATION authorization. FS-02 remains paused.",
         "implementation_may_begin": false,
         "fs_01_status": "CLOSED",
         "fs_01_section_closeout": "APPLIED",
@@ -127,7 +128,10 @@
         "fs_02_work_package_status": "NOT_ACCEPTED",
         "fs_02_activation_authorized": false,
         "fs_02_implementation_started": false,
-        "fs_02_active": false
+        "fs_02_active": false,
+        "ctrl_01_work_package_status": "ACCEPTED AS PLANNING BASELINE",
+        "ctrl_01_activation_authorized": false,
+        "ctrl_01_implementation_started": false
     },
     "active_work_authorization": null,
     "historical_work_authorizations": [
@@ -298,5 +302,27 @@
         "tag_or_release": "NOT AUTHORIZED",
         "migration": "NOT AUTHORIZED",
         "fs_02": "NOT AUTHORIZED"
+    },
+    "ctrl_01_work_package": {
+        "title": "Project Orchestrator Registration and Handoff",
+        "path": ".floppy/templates/Floppy-E-CTRL-01.draft.md",
+        "status": "ACCEPTED AS PLANNING BASELINE",
+        "accepted_on": "2026-08-02",
+        "accepted_base_checkpoint": "cec7e0c16b8a2a15fbcc9b0ff5ab13c47901d149",
+        "acceptance_checkpoint": "THIS_COMMIT",
+        "activation_authorized": false,
+        "implementation_started": false,
+        "reusable_product_files": [
+            "BOOTSTRAP.md",
+            "orchestrator/Floppy_Z.md",
+            "project-seed/.floppy/orchestrator-registry.json",
+            "project-seed/.floppy/templates/orchestrator-handoff.md",
+            "project-seed/.floppy/manifest.json",
+            "tests/test_orchestrator_registry.py",
+            "system-manifest.json"
+        ],
+        "reusable_product_commit": "feat(ctrl-01): add orchestrator registration and handoff",
+        "repository_writer": null,
+        "fs_02_remains_paused": true
     }
 }
