@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-work-authorization:1.0.0",
+  "title": "Normative BCE Work Authorization",
+  "description": "FS-02 normative, versioned machine-readable contract for exact human-issued BCE work authorization. Validation does not grant or execute authority.",
+  "status": "normative",
+  "schema_version": "1.0.0",
+  "normative_section": "FS-02",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authorization_id",
+    "authorization_kind",
+    "human_authority",
+    "repository",
+    "base_checkpoint",
+    "source_version",
+    "exact_file_scope",
+    "required_validation",
+    "commit_sequence",
+    "push_boundary",
+    "forbidden_side_effects"
+  ],
+  "properties": {
+    "authorization_id": {
+      "$ref": "#/$defs/non_empty_string"
+    },
+    "authorization_kind": {
+      "type": "string",
+      "enum": [
+        "section_implementation",
+        "migration",
+        "closeout_application",
+        "final_closure_application"
+      ]
+    },
+    "section": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^FS-[0-9]{2}$"
+    },
+    "human_authority": {
+      "$ref": "#/$defs/human_authority"
+    },
+    "repository": {
+      "$ref": "#/$defs/non_empty_string"
+    },
+    "base_checkpoint": {
+      "$ref": "#/$defs/git_checkpoint"
+    },
+    "source_version": {
+      "$ref": "#/$defs/non_empty_string"
+    },
+    "branch": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "worktree": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "exact_file_scope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repository_path"
+      }
+    },
+    "required_validation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "commit_sequence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/commit_requirement"
+      }
+    },
+    "push_boundary": {
+      "$ref": "#/$defs/push_boundary"
+    },
+    "forbidden_side_effects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "administrator_acceptance": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "ACCEPTED",
+        "REJECTED"
+      ],
+      "default": "PENDING"
+    },
+    "section_closeout": {
+      "type": "string",
+      "enum": [
+        "NOT AUTHORIZED",
+        "AUTHORIZED",
+        "APPLIED"
+      ],
+      "default": "NOT AUTHORIZED"
+    },
+    "integration": {
+      "type": "string",
+      "enum": [
+        "NOT AUTHORIZED",
+        "AUTHORIZED",
+        "COMPLETE"
+      ],
+      "default": "NOT AUTHORIZED"
+    },
+    "later_section_authority": {
+      "type": "string",
+      "enum": [
+        "NOT AUTHORIZED",
+        "AUTHORIZED"
+      ],
+      "default": "NOT AUTHORIZED"
+    }
+  },
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "git_checkpoint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repository_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "(^|/)\\.\\.?(/|$)"
+      }
+    },
+    "human_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor",
+        "decision",
+        "issued_explicitly"
+      ],
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "decision": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "issued_explicitly": {
+          "const": true
+        }
+      }
+    },
+    "commit_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "message",
+        "path_class"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "message": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "path_class": {
+          "type": "string",
+          "enum": [
+            "root_control",
+            "reusable_product"
+          ]
+        }
+      }
+    },
+    "push_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "permitted",
+        "branch",
+        "force_push"
+      ],
+      "properties": {
+        "permitted": {
+          "type": "boolean"
+        },
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "force_push": {
+          "const": false
+        }
+      }
+    }
+  }
+}

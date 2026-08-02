@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-transition:1.0.0",
+  "title": "Normative BCE Lifecycle Transition",
+  "description": "FS-02 normative, versioned machine-readable contract for a declarative BCE lifecycle transition. It cannot execute, apply, or write a transition.",
+  "status": "normative",
+  "schema_version": "1.0.0",
+  "normative_section": "FS-02",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "from_state_ids",
+    "to_state_id",
+    "changed_dimensions",
+    "preconditions",
+    "required_human_authority",
+    "required_inputs",
+    "required_outputs",
+    "stop_conditions",
+    "forbidden_side_effects",
+    "declarative_only",
+    "execution_capability",
+    "applies_transition",
+    "writes_lifecycle_state"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/transition_identifier"
+    },
+    "title": {
+      "$ref": "#/$defs/non_empty_string"
+    },
+    "from_state_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lifecycle_state_identifier"
+      }
+    },
+    "to_state_id": {
+      "$ref": "#/$defs/lifecycle_state_identifier"
+    },
+    "changed_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/dimension_identifier"
+      }
+    },
+    "preconditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "required_human_authority": {
+      "$ref": "#/$defs/human_authority"
+    },
+    "required_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "required_outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "stop_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "forbidden_side_effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "declarative_only": {
+      "const": true
+    },
+    "execution_capability": {
+      "const": false
+    },
+    "applies_transition": {
+      "const": false
+    },
+    "writes_lifecycle_state": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transition_identifier": {
+      "type": "string",
+      "pattern": "^TR-[0-9]{3}-[A-Z0-9-]+$"
+    },
+    "lifecycle_state_identifier": {
+      "type": "string",
+      "pattern": "^LC-[A-Z0-9-]+$"
+    },
+    "dimension_identifier": {
+      "type": "string",
+      "enum": [
+        "roadmap",
+        "work_package",
+        "authority",
+        "implementation",
+        "verification",
+        "acceptance",
+        "closeout",
+        "migration",
+        "final_closure",
+        "active_implementation_section"
+      ]
+    },
+    "human_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor",
+        "decision"
+      ],
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "decision": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    }
+  }
+}
