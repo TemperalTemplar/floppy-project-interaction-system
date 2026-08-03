@@ -91,28 +91,37 @@
             "id": "FS-03",
             "sequence": 3,
             "title": "Semantic Validator",
-            "status": "DRAFT_NOT_AUTHORIZED",
+            "status": "ACCEPTED AS PLANNING BASELINE",
             "implementation_started": false,
             "depends_on": [
                 "FS-02"
             ],
-            "objective": "Add cross-record semantic checks to the existing validator using the FS-02 normative schemas. Validate lifecycle state, authorization consistency, orchestrator and writer references, transition legality, and required evidence references. Produce concise diagnostics.",
+            "objective": "Add cross-record semantic checks to the existing validator using the FS-02 normative schemas. Validate lifecycle state, authorization consistency, orchestrator and writer references, transition legality, required evidence references, and exact authorized commit scope. Produce concise deterministic diagnostics.",
             "exact_reusable_product_paths": [
-                "tools/validate_floppy.py",
-                "tests/test_bce_semantics.py"
+                "tests/test_bce_semantics.py",
+                "tools/validate_floppy.py"
             ],
-            "maximum_reusable_product_paths": 2,
             "commit_maximum": 1,
             "required_tests": [
                 "Valid cross-record lifecycle and authorization relationships pass.",
                 "Each inconsistent relationship fails with one concise diagnostic.",
-                "Existing FS-02 schema tests and the full test suite pass."
+                "Existing FS-02 schema tests pass.",
+                "The complete repository test suite passes."
             ],
             "explicit_exclusions": [
-                "No new validation framework, domain layer, loader hierarchy, or package tree."
+                "No new validation framework.",
+                "No domain layer.",
+                "No loader hierarchy.",
+                "No package tree.",
+                "No service layer.",
+                "No Git-integrity subsystem.",
+                "No lifecycle writes or transition execution.",
+                "No repository mutation by the validator.",
+                "No new dependency.",
+                "No schema or system-manifest change.",
+                "No FS-04 functionality."
             ],
-            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
-            "accepted": false,
+            "accepted": true,
             "activation_authorized": false,
             "implementation_authorized": false,
             "active": false,
@@ -363,7 +372,7 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "lifecycle_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
     "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
