@@ -2,19 +2,23 @@
 
 ## Lifecycle state
 
-`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
+`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+
+## Applied transition
+
+`TR-007-ACCEPT-SECTION`
 
 ## Authority
 
-`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
+`NO_ACTIVE_WORK_AUTHORIZATION`
 
 ## Active implementation section
 
-`FS-02`
+`NONE`
 
 ## Current authorized section
 
-`FS-02`
+`NONE`
 
 ## Historical FS-01 state
 
@@ -57,23 +61,17 @@ Active control authorization:
 NONE
 ```
 
-## FS-02 implementation-completion and verification record
+## FS-02 administrator-acceptance record
 
 ```text
-Authorization reference:
-FS_02_IMPLEMENTATION
+Accepted checkpoint:
+087a8c306f7348b67d12c134a610696f28471aaf
 
-Repository writer:
-FS_02_WORKING_MODEL
+Accepted product commit P1:
+0ec8da6c7cd2224b284fcff57c3b03a444c594e6
 
-Repository:
-TemperalTemplar/floppy-project-interaction-system
-
-Branch:
-feature/fs-02-normative-bce-schemas
-
-Worktree:
-D:\A\Floppy\floppy-fs-02-normative-bce-schemas
+Accepted product commit P2:
+fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
 
 Implementation:
 COMPLETE
@@ -82,29 +80,25 @@ Verification:
 COMPLETE
 
 Administrator acceptance:
-PENDING
+ACCEPTED
 
 Closeout:
 NOT STARTED — NOT PROPOSED
+
+Closeout execution:
+NOT AUTHORIZED
+
+Active implementation authority:
+NONE
+
+Repository writer:
+NONE
 
 FS-03:
 INACTIVE — NOT AUTHORIZED
 ```
 
-## Accepted product checkpoints
-
-```text
-P1:
-0ec8da6c7cd2224b284fcff57c3b03a444c594e6
-
-P2:
-fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
-
-Current HEAD before this root-control review:
-fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
-```
-
-## Verified evidence
+## Accepted evidence
 
 ```text
 Focused tests:
@@ -128,26 +122,24 @@ UNCHANGED
 VERSION:
 0.4.1-dev
 
-Root-control files during P1/P2:
-UNCHANGED
-
-Worktree before this recording:
+Worktree before acceptance recording:
 CLEAN
 
 Push:
 NONE
 ```
 
-Implementation completion and verification completion do not imply administrator
-acceptance. Administrator acceptance remains pending.
+Administrator acceptance does not imply section closeout.
 
 Closeout has not started. No closeout proposal or closeout application is
 authorized.
 
+The completed `FS_02_IMPLEMENTATION` authorization is retained only as
+historical evidence. It grants no additional product write, commit, push,
+integration, merge, release, migration, production, closeout, or later-section
+authority.
+
 FS-03 remains inactive and unauthorized.
 
-Push, pull request, integration, merge, tag, release, migration, production
-changes, and later-section work remain unauthorized.
-
-The next legal operation is a separate administrator acceptance decision for
-FS-02.
+The next legal operation is a separately authorized FS-02 closeout proposal or
+an explicit decision to withhold closeout.
