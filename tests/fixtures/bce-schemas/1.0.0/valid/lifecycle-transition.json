@@ -1,0 +1,41 @@
+{
+  "id": "TR-001-AUTHORIZE-SECTION",
+  "title": "Authorize an accepted section without starting implementation",
+  "from_state_ids": [
+    "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+  ],
+  "to_state_id": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+  "changed_dimensions": [
+    "authority",
+    "active_implementation_section"
+  ],
+  "preconditions": [
+    "The section work package is accepted as the planning baseline.",
+    "The repository starting checkpoint is clean and exact."
+  ],
+  "required_human_authority": {
+    "actor": "administrator",
+    "decision": "Issue an exact section implementation authorization."
+  },
+  "required_inputs": [
+    "Authorization identifier",
+    "Repository writer",
+    "Exact file scope",
+    "Commit sequence"
+  ],
+  "required_outputs": [
+    "Recorded active work authorization",
+    "Recorded sole repository writer"
+  ],
+  "stop_conditions": [
+    "Stop before implementation when any checkpoint or scope guard fails."
+  ],
+  "forbidden_side_effects": [
+    "Do not start implementation as part of the transition record.",
+    "Do not push, merge, release, migrate, or authorize a later section."
+  ],
+  "declarative_only": true,
+  "execution_capability": false,
+  "applies_transition": false,
+  "writes_lifecycle_state": false
+}
