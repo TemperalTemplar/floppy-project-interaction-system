@@ -2,7 +2,7 @@
 
 ## Lifecycle state
 
-`LC-SECTION-AUTHORIZED-NOT-STARTED`
+`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
 
 ## Authority
 
@@ -57,7 +57,7 @@ Active control authorization:
 NONE
 ```
 
-## FS-02 implementation authorization
+## FS-02 implementation-completion and verification record
 
 ```text
 Authorization reference:
@@ -75,30 +75,79 @@ feature/fs-02-normative-bce-schemas
 Worktree:
 D:\A\Floppy\floppy-fs-02-normative-bce-schemas
 
-Starting checkpoint:
-3f75d97b29abddd9684cb0d428b4770c9c4fd622
+Implementation:
+COMPLETE
 
-State:
-AUTHORIZED_NOT_STARTED
+Verification:
+COMPLETE
 
-Implementation started:
-FALSE
+Administrator acceptance:
+PENDING
 
-Maximum reusable-product commits:
-2
+Closeout:
+NOT STARTED — NOT PROPOSED
+
+FS-03:
+INACTIVE — NOT AUTHORIZED
 ```
 
-The exact reusable-product scope is the twelve paths recorded in the accepted
-FS-02 work package and active authorization.
-
-Required commit sequence:
+## Accepted product checkpoints
 
 ```text
-feat(fs-02): add normative BCE schema contracts
-test(fs-02): register and validate normative BCE schemas
+P1:
+0ec8da6c7cd2224b284fcff57c3b03a444c594e6
+
+P2:
+fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
+
+Current HEAD before this root-control review:
+fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
 ```
 
-Root-control changes during P1 or P2 are prohibited.
+## Verified evidence
+
+```text
+Focused tests:
+6 PASSED
+
+Full test suite:
+31 PASSED
+
+Authorized reusable-product paths:
+EXACTLY 12
+
+Historical draft schemas:
+UNCHANGED
+
+CTRL-01 artifacts and registration:
+UNCHANGED
+
+Project-seed files:
+UNCHANGED
+
+VERSION:
+0.4.1-dev
+
+Root-control files during P1/P2:
+UNCHANGED
+
+Worktree before this recording:
+CLEAN
+
+Push:
+NONE
+```
+
+Implementation completion and verification completion do not imply administrator
+acceptance. Administrator acceptance remains pending.
+
+Closeout has not started. No closeout proposal or closeout application is
+authorized.
+
+FS-03 remains inactive and unauthorized.
 
 Push, pull request, integration, merge, tag, release, migration, production
-changes, and FS-03 remain unauthorized.
+changes, and later-section work remain unauthorized.
+
+The next legal operation is a separate administrator acceptance decision for
+FS-02.
