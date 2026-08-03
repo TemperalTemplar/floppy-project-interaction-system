@@ -1,25 +1,31 @@
-# Floppy E - FS-03 Accepted Work Package
+# Floppy E - FS-03 Active Work Package
 
 ## Section
 
-`FS-03 — Semantic Validator`
+`FS-03 - Semantic Validator`
 
 ## Status
 
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
-Activation: NOT YET RECORDED
-Implementation authority: NOT YET RECORDED
-Implementation: NOT STARTED
+Activation: RECORDED
+Implementation authority: FS_03_IMPLEMENTATION
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Repository writer: NONE
+Repository writer: FS_03_WORKING_MODEL
+Writer authorization reference: FS_03_IMPLEMENTATION
 ```
 
 ## Objective
 
-Add cross-record semantic checks to the existing validator using the FS-02 normative schemas. Validate lifecycle state, authorization consistency, orchestrator and writer references, transition legality, required evidence references, and exact authorized commit scope. Produce concise deterministic diagnostics.
+Add cross-record semantic checks to the existing validator using the FS-02
+normative schemas. Validate lifecycle state, work authorization, orchestrator
+and working-model identities, repository-writer registration, transition
+legality and preconditions, required evidence references, identifier
+uniqueness, and exact authorized commit scope. Diagnostics must be concise and
+deterministic. Validation must remain read-only.
 
 ## Exact reusable-product scope
 
@@ -36,21 +42,10 @@ Exact reusable-product commit message:
 
 `feat(fs-03): add BCE semantic validation`
 
-## Required tests
-
-- Valid cross-record lifecycle and authorization relationships pass.
-- Each inconsistent relationship fails with one concise diagnostic.
-- Existing FS-02 schema tests pass.
-- The complete repository test suite passes.
-
 ## Explicit exclusions
 
-- No new validation framework.
-- No domain layer.
-- No loader hierarchy.
-- No package tree.
-- No service layer.
-- No Git-integrity subsystem.
+- No new validation framework, domain layer, loader hierarchy, or package tree.
+- No service layer or Git-integrity subsystem.
 - No lifecycle writes or transition execution.
 - No repository mutation by the validator.
 - No new dependency.
@@ -63,10 +58,9 @@ Exact reusable-product commit message:
 Repository: TemperalTemplar/floppy-project-interaction-system
 Branch: feature/fs-03-semantic-validator
 Worktree: D:\A\Floppy-FS-03
-Base checkpoint: 92b4e08477ac44b6d5ac50f213e444203a6762f2
+Accepted work-package checkpoint: cf235ef8884cf4f4a4bfde4055c2266c934a142d
 Source version: 0.4.1-dev
 ```
 
-Acceptance does not itself authorize push, merge, integration, release, tag,
-migration, production changes, FS-04 work, or any reusable-product path outside
-the exact two-file scope.
+Push, merge, integration, release, tag, migration, production changes,
+administrator acceptance recording, closeout, and FS-04 remain unauthorized.

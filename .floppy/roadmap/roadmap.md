@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+FS_03_IMPLEMENTATION
 
 Active implementation section:
-NONE
+FS-03
 
 Current authorized section:
-NONE
+FS-03
 
 FS-01:
 CLOSED
@@ -23,10 +23,10 @@ FS-02:
 CLOSED
 
 FS-03:
-DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION IN PROGRESS
 
 Repository writer:
-NONE
+FS_03_WORKING_MODEL
 
 Integration:
 NOT AUTHORIZED
@@ -104,22 +104,27 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 FS-02 is closed.
 
-FS-03 exists only as `DRAFT_NOT_AUTHORIZED`. It is inactive, unaccepted, and unauthorized. Repository writer is `NONE`.
+FS-03 implementation is in progress and verification is
+not started. Administrator acceptance remains pending.
 
-The next legal operation is preparation, revision, acceptance, or withholding of the FS-03 work package—not implementation.
+FS-04 is inactive and not authorized. Push, merge, integration, release, tag,
+migration, production changes, administrator acceptance recording, and
+closeout remain unauthorized.
 
 <!-- FS-03-PHASE-1-STATE:BEGIN -->
 ## FS-03 Phase 1 control state
 
 ```text
-Status: ACCEPTED AS PLANNING BASELINE
+Status: IMPLEMENTATION IN PROGRESS
 Branch: feature/fs-03-semantic-validator
 Worktree: D:\A\Floppy-FS-03
-Authorization: NONE
-Repository writer: NONE
+Authorization: FS_03_IMPLEMENTATION
+Repository writer: FS_03_WORKING_MODEL
 Reusable-product paths: tests/test_bce_semantics.py, tools/validate_floppy.py
 Maximum reusable-product commits: 1
 Reusable-product commit: NOT YET CREATED
+Implementation: IN PROGRESS
+Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
 FS-04: INACTIVE / NOT AUTHORIZED
