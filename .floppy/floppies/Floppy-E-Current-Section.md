@@ -60,23 +60,32 @@ NOT AUTHORIZED
 - Closeout-proposal commit: `849c1fc2e70a76b834256050b4077c0f5096f925`
 - Source version: `0.4.1-dev`
 
-## FS-03 state
+## FS-03 draft state
 
 ```text
-Work package:
-NOT ACCEPTED
+Path:
+.floppy/templates/Floppy-E-FS-03.draft.md
 
-Draft created by this closeout:
-FALSE
+Status:
+DRAFT_NOT_AUTHORIZED
+
+Accepted:
+NO
+
+Activation authorized:
+NO
+
+Implementation authorized:
+NO
+
+Implementation started:
+NO
 
 Active:
-FALSE
+NO
 
-Authorized:
-FALSE
-
-Implementation:
-NOT STARTED
+Repository writer:
+NONE
 ```
 
 FS-02 is formally closed.

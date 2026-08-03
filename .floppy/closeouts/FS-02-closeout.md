@@ -41,8 +41,12 @@ FS-02 status is `CLOSED`.
 
 Active work authorization and repository writer are `NONE`.
 
-No FS-03 draft was created by this closeout operation. FS-03 remains inactive,
-unaccepted, and unauthorized.
+The required FS-03 draft was added by the bounded corrective closeout
+commit based on `7e1a1ba985e802cadac6588b9425dedfae787ac2` at `.floppy/templates/Floppy-E-FS-03.draft.md`.
+
+The draft status is `DRAFT_NOT_AUTHORIZED`. It is inactive, unaccepted,
+and unauthorized. No activation, implementation, repository-writer, push,
+integration, merge, release, tag, migration, or production authority is granted.
 
 Push, integration, merge, release, tag, migration, and production changes remain
 unauthorized.
