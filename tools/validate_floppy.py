@@ -34,6 +34,9 @@ SOURCE_REQUIRED = [
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
+    "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+    "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "tools/initialize_project.py",
 ]
 
@@ -77,6 +80,31 @@ LIFECYCLE_ARTIFACTS = {
         "$id": (
             "urn:floppy-project-interaction-system:"
             "draft:bce-lifecycle-transition:fs-01"
+        ),
+    },
+}
+
+
+NORMATIVE_BCE_ARTIFACTS = {
+    "lifecycle_state": {
+        "path": "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+        "$id": (
+            "urn:floppy-project-interaction-system:"
+            "schema:bce-lifecycle-state:1.0.0"
+        ),
+    },
+    "work_authorization": {
+        "path": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+        "$id": (
+            "urn:floppy-project-interaction-system:"
+            "schema:bce-work-authorization:1.0.0"
+        ),
+    },
+    "lifecycle_transition": {
+        "path": "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+        "$id": (
+            "urn:floppy-project-interaction-system:"
+            "schema:bce-lifecycle-transition:1.0.0"
         ),
     },
 }
@@ -517,6 +545,145 @@ def validate_lifecycle_artifacts(
         )
 
 
+
+def validate_normative_bce_schemas(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    """Validate registered FS-02 schemas as development tooling only."""
+
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        errors.append(
+            "jsonschema is required for normative BCE schema "
+            f"development and verification only: {exc}"
+        )
+        return
+
+    registry = manifest.get("normative_bce_schemas")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register normative BCE schemas")
+        return
+
+    expected_metadata = {
+        "section": "FS-02",
+        "status": "reusable_product",
+        "schema_version": "1.0.0",
+        "json_schema_draft": "2020-12",
+        "ordinary_operation_required": False,
+        "production_enforcement": False,
+        "validation_scope": "development_and_verification_only",
+        "validator": "tools/validate_floppy.py",
+    }
+
+    for field, expected in expected_metadata.items():
+        if registry.get(field) != expected:
+            errors.append(
+                f"system manifest normative BCE {field} is invalid"
+            )
+
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, dict):
+        errors.append("system manifest normative BCE artifacts are invalid")
+        return
+
+    if set(artifacts) != set(NORMATIVE_BCE_ARTIFACTS):
+        errors.append(
+            "system manifest normative BCE artifact registry is incomplete"
+        )
+        return
+
+    for artifact_name, expected in NORMATIVE_BCE_ARTIFACTS.items():
+        record = artifacts.get(artifact_name)
+        if not isinstance(record, dict):
+            errors.append(
+                f"system manifest normative BCE artifact is invalid: "
+                f"{artifact_name}"
+            )
+            continue
+
+        expected_path = expected["path"]
+        if record.get("path") != expected_path:
+            errors.append(
+                f"system manifest normative BCE artifact path is invalid: "
+                f"{artifact_name}"
+            )
+            continue
+
+        schema_path = root / expected_path
+        schema = validate_json(schema_path, errors)
+        if schema is None:
+            continue
+
+        expected_id = expected["$id"]
+        if record.get("$id") != expected_id:
+            errors.append(
+                f"system manifest normative BCE artifact $id is invalid: "
+                f"{artifact_name}"
+            )
+
+        digest = record.get("sha256")
+        if not isinstance(digest, str) or len(digest) != 64:
+            errors.append(
+                f"system manifest normative BCE artifact digest is invalid: "
+                f"{artifact_name}"
+            )
+        elif digest != sha256(schema_path):
+            errors.append(
+                f"normative BCE artifact digest does not match: "
+                f"{expected_path}"
+            )
+
+        if schema.get("$schema") != DRAFT_2020_12:
+            errors.append(
+                f"normative BCE schema does not declare Draft 2020-12: "
+                f"{schema_path}"
+            )
+
+        if schema.get("$id") != expected_id:
+            errors.append(
+                f"normative BCE schema has incorrect $id: {schema_path}"
+            )
+
+        if schema.get("status") != "normative":
+            errors.append(
+                f"normative BCE schema status is not normative: {schema_path}"
+            )
+
+        if schema.get("schema_version") != "1.0.0":
+            errors.append(
+                f"normative BCE schema version is not 1.0.0: {schema_path}"
+            )
+
+        if schema.get("normative_section") != "FS-02":
+            errors.append(
+                f"normative BCE schema section is not FS-02: {schema_path}"
+            )
+
+        if schema.get("production_enforcement") is not False:
+            errors.append(
+                f"normative BCE schema production_enforcement must be false: "
+                f"{schema_path}"
+            )
+
+        for ref in collect_refs(schema):
+            if not ref.startswith("#/$defs/"):
+                errors.append(
+                    f"normative BCE schema contains non-local $ref {ref}: "
+                    f"{schema_path}"
+                )
+
+        try:
+            Draft202012Validator.check_schema(schema)
+        except Exception as exc:
+            errors.append(
+                f"invalid normative BCE Draft 2020-12 schema "
+                f"{schema_path}: {exc}"
+            )
+
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -555,6 +722,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
         errors.append("Floppy 1E must be immutable during project work")
 
     validate_lifecycle_artifacts(root, manifest, errors)
+    validate_normative_bce_schemas(root, manifest, errors)
 
 
 def validate_project(root: Path, errors: list[str]) -> None:

@@ -1,139 +1,167 @@
 {
-    "system_name":  "Floppy Project Interaction System",
-    "system_version":  "0.4.1-dev",
-    "status":  "development-source",
-    "source_repository_role":  "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
-    "entrypoints":  {
-                        "about":  "ABOUT.md",
-                        "orchestrator":  "orchestrator/Floppy_Z.md",
-                        "orchestrator_readme":  "orchestrator/README.md",
-                        "initial_project_roadmap_builder":  "onboarding/Floppy_1E.md",
-                        "initial_project_roadmap_readme":  "onboarding/README.md",
-                        "bootstrap":  "BOOTSTRAP.md",
-                        "new_project_onboarding":  "protocols/01-new-project-onboarding.md",
-                        "project_intake":  "protocols/02-project-intake.md",
-                        "active_session":  "protocols/03-active-session.md",
-                        "everyday_closeout":  "protocols/04-everyday-closeout.md",
-                        "revision_application":  "protocols/05-revision-application.md",
-                        "source_policy":  "protocols/00-source-repository-policy.md",
-                        "project_orchestrator_registry_template":  "project-seed/.floppy/orchestrator-registry.json",
-                        "project_orchestrator_handoff_template":  "project-seed/.floppy/templates/orchestrator-handoff.md"
-                    },
-    "architecture":  {
-                         "name":  "BCE — Bootable Context Environment",
-                         "about_path":  "ABOUT.md",
-                         "definition":  "A versioned, externally stored context package that allows a new AI instance to reconstruct a project\u0027s accepted knowledge, operating rules, current authority, and exact continuation state without relying on prior conversation memory."
-                     },
-    "orchestrator":  {
-                         "name":  "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
-                         "canonical_path":  "orchestrator/Floppy_Z.md",
-                         "readme_path":  "orchestrator/README.md",
-                         "sha256":  "0c73f16ff5a896ba336d9c1e8a131b1070f0121b931b4537aa109fc92ab6ba69",
-                         "default_mode":  "project-model-briefing",
-                         "default_action":  "read-reconstruct-evaluate-instruct",
-                         "project_state_file":  false,
-                         "copied_into_project_seed":  false,
-                         "mutable_during_project_work":  false,
-                         "direct_execution_requires_explicit_named_override":  true
-                     },
-    "initial_project_roadmap_builder":  {
-                                            "name":  "Floppy 1E — Initial Project Definition and Roadmap Builder",
-                                            "canonical_path":  "onboarding/Floppy_1E.md",
-                                            "readme_path":  "onboarding/README.md",
-                                            "sha256":  "e693f12373ead374d90ad576696fcd68482a3e10fcf6305f0d4cc2ed59070b9b",
-                                            "default_action":  "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
-                                            "project_state_file":  false,
-                                            "copied_into_project_seed":  false,
-                                            "mutable_during_project_work":  false,
-                                            "implementation_authority":  false,
-                                            "normal_use_condition":  "project onboarding required or explicit controlled re-onboarding",
-                                            "normal_completion_state":  "complete_for_current_roadmap_version"
-                                        },
-    "project_seed":  "project-seed/.floppy",
-    "project_seed_roadmap_templates":  {
-                                           "machine_readable":  "project-seed/.floppy/roadmap/roadmap.json",
-                                           "user_readable":  "project-seed/.floppy/roadmap/roadmap.md"
-                                       },
-    "tooling":  {
-                    "initializer":  "tools/initialize_project.py",
-                    "validator":  "tools/validate_floppy.py"
-                },
-    "lifecycle_specification":  {
-                                    "section":  "FS-01",
-                                    "status":  "formal_specification",
-                                    "declarative_only":  true,
-                                    "execution_capability":  false,
-                                    "applies_transitions":  false,
-                                    "writes_lifecycle_state":  false,
-                                    "production_enforcement":  false,
-                                    "artifacts":  {
-                                                      "state_model":  {
-                                                                          "path":  "specs/lifecycle-state-model.md",
-                                                                          "sha256":  "b3db61a84eb93b213b9a989307f91369ea79099123a37ae1c949a54cb8a09075"
-                                                                      },
-                                                      "transition_table":  {
-                                                                               "path":  "specs/lifecycle-transition-table.json",
-                                                                               "sha256":  "9220087507f3ed22adefc8dade1af60cc85db1d563f212a8b1a35207fb7b0ef3"
-                                                                           },
-                                                      "draft_lifecycle_state_schema":  {
-                                                                                           "path":  "schemas/drafts/bce-lifecycle-state.schema.json",
-                                                                                           "sha256":  "e3c4577379ba26ff651211c70f18346da7123f74c25babb1c8e3e25e27b8e449",
-                                                                                           "$id":  "urn:floppy-project-interaction-system:draft:bce-lifecycle-state:fs-01"
-                                                                                       },
-                                                      "draft_work_authorization_schema":  {
-                                                                                              "path":  "schemas/drafts/bce-work-authorization.schema.json",
-                                                                                              "sha256":  "30c701bff15cad9b63151c6297f1b685b030f2aa77d1a495af0cf75b8d5fbe70",
-                                                                                              "$id":  "urn:floppy-project-interaction-system:draft:bce-work-authorization:fs-01"
-                                                                                          },
-                                                      "draft_lifecycle_transition_schema":  {
-                                                                                                "path":  "schemas/drafts/bce-lifecycle-transition.schema.json",
-                                                                                                "sha256":  "e04260566ce3ca294e8f84229468bc36eae809c2e8a131842049f71684e9969a",
-                                                                                                "$id":  "urn:floppy-project-interaction-system:draft:bce-lifecycle-transition:fs-01"
-                                                                                            }
-                                                  }
-                                },
-    "migration":  {
-                      "from":  "0.4.0-dev",
-                      "impact":  "Adds canonical ABOUT.md and BCE terminology. Existing project Floppies and accepted roadmaps are unchanged. Newly initialized projects record source version 0.4.1-dev."
-                  },
-    "project_orchestrator_registration":  {
-                                              "name":  "Project Orchestrator Registration and Handoff",
-                                              "section":  "CTRL-01",
-                                              "status":  "reusable_product",
-                                              "registry_path":  "project-seed/.floppy/orchestrator-registry.json",
-                                              "handoff_template":  "project-seed/.floppy/templates/orchestrator-handoff.md",
-                                              "status_values":  [
-                                                                    "ACTIVE",
-                                                                    "PAUSED",
-                                                                    "HANDOFF_PENDING",
-                                                                    "RETIRED"
-                                                                ],
-                                              "maximum_active_orchestrators":  1,
-                                              "maximum_repository_writers":  1,
-                                              "writer_requires_exact_authorization_reference":  true,
-                                              "status_or_role_grants_write_authority":  false,
-                                              "administrative_status_not_runtime_detected":  true,
-                                              "prohibited_runtime_features":  [
-                                                                                  "monitoring",
-                                                                                  "heartbeats",
-                                                                                  "automatic_conversation_creation",
-                                                                                  "automatic_authority_transfer",
-                                                                                  "private_conversation_inspection",
-                                                                                  "hidden_context_inference"
-                                                                              ],
-                                              "artifacts":  {
-                                                                "registry_template":  {
-                                                                                          "path":  "project-seed/.floppy/orchestrator-registry.json",
-                                                                                          "sha256":  "5cb3eb6ebdf065c61a22fc24c9518349c0a3610210db8a622fc205be8e828234"
-                                                                                      },
-                                                                "handoff_template":  {
-                                                                                         "path":  "project-seed/.floppy/templates/orchestrator-handoff.md",
-                                                                                         "sha256":  "aafe1e0f9c91cc8acc26296506e3bdb44440e63e1c05dd98bd0c17fd417810e8"
-                                                                                     },
-                                                                "tests":  {
-                                                                              "path":  "tests/test_orchestrator_registry.py",
-                                                                              "sha256":  "e22d89107b8b535b5f9ac3d447c9b9f2ca2fbaece9ad1b16c69036096c1110a7"
-                                                                          }
-                                                            }
-                                          }
+  "system_name": "Floppy Project Interaction System",
+  "system_version": "0.4.1-dev",
+  "status": "development-source",
+  "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
+  "entrypoints": {
+    "about": "ABOUT.md",
+    "orchestrator": "orchestrator/Floppy_Z.md",
+    "orchestrator_readme": "orchestrator/README.md",
+    "initial_project_roadmap_builder": "onboarding/Floppy_1E.md",
+    "initial_project_roadmap_readme": "onboarding/README.md",
+    "bootstrap": "BOOTSTRAP.md",
+    "new_project_onboarding": "protocols/01-new-project-onboarding.md",
+    "project_intake": "protocols/02-project-intake.md",
+    "active_session": "protocols/03-active-session.md",
+    "everyday_closeout": "protocols/04-everyday-closeout.md",
+    "revision_application": "protocols/05-revision-application.md",
+    "source_policy": "protocols/00-source-repository-policy.md",
+    "project_orchestrator_registry_template": "project-seed/.floppy/orchestrator-registry.json",
+    "project_orchestrator_handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md"
+  },
+  "architecture": {
+    "name": "BCE — Bootable Context Environment",
+    "about_path": "ABOUT.md",
+    "definition": "A versioned, externally stored context package that allows a new AI instance to reconstruct a project's accepted knowledge, operating rules, current authority, and exact continuation state without relying on prior conversation memory."
+  },
+  "orchestrator": {
+    "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
+    "canonical_path": "orchestrator/Floppy_Z.md",
+    "readme_path": "orchestrator/README.md",
+    "sha256": "0c73f16ff5a896ba336d9c1e8a131b1070f0121b931b4537aa109fc92ab6ba69",
+    "default_mode": "project-model-briefing",
+    "default_action": "read-reconstruct-evaluate-instruct",
+    "project_state_file": false,
+    "copied_into_project_seed": false,
+    "mutable_during_project_work": false,
+    "direct_execution_requires_explicit_named_override": true
+  },
+  "initial_project_roadmap_builder": {
+    "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
+    "canonical_path": "onboarding/Floppy_1E.md",
+    "readme_path": "onboarding/README.md",
+    "sha256": "e693f12373ead374d90ad576696fcd68482a3e10fcf6305f0d4cc2ed59070b9b",
+    "default_action": "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
+    "project_state_file": false,
+    "copied_into_project_seed": false,
+    "mutable_during_project_work": false,
+    "implementation_authority": false,
+    "normal_use_condition": "project onboarding required or explicit controlled re-onboarding",
+    "normal_completion_state": "complete_for_current_roadmap_version"
+  },
+  "project_seed": "project-seed/.floppy",
+  "project_seed_roadmap_templates": {
+    "machine_readable": "project-seed/.floppy/roadmap/roadmap.json",
+    "user_readable": "project-seed/.floppy/roadmap/roadmap.md"
+  },
+  "tooling": {
+    "initializer": "tools/initialize_project.py",
+    "validator": "tools/validate_floppy.py"
+  },
+  "lifecycle_specification": {
+    "section": "FS-01",
+    "status": "formal_specification",
+    "declarative_only": true,
+    "execution_capability": false,
+    "applies_transitions": false,
+    "writes_lifecycle_state": false,
+    "production_enforcement": false,
+    "artifacts": {
+      "state_model": {
+        "path": "specs/lifecycle-state-model.md",
+        "sha256": "b3db61a84eb93b213b9a989307f91369ea79099123a37ae1c949a54cb8a09075"
+      },
+      "transition_table": {
+        "path": "specs/lifecycle-transition-table.json",
+        "sha256": "9220087507f3ed22adefc8dade1af60cc85db1d563f212a8b1a35207fb7b0ef3"
+      },
+      "draft_lifecycle_state_schema": {
+        "path": "schemas/drafts/bce-lifecycle-state.schema.json",
+        "sha256": "e3c4577379ba26ff651211c70f18346da7123f74c25babb1c8e3e25e27b8e449",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-lifecycle-state:fs-01"
+      },
+      "draft_work_authorization_schema": {
+        "path": "schemas/drafts/bce-work-authorization.schema.json",
+        "sha256": "30c701bff15cad9b63151c6297f1b685b030f2aa77d1a495af0cf75b8d5fbe70",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-work-authorization:fs-01"
+      },
+      "draft_lifecycle_transition_schema": {
+        "path": "schemas/drafts/bce-lifecycle-transition.schema.json",
+        "sha256": "e04260566ce3ca294e8f84229468bc36eae809c2e8a131842049f71684e9969a",
+        "$id": "urn:floppy-project-interaction-system:draft:bce-lifecycle-transition:fs-01"
+      }
+    }
+  },
+  "migration": {
+    "from": "0.4.0-dev",
+    "impact": "Adds canonical ABOUT.md and BCE terminology. Existing project Floppies and accepted roadmaps are unchanged. Newly initialized projects record source version 0.4.1-dev."
+  },
+  "project_orchestrator_registration": {
+    "name": "Project Orchestrator Registration and Handoff",
+    "section": "CTRL-01",
+    "status": "reusable_product",
+    "registry_path": "project-seed/.floppy/orchestrator-registry.json",
+    "handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md",
+    "status_values": [
+      "ACTIVE",
+      "PAUSED",
+      "HANDOFF_PENDING",
+      "RETIRED"
+    ],
+    "maximum_active_orchestrators": 1,
+    "maximum_repository_writers": 1,
+    "writer_requires_exact_authorization_reference": true,
+    "status_or_role_grants_write_authority": false,
+    "administrative_status_not_runtime_detected": true,
+    "prohibited_runtime_features": [
+      "monitoring",
+      "heartbeats",
+      "automatic_conversation_creation",
+      "automatic_authority_transfer",
+      "private_conversation_inspection",
+      "hidden_context_inference"
+    ],
+    "artifacts": {
+      "registry_template": {
+        "path": "project-seed/.floppy/orchestrator-registry.json",
+        "sha256": "5cb3eb6ebdf065c61a22fc24c9518349c0a3610210db8a622fc205be8e828234"
+      },
+      "handoff_template": {
+        "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
+        "sha256": "aafe1e0f9c91cc8acc26296506e3bdb44440e63e1c05dd98bd0c17fd417810e8"
+      },
+      "tests": {
+        "path": "tests/test_orchestrator_registry.py",
+        "sha256": "e22d89107b8b535b5f9ac3d447c9b9f2ca2fbaece9ad1b16c69036096c1110a7"
+      }
+    }
+  },
+  "normative_bce_schemas": {
+    "name": "Normative BCE Schema Contracts",
+    "section": "FS-02",
+    "status": "reusable_product",
+    "schema_version": "1.0.0",
+    "json_schema_draft": "2020-12",
+    "ordinary_operation_required": false,
+    "production_enforcement": false,
+    "validation_scope": "development_and_verification_only",
+    "validator": "tools/validate_floppy.py",
+    "artifacts": {
+      "lifecycle_state": {
+        "path": "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.0.0",
+        "sha256": "2be2744ec1a4db407bb898320809cf9eae84e1bd0202b038abbbe158c0a566e1"
+      },
+      "work_authorization": {
+        "path": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-work-authorization:1.0.0",
+        "sha256": "8bc4ea16955e4b220b10ac3a155d015c26a6cf05e257a25be0fe2d1c5c6466f1"
+      },
+      "lifecycle_transition": {
+        "path": "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-transition:1.0.0",
+        "sha256": "6343c112e374d3e970e4ea377244589128def021ada425a995bc16f0b1e89562"
+      }
+    }
+  }
 }

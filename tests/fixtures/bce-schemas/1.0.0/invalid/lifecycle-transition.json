@@ -1,0 +1,34 @@
+{
+  "id": "TR-001-AUTHORIZE-SECTION",
+  "title": "Authorize an accepted section without starting implementation",
+  "from_state_ids": [
+    "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+  ],
+  "to_state_id": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+  "changed_dimensions": [
+    "authority"
+  ],
+  "preconditions": [
+    "The work package is accepted."
+  ],
+  "required_human_authority": {
+    "actor": "administrator",
+    "decision": "Issue an exact authorization."
+  },
+  "required_inputs": [
+    "Authorization identifier"
+  ],
+  "required_outputs": [
+    "Recorded authorization"
+  ],
+  "stop_conditions": [
+    "Stop on any guard failure."
+  ],
+  "forbidden_side_effects": [
+    "Do not push."
+  ],
+  "declarative_only": false,
+  "execution_capability": true,
+  "applies_transition": false,
+  "writes_lifecycle_state": false
+}

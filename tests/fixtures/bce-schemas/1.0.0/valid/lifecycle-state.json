@@ -1,0 +1,24 @@
+{
+  "state_id": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+  "section": "FS-02",
+  "authorization_id": "FS_02_IMPLEMENTATION",
+  "base_checkpoint": "3f75d97b29abddd9684cb0d428b4770c9c4fd622",
+  "dimensions": {
+    "roadmap": "ACCEPTED",
+    "work_package": "ACCEPTED_PLANNING_BASELINE",
+    "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+    "implementation": "NOT_STARTED",
+    "verification": "NOT_STARTED",
+    "acceptance": "PENDING",
+    "closeout": "NOT_PROPOSED",
+    "migration": "NONE",
+    "final_closure": "OPEN"
+  },
+  "active_implementation_sections": [
+    "FS-02"
+  ],
+  "evidence": [
+    "FS-02 work package accepted",
+    "FS_02_IMPLEMENTATION issued"
+  ]
+}
