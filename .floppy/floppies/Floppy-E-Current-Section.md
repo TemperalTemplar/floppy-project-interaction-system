@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -20,23 +20,11 @@
 
 `NONE`
 
-## FS-02 closeout proposal
+## FS-02 final state
 
 ```text
-Proposal base checkpoint:
-6a174dd0d6a220121b3ed0e14de281afdbd28273
-
-Accepted product commit P1:
-0ec8da6c7cd2224b284fcff57c3b03a444c594e6
-
-Accepted product commit P2:
-fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6
-
-Completion commit:
-087a8c306f7348b67d12c134a610696f28471aaf
-
-Administrator-acceptance commit:
-6a174dd0d6a220121b3ed0e14de281afdbd28273
+Status:
+CLOSED
 
 Implementation:
 COMPLETE
@@ -47,12 +35,11 @@ COMPLETE
 Administrator acceptance:
 ACCEPTED
 
-Closeout:
-PROPOSED — NOT APPLIED
+Closeout proposal:
+849c1fc2e70a76b834256050b4077c0f5096f925
 
-Closeout application:
-AUTHORIZED IN THIS BOUNDED TWO-COMMIT OPERATION
-PENDING EXACT PROPOSAL-COMMIT VERIFICATION
+Closeout:
+APPLIED
 
 Active work authorization:
 NONE
@@ -60,17 +47,43 @@ NONE
 Repository writer:
 NONE
 
-FS-03:
-INACTIVE — UNACCEPTED — NOT AUTHORIZED
+Additional FS-02 product writes:
+NOT AUTHORIZED
 ```
 
-No reusable-product change is authorized.
+## Fixed FS-02 evidence
 
-The proposal does not itself apply closeout. The application transition may
-occur only after this proposal is committed and its exact parent, message, and
-three root-control paths are verified.
+- P1: `0ec8da6c7cd2224b284fcff57c3b03a444c594e6`
+- P2: `fc52c289a0d4816ad5e5c24d01cd4cbbd1ed74c6`
+- Implementation-completion record: `087a8c306f7348b67d12c134a610696f28471aaf`
+- Administrator-acceptance record: `6a174dd0d6a220121b3ed0e14de281afdbd28273`
+- Closeout-proposal commit: `849c1fc2e70a76b834256050b4077c0f5096f925`
+- Source version: `0.4.1-dev`
 
-No FS-03 draft is created by this closeout operation.
+## FS-03 state
 
-Push, integration, merge, release, tag, migration, and production changes remain
-unauthorized.
+```text
+Work package:
+NOT ACCEPTED
+
+Draft created by this closeout:
+FALSE
+
+Active:
+FALSE
+
+Authorized:
+FALSE
+
+Implementation:
+NOT STARTED
+```
+
+FS-02 is formally closed.
+
+FS-02 closure does not authorize an FS-03 work package, FS-03 activation,
+FS-03 implementation, integration, merge, release, tag, migration, production
+changes, push, or additional FS-02 product writes.
+
+The next legal operation is preparation, revision, acceptance, or withholding of
+an FS-03 work package.
