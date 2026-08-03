@@ -96,25 +96,22 @@
             "depends_on": [
                 "FS-02"
             ],
-            "objective": "Add cross-record semantic checks to the existing validator. Reuse the FS-02 normative schemas. Validate lifecycle state, authorization consistency, orchestrator and writer references, transition legality, and required evidence references. Produce concise diagnostics.",
+            "objective": "Add cross-record semantic checks to the existing validator using the FS-02 normative schemas. Validate lifecycle state, authorization consistency, orchestrator and writer references, transition legality, and required evidence references. Produce concise diagnostics.",
             "exact_reusable_product_paths": [
                 "tools/validate_floppy.py",
                 "tests/test_bce_semantics.py"
             ],
-            "commit_maximum": 2,
+            "maximum_reusable_product_paths": 2,
+            "commit_maximum": 1,
             "required_tests": [
-                "Valid lifecycle, authorization, orchestrator, writer, transition, and evidence references pass.",
-                "Each inconsistent cross-record condition fails with one concise diagnostic.",
-                "Existing FS-02 schema validation remains passing.",
-                "The full test suite passes."
+                "Valid cross-record lifecycle and authorization relationships pass.",
+                "Each inconsistent relationship fails with one concise diagnostic.",
+                "Existing FS-02 schema tests and the full test suite pass."
             ],
             "explicit_exclusions": [
-                "No new validation framework.",
-                "No domain layer.",
-                "No loader hierarchy.",
-                "No new package tree."
+                "No new validation framework, domain layer, loader hierarchy, or package tree."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-04 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -130,26 +127,15 @@
             "depends_on": [
                 "FS-03"
             ],
-            "objective": "Create a thin read-only CLI over the existing validator. Initial commands are limited to status, validate, and inspect.",
-            "exact_reusable_product_paths": [
-                "tools/floppyctl.py",
-                "tests/test_floppyctl.py"
-            ],
-            "commit_maximum": 2,
-            "required_tests": [
-                "status reports lifecycle and authorization state without writes.",
-                "validate invokes the existing validator and preserves its diagnostics.",
-                "inspect reads only the selected registered record.",
-                "Unknown commands and invalid arguments fail concisely.",
-                "The full test suite passes."
-            ],
+            "objective": "Add a thin read-only CLI exposing only status, validate, and inspect over existing validation functions.",
+            "maximum_reusable_product_paths": 2,
+            "commit_maximum": 1,
             "explicit_exclusions": [
-                "No plugin system.",
-                "No command framework.",
-                "No service layer.",
-                "No repository abstraction."
+                "No plugin system, service layer, command framework, or repository abstraction."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-05 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -165,25 +151,15 @@
             "depends_on": [
                 "FS-04"
             ],
-            "objective": "Implement closeout-completeness checks as rules in the existing validator and expose them through the existing CLI.",
-            "exact_reusable_product_paths": [
-                "tools/validate_floppy.py",
-                "tools/floppyctl.py",
-                "tests/test_closeout_completeness.py"
-            ],
+            "objective": "Add closeout-completeness rules to the existing validator and CLI.",
+            "maximum_reusable_product_paths": 3,
             "commit_maximum": 1,
-            "required_tests": [
-                "A complete accepted closeout record passes.",
-                "Missing acceptance, evidence, transition, or next-section draft references fail concisely.",
-                "The CLI reports the same result as the validator.",
-                "The full test suite passes."
-            ],
             "explicit_exclusions": [
-                "No separate closeout-validation engine.",
-                "No duplicate rule loader.",
-                "No independent closeout command framework."
+                "No separate closeout engine or duplicate rule loader."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-06 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -199,26 +175,15 @@
             "depends_on": [
                 "FS-05"
             ],
-            "objective": "Add read-only checks for exact branch, HEAD, worktree cleanliness, authorization reference, registered writer, and authorized file scope. Use Git directly.",
-            "exact_reusable_product_paths": [
-                "tools/validate_floppy.py",
-                "tools/floppyctl.py",
-                "tests/test_authorization_git_integrity.py"
-            ],
-            "commit_maximum": 2,
-            "required_tests": [
-                "Exact branch, HEAD, clean worktree, authorization reference, writer, and file scope pass.",
-                "Each mismatch fails with the exact violated condition.",
-                "Checks make no repository changes.",
-                "The full test suite passes."
-            ],
+            "objective": "Add read-only checks for branch, HEAD, clean worktree, authorization reference, registered writer, and authorized file scope.",
+            "maximum_reusable_product_paths": 3,
+            "commit_maximum": 1,
             "explicit_exclusions": [
-                "No custom work-package hashing.",
-                "No repository transactions.",
-                "No lock management.",
-                "No Git abstraction framework."
+                "Use Git directly. No Git abstraction, repository transaction, lock manager, or custom work-package hashing."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-07 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -228,32 +193,21 @@
         {
             "id": "FS-07",
             "sequence": 7,
-            "title": "Secret and Unsafe-content Scanning",
+            "title": "Package-Content Scanning",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
                 "FS-06"
             ],
-            "objective": "Scan only files included in a boot package, handoff, or export using a small deterministic rule set and an explicit allowlist.",
-            "exact_reusable_product_paths": [
-                "tools/package_content_scan.py",
-                "tests/test_package_content_scan.py"
-            ],
+            "objective": "Add a small deterministic content scan used only for boot packages, handoffs, and exports.",
+            "maximum_reusable_product_paths": 2,
             "commit_maximum": 1,
-            "required_tests": [
-                "Known disallowed content in included files is detected.",
-                "Explicit allowlist cases pass.",
-                "Files outside the selected package, handoff, or export are not scanned.",
-                "Findings are deterministic and concise.",
-                "The full test suite passes."
-            ],
             "explicit_exclusions": [
-                "No general DLP system.",
-                "No entropy-analysis platform.",
-                "No credential-management platform.",
-                "No repository-security platform."
+                "No DLP platform, entropy engine, credential manager, or repository-security platform."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-08 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -263,33 +217,21 @@
         {
             "id": "FS-08",
             "sequence": 8,
-            "title": "Boot-package Generation",
+            "title": "Boot-Package Generation",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
                 "FS-07"
             ],
-            "objective": "Gather the manifest-required context files, run validation and the FS-07 scan, generate one checksum manifest, and produce one ZIP package.",
-            "exact_reusable_product_paths": [
-                "tools/boot_package.py",
-                "tools/floppyctl.py",
-                "tests/test_boot_package.py"
-            ],
-            "commit_maximum": 2,
-            "required_tests": [
-                "The package contains exactly the manifest-required context files.",
-                "Validation or scanning failure prevents package creation.",
-                "One checksum manifest verifies every packaged file.",
-                "Exactly one ZIP package is produced.",
-                "The full test suite passes."
-            ],
+            "objective": "Validate and scan the required context, create one checksum manifest, and produce one ZIP.",
+            "maximum_reusable_product_paths": 3,
+            "commit_maximum": 1,
             "explicit_exclusions": [
-                "No signing infrastructure.",
-                "No multiple archive formats.",
-                "No upload service.",
-                "No package registry."
+                "Reuse FS-07. No signing, registry, upload service, or multiple archive formats."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-09 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -305,28 +247,15 @@
             "depends_on": [
                 "FS-08"
             ],
-            "objective": "Support only the lifecycle transitions defined by FS-01. Require dry-run output, exact authorized paths, a clean repository, pre-write validation, and atomic file replacement. Use Git commits as the recovery boundary.",
-            "exact_reusable_product_paths": [
-                "tools/lifecycle_write.py",
-                "tools/floppyctl.py",
-                "tests/test_lifecycle_write.py"
-            ],
-            "commit_maximum": 3,
-            "required_tests": [
-                "Every supported FS-01 transition produces an exact dry-run before writing.",
-                "Dirty repositories, unauthorized paths, or failed validation block writes.",
-                "Atomic replacement leaves no partial file state on failure.",
-                "Unsupported transitions are rejected.",
-                "The full test suite passes."
-            ],
+            "objective": "Support only FS-01-defined transitions with dry-run output, exact authorized paths, clean-state verification, pre-write validation, and atomic file replacement.",
+            "maximum_reusable_product_paths": 3,
+            "commit_maximum": 2,
             "explicit_exclusions": [
-                "No rollback engine.",
-                "No recovery journal.",
-                "No transaction coordinator.",
-                "No automatic branch restoration.",
-                "No generic mutation framework."
+                "Git is the recovery boundary. No rollback engine, recovery journal, transaction coordinator, branch-restoration system, or generic mutation framework."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-10 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -336,71 +265,46 @@
         {
             "id": "FS-10",
             "sequence": 10,
-            "title": "Migration Planning and Application",
+            "title": "Targeted Migration",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
                 "FS-09"
             ],
-            "objective": "Support only actual prior Floppy formats proven to exist. Provide one-way plan and apply operations with validation before and after application. Require a real source-format fixture for every accepted migration path.",
-            "exact_reusable_product_paths": [
-                "tools/migrate_floppy.py",
-                "tools/floppyctl.py",
-                "tests/test_migration.py"
-            ],
-            "commit_maximum": "2 per accepted real migration path",
-            "required_tests": [
-                "Every accepted migration path has a real source-format fixture added to the work package as an exact path.",
-                "Planning makes no changes and identifies the exact one-way transformation.",
-                "Application validates before and after migration.",
-                "Unsupported or hypothetical source formats are rejected.",
-                "The full test suite passes for each accepted path."
-            ],
+            "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+            "maximum_reusable_product_paths": 4,
+            "commit_maximum": "1 per accepted real migration path",
+            "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
             "explicit_exclusions": [
-                "No generic migration framework.",
-                "No migration language.",
-                "No plugin architecture.",
-                "No hypothetical version matrix.",
-                "No separate rollback system."
+                "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-11 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
             "active": false,
-            "repository_writer": null,
-            "real_source_format_fixture_required": true,
-            "migration_path_implementation_without_fixture": "PROHIBITED"
+            "repository_writer": null
         },
         {
             "id": "FS-11",
             "sequence": 11,
-            "title": "Final-project Closure",
+            "title": "Final-Project Closure",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
                 "FS-10"
             ],
-            "objective": "Implement final closure as one validated operation using the existing semantic validator, CLI, and controlled-write functions.",
-            "exact_reusable_product_paths": [
-                "tools/validate_floppy.py",
-                "tools/floppyctl.py",
-                "tools/lifecycle_write.py",
-                "tests/test_final_closure.py"
-            ],
+            "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
+            "maximum_reusable_product_paths": 4,
             "commit_maximum": 1,
-            "required_tests": [
-                "A fully eligible project closes in one validated operation.",
-                "Missing acceptance, closeout, integrity, or authorization evidence blocks closure.",
-                "The operation reuses the existing validator, CLI, and controlled-write functions.",
-                "The full test suite passes."
-            ],
             "explicit_exclusions": [
-                "No separate final-closure engine.",
-                "No duplicate transition implementation.",
-                "No independent closure framework."
+                "No separate closure engine or duplicate transition implementation."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, propose and apply closeout as distinct commits, create the FS-12 draft inactive and unauthorized, and clear active authorization and repository writer.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -416,28 +320,15 @@
             "depends_on": [
                 "FS-11"
             ],
-            "objective": "Export one portable ZIP containing the accepted context and one integrity manifest, and verify that package. Defer history compaction unless repository evidence proves a real size or performance problem.",
-            "exact_reusable_product_paths": [
-                "tools/export_floppy.py",
-                "tools/floppyctl.py",
-                "tests/test_export_integrity.py"
-            ],
-            "commit_maximum": 2,
-            "required_tests": [
-                "The export contains the accepted context and one integrity manifest.",
-                "Verification passes for an unchanged package.",
-                "Verification fails for missing, added, or modified content.",
-                "History compaction is not performed without recorded evidence.",
-                "The full test suite passes."
-            ],
+            "objective": "Export and verify one portable ZIP containing the accepted context and one integrity manifest.",
+            "maximum_reusable_product_paths": 3,
+            "commit_maximum": 1,
             "explicit_exclusions": [
-                "No archival storage.",
-                "No synchronization service.",
-                "No package hosting.",
-                "No signing infrastructure.",
-                "No multiple export formats."
+                "Reuse FS-08 packaging. No history compaction, archival service, synchronization, hosting, signing, or multiple export formats."
             ],
-            "closeout_requirement": "Record implementation and verification completion, obtain explicit administrator acceptance, and apply final FS-12 closeout without authorizing push, integration, merge, release, tag, migration, or production changes.",
+            "exact_paths_deferred_until_section_draft": true,
+            "tests_deferred_until_section_draft": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
             "implementation_authorized": false,
@@ -563,7 +454,8 @@
             "tools/validate_floppy.py",
             "tests/test_bce_semantics.py"
         ],
-        "commit_maximum": 2
+        "maximum_reusable_product_paths": 2,
+        "commit_maximum": 1
     },
     "remaining_section_operating_rules": {
         "applies_to": [
@@ -578,24 +470,21 @@
             "FS-11",
             "FS-12"
         ],
-        "work_package_fields_only": [
-            "objective",
-            "exact_reusable_product_paths",
-            "commit_maximum",
-            "required_tests",
-            "explicit_exclusions",
-            "closeout_requirement"
+        "current_next_section_only": [
+            "exact reusable-product paths",
+            "exact required tests",
+            "complete work-package draft"
+        ],
+        "future_section_roadmap_fields_only": [
+            "section ID and title",
+            "dependency",
+            "concise objective",
+            "maximum reusable-product path count",
+            "maximum product commits",
+            "explicit exclusions",
+            "inactive and unauthorized state"
         ],
         "full_implementation_scripts_in_work_packages": "PROHIBITED",
-        "routine_implementation_choices": "WORKING_MODEL",
-        "stop_only_for": [
-            "scope change",
-            "architecture change",
-            "security or production impact",
-            "new dependency",
-            "destructive operation",
-            "failed acceptance criteria"
-        ],
         "start_authorization_may_cover": [
             "record work-package acceptance",
             "create branch and worktree",
@@ -607,28 +496,40 @@
             "stop with administrator acceptance pending"
         ],
         "administrator_acceptance_authorization_may_cover": [
-            "record acceptance",
+            "record administrator acceptance",
             "propose and apply closeout as distinct commits",
-            "create next section draft inactive and unauthorized",
+            "create the next section draft inactive and unauthorized",
             "clear active authorization and repository writer",
-            "stop without beginning next section"
+            "stop without beginning the next section"
         ],
-        "intermediate_reports_when_guards_pass": "PROHIBITED",
         "maximum_reports_per_section": {
             "implementation_completion": 1,
             "final_closeout": 1
         },
-        "blocker_report_fields_only": [
-            "exact blocker",
-            "current branch and HEAD",
-            "whether files or commits changed",
-            "smallest required administrator decision"
-        ]
+        "intermediate_reports_when_guards_pass": "PROHIBITED",
+        "stop_only_for": [
+            "scope or architecture change",
+            "new dependency",
+            "security or production impact",
+            "destructive action",
+            "failed acceptance criteria"
+        ],
+        "common_closeout_rule": {
+            "id": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
+            "requirements": [
+                "record implementation and verification completion",
+                "obtain explicit administrator acceptance",
+                "propose and apply closeout as distinct commits",
+                "create the next section draft inactive, unaccepted, and unauthorized",
+                "clear active authorization and repository writer"
+            ]
+        }
     },
     "remaining_roadmap_correction": {
-        "base_checkpoint": "b9bdd0594b49eaf0606b28c30acda373fdc9d8b3",
+        "base_checkpoint": "a9bae496b7835ebd05ce4d06008ffe0aed25ef7a",
         "status": "APPLIED",
         "commit_checkpoint": "THIS_COMMIT",
+        "purpose": "Remove premature exact paths and repeated workflow detail from FS-04 through FS-12 while preserving the bounded capability roadmap.",
         "fs_02": "CLOSED",
         "fs_03": "DRAFT_NOT_AUTHORIZED",
         "active_work_authorization": null,
