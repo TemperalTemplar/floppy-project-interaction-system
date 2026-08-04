@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -26,7 +26,10 @@ FS-03:
 CLOSED
 
 FS-04:
-VERIFICATION COMPLETE / ACCEPTANCE PENDING
+ACCEPTED / CLOSEOUT NOT PROPOSED
+
+FS-05:
+INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
 NONE
@@ -105,39 +108,7 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 ## Continuation boundary
 
-FS-01, FS-02, and FS-03 are closed.
+FS-04 is accepted and closeout has not yet been applied. FS-05 remains inactive, unaccepted, and unauthorized.
 
-FS-04 implementation is complete and verification is
-complete. Administrator acceptance remains pending.
-
-FS-05 is inactive and unauthorized. Push, merge, integration, release, tag,
-migration, production changes, administrator acceptance recording, and
-closeout remain unauthorized.
-
-<!-- FS-04-PHASE-1-STATE:BEGIN -->
-## FS-04 Phase 1 control state
-
-```text
-Status: VERIFICATION COMPLETE / ACCEPTANCE PENDING
-Branch: feature/fs-04-read-only-floppyctl
-Worktree: D:\A\Floppy-FS-04
-Authorization: NONE
-Repository writer: NONE
-Reusable-product paths: tools/floppyctl.py, tests/test_floppyctl.py
-Maximum reusable-product commits: 1
-Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
-Activation commit: 841707c6544e2fbddaf4bb3c88d5d7e1626cf6c1
-Reusable-product commit: 88d0642f62db17502cf2b3c6f64f24303c1be2b1
-Implementation: COMPLETE
-Verification: COMPLETE
-Administrator acceptance: PENDING
-Closeout: NOT STARTED
-FS-05: INACTIVE / NOT AUTHORIZED
-Focused floppyctl tests: 13 PASSED
-FS-03 semantic tests: 18 PASSED
-FS-02 schema tests: 6 PASSED
-Source validator: PASSED
-Complete suite: 62 PASSED
-git diff --check: PASSED
-```
-<!-- FS-04-PHASE-1-STATE:END -->
+FS-05 implementation, additional FS-04 product work, push, merge, integration,
+release, tag, migration, and production changes remain unauthorized.

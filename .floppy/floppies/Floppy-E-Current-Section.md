@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
+`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
 
 ## Applied transition
 
-`TR-006-RECORD-VERIFICATION-COMPLETE`
+`TR-007-ACCEPT-SECTION`
 
 ## Authority
 
@@ -28,45 +28,37 @@ FS-02: CLOSED
 FS-03: CLOSED
 ```
 
-## FS-04 state
+## FS-04 administrator-acceptance record
 
 ```text
-Work package: ACCEPTED AS PLANNING BASELINE
-Implementation branch: feature/fs-04-read-only-floppyctl
-Implementation worktree: D:\A\Floppy-FS-04
-Authorization reference: NONE
-Orchestrator: PROJECT_ORCHESTRATOR
-Section working model: FS_04_WORKING_MODEL
-Repository writer: NONE
+Accepted checkpoint: 0ac206b074a256e5f4917d556984380e7dd04005
+Reusable-product commit: 88d0642f62db17502cf2b3c6f64f24303c1be2b1
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
-Closeout: NOT STARTED
-FS-05: INACTIVE - NOT AUTHORIZED
+Administrator acceptance: ACCEPTED
+Closeout: NOT STARTED - NOT PROPOSED
+Active authorization: NONE
+Repository writer: NONE
+FS-05: INACTIVE - NOT ACCEPTED - NOT AUTHORIZED
 ```
 
-## Checkpoints
+## Accepted evidence
 
 ```text
 Starting checkpoint: 6afcf6b5766c4b0d7bc02daf4107c0051ebdc715
-Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
-Activation commit: 841707c6544e2fbddaf4bb3c88d5d7e1626cf6c1
+Work-package acceptance: fb9b3b26f8023b0f2912bbd918dca2178063fe20
+Activation: 841707c6544e2fbddaf4bb3c88d5d7e1626cf6c1
 Reusable-product commit: 88d0642f62db17502cf2b3c6f64f24303c1be2b1
-Completion record: PENDING
-```
-
-## Verification evidence
-
-```text
-Focused floppyctl tests: 13 PASSED
-Existing FS-03 semantic tests: 18 PASSED
-Existing FS-02 schema tests: 6 PASSED
-Source validator: PASSED
+Implementation and verification completion: 0ac206b074a256e5f4917d556984380e7dd04005
+Focused FS-04 tests: 13 PASSED
+FS-03 semantic tests: 18 PASSED
+FS-02 schema tests: 6 PASSED
 Complete repository suite: 62 PASSED
+Source validator: PASSED
 git diff --check: PASSED
+VERSION: 0.4.1-dev
 Push: NONE
 ```
 
-Push, merge, integration, release, tag, migration, production changes,
-administrator acceptance recording, closeout, lifecycle writes, and FS-05
-remain unauthorized.
+Administrator acceptance does not imply section closeout or FS-05 authorization.
+The next transition is the separately recorded FS-04 closeout proposal.

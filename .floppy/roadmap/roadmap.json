@@ -15,7 +15,7 @@
     },
     "active_implementation_section": null,
     "current_authorized_section": null,
-    "next_proposed_section": "FS-04",
+    "next_proposed_section": null,
     "fs_01": {
         "status": "CLOSED",
         "work_package_status": "ACCEPTED AS PLANNING BASELINE",
@@ -344,7 +344,7 @@
             "id": "FS-04",
             "sequence": 4,
             "title": "Read-only floppyctl",
-            "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+            "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
             "implementation_started": true,
             "depends_on": [
                 "FS-03"
@@ -403,12 +403,17 @@
                 "final worktree is clean"
             ],
             "accepted_work_package_checkpoint": "fb9b3b26f8023b0f2912bbd918dca2178063fe20",
-            "administrator_acceptance": "PENDING",
-            "closeout": "NOT_STARTED",
+            "administrator_acceptance": "ACCEPTED",
+            "closeout": "NOT_PROPOSED",
             "activation_checkpoint": "841707c6544e2fbddaf4bb3c88d5d7e1626cf6c1",
             "product_commit": "88d0642f62db17502cf2b3c6f64f24303c1be2b1",
             "completion_checkpoint": "THIS_COMMIT",
-            "additional_product_writes": "NOT AUTHORIZED"
+            "additional_product_writes": "NOT AUTHORIZED",
+            "accepted_implementation_checkpoint": "0ac206b074a256e5f4917d556984380e7dd04005",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_PROPOSED",
+            "closeout_started": false
         },
         {
             "id": "FS-05",
@@ -614,7 +619,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-04 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE. FS-05 remains inactive and unauthorized.",
+    "continuation_point": "FS-04 implementation and verification are complete and administrator acceptance is recorded. Closeout is not yet proposed. FS-05 remains inactive, unaccepted, and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -631,8 +636,8 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-    "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+    "last_applied_transition": "TR-007-ACCEPT-SECTION",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
@@ -690,7 +695,7 @@
         "status": "APPLIED",
         "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
     },
-    "next_proposed_section_status": "ACCEPTED_AS_PLANNING_BASELINE",
+    "next_proposed_section_status": "NO_CLOSEOUT_PROPOSAL",
     "fs_02": {
         "status": "CLOSED",
         "implementation": "COMPLETE",
@@ -824,15 +829,15 @@
         "authorization_id": null,
         "section": "FS-04",
         "title": "Read-only floppyctl",
-        "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+        "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
-        "closeout": "NOT_STARTED",
+        "administrator_acceptance": "ACCEPTED",
+        "closeout": "NOT_PROPOSED",
         "active": false,
         "repository_writer": null,
         "writer_authorization_reference": null,
