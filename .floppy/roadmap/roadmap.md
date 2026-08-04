@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -121,11 +121,12 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
-### FS-06 — Administrator accepted
+### FS-06 — Closeout proposed
 
 ```text
-Status: ACCEPTED / CLOSEOUT NOT STARTED
-Administrator-acceptance commit: THIS_COMMIT
+Status: ACCEPTED / CLOSEOUT PROPOSED - NOT APPLIED
+Proposal base checkpoint: a7da009580c25a614e0012e26645816e12ea728c
+Closeout record: .floppy/closeouts/FS-06-closeout.md
 Active authorization: NONE
 Repository writer: NONE
 FS-07: INACTIVE / NOT AUTHORIZED
@@ -133,7 +134,7 @@ FS-07: INACTIVE / NOT AUTHORIZED
 
 ## Continuation boundary
 
-FS-06 administrator acceptance is recorded. Closeout has not been proposed. FS-07 remains inactive and unauthorized.
+FS-06 closeout is proposed but not applied. The exact proposal must be verified before TR-009 is applied. FS-07 remains unauthorized.
 
 Active authorization and repository writer are `NONE`. Push, merge, integration,
 release, tag, migration, production changes, and FS-07 implementation remain unauthorized.

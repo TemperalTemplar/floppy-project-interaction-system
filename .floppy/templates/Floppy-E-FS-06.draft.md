@@ -1,4 +1,4 @@
-STATUS: ADMINISTRATOR_ACCEPTED_CLOSEOUT_NOT_STARTED
+STATUS: CLOSEOUT_PROPOSED_NOT_APPLIED
 
 # Floppy E - FS-06 Work Package
 
@@ -14,7 +14,7 @@ Activation: RECORDED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Closeout: NOT STARTED
+Closeout: PROPOSED - NOT APPLIED
 Active authorization: NONE
 Repository writer: NONE
 FS-07: INACTIVE / NOT AUTHORIZED
@@ -28,8 +28,8 @@ Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
 Activation: 065826bd7743bf6d98cbf98cfe97a20b9bf4d3fb
 Reusable-product commit: f323659185cb36705ca2209dfab650bf7bc628a0
 Completion and verification: a73449a3ada083113ede487bcdefd03e4f577de0
-Administrator-acceptance commit: THIS_COMMIT
-Closeout proposal: NOT YET CREATED
+Administrator-acceptance commit: a7da009580c25a614e0012e26645816e12ea728c
+Closeout proposal: THIS_COMMIT
 ```
 
 ## Exact reusable-product paths
