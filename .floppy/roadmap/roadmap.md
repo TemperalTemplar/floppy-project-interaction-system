@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-05
 
 Current authorized section:
-NONE
+FS-05
 
 FS-01:
 CLOSED
@@ -32,7 +32,7 @@ FS-05:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
-NONE
+FS_05_WORKING_MODEL
 
 Integration:
 NOT AUTHORIZED
@@ -117,21 +117,21 @@ the same result through the existing read-only CLI validation path.
 **Phase-1 control state**
 
 ```text
-Status: ACCEPTED AS PLANNING BASELINE
+Status: IMPLEMENTATION IN PROGRESS
 Accepted: YES
-Active: NO
-Authorized: NO
-Authorization: NONE
-Repository writer: NONE
+Active: YES
+Authorized: YES
+Authorization: FS_05_IMPLEMENTATION
+Repository writer: FS_05_WORKING_MODEL
 Branch: feature/fs-05-closeout-completeness
 Worktree: D:\A\Floppy-FS-05
 Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
-Work-package acceptance: THIS_COMMIT
-Activation: NOT YET RECORDED
+Work-package acceptance: 5b3800e6bbec835dc412fcc98fe653fb36b4928e
+Activation: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
-Implementation: NOT STARTED
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
@@ -152,7 +152,7 @@ git diff --check: NOT RUN
 
 ## Continuation boundary
 
-FS-05 work-package acceptance is recorded. Activation has not started.
+FS-05 implementation is active under exact authorization.
 
 Push, merge, integration, release, tag, migration, production changes,
 administrator acceptance recording, closeout, and FS-06 remain unauthorized.

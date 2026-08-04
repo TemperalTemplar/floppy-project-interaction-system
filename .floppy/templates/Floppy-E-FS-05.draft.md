@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_AS_PLANNING_BASELINE
+STATUS: IMPLEMENTATION_IN_PROGRESS
 
 # Floppy E - FS-05 Draft
 
@@ -10,13 +10,13 @@ STATUS: ACCEPTED_AS_PLANNING_BASELINE
 
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
-Activation: NOT RECORDED
-Implementation: NOT STARTED
+Activation: RECORDED
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_05_IMPLEMENTATION
+Repository writer: FS_05_WORKING_MODEL
 FS-06: INACTIVE / NOT AUTHORIZED
 ```
 
@@ -59,8 +59,8 @@ git diff --check: NOT RUN
 
 ```text
 Starting checkpoint: b8183030398dea3609d6efbc2c42fe619574ee48
-Work-package acceptance: THIS_COMMIT
-Activation: NOT YET RECORDED
+Work-package acceptance: 5b3800e6bbec835dc412fcc98fe653fb36b4928e
+Activation: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 Completion and verification: NOT YET CREATED
 Administrator acceptance: PENDING

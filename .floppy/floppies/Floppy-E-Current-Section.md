@@ -2,23 +2,23 @@
 
 ## Lifecycle state
 
-`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+`LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
 ## Applied transition
 
-`TR-002-ACCEPT-WORK-PACKAGE`
+`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 
 ## Authority
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-05`
 
 ## Current authorized section
 
-`NONE`
+`FS-05`
 
 ## Historical sections
 
@@ -48,16 +48,16 @@ Additional FS-04 product writes: NOT AUTHORIZED
 
 ```text
 Draft path: .floppy/templates/Floppy-E-FS-05.draft.md
-Status: ACCEPTED AS PLANNING BASELINE
+Status: IMPLEMENTATION IN PROGRESS
 Accepted: YES
-Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Active: YES
+Authorized: YES
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_05_IMPLEMENTATION
+Repository writer: FS_05_WORKING_MODEL
 Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
