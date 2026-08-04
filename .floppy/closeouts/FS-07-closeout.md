@@ -2,19 +2,23 @@
 
 ## Status
 
-`PROPOSED / APPROVED FOR APPLICATION`
+`APPLIED`
 
-## Proposed transition
+## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
+
+## Resulting lifecycle state
+
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Section
 
 `FS-07`
 
-## Proposal base checkpoint
+## Approved proposal checkpoint
 
-`a215a26d6b9db08e48ad679b5c8d801bce4e998f`
+`cbc6307abea6a35321548a193c5bebcf0961c27e`
 
 ## Fixed implementation and verification evidence
 
@@ -24,6 +28,7 @@
 - Reusable-product commit: `4ee33d571d16ba9802332efd09e1ca14183ba558`
 - Implementation and verification completion: `f22927f9e92a9edf84614bf32d8bff554dbf3dfc`
 - Administrator-acceptance record: `a215a26d6b9db08e48ad679b5c8d801bce4e998f`
+- Closeout-proposal commit: `cbc6307abea6a35321548a193c5bebcf0961c27e`
 - Exact reusable-product paths: `tools/floppyctl.py`, `tests/test_package_content_scan.py`
 - Focused FS-07 tests: `18 PASSED`
 - FS-06 authorization/Git-integrity tests: `11 PASSED`
@@ -38,18 +43,20 @@
 - Lifecycle consistency: `PASSED`
 - Historical-phase validation: `PASSED`
 - git diff --check: `PASSED`
-- Final Phase-1 worktree: `CLEAN`
 - Source version: `0.4.1-dev`
 
-## Application boundary
+## Final disposition
 
-Application is authorized only in this bounded Phase-2 operation after exact
-verification of the proposal commit. FS-08 must remain inactive, unaccepted,
-and unauthorized.
+FS-07 implementation, verification, administrator acceptance, and closeout are
+complete. FS-07 status is `CLOSED`.
 
-## Windows-release requirement
+The FS-08 draft was created at `.floppy/templates/Floppy-E-FS-08.draft.md`. It is inactive, unaccepted,
+and unauthorized. Active authorization and repository writer are `NONE`.
+
+## Windows-release requirement carried forward to FS-08
 
 Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.
 
-No reusable-product path changed. No ZIP, checksum manifest, package, export,
-release, migration, or production action was performed by this proposal.
+No reusable-product path changed during Phase 2. No ZIP, checksum manifest,
+package, export, push, merge, integration, tag, release, migration, or production
+action was performed.

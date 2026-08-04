@@ -1,4 +1,4 @@
-STATUS: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
+STATUS: CLOSED
 
 # Floppy E - FS-07 Work Package
 
@@ -12,8 +12,8 @@ STATUS: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Closeout: PROPOSED
-Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
+Closeout: APPLIED
+Status: CLOSED
 Active authorization: NONE
 Repository writer: NONE
 FS-08: INACTIVE / NOT AUTHORIZED
@@ -33,8 +33,8 @@ Complete repository suite: 102 PASSED
 ```text
 Starting Phase-2 checkpoint: f22927f9e92a9edf84614bf32d8bff554dbf3dfc
 Administrator-acceptance commit: a215a26d6b9db08e48ad679b5c8d801bce4e998f
-Closeout-proposal commit: THIS_COMMIT
-Closeout-application commit: NOT YET CREATED
+Closeout-proposal commit: cbc6307abea6a35321548a193c5bebcf0961c27e
+Closeout-application commit: THIS_COMMIT
 ```
 
 No reusable-product path changed during Phase 2. No ZIP, checksum manifest,

@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -135,17 +135,17 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
-### FS-07 — Accepted closeout state
+### FS-07 — Closed
 
 ```text
-Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
+Status: CLOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator-acceptance commit: a215a26d6b9db08e48ad679b5c8d801bce4e998f
-Closeout: PROPOSED
-Closeout proposal: THIS_COMMIT
-Closeout application: NOT YET CREATED
+Closeout: APPLIED
+Closeout proposal: cbc6307abea6a35321548a193c5bebcf0961c27e
+Closeout application: THIS_COMMIT
 Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
 Active authorization: NONE
 Repository writer: NONE
@@ -162,8 +162,28 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 `102 PASSED`; all required FS-06 through FS-02 regressions and validators
 `PASSED`.
 
+
+### FS-08 — Validated boot-package ZIP and checksum manifest
+
+```text
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+Draft: .floppy/templates/Floppy-E-FS-08.draft.md
+```
+
+Detailed packaging, checksum-manifest, dependency, export, migration, runtime,
+and end-user interface decisions remain deferred until separate FS-08 review
+and authorization.
+
+Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.
+
 ## Continuation boundary
 
-The FS-07 closeout proposal is approved but not yet applied. FS-08 remains inactive and unauthorized.
+FS-07 is closed. FS-08 exists only as an inactive, unaccepted, unauthorized draft.
 
 Active authorization and repository writer are NONE. Push, merge, integration, tag, release, migration, packaging, export, production changes, and FS-08 implementation remain unauthorized.

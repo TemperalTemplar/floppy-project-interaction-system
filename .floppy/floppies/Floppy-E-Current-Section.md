@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -98,14 +98,14 @@ Additional FS-06 product writes: NOT AUTHORIZED
 ## FS-07 final state
 
 ```text
-Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
+Status: CLOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator-acceptance commit: a215a26d6b9db08e48ad679b5c8d801bce4e998f
-Closeout: PROPOSED
-Closeout proposal: THIS_COMMIT
-Closeout application: NOT YET CREATED
+Closeout: APPLIED
+Closeout proposal: cbc6307abea6a35321548a193c5bebcf0961c27e
+Closeout application: THIS_COMMIT
 Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
 Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
 Focused FS-07 tests: 18 PASSED
@@ -117,4 +117,21 @@ Additional FS-07 product writes: NOT AUTHORIZED
 
 No reusable-product path changed during Phase 2.
 
-FS-08 remains inactive, unaccepted, and unauthorized.
+
+## FS-08 state
+
+```text
+Section: FS-08 - Validated boot-package ZIP and checksum manifest
+Draft: .floppy/templates/Floppy-E-FS-08.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+```
+
+Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.
+
+FS-07 is closed. FS-08 remains inactive, unaccepted, and unauthorized.
