@@ -120,14 +120,14 @@ No reusable-product path changed during Phase 2.
 ## FS-08 final state
 
 ```text
-Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
-Status: ACCEPTED — CLOSEOUT NOT STARTED
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Status: ACCEPTED — CLOSEOUT PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
-Closeout proposal: NOT STARTED
+Administrator-acceptance commit: 75656b680b44f81972d9ff2dfab9ff7d244f9a59
+Closeout: PROPOSED
+Closeout proposal: THIS_COMMIT
 Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
 Reusable-product paths: tools/floppyctl.py, tests/test_validated_boot_package.py
 Focused FS-08 tests: 21 PASSED
@@ -166,4 +166,4 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
-The next operation is the distinct FS-08 closeout-proposal commit.
+The closeout proposal does not itself apply FS-08 closeout.

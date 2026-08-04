@@ -1,6 +1,6 @@
-STATUS: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
+STATUS: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
 
-# Floppy E - FS-08 Administrator Accepted — Closeout Not Started
+# Floppy E - FS-08 Administrator Accepted — Closeout Proposed
 
 ## Section
 
@@ -12,8 +12,8 @@ STATUS: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
+Administrator-acceptance commit: 75656b680b44f81972d9ff2dfab9ff7d244f9a59
+Closeout: PROPOSED
 Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
 Reusable-product paths: tools/floppyctl.py, tests/test_validated_boot_package.py
 Focused FS-08 tests: 21 PASSED
@@ -34,7 +34,8 @@ Checksum manifest size: 6571
 Checksum manifest SHA-256: 8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed
 ```
 
-The next operation is the distinct FS-08 closeout-proposal commit.
+Closeout proposal commit: THIS_COMMIT
+The proposal does not itself apply closeout.
 
 Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only.
 
