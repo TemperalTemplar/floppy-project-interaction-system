@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -23,10 +23,10 @@ FS-02:
 CLOSED
 
 FS-03:
-ACCEPTED / CLOSEOUT PROPOSED
+CLOSED
 
 FS-04:
-INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
 NONE
@@ -105,15 +105,15 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 ## Continuation boundary
 
-FS-03 is accepted and closeout has not yet been applied. FS-04 remains inactive, unaccepted, and unauthorized.
+FS-03 is closed. FS-04 exists only as a draft and remains inactive, unaccepted, and unauthorized.
 
 ```text
 FS-03 implementation: COMPLETE
 FS-03 verification: COMPLETE
 FS-03 administrator acceptance: ACCEPTED
-FS-03 closeout: PROPOSED - NOT APPLIED
+FS-03 closeout: APPLIED
 FS-03 reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
-FS-04 draft path: NOT YET CREATED
+FS-04 draft path: .floppy/templates/Floppy-E-FS-04.draft.md
 FS-04 accepted: NO
 FS-04 active: NO
 FS-04 authorized: NO

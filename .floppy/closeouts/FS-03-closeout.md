@@ -2,19 +2,23 @@
 
 ## Status
 
-`PROPOSED_NOT_APPLIED`
+`APPLIED`
 
-## Transition
+## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
+
+## Resulting lifecycle state
+
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Section
 
 `FS-03`
 
-## Proposal base checkpoint
+## Approved proposal checkpoint
 
-`53c1bd7c0facd2dcfbdf8b0705003f5f5a26622d`
+`6d7bd51a56e009a81b748cfdf5316211de1b2a9e`
 
 ## Fixed implementation and verification evidence
 
@@ -27,21 +31,22 @@
 - Reusable-product commit: `253412fcd518a915e4995cda4653ed7d777ce45e`
 - Implementation and verification completion: `d5e377569f869b4c1bf313199397574a261dca53`
 - Administrator-acceptance record: `53c1bd7c0facd2dcfbdf8b0705003f5f5a26622d`
+- Closeout-proposal commit: `6d7bd51a56e009a81b748cfdf5316211de1b2a9e`
 - Complete suite: `49 PASSED`
 - Source version: `0.4.1-dev`
 
 ## Superseded historical evidence
 
-The invalid reconciliation object `24e6deb8086e8ee13f049f44325b8aa39d037e77` is retained only as
-superseded historical evidence. The controlling reconciliation is
-`43ff3b5d75431bfbf94cc828284e00ccab4a67ab`.
+`24e6deb8086e8ee13f049f44325b8aa39d037e77` is retained only as superseded historical
+evidence and is not the controlling reconciliation result.
 
-## Proposal boundary
+## Final disposition
 
-FS-03 implementation, verification, and administrator acceptance are complete.
-Closeout is proposed but not applied. The proposal authorizes no product change
-and does not activate, accept, or authorize FS-04.
+FS-03 implementation, verification, administrator acceptance, and closeout are
+complete. FS-03 status is `CLOSED`.
 
-Application of `TR-009-APPLY-SECTION-CLOSEOUT` is permitted only after this committed
-proposal is verified unchanged and exact. Active authorization and repository
-writer remain `NONE`.
+The FS-04 draft was created at `.floppy/templates/Floppy-E-FS-04.draft.md`. It is inactive, unaccepted,
+and unauthorized. Active authorization and repository writer are `NONE`.
+
+No reusable-product path changed during Phase 2. Push, merge, integration,
+release, tag, migration, and production changes remain unauthorized.
