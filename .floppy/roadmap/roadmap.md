@@ -163,32 +163,30 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 `PASSED`.
 
 <!-- FS-08-PHASE-1:BEGIN -->
-### FS-08 — Accepted work package, not active
+### FS-08 — Active implementation
 
 ```text
-Status: ACCEPTED_NOT_ACTIVE
+Status: ACTIVE
 Accepted: YES
-Active: NO
-Implementation authorized: NO
-Active authorization: NONE
-Repository writer: NONE
+Active: YES
+Implementation authorized: YES
+Active authorization: FS_08_IMPLEMENTATION
+Repository writer: FS_08_WORKING_MODEL
+Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
+Activation commit: THIS_COMMIT
 Branch: feature/fs-08-validated-boot-package
 Worktree: D:\A\Floppy-FS-08
-Base checkpoint: 38b7e8166f3b1a40631e5f12929855d14b06a631
 ```
 
-Exact reusable-product paths:
+Exact reusable-product scope:
 
 ```text
 tools/floppyctl.py
 tests/test_validated_boot_package.py
 ```
 
-Maximum reusable-product paths: `3`. Maximum reusable-product commits: `1`.
-No dependency expansion is authorized.
-
-## Continuation boundary
-
-The next operation is the separately recorded FS-08 activation commit. FS-09,
-push, merge, integration, tag, release, migration, installer creation, runtime
-bundling, and production action remain unauthorized.
+The active writer may create exactly one reusable-product commit and the
+authorized external ZIP and checksum manifest. No dependency expansion,
+lifecycle-write implementation, FS-09 work, push, merge, integration, tag,
+release, migration, installer, runtime bundle, or production action is
+authorized.

@@ -121,19 +121,26 @@ No reusable-product path changed during Phase 2.
 
 ```text
 Section: FS-08 - Validated boot-package ZIP and checksum manifest
-Status: ACCEPTED_NOT_ACTIVE
+Status: ACTIVE
 Accepted: YES
-Active: NO
-Implementation authorized: NO
-Implementation: NOT STARTED
+Active: YES
+Implementation authorized: YES
+Implementation: IN PROGRESS
 Verification: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_08_IMPLEMENTATION
+Repository writer: FS_08_WORKING_MODEL
+Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
+Activation commit: THIS_COMMIT
 Branch: feature/fs-08-validated-boot-package
 Worktree: D:\A\Floppy-FS-08
 ```
 
-The work package is accepted as the planning baseline. Activation remains a
-separate administrative commit in the authorized Phase-1 sequence.
+Exactly one reusable-product commit may modify only:
 
-FS-09 remains inactive and unauthorized.
+```text
+tools/floppyctl.py
+tests/test_validated_boot_package.py
+```
+
+FS-09 and all integration, release, migration, installer, runtime-bundle, and
+production actions remain unauthorized.

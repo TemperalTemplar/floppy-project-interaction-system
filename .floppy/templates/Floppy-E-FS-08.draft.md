@@ -1,22 +1,20 @@
-STATUS: ACCEPTED_NOT_ACTIVE
+STATUS: ACTIVE
 
-# Floppy E - FS-08 Accepted Work Package
+# Floppy E - FS-08 Active Work Package
 
 ## Section
 
 `FS-08 - Validated boot-package ZIP and checksum manifest`
 
-## Accepted authority boundary
+## Active authorization
 
 ```text
-Work package: ACCEPTED AS PLANNING BASELINE
-Status: ACCEPTED_NOT_ACTIVE
-Active: NO
-Implementation authorized: NO
-Active authorization: NONE
-Repository writer: NONE
+Authorization: FS_08_IMPLEMENTATION
+Repository writer: FS_08_WORKING_MODEL
 Branch: feature/fs-08-validated-boot-package
 Worktree: D:\A\Floppy-FS-08
+Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
+Activation commit: THIS_COMMIT
 Base checkpoint: 38b7e8166f3b1a40631e5f12929855d14b06a631
 ```
 
@@ -27,14 +25,12 @@ tools/floppyctl.py
 tests/test_validated_boot_package.py
 ```
 
-Maximum reusable-product paths: 3
-Maximum reusable-product commits: 1
+Only one reusable-product commit is authorized:
 
-The implementation must create one deterministic ZIP and one adjacent
-SHA-256 checksum manifest, provide controlled verification, preserve the FS-07
-scan behavior, add no dependencies, and keep generated artifacts outside the
-repository under `C:\Users\alvar.TERMINAL1\Downloads`.
+`feat(fs-08): add validated boot-package generation`
 
-This acceptance commit does not activate implementation. FS-09, push, merge,
-integration, tag, release, migration, installer creation, runtime bundling, and
-production action remain unauthorized.
+The implementation may create and verify the one ZIP and one checksum manifest
+under `C:\Users\alvar.TERMINAL1\Downloads`. It must not alter source content during artifact generation,
+add dependencies, implement lifecycle writes, begin FS-09, or perform push,
+merge, integration, tag, release, migration, installer, runtime-bundle, or
+production actions.
