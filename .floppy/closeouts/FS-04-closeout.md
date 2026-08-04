@@ -2,19 +2,23 @@
 
 ## Status
 
-`PROPOSED_NOT_APPLIED`
+`APPLIED`
 
-## Transition
+## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
+
+## Resulting lifecycle state
+
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Section
 
 `FS-04`
 
-## Proposal base checkpoint
+## Approved proposal checkpoint
 
-`259f2e339413dc41f673c8337fc859de6bb3f4fd`
+`e72b3fce93ab9bc881498696762122556f1fd57a`
 
 ## Fixed implementation and verification evidence
 
@@ -24,6 +28,7 @@
 - Reusable-product commit: `88d0642f62db17502cf2b3c6f64f24303c1be2b1`
 - Implementation and verification completion: `0ac206b074a256e5f4917d556984380e7dd04005`
 - Administrator-acceptance record: `259f2e339413dc41f673c8337fc859de6bb3f4fd`
+- Closeout-proposal commit: `e72b3fce93ab9bc881498696762122556f1fd57a`
 - Exact reusable-product paths: `tools/floppyctl.py`, `tests/test_floppyctl.py`
 - Focused FS-04 tests: `13 PASSED`
 - FS-03 semantic tests: `18 PASSED`
@@ -33,12 +38,13 @@
 - git diff --check: `PASSED`
 - Source version: `0.4.1-dev`
 
-## Proposal boundary
+## Final disposition
 
-FS-04 implementation, verification, and administrator acceptance are complete.
-Closeout is proposed but not applied. The proposal authorizes no product change
-and does not activate, accept, or authorize FS-05.
+FS-04 implementation, verification, administrator acceptance, and closeout are
+complete. FS-04 status is `CLOSED`.
 
-Application of `TR-009-APPLY-SECTION-CLOSEOUT` is permitted only after this committed
-proposal is verified unchanged and exact. Active authorization and repository
-writer remain `NONE`.
+The FS-05 draft was created at `.floppy/templates/Floppy-E-FS-05.draft.md`. It is inactive, unaccepted,
+and unauthorized. Active authorization and repository writer are `NONE`.
+
+No reusable-product path changed during Phase 2. Push, merge, integration,
+release, tag, migration, and production changes remain unauthorized.

@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -26,10 +26,10 @@ FS-03:
 CLOSED
 
 FS-04:
-ACCEPTED / CLOSEOUT PROPOSED - NOT APPLIED
+CLOSED
 
 FS-05:
-INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
 NONE
@@ -106,9 +106,36 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 - Remaining-roadmap correction: `a9bae496b7835ebd05ce4d06008ffe0aed25ef7a`
 - Source version: `0.4.1-dev`
 
+<!-- FS-05-DRAFT-BOUNDARY:BEGIN -->
+### FS-05 — Closeout-completeness rules
+
+**Objective**
+
+Add closeout-completeness rules to the existing validator and CLI.
+
+**Draft boundary**
+
+- Status: `DRAFT_NOT_AUTHORIZED`
+- Accepted: `NO`
+- Active: `NO`
+- Authorized: `NO`
+- Repository writer: `NONE`
+- Maximum reusable-product paths: `3`
+- Maximum reusable-product commits: `1`
+- Exact reusable-product filenames are deferred until FS-05 begins.
+- Exact command syntax is deferred until FS-05 begins.
+- Detailed test inventory is deferred until FS-05 begins.
+- No new closeout framework, domain or service layer, loader hierarchy, dependency, or FS-06 implementation detail is authorized.
+
+This draft does not authorize intake, activation, or implementation.
+
+<!-- FS-05-DRAFT-BOUNDARY:END -->
+
 ## Continuation boundary
 
-FS-04 is accepted and closeout has not yet been applied. FS-05 remains inactive, unaccepted, and unauthorized.
+FS-04 is closed. FS-05 exists only as a draft and remains inactive, unaccepted, and unauthorized.
 
-FS-05 implementation, additional FS-04 product work, push, merge, integration,
-release, tag, migration, and production changes remain unauthorized.
+Active authorization and repository writer are `NONE`. The next legal operation
+is preparation, revision, acceptance, or withholding of the FS-05 work package,
+not intake, activation, implementation, push, merge, integration, release, tag,
+migration, or production application.
