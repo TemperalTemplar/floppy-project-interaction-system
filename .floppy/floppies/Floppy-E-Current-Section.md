@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
+`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
 
 ## Applied transition
 
-`TR-009-APPLY-SECTION-CLOSEOUT`
+`TR-002-ACCEPT-WORK-PACKAGE`
 
 ## Authority
 
@@ -28,32 +28,33 @@ FS-02: CLOSED
 FS-03: CLOSED
 ```
 
-## FS-03 final state
-
-```text
-Implementation: COMPLETE
-Verification: COMPLETE
-Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: 53c1bd7c0facd2dcfbdf8b0705003f5f5a26622d
-Closeout proposal: 6d7bd51a56e009a81b748cfdf5316211de1b2a9e
-Closeout: APPLIED
-Reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
-Active authorization: NONE
-Repository writer: NONE
-Additional FS-03 product writes: NOT AUTHORIZED
-```
-
 ## FS-04 state
 
 ```text
-Draft path: .floppy/templates/Floppy-E-FS-04.draft.md
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
-Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Work package: ACCEPTED AS PLANNING BASELINE
+Implementation branch: feature/fs-04-read-only-floppyctl
+Implementation worktree: D:\A\Floppy-FS-04
+Authorization reference: NONE
+Orchestrator: PROJECT_ORCHESTRATOR
+Section working model: FS_04_WORKING_MODEL
 Repository writer: NONE
+Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+FS-05: INACTIVE - NOT AUTHORIZED
 ```
 
-FS-03 closure does not authorize FS-04 implementation, push, merge, integration,
-release, tag, migration, or production changes.
+## Checkpoints
+
+```text
+Starting checkpoint: 6afcf6b5766c4b0d7bc02daf4107c0051ebdc715
+Work-package acceptance commit: PENDING
+Activation commit: NOT YET RECORDED
+Reusable-product commit: NOT YET CREATED
+Completion record: NOT YET CREATED
+```
+
+Push, merge, integration, release, tag, migration, production changes,
+administrator acceptance recording, closeout, lifecycle writes, and FS-05
+remain unauthorized.

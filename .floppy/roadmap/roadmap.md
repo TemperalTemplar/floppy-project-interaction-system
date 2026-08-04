@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -26,7 +26,7 @@ FS-03:
 CLOSED
 
 FS-04:
-DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+WORK PACKAGE ACCEPTED / NOT ACTIVE
 
 Repository writer:
 NONE
@@ -105,21 +105,38 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 ## Continuation boundary
 
-FS-03 is closed. FS-04 exists only as a draft and remains inactive, unaccepted, and unauthorized.
+FS-01, FS-02, and FS-03 are closed.
+
+FS-04 implementation is not started and verification is
+not started. Administrator acceptance remains pending.
+
+FS-05 is inactive and unauthorized. Push, merge, integration, release, tag,
+migration, production changes, administrator acceptance recording, and
+closeout remain unauthorized.
+
+<!-- FS-04-PHASE-1-STATE:BEGIN -->
+## FS-04 Phase 1 control state
 
 ```text
-FS-03 implementation: COMPLETE
-FS-03 verification: COMPLETE
-FS-03 administrator acceptance: ACCEPTED
-FS-03 closeout: APPLIED
-FS-03 reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
-FS-04 draft path: .floppy/templates/Floppy-E-FS-04.draft.md
-FS-04 accepted: NO
-FS-04 active: NO
-FS-04 authorized: NO
-Active authorization: NONE
+Status: WORK PACKAGE ACCEPTED / NOT ACTIVE
+Branch: feature/fs-04-read-only-floppyctl
+Worktree: D:\A\Floppy-FS-04
+Authorization: NONE
 Repository writer: NONE
+Reusable-product paths: tools/floppyctl.py, tests/test_floppyctl.py
+Maximum reusable-product commits: 1
+Work-package acceptance commit: PENDING
+Activation commit: NOT YET RECORDED
+Reusable-product commit: NOT YET CREATED
+Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+FS-05: INACTIVE / NOT AUTHORIZED
+Focused floppyctl tests: NOT RUN
+FS-03 semantic tests: NOT RUN
+FS-02 schema tests: NOT RUN
+Source validator: NOT RUN
+Complete suite: NOT RUN
 ```
-
-Push, merge, integration, release, tag, migration, production changes, and FS-04
-implementation remain unauthorized.
+<!-- FS-04-PHASE-1-STATE:END -->

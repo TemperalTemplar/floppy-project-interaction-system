@@ -1,41 +1,85 @@
-STATUS: DRAFT_NOT_AUTHORIZED
-
-# Floppy E - FS-04 Draft
+# Floppy E - FS-04 Work Package
 
 ## Section
 
 `FS-04 - Read-only floppyctl`
 
-## Authority state
+## Status
 
 ```text
-Work package: NOT ACCEPTED
-Status: DRAFT_NOT_AUTHORIZED
-Activation authorized: NO
-Implementation authorized: NO
-Implementation started: NO
-Active: NO
+Work package: ACCEPTED AS PLANNING BASELINE
+Activation: NOT YET RECORDED
+Implementation authority: NOT YET RECORDED
+Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
 Repository writer: NONE
-Active implementation authorization: NONE
 ```
 
 ## Objective
 
-Thin read-only status, validate, and inspect CLI.
+Create a thin read-only CLI over the existing validator and registered-record
+model. The only supported commands are `status`, `validate`, and `inspect`.
 
-## Boundary
+## Exact reusable-product scope
 
-- Maximum reusable-product paths: `2`
-- Maximum reusable-product commits: `1`
-- Dependency recorded by the roadmap: `FS-03`
-- Exact reusable-product filenames are deferred.
-- Detailed tests are deferred.
-- No implementation architecture or command design is authorized by this draft.
-- No plugin system, service layer, command framework, or repository abstraction.
+```text
+tools/floppyctl.py
+tests/test_floppyctl.py
+```
 
-This file is a proposed work package only. It does not authorize implementation.
-FS-04 remains inactive, unaccepted, and unauthorized. Repository writer and
-active implementation authorization are `NONE`.
+Maximum reusable-product paths: `2`
 
-The next legal operation is preparation, revision, acceptance, or withholding of
-this FS-04 work package - not activation or implementation.
+Maximum reusable-product commits: `1`
+
+Exact reusable-product commit message:
+
+`feat(fs-04): add read-only floppyctl`
+
+## Command behavior
+
+- `status` reads lifecycle and authority values from the controlling registered
+  records and performs no product or control writes.
+- `validate` invokes the existing `tools/validate_floppy.py` validator and
+  preserves its result and diagnostics.
+- `inspect` accepts one registered-record selection and displays only that
+  registered record. It is not an arbitrary-file reader.
+- Unknown commands, missing arguments, invalid selections, and validation
+  failures return deterministic diagnostics and non-success status.
+
+## Required verification
+
+```text
+Focused floppyctl tests: NOT RUN
+Existing FS-03 semantic tests: NOT RUN
+Existing FS-02 schema tests: NOT RUN
+Source validator: NOT RUN
+Complete repository suite: NOT RUN
+```
+
+## Authorized repository context
+
+```text
+Repository: TemperalTemplar/floppy-project-interaction-system
+Branch: feature/fs-04-read-only-floppyctl
+Worktree: D:\A\Floppy-FS-04
+Base checkpoint: 6afcf6b5766c4b0d7bc02daf4107c0051ebdc715
+Source version: 0.4.1-dev
+Work-package acceptance commit: PENDING
+Activation commit: NOT YET RECORDED
+Reusable-product commit: NOT YET CREATED
+Completion and verification commit: NOT YET CREATED
+```
+
+## Explicit exclusions
+
+No plugin system, command framework, service layer, repository abstraction,
+domain layer, loader hierarchy, new package tree, second validator, dependency,
+lifecycle write, dry-run/write command, packaging/export, push, merge,
+integration, release, tag, migration, production action, or FS-05 work is
+authorized.
+
+Administrator acceptance and closeout remain pending and are not performed by
+this Phase-1 operation.
