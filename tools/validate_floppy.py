@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -1225,6 +1227,349 @@ def validate_bce_semantics(
 
     return errors
 
+
+GIT_AUTHORIZATION_ENV = "FLOPPY_AUTHORIZATION_REFERENCE"
+GIT_WRITER_ENV = "FLOPPY_REPOSITORY_WRITER"
+GIT_EXPECTED_HEAD_ENV = "FLOPPY_EXPECTED_HEAD"
+GIT_SCOPE_COMMIT_ENV = "FLOPPY_SCOPE_COMMIT"
+
+
+def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
+    """Run one direct, read-only Git command without persistent configuration."""
+
+    return subprocess.run(
+        [
+            "git",
+            "-c",
+            f"safe.directory={root.as_posix()}",
+            "-C",
+            str(root),
+            *arguments,
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def _git_integrity_lines(result: subprocess.CompletedProcess[str]) -> list[str]:
+    return [
+        line
+        for line in result.stdout.splitlines()
+        if line.strip()
+    ]
+
+
+def _git_integrity_expected_writer(
+    active: dict[str, Any],
+    continuation: dict[str, Any],
+    errors: list[str],
+) -> str | None:
+    values: list[Any] = [
+        active.get("repository_writer"),
+        continuation.get("repository_writer"),
+    ]
+    writers: set[str] = set()
+    for value in values:
+        if isinstance(value, list):
+            if len(value) > 1:
+                errors.append(
+                    "GIT_INTEGRITY_MULTIPLE_REGISTERED_WRITERS: "
+                    + ", ".join(str(item) for item in value)
+                )
+            elif len(value) == 1 and isinstance(value[0], str) and value[0]:
+                writers.add(value[0])
+        elif isinstance(value, str) and value:
+            writers.add(value)
+
+    if not writers:
+        errors.append("GIT_INTEGRITY_REGISTERED_WRITER_MISSING")
+        return None
+    if len(writers) != 1:
+        errors.append(
+            "GIT_INTEGRITY_REGISTERED_WRITER_CONFLICT: "
+            + ", ".join(sorted(writers))
+        )
+        return None
+    return next(iter(writers))
+
+
+def validate_authorization_git_integrity(
+    root: Path,
+    manifest: dict[str, Any],
+    environ: dict[str, str] | None = None,
+) -> list[str]:
+    """Validate the applicable authorization and Git state without mutation."""
+
+    environment = os.environ if environ is None else environ
+    runtime_requested = any(
+        environment.get(name)
+        for name in (
+            GIT_AUTHORIZATION_ENV,
+            GIT_WRITER_ENV,
+            GIT_EXPECTED_HEAD_ENV,
+            GIT_SCOPE_COMMIT_ENV,
+        )
+    )
+    active = manifest.get("active_work_authorization")
+    if active is None and not runtime_requested:
+        return []
+    if not isinstance(active, dict):
+        return ["GIT_INTEGRITY_ACTIVE_AUTHORIZATION_MISSING"]
+
+    errors: list[str] = []
+    continuation = manifest.get("continuation_point")
+    if not isinstance(continuation, dict):
+        continuation = {}
+
+    expected_authorization = active.get("authorization_id")
+    if not isinstance(expected_authorization, str) or not expected_authorization:
+        errors.append("GIT_INTEGRITY_ACTIVE_AUTHORIZATION_INVALID")
+        expected_authorization = None
+
+    supplied_authorization = environment.get(GIT_AUTHORIZATION_ENV)
+    if not supplied_authorization:
+        errors.append("GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISSING")
+    elif (
+        expected_authorization is not None
+        and supplied_authorization != expected_authorization
+    ):
+        errors.append(
+            "GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISMATCH: "
+            f"expected {expected_authorization} found {supplied_authorization}"
+        )
+
+    recorded_references = {
+        value
+        for value in (
+            active.get("writer_authorization_reference"),
+            continuation.get("active_work_authorization"),
+            continuation.get("writer_authorization_reference"),
+        )
+        if isinstance(value, str) and value
+    }
+    if (
+        expected_authorization is not None
+        and recorded_references != {expected_authorization}
+    ):
+        if not recorded_references:
+            errors.append("GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_MISSING")
+        else:
+            errors.append(
+                "GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_CONFLICT: "
+                + ", ".join(sorted(recorded_references))
+            )
+
+    expected_writer = _git_integrity_expected_writer(
+        active,
+        continuation,
+        errors,
+    )
+    supplied_writer = environment.get(GIT_WRITER_ENV)
+    if not supplied_writer:
+        errors.append("GIT_INTEGRITY_EXECUTING_WRITER_MISSING")
+    elif expected_writer is not None and supplied_writer != expected_writer:
+        errors.append(
+            "GIT_INTEGRITY_EXECUTING_WRITER_MISMATCH: "
+            f"expected {expected_writer} found {supplied_writer}"
+        )
+
+    expected_branch = active.get("branch")
+    if not isinstance(expected_branch, str) or not expected_branch:
+        package = manifest.get("fs_06_work_package")
+        expected_branch = (
+            package.get("branch")
+            if isinstance(package, dict)
+            else None
+        )
+    if not isinstance(expected_branch, str) or not expected_branch:
+        errors.append("GIT_INTEGRITY_EXPECTED_BRANCH_MISSING")
+        expected_branch = None
+
+    branch_result = _git_integrity_run(
+        root,
+        "symbolic-ref",
+        "--quiet",
+        "--short",
+        "HEAD",
+    )
+    if branch_result.returncode == 1:
+        if expected_branch is not None:
+            errors.append(
+                "GIT_INTEGRITY_DETACHED_HEAD: "
+                f"expected branch {expected_branch}"
+            )
+    elif branch_result.returncode != 0:
+        errors.append(
+            "GIT_INTEGRITY_BRANCH_READ_FAILED: "
+            + branch_result.stderr.strip()
+        )
+    else:
+        actual_branch = branch_result.stdout.strip()
+        if (
+            expected_branch is not None
+            and actual_branch != expected_branch
+        ):
+            errors.append(
+                "GIT_INTEGRITY_BRANCH_MISMATCH: "
+                f"expected {expected_branch} found {actual_branch}"
+            )
+
+    head_result = _git_integrity_run(root, "rev-parse", "HEAD")
+    if head_result.returncode != 0:
+        errors.append(
+            "GIT_INTEGRITY_HEAD_READ_FAILED: "
+            + head_result.stderr.strip()
+        )
+        actual_head = None
+    else:
+        actual_head = head_result.stdout.strip()
+
+    expected_head = environment.get(GIT_EXPECTED_HEAD_ENV)
+    if not expected_head:
+        value = active.get("required_head")
+        expected_head = value if isinstance(value, str) else None
+    if not expected_head:
+        errors.append("GIT_INTEGRITY_EXPECTED_HEAD_MISSING")
+    elif actual_head is not None and actual_head != expected_head:
+        errors.append(
+            "GIT_INTEGRITY_HEAD_MISMATCH: "
+            f"expected {expected_head} found {actual_head}"
+        )
+
+    status_result = _git_integrity_run(
+        root,
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all",
+    )
+    if status_result.returncode != 0:
+        errors.append(
+            "GIT_INTEGRITY_WORKTREE_READ_FAILED: "
+            + status_result.stderr.strip()
+        )
+    else:
+        staged: list[str] = []
+        tracked: list[str] = []
+        untracked: list[str] = []
+        for line in status_result.stdout.splitlines():
+            if not line:
+                continue
+            code = line[:2]
+            path = line[3:] if len(line) > 3 else "<unknown>"
+            if code == "??":
+                untracked.append(path)
+                continue
+            if code[0] != " ":
+                staged.append(path)
+            if code[1] != " ":
+                tracked.append(path)
+        if staged:
+            errors.append(
+                "GIT_INTEGRITY_STAGED_CHANGES: "
+                + ", ".join(sorted(staged))
+            )
+        if tracked:
+            errors.append(
+                "GIT_INTEGRITY_TRACKED_CHANGES: "
+                + ", ".join(sorted(tracked))
+            )
+        if untracked:
+            errors.append(
+                "GIT_INTEGRITY_UNTRACKED_PATHS: "
+                + ", ".join(sorted(untracked))
+            )
+
+    scope = active.get("exact_file_scope")
+    if not isinstance(scope, list):
+        errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
+        expected_paths: set[str] = set()
+    else:
+        expected_paths = {
+            normalized
+            for item in scope
+            if isinstance(item, str)
+            and (normalized := _semantic_repository_path(item)) is not None
+        }
+        if len(expected_paths) != len(scope):
+            errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
+
+    scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
+    actual_paths: set[str] = set()
+    if scope_commit:
+        resolved = _git_integrity_run(
+            root,
+            "rev-parse",
+            "--verify",
+            f"{scope_commit}^{{commit}}",
+        )
+        if resolved.returncode != 0:
+            errors.append(
+                "GIT_INTEGRITY_SCOPE_COMMIT_INVALID: "
+                f"{scope_commit}"
+            )
+        else:
+            resolved_commit = resolved.stdout.strip()
+            if actual_head is not None and resolved_commit != actual_head:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_COMMIT_NOT_HEAD: "
+                    f"{resolved_commit}"
+                )
+            changed = _git_integrity_run(
+                root,
+                "diff-tree",
+                "--root",
+                "--no-commit-id",
+                "--name-only",
+                "-r",
+                resolved_commit,
+                "--",
+            )
+            if changed.returncode != 0:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
+                    + changed.stderr.strip()
+                )
+            else:
+                actual_paths = {
+                    normalized
+                    for item in _git_integrity_lines(changed)
+                    if (
+                        normalized := _semantic_repository_path(item)
+                    ) is not None
+                }
+    else:
+        pending_commands = [
+            ("diff", "--name-only", "--"),
+            ("diff", "--cached", "--name-only", "--"),
+            ("ls-files", "--others", "--exclude-standard"),
+        ]
+        for command in pending_commands:
+            result = _git_integrity_run(root, *command)
+            if result.returncode != 0:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
+                    + result.stderr.strip()
+                )
+                continue
+            for item in _git_integrity_lines(result):
+                normalized = _semantic_repository_path(item)
+                if normalized is not None:
+                    actual_paths.add(normalized)
+
+    extra = sorted(actual_paths - expected_paths)
+    missing = sorted(expected_paths - actual_paths)
+    if extra:
+        errors.append(
+            "GIT_INTEGRITY_UNAUTHORIZED_PATHS: " + ", ".join(extra)
+        )
+    if missing:
+        errors.append(
+            "GIT_INTEGRITY_REQUIRED_PATHS_MISSING: " + ", ".join(missing)
+        )
+
+    return errors
+
 def _closeout_reference_present(record: dict[str, Any], *fields: str) -> bool:
     for field in fields:
         value = record.get(field)
@@ -1504,6 +1849,17 @@ def validate_source(root: Path, errors: list[str]) -> None:
 
     validate_lifecycle_artifacts(root, manifest, errors)
     validate_normative_bce_schemas(root, manifest, errors)
+
+    control_path = root / ".floppy/manifest.json"
+    if control_path.is_file():
+        control_manifest = validate_json(control_path, errors)
+        if control_manifest is not None:
+            errors.extend(
+                validate_authorization_git_integrity(
+                    root,
+                    control_manifest,
+                )
+            )
 
 
 def validate_project(root: Path, errors: list[str]) -> None:
