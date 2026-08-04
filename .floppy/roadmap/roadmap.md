@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -138,13 +138,13 @@ Repository writer: NONE
 ### FS-07 — Accepted closeout state
 
 ```text
-Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
+Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
-Closeout proposal: NOT YET CREATED
+Administrator-acceptance commit: a215a26d6b9db08e48ad679b5c8d801bce4e998f
+Closeout: PROPOSED
+Closeout proposal: THIS_COMMIT
 Closeout application: NOT YET CREATED
 Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
 Active authorization: NONE
@@ -164,6 +164,6 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 
 ## Continuation boundary
 
-FS-07 administrator acceptance is recorded. Closeout has not been proposed. FS-08 remains inactive and unauthorized.
+The FS-07 closeout proposal is approved but not yet applied. FS-08 remains inactive and unauthorized.
 
 Active authorization and repository writer are NONE. Push, merge, integration, tag, release, migration, packaging, export, production changes, and FS-08 implementation remain unauthorized.

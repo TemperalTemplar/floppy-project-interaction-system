@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
 
 ## Applied transition
 
-`TR-007-ACCEPT-SECTION`
+`TR-008-PROPOSE-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -98,13 +98,13 @@ Additional FS-06 product writes: NOT AUTHORIZED
 ## FS-07 final state
 
 ```text
-Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
+Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
-Closeout proposal: NOT YET CREATED
+Administrator-acceptance commit: a215a26d6b9db08e48ad679b5c8d801bce4e998f
+Closeout: PROPOSED
+Closeout proposal: THIS_COMMIT
 Closeout application: NOT YET CREATED
 Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
 Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
