@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -137,22 +137,42 @@ Repository writer: NONE
 
 ### FS-07 — Deterministic package-content scan
 
-**Draft boundary**
+```text
+Status: WORK_PACKAGE_ACCEPTED
+Work package: ACCEPTED AS PLANNING BASELINE
+Accepted: YES
+Activation: NOT YET RECORDED
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+Branch: feature/fs-07-deterministic-package-content-scan
+Worktree: D:\A\Floppy-FS-07
+Work-package acceptance: THIS_COMMIT
+Activation commit: NOT YET CREATED
+Reusable-product commit: NOT YET CREATED
+Completion commit: NOT YET CREATED
+```
 
-- Status: `DRAFT_NOT_AUTHORIZED`
-- Accepted: `NO`
-- Active: `NO`
-- Authorized: `NO`
-- Repository writer: `NONE`
-- Maximum reusable-product paths: `2`
-- Maximum reusable-product commits: `1`
-- Exact product filenames, detailed scan inventories, package formats, command syntax, architecture, dependencies, and FS-08 details are deferred.
+Exact reusable-product scope:
 
-This draft does not authorize intake, activation, or implementation.
+```text
+tools/floppyctl.py
+tests/test_package_content_scan.py
+```
+
+Command: `floppyctl --root <repository> scan <scan-root>`
+
+The inventory is read-only, repository-relative, `/`-normalized, path/type only,
+deterministically sorted, and rejects escapes, unsafe links, duplicate logical
+paths, and case collisions.
 
 ## Continuation boundary
 
-FS-06 is closed. FS-07 exists only as DRAFT_NOT_AUTHORIZED and remains inactive, unaccepted, and unauthorized.
+FS-07 work-package acceptance is recorded. Activation has not started. FS-08 remains inactive and unauthorized.
 
-Active authorization and repository writer are `NONE`. Push, merge, integration,
-release, tag, migration, production changes, and FS-07 implementation remain unauthorized.
+Push, merge, integration, release, tag, migration, packaging, export, production changes, administrator-acceptance recording, closeout, and FS-08 remain unauthorized.

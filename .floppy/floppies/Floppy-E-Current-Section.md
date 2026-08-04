@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
+`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
 
 ## Applied transition
 
-`TR-009-APPLY-SECTION-CLOSEOUT`
+`TR-002-ACCEPT-WORK-PACKAGE`
 
 ## Authority
 
@@ -98,16 +98,27 @@ Additional FS-06 product writes: NOT AUTHORIZED
 ## FS-07 state
 
 ```text
-Draft path: .floppy/templates/Floppy-E-FS-07.draft.md
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
+Status: WORK_PACKAGE_ACCEPTED
+Work package: ACCEPTED AS PLANNING BASELINE
+Accepted: YES
+Activation: NOT YET RECORDED
 Active: NO
 Authorized: NO
 Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
 Repository writer: NONE
+Branch: feature/fs-07-deterministic-package-content-scan
+Worktree: D:\A\Floppy-FS-07
+Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
 Maximum reusable-product paths: 2
 Maximum reusable-product commits: 1
+Work-package acceptance: THIS_COMMIT
+Activation commit: NOT YET CREATED
+Reusable-product commit: NOT YET CREATED
 ```
 
-FS-06 closure does not authorize FS-07 intake, activation, implementation, push,
-merge, integration, release, tag, migration, or production changes.
+FS-07 is accepted but not yet active.
+FS-08 remains inactive and unauthorized.
