@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 
 Authority:
-EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
+NO_ACTIVE_WORK_AUTHORIZATION
 
 Active implementation section:
-FS-05
+NONE
 
 Current authorized section:
-FS-05
+NONE
 
 FS-01:
 CLOSED
@@ -32,7 +32,7 @@ FS-05:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
-FS_05_WORKING_MODEL
+NONE
 
 Integration:
 NOT AUTHORIZED
@@ -117,32 +117,32 @@ the same result through the existing read-only CLI validation path.
 **Phase-1 control state**
 
 ```text
-Status: IMPLEMENTATION IN PROGRESS
+Status: VERIFICATION COMPLETE - ACCEPTANCE PENDING
 Accepted: YES
-Active: YES
-Authorized: YES
-Authorization: FS_05_IMPLEMENTATION
-Repository writer: FS_05_WORKING_MODEL
+Active: NO
+Authorized: NO
+Authorization: NONE
+Repository writer: NONE
 Branch: feature/fs-05-closeout-completeness
 Worktree: D:\A\Floppy-FS-05
 Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
 Work-package acceptance: 5b3800e6bbec835dc412fcc98fe653fb36b4928e
-Activation: THIS_COMMIT
-Reusable-product commit: NOT YET CREATED
-Implementation: IN PROGRESS
-Verification: NOT STARTED
+Activation: 6d32c3682f0c84445301033afb22b46164c0ea09
+Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
+Implementation: COMPLETE
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
 FS-06: INACTIVE / NOT AUTHORIZED
-Focused FS-05 tests: NOT RUN
-FS-04 CLI tests: NOT RUN
-FS-03 semantic tests: NOT RUN
-FS-02 schema tests: NOT RUN
-Source validator: NOT RUN
-Complete suite: NOT RUN
-git diff --check: NOT RUN
+Focused FS-05 tests: 11 PASSED
+FS-04 CLI tests: 13 PASSED
+FS-03 semantic tests: 18 PASSED
+FS-02 schema tests: 6 PASSED
+Source validator: PASSED
+Complete suite: 73 PASSED
+git diff --check: PASSED
 ```
 
 `tools/floppyctl.py` requires no modification because existing
@@ -152,7 +152,7 @@ git diff --check: NOT RUN
 
 ## Continuation boundary
 
-FS-05 implementation is active under exact authorization.
+FS-05 implementation and verification are complete. Administrator acceptance is pending.
 
 Push, merge, integration, release, tag, migration, production changes,
 administrator acceptance recording, closeout, and FS-06 remain unauthorized.
