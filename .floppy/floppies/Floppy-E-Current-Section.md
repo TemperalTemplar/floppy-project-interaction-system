@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -44,19 +44,44 @@ Repository writer: NONE
 Additional FS-04 product writes: NOT AUTHORIZED
 ```
 
-## FS-05 closeout proposal
+## Historical sections
 
 ```text
-Proposal base checkpoint: 81fd397010bde5d840936af2aed90447dd7f9dfd
+FS-01: CLOSED
+FS-02: CLOSED
+FS-03: CLOSED
+FS-04: CLOSED
+FS-05: CLOSED
+```
+
+## FS-05 final state
+
+```text
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Closeout: PROPOSED - NOT APPLIED
-Closeout record: .floppy/closeouts/FS-05-closeout.md
+Administrator-acceptance commit: 81fd397010bde5d840936af2aed90447dd7f9dfd
+Closeout proposal: 0510e5054222711a23903843130369a186e95bc5
+Closeout: APPLIED
+Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
 Active authorization: NONE
 Repository writer: NONE
-FS-06 draft created: NO
-FS-06: INACTIVE - NOT ACCEPTED - NOT AUTHORIZED
+Additional FS-05 product writes: NOT AUTHORIZED
 ```
 
-The proposal does not apply closeout and does not authorize FS-06.
+## FS-06 state
+
+```text
+Draft path: .floppy/templates/Floppy-E-FS-06.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Repository writer: NONE
+Maximum reusable-product paths: 3
+Maximum reusable-product commits: 1
+```
+
+FS-05 closure does not authorize FS-06 implementation, push, merge, integration,
+release, tag, migration, or production changes.

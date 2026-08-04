@@ -1,4 +1,4 @@
-STATUS: CLOSEOUT_PROPOSED_NOT_APPLIED
+STATUS: CLOSED
 
 # Floppy E - FS-05 Draft
 
@@ -12,10 +12,12 @@ STATUS: CLOSEOUT_PROPOSED_NOT_APPLIED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Closeout: PROPOSED - NOT APPLIED
+Closeout: APPLIED
+Status: CLOSED
 Active authorization: NONE
 Repository writer: NONE
-FS-06: INACTIVE / NOT AUTHORIZED
+Additional product writes: NOT AUTHORIZED
+FS-06: DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 ```
 
 ## Objective
@@ -68,8 +70,24 @@ Closeout: NOT STARTED
 Push, merge, integration, release, tag, migration, production changes,
 administrator acceptance recording, closeout, and FS-06 remain unauthorized.
 
-## Closeout proposal
+## Fixed Phase-2 checkpoints
 
-Proposal base checkpoint: `81fd397010bde5d840936af2aed90447dd7f9dfd`
-Closeout record: `.floppy/closeouts/FS-05-closeout.md`
-Closeout application requires verification of the exact committed proposal.
+```text
+Starting checkpoint: b8183030398dea3609d6efbc2c42fe619574ee48
+Work-package acceptance: 5b3800e6bbec835dc412fcc98fe653fb36b4928e
+Activation: 6d32c3682f0c84445301033afb22b46164c0ea09
+Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
+Completion and verification: 85cbff57258d752a6878784264e4b9d9de5b1118
+Administrator acceptance: 81fd397010bde5d840936af2aed90447dd7f9dfd
+Closeout proposal: 0510e5054222711a23903843130369a186e95bc5
+Closeout application: THIS_COMMIT
+Focused FS-05 tests: 11 PASSED
+FS-04 CLI tests: 13 PASSED
+FS-03 semantic tests: 18 PASSED
+FS-02 schema tests: 6 PASSED
+Complete repository suite: 73 PASSED
+Source validator: PASSED
+git diff --check: PASSED
+```
+
+FS-06 is a draft only and remains inactive, unaccepted, and unauthorized.
