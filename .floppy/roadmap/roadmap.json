@@ -13,8 +13,8 @@
         "commit": "6f79872fa563a7a9c4820bad10ab86edc13782cd",
         "source_version": "0.4.1-dev"
     },
-    "active_implementation_section": null,
-    "current_authorized_section": null,
+    "active_implementation_section": "FS-04",
+    "current_authorized_section": "FS-04",
     "next_proposed_section": "FS-04",
     "fs_01": {
         "status": "CLOSED",
@@ -344,8 +344,8 @@
             "id": "FS-04",
             "sequence": 4,
             "title": "Read-only floppyctl",
-            "status": "ACCEPTED AS PLANNING BASELINE",
-            "implementation_started": false,
+            "status": "IMPLEMENTATION IN PROGRESS",
+            "implementation_started": true,
             "depends_on": [
                 "FS-03"
             ],
@@ -371,21 +371,21 @@
             "tests_deferred_until_section_draft": true,
             "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": true,
-            "activation_authorized": false,
-            "implementation_authorized": false,
-            "active": false,
-            "repository_writer": null,
+            "activation_authorized": true,
+            "implementation_authorized": true,
+            "active": true,
+            "repository_writer": "FS_04_WORKING_MODEL",
             "work_package_status": "ACCEPTED AS PLANNING BASELINE",
             "work_package_draft_status": "ACCEPTED AS PLANNING BASELINE",
             "work_package_accepted": true,
-            "activation_status": "NOT YET RECORDED",
-            "implementation": "NOT STARTED",
-            "writer_authorization_reference": null,
+            "activation_status": "RECORDED",
+            "implementation": "IN PROGRESS",
+            "writer_authorization_reference": "FS_04_IMPLEMENTATION",
             "draft_path": ".floppy/templates/Floppy-E-FS-04.draft.md",
             "exact_paths_deferred_until_section_draft_acceptance": false,
             "tests_deferred_until_section_draft_acceptance": false,
             "verification": "NOT STARTED",
-            "authorization_id": null,
+            "authorization_id": "FS_04_IMPLEMENTATION",
             "exact_reusable_product_paths": [
                 "tools/floppyctl.py",
                 "tests/test_floppyctl.py"
@@ -401,7 +401,8 @@
                 "complete repository suite passes",
                 "git diff --check passes",
                 "final worktree is clean"
-            ]
+            ],
+            "accepted_work_package_checkpoint": "fb9b3b26f8023b0f2912bbd918dca2178063fe20"
         },
         {
             "id": "FS-05",
@@ -607,7 +608,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-04 work-package acceptance is recorded. Activation and implementation continue only under the existing consolidated Phase-1 authorization. FS-05 remains inactive and unauthorized.",
+    "continuation_point": "FS-04 implementation is active under exact authorization FS_04_IMPLEMENTATION with FS_04_WORKING_MODEL as the sole repository writer. FS-05 remains inactive and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -615,7 +616,93 @@
         "implementation_branch": "feature/fs-01-lifecycle-specification",
         "implementation_worktree": "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
     },
-    "active_work_authorization": null,
+    "active_work_authorization": {
+        "authorization_id": "FS_04_IMPLEMENTATION",
+        "section": "FS-04",
+        "title": "Read-only floppyctl",
+        "status": "ACTIVE",
+        "accepted": true,
+        "activation_authorized": true,
+        "implementation_authorized": true,
+        "implementation_started": true,
+        "implementation_complete": false,
+        "verification_complete": false,
+        "administrator_acceptance": "PENDING",
+        "closeout": "NOT_STARTED",
+        "active": true,
+        "repository_writer": "FS_04_WORKING_MODEL",
+        "writer_authorization_reference": "FS_04_IMPLEMENTATION",
+        "repository": "TemperalTemplar/floppy-project-interaction-system",
+        "branch": "feature/fs-04-read-only-floppyctl",
+        "worktree": "D:\\A\\Floppy-FS-04",
+        "base_checkpoint": "6afcf6b5766c4b0d7bc02daf4107c0051ebdc715",
+        "source_version": "0.4.1-dev",
+        "objective": "Create a thin read-only status, validate, and inspect CLI over the existing registered records and validator.",
+        "exact_reusable_product_paths": [
+            "tools/floppyctl.py",
+            "tests/test_floppyctl.py"
+        ],
+        "maximum_reusable_product_paths": 2,
+        "maximum_reusable_product_commits": 1,
+        "product_commit_message": "feat(fs-04): add read-only floppyctl",
+        "required_tests": [
+            "status reports lifecycle and authorization state without writes",
+            "validate preserves existing validator results and diagnostics",
+            "inspect reads only a selected registered record without writes",
+            "invalid commands and arguments fail concisely",
+            "existing FS-03 semantic tests pass",
+            "existing FS-02 schema tests pass",
+            "source validator passes",
+            "complete repository suite passes",
+            "git diff --check passes",
+            "final worktree is clean"
+        ],
+        "explicit_exclusions": [
+            "No plugin system.",
+            "No command framework.",
+            "No service layer.",
+            "No repository abstraction.",
+            "No domain layer.",
+            "No loader hierarchy.",
+            "No new package tree.",
+            "No second validator.",
+            "No dependency.",
+            "No lifecycle writes.",
+            "No dry-run or write commands.",
+            "No packaging, export, push, merge, integration, release, tag, migration, or production action.",
+            "No FS-05 implementation."
+        ],
+        "commit_sequence": [
+            {
+                "id": "P1",
+                "message": "feat(fs-04): add read-only floppyctl",
+                "path_class": "reusable_product",
+                "paths": [
+                    "tools/floppyctl.py",
+                    "tests/test_floppyctl.py"
+                ]
+            }
+        ],
+        "kind": "section_implementation",
+        "accepted_work_package_checkpoint": "fb9b3b26f8023b0f2912bbd918dca2178063fe20",
+        "orchestrator_id": "PROJECT_ORCHESTRATOR",
+        "working_model_id": "FS_04_WORKING_MODEL",
+        "exact_file_scope": [
+            "tools/floppyctl.py",
+            "tests/test_floppyctl.py"
+        ],
+        "forbidden_operations": [
+            "push",
+            "merge",
+            "integrate",
+            "release",
+            "tag",
+            "migrate",
+            "production_change",
+            "lifecycle_write_from_floppyctl",
+            "FS-05"
+        ]
+    },
     "fs_01_product_completion_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d907643874f9aa278f31311527f3e7ec907c6cb6",
@@ -624,9 +711,9 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-    "last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
-    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+    "lifecycle_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "last_applied_transition": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+    "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d03969aa93debb6b705098483c8b59bb9d37d58f",
@@ -817,18 +904,18 @@
         "authorization_id": "FS_04_IMPLEMENTATION",
         "section": "FS-04",
         "title": "Read-only floppyctl",
-        "status": "ACCEPTED AS PLANNING BASELINE",
+        "status": "IMPLEMENTATION IN PROGRESS",
         "accepted": true,
-        "activation_authorized": false,
-        "implementation_authorized": false,
-        "implementation_started": false,
+        "activation_authorized": true,
+        "implementation_authorized": true,
+        "implementation_started": true,
         "implementation_complete": false,
         "verification_complete": false,
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_STARTED",
-        "active": false,
-        "repository_writer": null,
-        "writer_authorization_reference": null,
+        "active": true,
+        "repository_writer": "FS_04_WORKING_MODEL",
+        "writer_authorization_reference": "FS_04_IMPLEMENTATION",
         "repository": "TemperalTemplar/floppy-project-interaction-system",
         "branch": "feature/fs-04-read-only-floppyctl",
         "worktree": "D:\\A\\Floppy-FS-04",
@@ -879,6 +966,7 @@
                     "tests/test_floppyctl.py"
                 ]
             }
-        ]
+        ],
+        "accepted_work_package_checkpoint": "fb9b3b26f8023b0f2912bbd918dca2178063fe20"
     }
 }

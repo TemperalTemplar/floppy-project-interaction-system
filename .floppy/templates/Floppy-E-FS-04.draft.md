@@ -8,14 +8,14 @@
 
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
-Activation: NOT YET RECORDED
-Implementation authority: NOT YET RECORDED
-Implementation: NOT STARTED
+Activation: RECORDED
+Implementation authority: ACTIVE
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_04_IMPLEMENTATION
+Repository writer: FS_04_WORKING_MODEL
 ```
 
 ## Objective
@@ -67,7 +67,7 @@ Branch: feature/fs-04-read-only-floppyctl
 Worktree: D:\A\Floppy-FS-04
 Base checkpoint: 6afcf6b5766c4b0d7bc02daf4107c0051ebdc715
 Source version: 0.4.1-dev
-Work-package acceptance commit: PENDING
+Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
 Activation commit: NOT YET RECORDED
 Reusable-product commit: NOT YET CREATED
 Completion and verification commit: NOT YET CREATED

@@ -2,23 +2,23 @@
 
 ## Lifecycle state
 
-`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+`LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
 ## Applied transition
 
-`TR-002-ACCEPT-WORK-PACKAGE`
+`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 
 ## Authority
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-04`
 
 ## Current authorized section
 
-`NONE`
+`FS-04`
 
 ## Historical sections
 
@@ -34,10 +34,10 @@ FS-03: CLOSED
 Work package: ACCEPTED AS PLANNING BASELINE
 Implementation branch: feature/fs-04-read-only-floppyctl
 Implementation worktree: D:\A\Floppy-FS-04
-Authorization reference: NONE
+Authorization reference: FS_04_IMPLEMENTATION
 Orchestrator: PROJECT_ORCHESTRATOR
 Section working model: FS_04_WORKING_MODEL
-Repository writer: NONE
+Repository writer: FS_04_WORKING_MODEL
 Implementation: NOT STARTED
 Verification: NOT STARTED
 Administrator acceptance: PENDING
@@ -49,7 +49,7 @@ FS-05: INACTIVE - NOT AUTHORIZED
 
 ```text
 Starting checkpoint: 6afcf6b5766c4b0d7bc02daf4107c0051ebdc715
-Work-package acceptance commit: PENDING
+Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
 Activation commit: NOT YET RECORDED
 Reusable-product commit: NOT YET CREATED
 Completion record: NOT YET CREATED

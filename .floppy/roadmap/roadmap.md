@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-04
 
 Current authorized section:
-NONE
+FS-04
 
 FS-01:
 CLOSED
@@ -26,10 +26,10 @@ FS-03:
 CLOSED
 
 FS-04:
-WORK PACKAGE ACCEPTED / NOT ACTIVE
+IMPLEMENTATION IN PROGRESS
 
 Repository writer:
-NONE
+FS_04_WORKING_MODEL
 
 Integration:
 NOT AUTHORIZED
@@ -107,7 +107,7 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 FS-01, FS-02, and FS-03 are closed.
 
-FS-04 implementation is not started and verification is
+FS-04 implementation is in progress and verification is
 not started. Administrator acceptance remains pending.
 
 FS-05 is inactive and unauthorized. Push, merge, integration, release, tag,
@@ -118,17 +118,17 @@ closeout remain unauthorized.
 ## FS-04 Phase 1 control state
 
 ```text
-Status: WORK PACKAGE ACCEPTED / NOT ACTIVE
+Status: IMPLEMENTATION IN PROGRESS
 Branch: feature/fs-04-read-only-floppyctl
 Worktree: D:\A\Floppy-FS-04
-Authorization: NONE
-Repository writer: NONE
+Authorization: FS_04_IMPLEMENTATION
+Repository writer: FS_04_WORKING_MODEL
 Reusable-product paths: tools/floppyctl.py, tests/test_floppyctl.py
 Maximum reusable-product commits: 1
-Work-package acceptance commit: PENDING
+Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
 Activation commit: NOT YET RECORDED
 Reusable-product commit: NOT YET CREATED
-Implementation: NOT STARTED
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
