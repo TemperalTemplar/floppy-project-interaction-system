@@ -18,6 +18,13 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
+## Future authorized FS-08 implementation limits
+
+```text
+Maximum reusable-product paths: 3
+Maximum reusable-product commits: 1
+```
+
 ## High-level objective
 
 Define and validate one Windows boot-package ZIP and one checksum manifest after
