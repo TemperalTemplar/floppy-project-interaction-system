@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
+`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
 
 ## Applied transition
 
-`TR-006-RECORD-VERIFICATION-COMPLETE`
+`TR-007-ACCEPT-SECTION`
 
 ## Authority
 
@@ -44,25 +44,19 @@ Repository writer: NONE
 Additional FS-04 product writes: NOT AUTHORIZED
 ```
 
-## FS-05 state
+## FS-05 accepted state
 
 ```text
-Draft path: .floppy/templates/Floppy-E-FS-05.draft.md
-Status: VERIFICATION COMPLETE - ACCEPTANCE PENDING
-Accepted: YES
-Active: NO
-Authorized: NO
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
 Closeout: NOT STARTED
+Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
+Completion and verification: 85cbff57258d752a6878784264e4b9d9de5b1118
 Active authorization: NONE
 Repository writer: NONE
-Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
-Maximum reusable-product paths: 3
-Maximum reusable-product commits: 1
 FS-06: INACTIVE / NOT AUTHORIZED
 ```
 
-FS-04 closure does not authorize FS-05 implementation, push, merge, integration,
-release, tag, migration, or production changes.
+FS-05 acceptance does not itself apply closeout or authorize FS-06.

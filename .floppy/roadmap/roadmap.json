@@ -425,8 +425,8 @@
             "id": "FS-05",
             "sequence": 5,
             "title": "Closeout-completeness rules",
-            "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
-            "implementation_started": false,
+            "status": "ACCEPTED",
+            "implementation_started": true,
             "depends_on": [
                 "FS-04"
             ],
@@ -464,13 +464,25 @@
             ],
             "verification": "COMPLETE",
             "authorization_id": null,
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "closeout": "NOT_STARTED",
             "exact_reusable_product_paths": [
                 "tools/validate_floppy.py",
                 "tests/test_closeout_completeness.py"
             ],
-            "fs_06": "NOT AUTHORIZED"
+            "fs_06": "NOT AUTHORIZED",
+            "implementation_complete": true,
+            "verification_complete": true,
+            "section_closeout": "NOT_STARTED",
+            "closeout_started": false,
+            "closeout_execution": "NOT_STARTED",
+            "accepted_work_package_checkpoint": "5b3800e6bbec835dc412fcc98fe653fb36b4928e",
+            "activation_checkpoint": "6d32c3682f0c84445301033afb22b46164c0ea09",
+            "product_commit": "b65587ad5ac9044cc854543d679298430a1eff65",
+            "completion_checkpoint": "85cbff57258d752a6878784264e4b9d9de5b1118",
+            "accepted_implementation_checkpoint": "85cbff57258d752a6878784264e4b9d9de5b1118",
+            "administrator_acceptance_checkpoint": "THIS_COMMIT",
+            "additional_product_writes": "NOT AUTHORIZED"
         },
         {
             "id": "FS-06",
@@ -652,7 +664,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-05 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE. FS-06 remains inactive and unauthorized.",
+    "continuation_point": "FS-05 administrator acceptance is recorded. Closeout has not been proposed. Active authorization and repository writer are NONE.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -669,8 +681,8 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-    "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+    "last_applied_transition": "TR-007-ACCEPT-SECTION",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
@@ -936,14 +948,14 @@
                                     "path": ".floppy/templates/Floppy-E-FS-05.draft.md",
                                     "section": "FS-05",
                                     "title": "Closeout-completeness rules",
-                                    "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+                                    "status": "ACCEPTED",
                                     "accepted": true,
                                     "activation_authorized": true,
                                     "implementation_authorized": true,
                                     "implementation_started": true,
                                     "implementation_complete": true,
                                     "verification_complete": true,
-                                    "administrator_acceptance": "PENDING",
+                                    "administrator_acceptance": "ACCEPTED",
                                     "closeout": "NOT_STARTED",
                                     "active": false,
                                     "authorization_id": null,
@@ -1051,8 +1063,8 @@
                                     "implementation_checkpoint": "b65587ad5ac9044cc854543d679298430a1eff65",
                                     "product_commit": "b65587ad5ac9044cc854543d679298430a1eff65",
                                     "reusable_product_commit": "b65587ad5ac9044cc854543d679298430a1eff65",
-                                    "completion_record_checkpoint": "THIS_COMMIT",
-                                    "completion_checkpoint": "THIS_COMMIT",
+                                    "completion_record_checkpoint": "85cbff57258d752a6878784264e4b9d9de5b1118",
+                                    "completion_checkpoint": "85cbff57258d752a6878784264e4b9d9de5b1118",
                                     "verification_evidence": {
                                         "recorded_on": "2026-08-04",
                                         "focused_fs_05_tests": 11,
@@ -1072,6 +1084,16 @@
                                         "pushed": false
                                     },
                                     "additional_product_writes": "NOT AUTHORIZED",
-                                    "additional_product_writes_permitted": false
+                                    "additional_product_writes_permitted": false,
+                                    "accepted_on": "2026-08-04",
+                                    "accepted_implementation_checkpoint": "85cbff57258d752a6878784264e4b9d9de5b1118",
+                                    "administrator_acceptance_checkpoint": "THIS_COMMIT",
+                                    "acceptance_transition": "TR-007-ACCEPT-SECTION",
+                                    "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+                                    "section_closeout": "NOT_STARTED",
+                                    "closeout_started": false,
+                                    "closeout_execution": "NOT_STARTED",
+                                    "closeout_applied": false,
+                                    "closeout_proposal_status": "NOT_PROPOSED"
                                 }
 }

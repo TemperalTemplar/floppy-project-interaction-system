@@ -1,4 +1,4 @@
-STATUS: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
+STATUS: ADMINISTRATOR_ACCEPTED_CLOSEOUT_NOT_STARTED
 
 # Floppy E - FS-05 Draft
 
@@ -13,7 +13,7 @@ Work package: ACCEPTED AS PLANNING BASELINE
 Activation: RECORDED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
 Closeout: NOT STARTED
 Active authorization: NONE
 Repository writer: NONE
@@ -69,3 +69,8 @@ Closeout: NOT STARTED
 
 Push, merge, integration, release, tag, migration, production changes,
 administrator acceptance recording, closeout, and FS-06 remain unauthorized.
+
+## Phase-2 state
+
+Administrator acceptance is recorded in `THIS_COMMIT`.
+Closeout has not been proposed or applied. No product writes are authorized.

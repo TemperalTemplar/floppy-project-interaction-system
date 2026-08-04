@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -107,52 +107,23 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 - Source version: `0.4.1-dev`
 
 <!-- FS-05-DRAFT-BOUNDARY:BEGIN -->
-### FS-05 â€” Closeout-completeness rules
-
-**Objective**
-
-Add closeout-completeness rules to the existing validator and expose
-the same result through the existing read-only CLI validation path.
-
-**Phase-1 control state**
+### FS-05 — Administrator accepted
 
 ```text
-Status: VERIFICATION COMPLETE - ACCEPTANCE PENDING
-Accepted: YES
-Active: NO
-Authorized: NO
-Authorization: NONE
-Repository writer: NONE
-Branch: feature/fs-05-closeout-completeness
-Worktree: D:\A\Floppy-FS-05
-Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
-Maximum reusable-product paths: 3
-Maximum reusable-product commits: 1
-Work-package acceptance: 5b3800e6bbec835dc412fcc98fe653fb36b4928e
-Activation: 6d32c3682f0c84445301033afb22b46164c0ea09
-Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
+Status: ACCEPTED / CLOSEOUT NOT STARTED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
-Closeout: NOT STARTED
+Administrator acceptance: ACCEPTED
+Active authorization: NONE
+Repository writer: NONE
 FS-06: INACTIVE / NOT AUTHORIZED
-Focused FS-05 tests: 11 PASSED
-FS-04 CLI tests: 13 PASSED
-FS-03 semantic tests: 18 PASSED
-FS-02 schema tests: 6 PASSED
-Source validator: PASSED
-Complete suite: 73 PASSED
-git diff --check: PASSED
 ```
-
-`tools/floppyctl.py` requires no modification because existing
-`validate` behavior preserves validator output, diagnostics, and exit status.
 
 <!-- FS-05-DRAFT-BOUNDARY:END -->
 
 ## Continuation boundary
 
-FS-05 implementation and verification are complete. Administrator acceptance is pending.
+FS-05 administrator acceptance is recorded. Closeout has not been proposed. FS-06 remains inactive and unauthorized.
 
-Push, merge, integration, release, tag, migration, production changes,
-administrator acceptance recording, closeout, and FS-06 remain unauthorized.
+Active authorization and repository writer are `NONE`. Push, merge, integration,
+release, tag, migration, production changes, and FS-06 implementation remain unauthorized.
