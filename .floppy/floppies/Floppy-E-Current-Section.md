@@ -117,21 +117,23 @@ Additional FS-07 product writes: NOT AUTHORIZED
 
 No reusable-product path changed during Phase 2.
 
-
 ## FS-08 state
 
 ```text
 Section: FS-08 - Validated boot-package ZIP and checksum manifest
-Draft: .floppy/templates/Floppy-E-FS-08.draft.md
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
+Status: ACCEPTED_NOT_ACTIVE
+Accepted: YES
 Active: NO
-Authorized: NO
+Implementation authorized: NO
 Implementation: NOT STARTED
+Verification: NOT STARTED
 Active authorization: NONE
 Repository writer: NONE
+Branch: feature/fs-08-validated-boot-package
+Worktree: D:\A\Floppy-FS-08
 ```
 
-Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.
+The work package is accepted as the planning baseline. Activation remains a
+separate administrative commit in the authorized Phase-1 sequence.
 
-FS-07 is closed. FS-08 remains inactive, unaccepted, and unauthorized.
+FS-09 remains inactive and unauthorized.

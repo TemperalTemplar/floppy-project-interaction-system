@@ -162,28 +162,33 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 `102 PASSED`; all required FS-06 through FS-02 regressions and validators
 `PASSED`.
 
-
-### FS-08 — Validated boot-package ZIP and checksum manifest
+<!-- FS-08-PHASE-1:BEGIN -->
+### FS-08 — Accepted work package, not active
 
 ```text
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
+Status: ACCEPTED_NOT_ACTIVE
+Accepted: YES
 Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Implementation authorized: NO
 Active authorization: NONE
 Repository writer: NONE
-Draft: .floppy/templates/Floppy-E-FS-08.draft.md
+Branch: feature/fs-08-validated-boot-package
+Worktree: D:\A\Floppy-FS-08
+Base checkpoint: 38b7e8166f3b1a40631e5f12929855d14b06a631
 ```
 
-Detailed packaging, checksum-manifest, dependency, export, migration, runtime,
-and end-user interface decisions remain deferred until separate FS-08 review
-and authorization.
+Exact reusable-product paths:
 
-Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.
+```text
+tools/floppyctl.py
+tests/test_validated_boot_package.py
+```
+
+Maximum reusable-product paths: `3`. Maximum reusable-product commits: `1`.
+No dependency expansion is authorized.
 
 ## Continuation boundary
 
-FS-07 is closed. FS-08 exists only as an inactive, unaccepted, unauthorized draft.
-
-Active authorization and repository writer are NONE. Push, merge, integration, tag, release, migration, packaging, export, production changes, and FS-08 implementation remain unauthorized.
+The next operation is the separately recorded FS-08 activation commit. FS-09,
+push, merge, integration, tag, release, migration, installer creation, runtime
+bundling, and production action remain unauthorized.

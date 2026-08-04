@@ -32,15 +32,15 @@
         "accepted_fs_07_implementation_checkpoint": "f22927f9e92a9edf84614bf32d8bff554dbf3dfc",
         "closed_fs_07_checkpoint": "THIS_COMMIT"
     },
-    "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "status": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
     "authority": {
         "human_authority_required": true,
-        "last_authorized_control_operation": "FS_07_PHASE_2_CLOSEOUT_APPLICATION",
+        "last_authorized_control_operation": "FS_08_WORK_PACKAGE_ACCEPTANCE",
         "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "active_implementation_section": null,
         "current_authorized_section": null,
         "prohibited_inference": true,
-        "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "last_applied_transition": "FS_08_WORK_PACKAGE_ACCEPTANCE",
         "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION"
     },
     "onboarding": {
@@ -199,8 +199,8 @@
         "fs_08_work_package_draft": ".floppy/templates/Floppy-E-FS-08.draft.md"
     },
     "continuation_point": {
-        "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "decision_required": "Review, revise, accept, or withhold the inactive FS-08 draft.",
+        "state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+        "decision_required": "Continue the authorized FS-08 Phase 1 sequence.",
         "implementation_may_begin": false,
         "fs_04_status": "CLOSED",
         "fs_04_implementation_complete": true,
@@ -253,16 +253,17 @@
         "fs_07_verification": "COMPLETE",
         "fs_07_administrator_acceptance": "ACCEPTED",
         "fs_07_closeout": "APPLIED",
-        "fs_08": "INACTIVE / NOT AUTHORIZED",
+        "fs_08": "ACCEPTED / INACTIVE",
         "fs_08_active": false,
-        "fs_08_accepted": false,
+        "fs_08_accepted": true,
         "fs_08_authorized": false,
         "fs_08_implementation": "NOT STARTED",
         "fs_08_verification": "NOT STARTED",
-        "fs_08_administrator_acceptance": "NOT_APPLICABLE",
+        "fs_08_administrator_acceptance": "PENDING",
         "fs_08_closeout": "NOT_STARTED",
         "fs_08_draft_path": ".floppy/templates/Floppy-E-FS-08.draft.md",
-        "fs_08_work_package_status": "DRAFT_NOT_AUTHORIZED"
+        "fs_08_work_package_status": "ACCEPTED AS PLANNING BASELINE",
+        "fs_09": "INACTIVE / NOT AUTHORIZED"
     },
     "historical_work_authorizations": [
         {
@@ -3015,14 +3016,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "DRAFT_NOT_AUTHORIZED",
-        "accepted": false,
+        "status": "ACCEPTED_NOT_ACTIVE",
+        "accepted": true,
         "activation_authorized": false,
         "implementation_authorized": false,
         "implementation_started": false,
         "implementation_complete": false,
         "verification_complete": false,
-        "administrator_acceptance": "NOT_APPLICABLE",
+        "administrator_acceptance": "PENDING",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -3032,29 +3033,116 @@
             "FS-07"
         ],
         "dependency": "FS-07",
-        "objective": "Define and validate one Windows boot-package ZIP and one checksum manifest without selecting implementation details before separate FS-08 review and authorization.",
+        "objective": "Create and verify exactly one deterministic Windows boot-package ZIP and one adjacent SHA-256 checksum manifest.",
         "maximum_reusable_product_paths": 3,
         "maximum_reusable_product_commits": 1,
         "commit_maximum": 1,
-        "exact_paths_deferred_until_section_begins": true,
-        "command_syntax_deferred_until_section_begins": true,
-        "test_inventory_deferred_until_section_begins": true,
-        "architecture_deferred_until_section_begins": true,
-        "package_format_details_deferred_until_section_begins": true,
-        "checksum_manifest_details_deferred_until_section_begins": true,
-        "dependency_selection_deferred_until_section_begins": true,
-        "export_behavior_deferred_until_section_begins": true,
-        "migration_behavior_deferred_until_section_begins": true,
         "new_dependencies_authorized": false,
         "ordinary_manual_python_execution_is_end_user_interface": false,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.",
-        "explicit_exclusions": [
-            "No FS-08 activation or implementation.",
-            "No ZIP archive or checksum manifest creation during FS-07 closeout.",
-            "No release artifact, export behavior, migration behavior, or dependency selection.",
-            "No ordinary-user requirement to install Python, configure PATH, download loose .py files, or run Python commands."
+        "repository": "TemperalTemplar/floppy-project-interaction-system",
+        "branch": "feature/fs-08-validated-boot-package",
+        "worktree": "D:\\A\\Floppy-FS-08",
+        "base_checkpoint": "38b7e8166f3b1a40631e5f12929855d14b06a631",
+        "source_version": "0.4.1-dev",
+        "exact_reusable_product_paths": [
+            "tests/test_validated_boot_package.py",
+            "tools/floppyctl.py"
         ],
-        "fs_09": "NOT AUTHORIZED"
+        "exact_file_scope": [
+            "tests/test_validated_boot_package.py",
+            "tools/floppyctl.py"
+        ],
+        "product_commit_message": "feat(fs-08): add validated boot-package generation",
+        "required_tests": [
+            "focused FS-08 tests",
+            "FS-07 package-content-scan tests",
+            "FS-06 authorization/Git-integrity tests",
+            "FS-05 closeout-completeness tests",
+            "FS-04 CLI tests",
+            "FS-03 semantic-validator tests",
+            "FS-02 schema tests",
+            "complete repository test suite",
+            "source validator",
+            "floppyctl validate",
+            "tracked JSON parsing",
+            "lifecycle consistency checks",
+            "historical-phase validation",
+            "deterministic two-build comparison",
+            "checksum-manifest verification",
+            "corruption-rejection smoke tests",
+            "git diff --check"
+        ],
+        "explicit_exclusions": [
+            "No generalized packaging framework or separate builder module.",
+            "No validator modification.",
+            "No dependency addition or expansion.",
+            "No lifecycle-write command implementation.",
+            "No release installer, bundled runtime, compiler, or final Windows release claim.",
+            "No push, merge, integration, tag, release, migration, or production action.",
+            "No FS-09 implementation."
+        ],
+        "commit_sequence": [
+            {
+                "id": "P1",
+                "message": "feat(fs-08): add validated boot-package generation",
+                "path_class": "reusable_product",
+                "paths": [
+                    "tests/test_validated_boot_package.py",
+                    "tools/floppyctl.py"
+                ]
+            }
+        ],
+        "kind": "section_implementation",
+        "orchestrator_id": "PROJECT_ORCHESTRATOR",
+        "working_model_id": "FS_08_WORKING_MODEL",
+        "forbidden_operations": [
+            "push",
+            "merge",
+            "integrate",
+            "tag",
+            "release",
+            "migrate",
+            "production_change",
+            "installer",
+            "runtime_bundle",
+            "dependency_expansion",
+            "FS-09"
+        ],
+        "cli_commands": {
+            "build": "floppyctl --root <repository> package <destination-directory>",
+            "verify": "floppyctl --root <repository> verify-package <zip> <manifest>"
+        },
+        "package_contract": {
+            "format": "ZIP",
+            "compression": "ZIP_STORED",
+            "fixed_timestamp": "1980-01-01T00:00:00",
+            "normalized_paths": true,
+            "sorted_entries": true,
+            "explicit_inventory": true,
+            "archive_comment": "ABSENT",
+            "variable_extra_fields": "ABSENT",
+            "source_writes": false
+        },
+        "checksum_manifest_contract": {
+            "format": "deterministic compact UTF-8 JSON",
+            "format_version": 1,
+            "algorithm": "SHA-256",
+            "inside_archive": false,
+            "records_archive_hash": true,
+            "records_per_entry_hashes": true,
+            "timestamps": "ABSENT",
+            "absolute_paths": "ABSENT"
+        },
+        "artifact_destination": "C:\\Users\\alvar.TERMINAL1\\Downloads",
+        "fs_09": "NOT AUTHORIZED",
+        "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+        "work_package_draft_status": "ACCEPTED AS PLANNING BASELINE",
+        "work_package_accepted": true,
+        "accepted_work_package_checkpoint": "THIS_COMMIT",
+        "activation_status": "NOT_STARTED",
+        "implementation_status": "NOT_STARTED",
+        "verification_status": "NOT_STARTED"
     },
     "fs_08_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-08.draft.md",
@@ -3062,14 +3150,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "DRAFT_NOT_AUTHORIZED",
-        "accepted": false,
+        "status": "ACCEPTED_NOT_ACTIVE",
+        "accepted": true,
         "activation_authorized": false,
         "implementation_authorized": false,
         "implementation_started": false,
         "implementation_complete": false,
         "verification_complete": false,
-        "administrator_acceptance": "NOT_APPLICABLE",
+        "administrator_acceptance": "PENDING",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -3079,28 +3167,115 @@
             "FS-07"
         ],
         "dependency": "FS-07",
-        "objective": "Define and validate one Windows boot-package ZIP and one checksum manifest without selecting implementation details before separate FS-08 review and authorization.",
+        "objective": "Create and verify exactly one deterministic Windows boot-package ZIP and one adjacent SHA-256 checksum manifest.",
         "maximum_reusable_product_paths": 3,
         "maximum_reusable_product_commits": 1,
         "commit_maximum": 1,
-        "exact_paths_deferred_until_section_begins": true,
-        "command_syntax_deferred_until_section_begins": true,
-        "test_inventory_deferred_until_section_begins": true,
-        "architecture_deferred_until_section_begins": true,
-        "package_format_details_deferred_until_section_begins": true,
-        "checksum_manifest_details_deferred_until_section_begins": true,
-        "dependency_selection_deferred_until_section_begins": true,
-        "export_behavior_deferred_until_section_begins": true,
-        "migration_behavior_deferred_until_section_begins": true,
         "new_dependencies_authorized": false,
         "ordinary_manual_python_execution_is_end_user_interface": false,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.",
-        "explicit_exclusions": [
-            "No FS-08 activation or implementation.",
-            "No ZIP archive or checksum manifest creation during FS-07 closeout.",
-            "No release artifact, export behavior, migration behavior, or dependency selection.",
-            "No ordinary-user requirement to install Python, configure PATH, download loose .py files, or run Python commands."
+        "repository": "TemperalTemplar/floppy-project-interaction-system",
+        "branch": "feature/fs-08-validated-boot-package",
+        "worktree": "D:\\A\\Floppy-FS-08",
+        "base_checkpoint": "38b7e8166f3b1a40631e5f12929855d14b06a631",
+        "source_version": "0.4.1-dev",
+        "exact_reusable_product_paths": [
+            "tests/test_validated_boot_package.py",
+            "tools/floppyctl.py"
         ],
-        "fs_09": "NOT AUTHORIZED"
+        "exact_file_scope": [
+            "tests/test_validated_boot_package.py",
+            "tools/floppyctl.py"
+        ],
+        "product_commit_message": "feat(fs-08): add validated boot-package generation",
+        "required_tests": [
+            "focused FS-08 tests",
+            "FS-07 package-content-scan tests",
+            "FS-06 authorization/Git-integrity tests",
+            "FS-05 closeout-completeness tests",
+            "FS-04 CLI tests",
+            "FS-03 semantic-validator tests",
+            "FS-02 schema tests",
+            "complete repository test suite",
+            "source validator",
+            "floppyctl validate",
+            "tracked JSON parsing",
+            "lifecycle consistency checks",
+            "historical-phase validation",
+            "deterministic two-build comparison",
+            "checksum-manifest verification",
+            "corruption-rejection smoke tests",
+            "git diff --check"
+        ],
+        "explicit_exclusions": [
+            "No generalized packaging framework or separate builder module.",
+            "No validator modification.",
+            "No dependency addition or expansion.",
+            "No lifecycle-write command implementation.",
+            "No release installer, bundled runtime, compiler, or final Windows release claim.",
+            "No push, merge, integration, tag, release, migration, or production action.",
+            "No FS-09 implementation."
+        ],
+        "commit_sequence": [
+            {
+                "id": "P1",
+                "message": "feat(fs-08): add validated boot-package generation",
+                "path_class": "reusable_product",
+                "paths": [
+                    "tests/test_validated_boot_package.py",
+                    "tools/floppyctl.py"
+                ]
+            }
+        ],
+        "kind": "section_implementation",
+        "orchestrator_id": "PROJECT_ORCHESTRATOR",
+        "working_model_id": "FS_08_WORKING_MODEL",
+        "forbidden_operations": [
+            "push",
+            "merge",
+            "integrate",
+            "tag",
+            "release",
+            "migrate",
+            "production_change",
+            "installer",
+            "runtime_bundle",
+            "dependency_expansion",
+            "FS-09"
+        ],
+        "cli_commands": {
+            "build": "floppyctl --root <repository> package <destination-directory>",
+            "verify": "floppyctl --root <repository> verify-package <zip> <manifest>"
+        },
+        "package_contract": {
+            "format": "ZIP",
+            "compression": "ZIP_STORED",
+            "fixed_timestamp": "1980-01-01T00:00:00",
+            "normalized_paths": true,
+            "sorted_entries": true,
+            "explicit_inventory": true,
+            "archive_comment": "ABSENT",
+            "variable_extra_fields": "ABSENT",
+            "source_writes": false
+        },
+        "checksum_manifest_contract": {
+            "format": "deterministic compact UTF-8 JSON",
+            "format_version": 1,
+            "algorithm": "SHA-256",
+            "inside_archive": false,
+            "records_archive_hash": true,
+            "records_per_entry_hashes": true,
+            "timestamps": "ABSENT",
+            "absolute_paths": "ABSENT"
+        },
+        "artifact_destination": "C:\\Users\\alvar.TERMINAL1\\Downloads",
+        "fs_09": "NOT AUTHORIZED",
+        "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+        "work_package_draft_status": "ACCEPTED AS PLANNING BASELINE",
+        "work_package_accepted": true,
+        "accepted_work_package_checkpoint": "THIS_COMMIT",
+        "activation_status": "NOT_STARTED",
+        "implementation_status": "NOT_STARTED",
+        "verification_status": "NOT_STARTED"
     }
 }
