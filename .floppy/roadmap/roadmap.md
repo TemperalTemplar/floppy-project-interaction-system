@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 
 Authority:
-FS_03_IMPLEMENTATION
+NO_ACTIVE_WORK_AUTHORIZATION
 
 Active implementation section:
-FS-03
+NONE
 
 Current authorized section:
-FS-03
+NONE
 
 FS-01:
 CLOSED
@@ -23,10 +23,10 @@ FS-02:
 CLOSED
 
 FS-03:
-IMPLEMENTATION IN PROGRESS
+VERIFICATION COMPLETE / ACCEPTANCE PENDING
 
 Repository writer:
-FS_03_WORKING_MODEL
+NONE
 
 Integration:
 NOT AUTHORIZED
@@ -104,8 +104,8 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 FS-02 is closed.
 
-FS-03 implementation is in progress and verification is
-not started. Administrator acceptance remains pending.
+FS-03 implementation is complete and verification is
+complete. Administrator acceptance remains pending.
 
 FS-04 is inactive and not authorized. Push, merge, integration, release, tag,
 migration, production changes, administrator acceptance recording, and
@@ -115,18 +115,30 @@ closeout remain unauthorized.
 ## FS-03 Phase 1 control state
 
 ```text
-Status: IMPLEMENTATION IN PROGRESS
+Status: VERIFICATION COMPLETE / ACCEPTANCE PENDING
 Branch: feature/fs-03-semantic-validator
 Worktree: D:\A\Floppy-FS-03
-Authorization: FS_03_IMPLEMENTATION
-Repository writer: FS_03_WORKING_MODEL
+Authorization: NONE
+Repository writer: NONE
 Reusable-product paths: tests/test_bce_semantics.py, tools/validate_floppy.py
 Maximum reusable-product commits: 1
-Reusable-product commit: NOT YET CREATED
-Implementation: IN PROGRESS
-Verification: NOT STARTED
+Reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
+Implementation: COMPLETE
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
 FS-04: INACTIVE / NOT AUTHORIZED
 ```
 <!-- FS-03-PHASE-1-STATE:END -->
+
+
+### FS-03 digest-policy recovery
+
+- Activation commit: `eeadf204664c2a827f130f3562b6964e5bde77b1`
+- Registry digest prerequisite: `a99898e0eec4419d1c0a7bf16a24f948b81cda92`
+- Original invalid v7 reconciliation: `24e6deb8086e8ee13f049f44325b8aa39d037e77`
+- Amended reconciliation: `43ff3b5d75431bfbf94cc828284e00ccab4a67ab`
+- Digest-policy prerequisite: `8764d53d7ab248578d2518babbf9a70985312998`
+- Policy diff: `7	1	tests/test_orchestrator_registry.py`
+- Full suite: `49 PASSED`
+- Neither prerequisite commit counts as the reusable-product commit.
