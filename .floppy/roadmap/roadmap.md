@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-07
 
 Current authorized section:
-NONE
+FS-07
 
 FS-01:
 CLOSED
@@ -32,7 +32,7 @@ FS-05:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
-NONE
+FS_07_WORKING_MODEL
 
 Integration:
 NOT AUTHORIZED
@@ -138,22 +138,22 @@ Repository writer: NONE
 ### FS-07 — Deterministic package-content scan
 
 ```text
-Status: WORK_PACKAGE_ACCEPTED
+Status: IMPLEMENTATION_IN_PROGRESS
 Work package: ACCEPTED AS PLANNING BASELINE
 Accepted: YES
-Activation: NOT YET RECORDED
-Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Activation: RECORDED
+Active: YES
+Authorized: YES
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_07_IMPLEMENTATION
+Repository writer: FS_07_WORKING_MODEL
 Branch: feature/fs-07-deterministic-package-content-scan
 Worktree: D:\A\Floppy-FS-07
-Work-package acceptance: THIS_COMMIT
-Activation commit: NOT YET CREATED
+Work-package acceptance: dc454b7f9d1d1612f76a66f0ac5d3e95d13f19f1
+Activation commit: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 Completion commit: NOT YET CREATED
 ```
@@ -173,6 +173,6 @@ paths, and case collisions.
 
 ## Continuation boundary
 
-FS-07 work-package acceptance is recorded. Activation has not started. FS-08 remains inactive and unauthorized.
+FS-07 implementation is active only under exact authorization. FS-08 remains inactive and unauthorized.
 
 Push, merge, integration, release, tag, migration, packaging, export, production changes, administrator-acceptance recording, closeout, and FS-08 remain unauthorized.

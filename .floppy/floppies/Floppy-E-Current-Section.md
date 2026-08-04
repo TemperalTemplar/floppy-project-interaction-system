@@ -2,23 +2,23 @@
 
 ## Lifecycle state
 
-`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+`LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
 ## Applied transition
 
-`TR-002-ACCEPT-WORK-PACKAGE`
+`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 
 ## Authority
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-07`
 
 ## Current authorized section
 
-`NONE`
+`FS-07`
 
 ## Historical sections
 
@@ -98,27 +98,27 @@ Additional FS-06 product writes: NOT AUTHORIZED
 ## FS-07 state
 
 ```text
-Status: WORK_PACKAGE_ACCEPTED
+Status: IMPLEMENTATION_IN_PROGRESS
 Work package: ACCEPTED AS PLANNING BASELINE
 Accepted: YES
-Activation: NOT YET RECORDED
-Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Activation: RECORDED
+Active: YES
+Authorized: YES
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_07_IMPLEMENTATION
+Repository writer: FS_07_WORKING_MODEL
 Branch: feature/fs-07-deterministic-package-content-scan
 Worktree: D:\A\Floppy-FS-07
 Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
 Maximum reusable-product paths: 2
 Maximum reusable-product commits: 1
-Work-package acceptance: THIS_COMMIT
-Activation commit: NOT YET CREATED
+Work-package acceptance: dc454b7f9d1d1612f76a66f0ac5d3e95d13f19f1
+Activation commit: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 ```
 
-FS-07 is accepted but not yet active.
+FS-07 is active only under the exact recorded authorization.
 FS-08 remains inactive and unauthorized.
