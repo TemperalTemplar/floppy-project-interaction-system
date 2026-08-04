@@ -124,7 +124,7 @@
     "artifacts": {
       "registry_template": {
         "path": "project-seed/.floppy/orchestrator-registry.json",
-        "sha256": "5cb3eb6ebdf065c61a22fc24c9518349c0a3610210db8a622fc205be8e828234"
+        "sha256": "f6e2ba172657144af5d5977e73e34fcf98ea76abe250f30fc7a674aa0ad230c6"
       },
       "handoff_template": {
         "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
