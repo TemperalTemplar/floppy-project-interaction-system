@@ -1,4 +1,4 @@
-STATUS: WORK_PACKAGE_ACCEPTED
+STATUS: IMPLEMENTATION_IN_PROGRESS
 
 # Floppy E - FS-06 Work Package
 
@@ -10,13 +10,13 @@ STATUS: WORK_PACKAGE_ACCEPTED
 
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
-Activation: NOT YET RECORDED
-Implementation: NOT STARTED
+Activation: RECORDED
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_06_IMPLEMENTATION
+Repository writer: FS_06_WORKING_MODEL
 FS-07: INACTIVE / NOT AUTHORIZED
 ```
 
@@ -80,8 +80,8 @@ git diff --check: NOT RUN
 
 ```text
 Starting checkpoint: 3e9758f6b7b9a3ee92c34ac1f3936e3295187a8f
-Work-package acceptance: THIS_COMMIT
-Activation: NOT YET RECORDED
+Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
+Activation: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 Completion and verification: NOT YET CREATED
 Administrator acceptance: PENDING
@@ -99,6 +99,6 @@ Closeout: NOT STARTED
 - Product validation must not write repository or lifecycle state.
 - No FS-07 package-content scanning is authorized.
 
-FS-06 work-package acceptance is recorded. Activation and implementation have not started.
+FS-06 implementation is active only under `FS_06_IMPLEMENTATION` with `FS_06_WORKING_MODEL` as the sole repository writer.
 
 Push, merge, integration, release, tag, migration, production changes, administrator acceptance recording, closeout, and FS-07 remain unauthorized.

@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-06
 
 Current authorized section:
-NONE
+FS-06
 
 FS-01:
 CLOSED
@@ -32,7 +32,7 @@ FS-05:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
-NONE
+FS_06_WORKING_MODEL
 
 Integration:
 NOT AUTHORIZED
@@ -127,13 +127,13 @@ Repository writer: NONE
 
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
-Activation: NOT YET RECORDED
-Implementation: NOT STARTED
+Activation: RECORDED
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_06_IMPLEMENTATION
+Repository writer: FS_06_WORKING_MODEL
 FS-07: INACTIVE / NOT AUTHORIZED
 ```
 
@@ -197,8 +197,8 @@ git diff --check: NOT RUN
 
 ```text
 Starting checkpoint: 3e9758f6b7b9a3ee92c34ac1f3936e3295187a8f
-Work-package acceptance: THIS_COMMIT
-Activation: NOT YET RECORDED
+Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
+Activation: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 Completion and verification: NOT YET CREATED
 Administrator acceptance: PENDING
@@ -216,12 +216,12 @@ Closeout: NOT STARTED
 - Product validation must not write repository or lifecycle state.
 - No FS-07 package-content scanning is authorized.
 
-FS-06 work-package acceptance is recorded. Activation and implementation have not started.
+FS-06 implementation is active only under `FS_06_IMPLEMENTATION` with `FS_06_WORKING_MODEL` as the sole repository writer.
 
 Push, merge, integration, release, tag, migration, production changes, administrator acceptance recording, closeout, and FS-07 remain unauthorized.
 
 ## Continuation boundary
 
-FS-06 work-package acceptance is recorded. Activation has not started. FS-07 remains inactive and unauthorized.
+FS-06 implementation is active under exact authorization. FS-07 remains inactive and unauthorized.
 
 Push, merge, integration, release, tag, migration, production changes, administrator acceptance recording, closeout, and FS-07 remain unauthorized.

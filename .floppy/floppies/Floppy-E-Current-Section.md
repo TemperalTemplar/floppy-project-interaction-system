@@ -2,23 +2,23 @@
 
 ## Lifecycle state
 
-`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+`LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
 ## Applied transition
 
-`TR-002-ACCEPT-WORK-PACKAGE`
+`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 
 ## Authority
 
-`NO_ACTIVE_WORK_AUTHORIZATION`
+`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
 
 ## Active implementation section
 
-`NONE`
+`FS-06`
 
 ## Current authorized section
 
-`NONE`
+`FS-06`
 
 ## Historical sections
 
@@ -73,23 +73,23 @@ Additional FS-05 product writes: NOT AUTHORIZED
 
 ```text
 Draft path: .floppy/templates/Floppy-E-FS-06.draft.md
-Status: ACCEPTED AS PLANNING BASELINE
+Status: IMPLEMENTATION IN PROGRESS
 Accepted: YES
-Active: NO
-Authorized: NO
-Implementation: NOT STARTED
+Active: YES
+Authorized: YES
+Implementation: IN PROGRESS
 Verification: NOT STARTED
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: NONE
-Repository writer: NONE
+Active authorization: FS_06_IMPLEMENTATION
+Repository writer: FS_06_WORKING_MODEL
 Reusable-product paths: tools/validate_floppy.py, tests/test_authorization_git_integrity.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
 FS-07: INACTIVE / NOT AUTHORIZED
-Work-package acceptance: THIS_COMMIT
-Activation: NOT YET RECORDED
+Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
+Activation: THIS_COMMIT
 Reusable-product commit: NOT YET CREATED
 ```
 
-FS-06 work-package acceptance is recorded. Activation has not yet been recorded. FS-07 remains inactive and unauthorized.
+FS-06 implementation is active only within the accepted two-path reusable-product scope. FS-07 remains inactive and unauthorized.
