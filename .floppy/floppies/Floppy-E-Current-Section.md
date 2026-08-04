@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+`LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
 
 ## Applied transition
 
-`TR-007-ACCEPT-SECTION`
+`TR-008-PROPOSE-SECTION-CLOSEOUT`
 
 ## Authority
 
@@ -44,19 +44,19 @@ Repository writer: NONE
 Additional FS-04 product writes: NOT AUTHORIZED
 ```
 
-## FS-05 accepted state
+## FS-05 closeout proposal
 
 ```text
+Proposal base checkpoint: 81fd397010bde5d840936af2aed90447dd7f9dfd
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
-Reusable-product commit: b65587ad5ac9044cc854543d679298430a1eff65
-Completion and verification: 85cbff57258d752a6878784264e4b9d9de5b1118
+Closeout: PROPOSED - NOT APPLIED
+Closeout record: .floppy/closeouts/FS-05-closeout.md
 Active authorization: NONE
 Repository writer: NONE
-FS-06: INACTIVE / NOT AUTHORIZED
+FS-06 draft created: NO
+FS-06: INACTIVE - NOT ACCEPTED - NOT AUTHORIZED
 ```
 
-FS-05 acceptance does not itself apply closeout or authorize FS-06.
+The proposal does not apply closeout and does not authorize FS-06.

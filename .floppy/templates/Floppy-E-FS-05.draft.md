@@ -1,4 +1,4 @@
-STATUS: ADMINISTRATOR_ACCEPTED_CLOSEOUT_NOT_STARTED
+STATUS: CLOSEOUT_PROPOSED_NOT_APPLIED
 
 # Floppy E - FS-05 Draft
 
@@ -9,12 +9,10 @@ STATUS: ADMINISTRATOR_ACCEPTED_CLOSEOUT_NOT_STARTED
 ## Authority state
 
 ```text
-Work package: ACCEPTED AS PLANNING BASELINE
-Activation: RECORDED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Closeout: NOT STARTED
+Closeout: PROPOSED - NOT APPLIED
 Active authorization: NONE
 Repository writer: NONE
 FS-06: INACTIVE / NOT AUTHORIZED
@@ -70,7 +68,8 @@ Closeout: NOT STARTED
 Push, merge, integration, release, tag, migration, production changes,
 administrator acceptance recording, closeout, and FS-06 remain unauthorized.
 
-## Phase-2 state
+## Closeout proposal
 
-Administrator acceptance is recorded in `THIS_COMMIT`.
-Closeout has not been proposed or applied. No product writes are authorized.
+Proposal base checkpoint: `81fd397010bde5d840936af2aed90447dd7f9dfd`
+Closeout record: `.floppy/closeouts/FS-05-closeout.md`
+Closeout application requires verification of the exact committed proposal.

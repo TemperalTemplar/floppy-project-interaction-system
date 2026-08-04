@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -107,13 +107,12 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 - Source version: `0.4.1-dev`
 
 <!-- FS-05-DRAFT-BOUNDARY:BEGIN -->
-### FS-05 — Administrator accepted
+### FS-05 — Closeout proposed
 
 ```text
-Status: ACCEPTED / CLOSEOUT NOT STARTED
-Implementation: COMPLETE
-Verification: COMPLETE
-Administrator acceptance: ACCEPTED
+Status: ACCEPTED / CLOSEOUT PROPOSED - NOT APPLIED
+Proposal base checkpoint: 81fd397010bde5d840936af2aed90447dd7f9dfd
+Closeout record: .floppy/closeouts/FS-05-closeout.md
 Active authorization: NONE
 Repository writer: NONE
 FS-06: INACTIVE / NOT AUTHORIZED
@@ -123,7 +122,7 @@ FS-06: INACTIVE / NOT AUTHORIZED
 
 ## Continuation boundary
 
-FS-05 administrator acceptance is recorded. Closeout has not been proposed. FS-06 remains inactive and unauthorized.
+FS-05 closeout is proposed but not applied. The exact proposal must be verified before TR-009 is applied. FS-06 remains unauthorized.
 
 Active authorization and repository writer are `NONE`. Push, merge, integration,
 release, tag, migration, production changes, and FS-06 implementation remain unauthorized.
