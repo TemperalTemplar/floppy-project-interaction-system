@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -23,7 +23,10 @@ FS-02:
 CLOSED
 
 FS-03:
-VERIFICATION COMPLETE / ACCEPTANCE PENDING
+ACCEPTED / CLOSEOUT NOT PROPOSED
+
+FS-04:
+INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
 NONE
@@ -102,43 +105,21 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 ## Continuation boundary
 
-FS-02 is closed.
-
-FS-03 implementation is complete and verification is
-complete. Administrator acceptance remains pending.
-
-FS-04 is inactive and not authorized. Push, merge, integration, release, tag,
-migration, production changes, administrator acceptance recording, and
-closeout remain unauthorized.
-
-<!-- FS-03-PHASE-1-STATE:BEGIN -->
-## FS-03 Phase 1 control state
+FS-03 is accepted and closeout has not yet been applied. FS-04 remains inactive, unaccepted, and unauthorized.
 
 ```text
-Status: VERIFICATION COMPLETE / ACCEPTANCE PENDING
-Branch: feature/fs-03-semantic-validator
-Worktree: D:\A\Floppy-FS-03
-Authorization: NONE
+FS-03 implementation: COMPLETE
+FS-03 verification: COMPLETE
+FS-03 administrator acceptance: ACCEPTED
+FS-03 closeout: NOT PROPOSED
+FS-03 reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
+FS-04 draft path: NOT YET CREATED
+FS-04 accepted: NO
+FS-04 active: NO
+FS-04 authorized: NO
+Active authorization: NONE
 Repository writer: NONE
-Reusable-product paths: tests/test_bce_semantics.py, tools/validate_floppy.py
-Maximum reusable-product commits: 1
-Reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
-Implementation: COMPLETE
-Verification: COMPLETE
-Administrator acceptance: PENDING
-Closeout: NOT STARTED
-FS-04: INACTIVE / NOT AUTHORIZED
 ```
-<!-- FS-03-PHASE-1-STATE:END -->
 
-
-### FS-03 digest-policy recovery
-
-- Activation commit: `eeadf204664c2a827f130f3562b6964e5bde77b1`
-- Registry digest prerequisite: `a99898e0eec4419d1c0a7bf16a24f948b81cda92`
-- Original invalid v7 reconciliation: `24e6deb8086e8ee13f049f44325b8aa39d037e77`
-- Amended reconciliation: `43ff3b5d75431bfbf94cc828284e00ccab4a67ab`
-- Digest-policy prerequisite: `8764d53d7ab248578d2518babbf9a70985312998`
-- Policy diff: `7	1	tests/test_orchestrator_registry.py`
-- Full suite: `49 PASSED`
-- Neither prerequisite commit counts as the reusable-product commit.
+Push, merge, integration, release, tag, migration, production changes, and FS-04
+implementation remain unauthorized.

@@ -91,7 +91,7 @@
             "id": "FS-03",
             "sequence": 3,
             "title": "Semantic Validator",
-            "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+            "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
             "implementation_started": true,
             "depends_on": [
                 "FS-02"
@@ -128,7 +128,7 @@
             "repository_writer": null,
             "implementation": "COMPLETE",
             "verification": "COMPLETE",
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "authorization_id": null,
             "writer_authorization_reference": null,
             "implementation_branch": "feature/fs-03-semantic-validator",
@@ -326,7 +326,12 @@
                 },
                 "prerequisite_commits_count_as_reusable_product_commit": false,
                 "reusable_product_commit": "253412fcd518a915e4995cda4653ed7d777ce45e"
-            }
+            },
+            "accepted_implementation_checkpoint": "d5e377569f869b4c1bf313199397574a261dca53",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_PROPOSED",
+            "closeout_started": false
         },
         {
             "id": "FS-04",
@@ -556,7 +561,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-03 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE. FS-04 remains inactive and unauthorized.",
+    "continuation_point": "FS-03 implementation and verification are complete and administrator acceptance is recorded. Closeout is not yet proposed. FS-04 remains inactive, unaccepted, and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -573,8 +578,8 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-    "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+    "last_applied_transition": "TR-007-ACCEPT-SECTION",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
@@ -632,7 +637,7 @@
         "status": "APPLIED",
         "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
     },
-    "next_proposed_section_status": null,
+    "next_proposed_section_status": "NO_CLOSEOUT_PROPOSAL",
     "fs_02": {
         "status": "CLOSED",
         "implementation": "COMPLETE",
@@ -653,7 +658,7 @@
     },
     "fs_03_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-03.draft.md",
-        "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+        "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
@@ -669,7 +674,9 @@
         "writer_authorization_reference": null,
         "implementation_complete": true,
         "verification_complete": true,
-        "product_commit": "253412fcd518a915e4995cda4653ed7d777ce45e"
+        "product_commit": "253412fcd518a915e4995cda4653ed7d777ce45e",
+        "administrator_acceptance": "ACCEPTED",
+        "closeout": "NOT_PROPOSED"
     },
     "remaining_section_operating_rules": {
         "applies_to": [
