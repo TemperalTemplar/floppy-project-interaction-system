@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
+`LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
 
 ## Applied transition
 
-`TR-006-RECORD-VERIFICATION-COMPLETE`
+`TR-007-ACCEPT-SECTION`
 
 ## Authority
 
@@ -95,32 +95,26 @@ Repository writer: NONE
 Additional FS-06 product writes: NOT AUTHORIZED
 ```
 
-## FS-07 state
+## FS-07 final state
 
 ```text
-Status: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
-Work package: ACCEPTED AS PLANNING BASELINE
-Accepted: YES
-Activation: RECORDED
-Active: NO
-Authorized: NO
+Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
 Closeout: NOT STARTED
+Closeout proposal: NOT YET CREATED
+Closeout application: NOT YET CREATED
+Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
+Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
+Focused FS-07 tests: 18 PASSED
+Complete repository suite: 102 PASSED
 Active authorization: NONE
 Repository writer: NONE
-Branch: feature/fs-07-deterministic-package-content-scan
-Worktree: D:\A\Floppy-FS-07
-Reusable-product paths: tools/floppyctl.py, tests/test_package_content_scan.py
-Maximum reusable-product paths: 2
-Maximum reusable-product commits: 1
-Work-package acceptance: dc454b7f9d1d1612f76a66f0ac5d3e95d13f19f1
-Activation commit: 3cf72d21525e85dd713e983fc94b30667456c46d
-Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
-Completion commit: THIS_COMMIT
+Additional FS-07 product writes: NOT AUTHORIZED
 ```
 
-FS-07 implementation and verification are complete. Administrator acceptance is
-pending. Active authorization and repository writer are `NONE`. FS-08 remains
-inactive and unauthorized.
+No reusable-product path changed during Phase 2.
+
+FS-08 remains inactive, unaccepted, and unauthorized.

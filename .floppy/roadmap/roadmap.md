@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -135,55 +135,35 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
-### FS-07 — Deterministic package-content scan
+### FS-07 — Accepted closeout state
 
 ```text
-Status: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
-Work package: ACCEPTED AS PLANNING BASELINE
-Accepted: YES
-Activation: RECORDED
-Active: NO
-Authorized: NO
+Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
 Closeout: NOT STARTED
+Closeout proposal: NOT YET CREATED
+Closeout application: NOT YET CREATED
+Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
 Active authorization: NONE
 Repository writer: NONE
-Branch: feature/fs-07-deterministic-package-content-scan
-Worktree: D:\A\Floppy-FS-07
-Work-package acceptance: dc454b7f9d1d1612f76a66f0ac5d3e95d13f19f1
-Activation commit: 3cf72d21525e85dd713e983fc94b30667456c46d
-Reusable-product commit: 4ee33d571d16ba9802332efd09e1ca14183ba558
-Completion commit: THIS_COMMIT
 ```
 
-Exact reusable-product scope:
+Exact accepted reusable-product scope:
 
 ```text
 tools/floppyctl.py
 tests/test_package_content_scan.py
 ```
 
-Command: `floppyctl --root <repository> scan <scan-root>`
-
-The inventory is read-only, repository-relative, `/`-normalized, path/type only,
-deterministically sorted, and rejects escapes, unsafe links, duplicate logical
-paths, and case collisions.
-
-Verification evidence:
-
-- Focused FS-07 tests: `18 PASSED`
-- FS-06 authorization/Git-integrity tests: `11 PASSED`
-- FS-05 closeout-completeness tests: `11 PASSED`
-- FS-04 CLI tests: `13 PASSED`
-- FS-03 semantic-validator tests: `18 PASSED`
-- FS-02 schema tests: `6 PASSED`
-- Complete repository suite: `102 PASSED`
-- Source validator, floppyctl validation, JSON parsing, lifecycle consistency, historical validation, and git diff --check: `PASSED`
+Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
+`102 PASSED`; all required FS-06 through FS-02 regressions and validators
+`PASSED`.
 
 ## Continuation boundary
 
-FS-07 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE. FS-08 remains inactive and unauthorized.
+FS-07 administrator acceptance is recorded. Closeout has not been proposed. FS-08 remains inactive and unauthorized.
 
-Push, merge, integration, release, tag, migration, packaging, export, production changes, administrator-acceptance recording, closeout, and FS-08 remain unauthorized.
+Active authorization and repository writer are NONE. Push, merge, integration, tag, release, migration, packaging, export, production changes, and FS-08 implementation remain unauthorized.
