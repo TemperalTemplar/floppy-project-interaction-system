@@ -13,8 +13,8 @@
         "commit": "6f79872fa563a7a9c4820bad10ab86edc13782cd",
         "source_version": "0.4.1-dev"
     },
-    "active_implementation_section": "FS-08",
-    "current_authorized_section": "FS-08",
+    "active_implementation_section": null,
+    "current_authorized_section": null,
     "next_proposed_section": "FS-08",
     "fs_01": {
         "status": "CLOSED",
@@ -869,19 +869,19 @@
             "id": "FS-08",
             "sequence": 8,
             "title": "Validated boot-package ZIP and checksum manifest",
-            "status": "ACTIVE",
+            "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
             "accepted": true,
             "activation_authorized": true,
             "implementation_authorized": true,
             "implementation_started": true,
-            "implementation_complete": false,
-            "verification_complete": false,
+            "implementation_complete": true,
+            "verification_complete": true,
             "administrator_acceptance": "PENDING",
             "closeout": "NOT_STARTED",
-            "active": true,
-            "authorization_id": "FS_08_IMPLEMENTATION",
-            "repository_writer": "FS_08_WORKING_MODEL",
-            "writer_authorization_reference": "FS_08_IMPLEMENTATION",
+            "active": false,
+            "authorization_id": null,
+            "repository_writer": null,
+            "writer_authorization_reference": null,
             "depends_on": [
                 "FS-07"
             ],
@@ -994,9 +994,75 @@
             "work_package_accepted": true,
             "accepted_work_package_checkpoint": "e7543b8165cf86ab7f59b2773badb19cc64c0063",
             "activation_status": "RECORDED",
-            "activation_checkpoint": "THIS_COMMIT",
-            "implementation_status": "IN_PROGRESS",
-            "verification_status": "NOT_STARTED"
+            "activation_checkpoint": "12c6b64760b1dd74d0c2dfc5379b483f3c695d07",
+            "implementation_status": "COMPLETE",
+            "implementation_state": "COMPLETE",
+            "verification_status": "COMPLETE",
+            "verification_state": "COMPLETE",
+            "implementation_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "reusable_product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "completion_record_checkpoint": "THIS_COMMIT",
+            "completion_checkpoint": "THIS_COMMIT",
+            "additional_product_writes": "NOT AUTHORIZED",
+            "additional_product_writes_permitted": false,
+            "verification_evidence": {
+                "recorded_on": "2026-08-04",
+                "focused_fs_08_tests": 21,
+                "fs_07_package_content_scan_tests": 18,
+                "fs_06_authorization_git_integrity_tests": 11,
+                "fs_05_closeout_completeness_tests": 11,
+                "fs_04_cli_tests": 13,
+                "fs_03_semantic_tests": 18,
+                "fs_02_schema_tests": 6,
+                "complete_repository_suite": 123,
+                "source_validator": "PASSED",
+                "floppyctl_validate": "PASSED",
+                "json_parsing": "PASSED",
+                "json_files_parsed": 45,
+                "lifecycle_consistency": "PASSED",
+                "historical_phase_validation": "PASSED",
+                "deterministic_two_build_comparison": "PASSED",
+                "checksum_manifest_verification": "PASSED",
+                "corruption_rejection": {
+                    "modified_zip": "PASSED",
+                    "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                    "modified_manifest": "PASSED",
+                    "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+                },
+                "git_diff_check": "PASSED",
+                "exact_product_paths": [
+                    "tests/test_validated_boot_package.py",
+                    "tools/floppyctl.py"
+                ],
+                "source_version": "0.4.1-dev",
+                "source_files_unchanged_during_artifact_generation": true,
+                "pushed": false
+            },
+            "artifact_evidence": {
+                "archive": {
+                    "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                    "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                    "size": 343631,
+                    "sha256": "c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c"
+                },
+                "manifest": {
+                    "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                    "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                    "size": 6571,
+                    "sha256": "8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed"
+                },
+                "package_member_count": 46,
+                "deterministic_two_build_comparison": "PASSED",
+                "final_package_verification": "PASSED",
+                "corruption_rejection": {
+                    "modified_zip": "PASSED",
+                    "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                    "modified_manifest": "PASSED",
+                    "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+                },
+                "source_files_unchanged_during_generation": true
+            }
         },
         {
             "id": "FS-09",
@@ -1106,7 +1172,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-08 implementation is active under FS_08_IMPLEMENTATION with FS_08_WORKING_MODEL as the sole repository writer.",
+    "continuation_point": "FS-08 implementation and verification are complete. Active authorization and repository writer are NONE. Administrator acceptance is pending. FS-09 remains inactive and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -1114,78 +1180,7 @@
         "implementation_branch": "feature/fs-01-lifecycle-specification",
         "implementation_worktree": "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
     },
-    "active_work_authorization": {
-        "authorization_id": "FS_08_IMPLEMENTATION",
-        "authorization_kind": "section_implementation",
-        "section": "FS-08",
-        "human_authority": {
-            "actor": "ADMINISTRATOR",
-            "decision": "Authorize FS-08 Phase 1 implementation and verification.",
-            "issued_explicitly": true
-        },
-        "repository": "TemperalTemplar/floppy-project-interaction-system",
-        "base_checkpoint": "e7543b8165cf86ab7f59b2773badb19cc64c0063",
-        "source_version": "0.4.1-dev",
-        "branch": "feature/fs-08-validated-boot-package",
-        "worktree": "D:\\A\\Floppy-FS-08",
-        "exact_file_scope": [
-            "tests/test_validated_boot_package.py",
-            "tools/floppyctl.py"
-        ],
-        "required_validation": [
-            "focused FS-08 tests",
-            "FS-07 package-content-scan tests",
-            "FS-06 authorization/Git-integrity tests",
-            "FS-05 closeout-completeness tests",
-            "FS-04 CLI tests",
-            "FS-03 semantic-validator tests",
-            "FS-02 schema tests",
-            "complete repository test suite",
-            "source validator",
-            "floppyctl validate",
-            "tracked JSON parsing",
-            "lifecycle consistency checks",
-            "historical-phase validation",
-            "deterministic two-build comparison",
-            "checksum-manifest verification",
-            "corruption-rejection smoke tests",
-            "git diff --check"
-        ],
-        "commit_sequence": [
-            {
-                "id": "P1",
-                "message": "feat(fs-08): add validated boot-package generation",
-                "path_class": "reusable_product"
-            }
-        ],
-        "push_boundary": {
-            "permitted": false,
-            "branch": null,
-            "force_push": false
-        },
-        "forbidden_side_effects": [
-            "push",
-            "merge",
-            "integrate",
-            "tag",
-            "release",
-            "migrate",
-            "production_change",
-            "installer",
-            "runtime_bundle",
-            "dependency_expansion",
-            "FS-09"
-        ],
-        "administrator_acceptance": "PENDING",
-        "section_closeout": "NOT AUTHORIZED",
-        "integration": "NOT AUTHORIZED",
-        "later_section_authority": "NOT AUTHORIZED",
-        "repository_writer": "FS_08_WORKING_MODEL",
-        "writer_authorization_reference": "FS_08_IMPLEMENTATION",
-        "required_head": "THIS_COMMIT",
-        "orchestrator_id": "PROJECT_ORCHESTRATOR",
-        "working_model_id": "FS_08_WORKING_MODEL"
-    },
+    "active_work_authorization": null,
     "fs_01_product_completion_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d907643874f9aa278f31311527f3e7ec907c6cb6",
@@ -1194,9 +1189,9 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
     "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
-    "authority": "FS_08_IMPLEMENTATION",
+    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d03969aa93debb6b705098483c8b59bb9d37d58f",
@@ -1420,9 +1415,210 @@
             "closeout_application_checkpoint": "THIS_COMMIT",
             "fs_08_draft_path": ".floppy/templates/Floppy-E-FS-08.draft.md",
             "fs_08_draft_status": "DRAFT_NOT_AUTHORIZED"
+        },
+        {
+            "path": ".floppy/templates/Floppy-E-FS-08.draft.md",
+            "section": "FS-08",
+            "id": "FS-08",
+            "sequence": 8,
+            "title": "Validated boot-package ZIP and checksum manifest",
+            "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+            "accepted": true,
+            "activation_authorized": true,
+            "implementation_authorized": true,
+            "implementation_started": true,
+            "implementation_complete": true,
+            "verification_complete": true,
+            "administrator_acceptance": "PENDING",
+            "closeout": "NOT_STARTED",
+            "active": false,
+            "authorization_id": null,
+            "repository_writer": null,
+            "writer_authorization_reference": null,
+            "depends_on": [
+                "FS-07"
+            ],
+            "dependency": "FS-07",
+            "objective": "Create and verify exactly one deterministic Windows boot-package ZIP and one adjacent SHA-256 checksum manifest.",
+            "maximum_reusable_product_paths": 3,
+            "maximum_reusable_product_commits": 1,
+            "commit_maximum": 1,
+            "new_dependencies_authorized": false,
+            "ordinary_manual_python_execution_is_end_user_interface": false,
+            "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners are administrator-side construction tools only.",
+            "repository": "TemperalTemplar/floppy-project-interaction-system",
+            "branch": "feature/fs-08-validated-boot-package",
+            "worktree": "D:\\A\\Floppy-FS-08",
+            "base_checkpoint": "38b7e8166f3b1a40631e5f12929855d14b06a631",
+            "source_version": "0.4.1-dev",
+            "exact_reusable_product_paths": [
+                "tests/test_validated_boot_package.py",
+                "tools/floppyctl.py"
+            ],
+            "exact_file_scope": [
+                "tests/test_validated_boot_package.py",
+                "tools/floppyctl.py"
+            ],
+            "product_commit_message": "feat(fs-08): add validated boot-package generation",
+            "required_tests": [
+                "focused FS-08 tests",
+                "FS-07 package-content-scan tests",
+                "FS-06 authorization/Git-integrity tests",
+                "FS-05 closeout-completeness tests",
+                "FS-04 CLI tests",
+                "FS-03 semantic-validator tests",
+                "FS-02 schema tests",
+                "complete repository test suite",
+                "source validator",
+                "floppyctl validate",
+                "tracked JSON parsing",
+                "lifecycle consistency checks",
+                "historical-phase validation",
+                "deterministic two-build comparison",
+                "checksum-manifest verification",
+                "corruption-rejection smoke tests",
+                "git diff --check"
+            ],
+            "explicit_exclusions": [
+                "No generalized packaging framework or separate builder module.",
+                "No validator modification.",
+                "No dependency addition or expansion.",
+                "No lifecycle-write command implementation.",
+                "No release installer, bundled runtime, compiler, or final Windows release claim.",
+                "No push, merge, integration, tag, release, migration, or production action.",
+                "No FS-09 implementation."
+            ],
+            "commit_sequence": [
+                {
+                    "id": "P1",
+                    "message": "feat(fs-08): add validated boot-package generation",
+                    "path_class": "reusable_product",
+                    "paths": [
+                        "tests/test_validated_boot_package.py",
+                        "tools/floppyctl.py"
+                    ]
+                }
+            ],
+            "kind": "section_implementation",
+            "orchestrator_id": "PROJECT_ORCHESTRATOR",
+            "working_model_id": "FS_08_WORKING_MODEL",
+            "forbidden_operations": [
+                "push",
+                "merge",
+                "integrate",
+                "tag",
+                "release",
+                "migrate",
+                "production_change",
+                "installer",
+                "runtime_bundle",
+                "dependency_expansion",
+                "FS-09"
+            ],
+            "cli_commands": {
+                "build": "floppyctl --root <repository> package <destination-directory>",
+                "verify": "floppyctl --root <repository> verify-package <zip> <manifest>"
+            },
+            "package_contract": {
+                "format": "ZIP",
+                "compression": "ZIP_STORED",
+                "fixed_timestamp": "1980-01-01T00:00:00",
+                "normalized_paths": true,
+                "sorted_entries": true,
+                "explicit_inventory": true,
+                "archive_comment": "ABSENT",
+                "variable_extra_fields": "ABSENT",
+                "source_writes": false
+            },
+            "checksum_manifest_contract": {
+                "format": "deterministic compact UTF-8 JSON",
+                "format_version": 1,
+                "algorithm": "SHA-256",
+                "inside_archive": false,
+                "records_archive_hash": true,
+                "records_per_entry_hashes": true,
+                "timestamps": "ABSENT",
+                "absolute_paths": "ABSENT"
+            },
+            "artifact_destination": "C:\\Users\\alvar.TERMINAL1\\Downloads",
+            "fs_09": "NOT AUTHORIZED",
+            "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+            "work_package_draft_status": "ACCEPTED AS PLANNING BASELINE",
+            "work_package_accepted": true,
+            "accepted_work_package_checkpoint": "e7543b8165cf86ab7f59b2773badb19cc64c0063",
+            "activation_status": "RECORDED",
+            "activation_checkpoint": "12c6b64760b1dd74d0c2dfc5379b483f3c695d07",
+            "implementation_status": "COMPLETE",
+            "implementation_state": "COMPLETE",
+            "verification_status": "COMPLETE",
+            "verification_state": "COMPLETE",
+            "implementation_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "reusable_product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+            "completion_record_checkpoint": "THIS_COMMIT",
+            "completion_checkpoint": "THIS_COMMIT",
+            "additional_product_writes": "NOT AUTHORIZED",
+            "additional_product_writes_permitted": false,
+            "verification_evidence": {
+                "recorded_on": "2026-08-04",
+                "focused_fs_08_tests": 21,
+                "fs_07_package_content_scan_tests": 18,
+                "fs_06_authorization_git_integrity_tests": 11,
+                "fs_05_closeout_completeness_tests": 11,
+                "fs_04_cli_tests": 13,
+                "fs_03_semantic_tests": 18,
+                "fs_02_schema_tests": 6,
+                "complete_repository_suite": 123,
+                "source_validator": "PASSED",
+                "floppyctl_validate": "PASSED",
+                "json_parsing": "PASSED",
+                "json_files_parsed": 45,
+                "lifecycle_consistency": "PASSED",
+                "historical_phase_validation": "PASSED",
+                "deterministic_two_build_comparison": "PASSED",
+                "checksum_manifest_verification": "PASSED",
+                "corruption_rejection": {
+                    "modified_zip": "PASSED",
+                    "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                    "modified_manifest": "PASSED",
+                    "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+                },
+                "git_diff_check": "PASSED",
+                "exact_product_paths": [
+                    "tests/test_validated_boot_package.py",
+                    "tools/floppyctl.py"
+                ],
+                "source_version": "0.4.1-dev",
+                "source_files_unchanged_during_artifact_generation": true,
+                "pushed": false
+            },
+            "artifact_evidence": {
+                "archive": {
+                    "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                    "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                    "size": 343631,
+                    "sha256": "c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c"
+                },
+                "manifest": {
+                    "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                    "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                    "size": 6571,
+                    "sha256": "8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed"
+                },
+                "package_member_count": 46,
+                "deterministic_two_build_comparison": "PASSED",
+                "final_package_verification": "PASSED",
+                "corruption_rejection": {
+                    "modified_zip": "PASSED",
+                    "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                    "modified_manifest": "PASSED",
+                    "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+                },
+                "source_files_unchanged_during_generation": true
+            }
         }
     ],
-    "next_proposed_section_status": "ACTIVE",
+    "next_proposed_section_status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
     "fs_02": {
         "status": "CLOSED",
         "implementation": "COMPLETE",
@@ -2526,19 +2722,19 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ACTIVE",
+        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
-        "implementation_complete": false,
-        "verification_complete": false,
+        "implementation_complete": true,
+        "verification_complete": true,
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_STARTED",
-        "active": true,
-        "authorization_id": "FS_08_IMPLEMENTATION",
-        "repository_writer": "FS_08_WORKING_MODEL",
-        "writer_authorization_reference": "FS_08_IMPLEMENTATION",
+        "active": false,
+        "authorization_id": null,
+        "repository_writer": null,
+        "writer_authorization_reference": null,
         "depends_on": [
             "FS-07"
         ],
@@ -2651,9 +2847,75 @@
         "work_package_accepted": true,
         "accepted_work_package_checkpoint": "e7543b8165cf86ab7f59b2773badb19cc64c0063",
         "activation_status": "RECORDED",
-        "activation_checkpoint": "THIS_COMMIT",
-        "implementation_status": "IN_PROGRESS",
-        "verification_status": "NOT_STARTED"
+        "activation_checkpoint": "12c6b64760b1dd74d0c2dfc5379b483f3c695d07",
+        "implementation_status": "COMPLETE",
+        "implementation_state": "COMPLETE",
+        "verification_status": "COMPLETE",
+        "verification_state": "COMPLETE",
+        "implementation_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "reusable_product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "completion_record_checkpoint": "THIS_COMMIT",
+        "completion_checkpoint": "THIS_COMMIT",
+        "additional_product_writes": "NOT AUTHORIZED",
+        "additional_product_writes_permitted": false,
+        "verification_evidence": {
+            "recorded_on": "2026-08-04",
+            "focused_fs_08_tests": 21,
+            "fs_07_package_content_scan_tests": 18,
+            "fs_06_authorization_git_integrity_tests": 11,
+            "fs_05_closeout_completeness_tests": 11,
+            "fs_04_cli_tests": 13,
+            "fs_03_semantic_tests": 18,
+            "fs_02_schema_tests": 6,
+            "complete_repository_suite": 123,
+            "source_validator": "PASSED",
+            "floppyctl_validate": "PASSED",
+            "json_parsing": "PASSED",
+            "json_files_parsed": 45,
+            "lifecycle_consistency": "PASSED",
+            "historical_phase_validation": "PASSED",
+            "deterministic_two_build_comparison": "PASSED",
+            "checksum_manifest_verification": "PASSED",
+            "corruption_rejection": {
+                "modified_zip": "PASSED",
+                "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                "modified_manifest": "PASSED",
+                "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+            },
+            "git_diff_check": "PASSED",
+            "exact_product_paths": [
+                "tests/test_validated_boot_package.py",
+                "tools/floppyctl.py"
+            ],
+            "source_version": "0.4.1-dev",
+            "source_files_unchanged_during_artifact_generation": true,
+            "pushed": false
+        },
+        "artifact_evidence": {
+            "archive": {
+                "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                "size": 343631,
+                "sha256": "c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c"
+            },
+            "manifest": {
+                "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                "size": 6571,
+                "sha256": "8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed"
+            },
+            "package_member_count": 46,
+            "deterministic_two_build_comparison": "PASSED",
+            "final_package_verification": "PASSED",
+            "corruption_rejection": {
+                "modified_zip": "PASSED",
+                "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                "modified_manifest": "PASSED",
+                "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+            },
+            "source_files_unchanged_during_generation": true
+        }
     },
     "fs_08_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-08.draft.md",
@@ -2661,19 +2923,19 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ACTIVE",
+        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
-        "implementation_complete": false,
-        "verification_complete": false,
+        "implementation_complete": true,
+        "verification_complete": true,
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_STARTED",
-        "active": true,
-        "authorization_id": "FS_08_IMPLEMENTATION",
-        "repository_writer": "FS_08_WORKING_MODEL",
-        "writer_authorization_reference": "FS_08_IMPLEMENTATION",
+        "active": false,
+        "authorization_id": null,
+        "repository_writer": null,
+        "writer_authorization_reference": null,
         "depends_on": [
             "FS-07"
         ],
@@ -2786,8 +3048,74 @@
         "work_package_accepted": true,
         "accepted_work_package_checkpoint": "e7543b8165cf86ab7f59b2773badb19cc64c0063",
         "activation_status": "RECORDED",
-        "activation_checkpoint": "THIS_COMMIT",
-        "implementation_status": "IN_PROGRESS",
-        "verification_status": "NOT_STARTED"
+        "activation_checkpoint": "12c6b64760b1dd74d0c2dfc5379b483f3c695d07",
+        "implementation_status": "COMPLETE",
+        "implementation_state": "COMPLETE",
+        "verification_status": "COMPLETE",
+        "verification_state": "COMPLETE",
+        "implementation_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "reusable_product_commit": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "completion_record_checkpoint": "THIS_COMMIT",
+        "completion_checkpoint": "THIS_COMMIT",
+        "additional_product_writes": "NOT AUTHORIZED",
+        "additional_product_writes_permitted": false,
+        "verification_evidence": {
+            "recorded_on": "2026-08-04",
+            "focused_fs_08_tests": 21,
+            "fs_07_package_content_scan_tests": 18,
+            "fs_06_authorization_git_integrity_tests": 11,
+            "fs_05_closeout_completeness_tests": 11,
+            "fs_04_cli_tests": 13,
+            "fs_03_semantic_tests": 18,
+            "fs_02_schema_tests": 6,
+            "complete_repository_suite": 123,
+            "source_validator": "PASSED",
+            "floppyctl_validate": "PASSED",
+            "json_parsing": "PASSED",
+            "json_files_parsed": 45,
+            "lifecycle_consistency": "PASSED",
+            "historical_phase_validation": "PASSED",
+            "deterministic_two_build_comparison": "PASSED",
+            "checksum_manifest_verification": "PASSED",
+            "corruption_rejection": {
+                "modified_zip": "PASSED",
+                "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                "modified_manifest": "PASSED",
+                "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+            },
+            "git_diff_check": "PASSED",
+            "exact_product_paths": [
+                "tests/test_validated_boot_package.py",
+                "tools/floppyctl.py"
+            ],
+            "source_version": "0.4.1-dev",
+            "source_files_unchanged_during_artifact_generation": true,
+            "pushed": false
+        },
+        "artifact_evidence": {
+            "archive": {
+                "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip",
+                "size": 343631,
+                "sha256": "c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c"
+            },
+            "manifest": {
+                "path": "C:\\Users\\alvar.TERMINAL1\\Downloads\\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                "filename": "floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json",
+                "size": 6571,
+                "sha256": "8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed"
+            },
+            "package_member_count": 46,
+            "deterministic_two_build_comparison": "PASSED",
+            "final_package_verification": "PASSED",
+            "corruption_rejection": {
+                "modified_zip": "PASSED",
+                "modified_zip_diagnostic": "ERROR: archive size mismatch",
+                "modified_manifest": "PASSED",
+                "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
+            },
+            "source_files_unchanged_during_generation": true
+        }
     }
 }

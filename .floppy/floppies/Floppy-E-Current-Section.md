@@ -121,26 +121,30 @@ No reusable-product path changed during Phase 2.
 
 ```text
 Section: FS-08 - Validated boot-package ZIP and checksum manifest
-Status: ACTIVE
-Accepted: YES
-Active: YES
-Implementation authorized: YES
-Implementation: IN PROGRESS
-Verification: NOT STARTED
-Active authorization: FS_08_IMPLEMENTATION
-Repository writer: FS_08_WORKING_MODEL
+Status: ADMINISTRATOR_ACCEPTANCE_PENDING
+Accepted work package: YES
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
 Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
-Activation commit: THIS_COMMIT
-Branch: feature/fs-08-validated-boot-package
-Worktree: D:\A\Floppy-FS-08
+Activation commit: 12c6b64760b1dd74d0c2dfc5379b483f3c695d07
+Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
+Completion commit: THIS_COMMIT
 ```
 
-Exactly one reusable-product commit may modify only:
+Validated artifacts:
 
 ```text
-tools/floppyctl.py
-tests/test_validated_boot_package.py
+ZIP: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip
+Checksum manifest: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json
+Package members: 46
+Deterministic two-build comparison: PASSED
+Final package verification: PASSED
+Corruption rejection: PASSED
 ```
 
-FS-09 and all integration, release, migration, installer, runtime-bundle, and
-production actions remain unauthorized.
+The ZIP is a validated FS-08 boot package and is not yet the finished no-Python
+Windows release. FS-09 remains inactive and unauthorized.

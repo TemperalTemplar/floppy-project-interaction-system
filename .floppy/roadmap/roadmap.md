@@ -163,30 +163,42 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 `PASSED`.
 
 <!-- FS-08-PHASE-1:BEGIN -->
-### FS-08 — Active implementation
+### FS-08 — Implementation and verification complete
 
 ```text
-Status: ACTIVE
-Accepted: YES
-Active: YES
-Implementation authorized: YES
-Active authorization: FS_08_IMPLEMENTATION
-Repository writer: FS_08_WORKING_MODEL
+Status: ADMINISTRATOR_ACCEPTANCE_PENDING
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
 Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
-Activation commit: THIS_COMMIT
-Branch: feature/fs-08-validated-boot-package
-Worktree: D:\A\Floppy-FS-08
+Activation commit: 12c6b64760b1dd74d0c2dfc5379b483f3c695d07
+Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
+Completion commit: THIS_COMMIT
 ```
 
-Exact reusable-product scope:
+Exact reusable-product paths:
 
 ```text
 tools/floppyctl.py
 tests/test_validated_boot_package.py
 ```
 
-The active writer may create exactly one reusable-product commit and the
-authorized external ZIP and checksum manifest. No dependency expansion,
-lifecycle-write implementation, FS-09 work, push, merge, integration, tag,
-release, migration, installer, runtime bundle, or production action is
-authorized.
+Validated artifact result:
+
+```text
+ZIP: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip
+ZIP SHA-256: c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c
+Checksum manifest: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json
+Checksum manifest SHA-256: 8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed
+Package members: 46
+```
+
+## Continuation boundary
+
+FS-08 is stopped at administrator acceptance pending. FS-08 is not closed.
+FS-09 remains inactive and unauthorized. No push, merge, integration, tag,
+release, migration, installer, runtime bundle, or production action occurred.
+The ZIP is a validated boot package, not the finished no-Python Windows release.
