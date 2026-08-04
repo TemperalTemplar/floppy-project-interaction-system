@@ -1225,6 +1225,246 @@ def validate_bce_semantics(
 
     return errors
 
+def _closeout_reference_present(record: dict[str, Any], *fields: str) -> bool:
+    for field in fields:
+        value = record.get(field)
+        if isinstance(value, str) and value.strip():
+            return True
+        if isinstance(value, dict) and value:
+            return True
+        if isinstance(value, list) and value:
+            return True
+    return False
+
+
+def _closeout_section_number(section: Any) -> int | None:
+    if not isinstance(section, str) or not section.startswith("FS-"):
+        return None
+    try:
+        return int(section[3:])
+    except ValueError:
+        return None
+
+
+def validate_closeout_completeness(
+    manifest: dict[str, Any],
+    root: Path,
+) -> list[str]:
+    """Validate the currently represented applied section closeout."""
+
+    if not isinstance(manifest, dict):
+        return ["CLOSEOUT_MANIFEST_INVALID"]
+
+    proposal = manifest.get("closeout_proposal")
+    application = manifest.get("closeout_application")
+    closed_state = manifest.get("status") == (
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+    )
+    if not closed_state:
+        return []
+
+    errors: list[str] = []
+    section = (
+        application.get("section")
+        if isinstance(application, dict)
+        else None
+    )
+    if not isinstance(section, str) and isinstance(proposal, dict):
+        section = proposal.get("section")
+    number = _closeout_section_number(section)
+    if number is None:
+        return ["CLOSEOUT_SECTION_INVALID"]
+
+    record_key = f"fs_{number:02d}_work_package"
+    record = manifest.get(record_key)
+    if not isinstance(record, dict) or record.get("section") != section:
+        record = next(
+            (
+                item
+                for item in reversed(
+                    manifest.get("historical_work_authorizations", [])
+                )
+                if isinstance(item, dict) and item.get("section") == section
+            ),
+            None,
+        )
+    if not isinstance(record, dict):
+        return [f"CLOSEOUT_SECTION_RECORD_MISSING: {section}"]
+
+    implementation_complete = (
+        record.get("implementation_complete") is True
+        or record.get("implementation_status") == "COMPLETE"
+        or record.get("implementation_state") == "COMPLETE"
+    )
+    if not implementation_complete:
+        errors.append(f"CLOSEOUT_IMPLEMENTATION_INCOMPLETE: {section}")
+
+    verification_complete = (
+        record.get("verification_complete") is True
+        or record.get("verification_status") == "COMPLETE"
+        or record.get("verification_state") == "COMPLETE"
+    )
+    if not verification_complete:
+        errors.append(f"CLOSEOUT_VERIFICATION_INCOMPLETE: {section}")
+
+    if record.get("administrator_acceptance") != "ACCEPTED":
+        errors.append(
+            f"CLOSEOUT_ADMINISTRATOR_ACCEPTANCE_MISSING: {section}"
+        )
+
+    if not _closeout_reference_present(
+        record,
+        "implementation_checkpoint",
+        "implementation_completion_checkpoint",
+        "accepted_implementation_checkpoint",
+        "reusable_product_commit",
+        "product_commit",
+        "completion_evidence",
+    ):
+        errors.append(f"CLOSEOUT_IMPLEMENTATION_EVIDENCE_MISSING: {section}")
+
+    if not _closeout_reference_present(
+        record,
+        "verification_evidence",
+        "completion_evidence",
+        "completion_record_checkpoint",
+    ):
+        errors.append(f"CLOSEOUT_VERIFICATION_EVIDENCE_MISSING: {section}")
+
+    proposal_valid = (
+        isinstance(proposal, dict)
+        and proposal.get("section") == section
+        and proposal.get("transition")
+        == "TR-008-PROPOSE-SECTION-CLOSEOUT"
+        and proposal.get("status") in {"APPROVED_AND_APPLIED", "APPLIED"}
+        and isinstance(proposal.get("proposal_commit_checkpoint"), str)
+        and bool(proposal.get("proposal_commit_checkpoint"))
+        and isinstance(proposal.get("record"), str)
+        and bool(proposal.get("record"))
+        and (root / proposal["record"]).is_file()
+    )
+    if not proposal_valid:
+        errors.append(f"CLOSEOUT_PROPOSAL_INCOMPLETE: {section}")
+
+    application_valid = (
+        isinstance(application, dict)
+        and application.get("section") == section
+        and application.get("status") == "APPLIED"
+        and isinstance(application.get("application_commit_checkpoint"), str)
+        and bool(application.get("application_commit_checkpoint"))
+        and isinstance(application.get("record"), str)
+        and bool(application.get("record"))
+        and (root / application["record"]).is_file()
+    )
+    if not application_valid:
+        errors.append(f"CLOSEOUT_APPLICATION_INCOMPLETE: {section}")
+
+    proposal_checkpoint = (
+        proposal.get("proposal_commit_checkpoint")
+        if isinstance(proposal, dict)
+        else None
+    )
+    application_checkpoint = (
+        application.get("application_commit_checkpoint")
+        if isinstance(application, dict)
+        else None
+    )
+    transition_valid = (
+        isinstance(application, dict)
+        and application.get("transition")
+        == "TR-009-APPLY-SECTION-CLOSEOUT"
+        and application.get("resulting_lifecycle_state")
+        == "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+        and application.get("approved_proposal_checkpoint")
+        == proposal_checkpoint
+        and proposal_checkpoint != application_checkpoint
+        and record.get("section_closeout") == "APPLIED"
+        and record.get("closeout_applied") is True
+        and record.get("closeout_application_transition")
+        == "TR-009-APPLY-SECTION-CLOSEOUT"
+    )
+    if not transition_valid:
+        errors.append(f"CLOSEOUT_APPLICATION_TRANSITION_INVALID: {section}")
+
+    next_number = number + 1
+    next_section = f"FS-{next_number:02d}"
+    next_key = f"fs_{next_number:02d}"
+    records = manifest.get("records")
+    if not isinstance(records, dict):
+        records = {}
+    draft_path = None
+    for source in (application, proposal, record):
+        if isinstance(source, dict):
+            candidate = source.get(f"{next_key}_draft_path")
+            if isinstance(candidate, str) and candidate:
+                draft_path = candidate
+                break
+    if draft_path is None:
+        candidate = records.get(f"{next_key}_work_package_draft")
+        if isinstance(candidate, str) and candidate:
+            draft_path = candidate
+    if draft_path is None or not (root / draft_path).is_file():
+        errors.append(f"CLOSEOUT_NEXT_DRAFT_MISSING: {next_section}")
+
+    next_record = manifest.get(f"{next_key}_work_package")
+    if not isinstance(next_record, dict):
+        next_record = {}
+
+    if next_record.get("active") is not False:
+        errors.append(f"CLOSEOUT_NEXT_SECTION_ACTIVE: {next_section}")
+    if next_record.get("accepted") is not False:
+        errors.append(f"CLOSEOUT_NEXT_SECTION_ACCEPTED: {next_section}")
+    next_authorized = any(
+        (
+            next_record.get("activation_authorized") is True,
+            next_record.get("implementation_authorized") is True,
+            next_record.get("authorization_id") not in {None, ""},
+            next_record.get("status") not in {
+                "DRAFT_NOT_AUTHORIZED",
+                "NOT AUTHORIZED",
+            },
+            isinstance(application, dict)
+            and application.get(next_key) != "NOT AUTHORIZED",
+        )
+    )
+    if next_authorized:
+        errors.append(f"CLOSEOUT_NEXT_SECTION_AUTHORIZED: {next_section}")
+
+    continuation = manifest.get("continuation_point")
+    if not isinstance(continuation, dict):
+        continuation = {}
+    authority = manifest.get("authority")
+    if not isinstance(authority, dict):
+        authority = {}
+    active_authorization_remains = any(
+        (
+            manifest.get("active_work_authorization") is not None,
+            continuation.get("active_work_authorization") is not None,
+            authority.get("active_implementation_section") is not None,
+            authority.get("current_authorized_section") is not None,
+            isinstance(application, dict)
+            and application.get("active_implementation_section") is not None,
+            isinstance(application, dict)
+            and application.get("current_authorized_section") is not None,
+        )
+    )
+    if active_authorization_remains:
+        errors.append(f"CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: {section}")
+
+    writer_remains = any(
+        (
+            record.get("repository_writer") is not None,
+            continuation.get("repository_writer") is not None,
+            next_record.get("repository_writer") is not None,
+            isinstance(application, dict)
+            and application.get("repository_writer") is not None,
+        )
+    )
+    if writer_remains:
+        errors.append(f"CLOSEOUT_REPOSITORY_WRITER_REMAINS: {section}")
+
+    return errors
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -1302,6 +1542,8 @@ def validate_project(root: Path, errors: list[str]) -> None:
             relative = roadmap_paths.get(key)
             if not relative or not (root / relative).is_file():
                 errors.append(f"project roadmap path missing or invalid: {key}")
+
+        errors.extend(validate_closeout_completeness(manifest, root))
 
     if roadmap:
         if roadmap.get("current_authorized_section") is not None:
