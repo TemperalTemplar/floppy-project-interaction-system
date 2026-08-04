@@ -162,43 +162,41 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 `102 PASSED`; all required FS-06 through FS-02 regressions and validators
 `PASSED`.
 
-<!-- FS-08-PHASE-1:BEGIN -->
-### FS-08 — Implementation and verification complete
+<!-- FS-08-PHASE-2:BEGIN -->
+### FS-08 — Validated boot-package ZIP and checksum manifest
 
 ```text
-Status: ADMINISTRATOR_ACCEPTANCE_PENDING
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Status: ACCEPTED — CLOSEOUT NOT STARTED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
 Closeout: NOT STARTED
+Closeout proposal commit: NOT STARTED
+Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
 Active authorization: NONE
 Repository writer: NONE
-Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
-Activation commit: 12c6b64760b1dd74d0c2dfc5379b483f3c695d07
-Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
-Completion commit: THIS_COMMIT
 ```
 
-Exact reusable-product paths:
+The accepted ZIP and checksum manifest remain unchanged and verified read-only.
+The ZIP is a validated FS-08 boot package, not the finished no-Python Windows
+release.
+
+### FS-09 — Controlled FS-01 lifecycle writes with dry-run and atomic replacement
 
 ```text
-tools/floppyctl.py
-tests/test_validated_boot_package.py
+Draft: .floppy/templates/Floppy-E-FS-09.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Maximum reusable-product paths: 3
+Maximum reusable-product commits: 2
+Active authorization: NONE
+Repository writer: NONE
 ```
 
-Validated artifact result:
-
-```text
-ZIP: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip
-ZIP SHA-256: c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c
-Checksum manifest: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json
-Checksum manifest SHA-256: 8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed
-Package members: 46
-```
-
-## Continuation boundary
-
-FS-08 is stopped at administrator acceptance pending. FS-08 is not closed.
-FS-09 remains inactive and unauthorized. No push, merge, integration, tag,
-release, migration, installer, runtime bundle, or production action occurred.
-The ZIP is a validated boot package, not the finished no-Python Windows release.
+All detailed implementation choices remain deferred. FS-09 grants no write,
+migration, integration, release, or production authority.

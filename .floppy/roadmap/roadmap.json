@@ -15,7 +15,7 @@
     },
     "active_implementation_section": null,
     "current_authorized_section": null,
-    "next_proposed_section": "FS-08",
+    "next_proposed_section": "FS-09",
     "fs_01": {
         "status": "CLOSED",
         "work_package_status": "ACCEPTED AS PLANNING BASELINE",
@@ -869,14 +869,14 @@
             "id": "FS-08",
             "sequence": 8,
             "title": "Validated boot-package ZIP and checksum manifest",
-            "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+            "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
             "accepted": true,
             "activation_authorized": true,
             "implementation_authorized": true,
             "implementation_started": true,
             "implementation_complete": true,
             "verification_complete": true,
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "closeout": "NOT_STARTED",
             "active": false,
             "authorization_id": null,
@@ -1062,7 +1062,16 @@
                     "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
                 },
                 "source_files_unchanged_during_generation": true
-            }
+            },
+            "accepted_on": "2026-08-04",
+            "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+            "administrator_acceptance_checkpoint": "THIS_COMMIT",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_STARTED",
+            "closeout_started": false,
+            "closeout_execution": "NOT_STARTED",
+            "closeout_applied": false
         },
         {
             "id": "FS-09",
@@ -1172,7 +1181,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-08 implementation and verification are complete. Active authorization and repository writer are NONE. Administrator acceptance is pending. FS-09 remains inactive and unauthorized.",
+    "continuation_point": "FS-08 is accepted. Closeout is not yet proposed. FS-09 remains inactive and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -1189,7 +1198,7 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
     "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
@@ -1422,14 +1431,14 @@
             "id": "FS-08",
             "sequence": 8,
             "title": "Validated boot-package ZIP and checksum manifest",
-            "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+            "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
             "accepted": true,
             "activation_authorized": true,
             "implementation_authorized": true,
             "implementation_started": true,
             "implementation_complete": true,
             "verification_complete": true,
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "closeout": "NOT_STARTED",
             "active": false,
             "authorization_id": null,
@@ -1615,10 +1624,19 @@
                     "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
                 },
                 "source_files_unchanged_during_generation": true
-            }
+            },
+            "accepted_on": "2026-08-04",
+            "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+            "administrator_acceptance_checkpoint": "THIS_COMMIT",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_STARTED",
+            "closeout_started": false,
+            "closeout_execution": "NOT_STARTED",
+            "closeout_applied": false
         }
     ],
-    "next_proposed_section_status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+    "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
     "fs_02": {
         "status": "CLOSED",
         "implementation": "COMPLETE",
@@ -2722,14 +2740,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+        "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -2915,7 +2933,16 @@
                 "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
             },
             "source_files_unchanged_during_generation": true
-        }
+        },
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false
     },
     "fs_08_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-08.draft.md",
@@ -2923,14 +2950,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+        "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -3116,6 +3143,15 @@
                 "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
             },
             "source_files_unchanged_during_generation": true
-        }
+        },
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false
     }
 }

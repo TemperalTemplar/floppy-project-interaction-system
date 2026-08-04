@@ -31,17 +31,18 @@
         "closed_fs_04_checkpoint": "THIS_COMMIT",
         "accepted_fs_07_implementation_checkpoint": "f22927f9e92a9edf84614bf32d8bff554dbf3dfc",
         "closed_fs_07_checkpoint": "THIS_COMMIT",
-        "fs_08_product_completion_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8"
+        "fs_08_product_completion_checkpoint": "b05e8d6bd6205ad17f10eceae0d319de981b07f8",
+        "accepted_fs_08_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31"
     },
-    "status": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "status": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
     "authority": {
         "human_authority_required": true,
-        "last_authorized_control_operation": "FS_08_IMPLEMENTATION_AND_VERIFICATION_COMPLETION",
+        "last_authorized_control_operation": "FS_08_ADMINISTRATOR_ACCEPTANCE",
         "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "active_implementation_section": null,
         "current_authorized_section": null,
         "prohibited_inference": true,
-        "last_applied_transition": "FS_08_IMPLEMENTATION_AND_VERIFICATION_COMPLETION",
+        "last_applied_transition": "TR-007-ACCEPT-SECTION",
         "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION"
     },
     "onboarding": {
@@ -101,7 +102,7 @@
         "section_count": 12,
         "first_section": "FS-01",
         "last_section": "FS-12",
-        "next_proposed_section": "FS-08",
+        "next_proposed_section": "FS-09",
         "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
         "fs_01_work_package": "ACCEPTED AS PLANNING BASELINE",
         "fs_01_implementation": "COMPLETE",
@@ -120,8 +121,8 @@
         "fs_02_closeout": "APPLIED",
         "fs_03_active": false,
         "fs_03_authorized": false,
-        "lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "last_applied_transition": "TR-007-ACCEPT-SECTION",
         "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "fs_02_section_closeout": "APPLIED",
         "fs_02_closeout_execution": "COMPLETE",
@@ -171,7 +172,13 @@
         "fs_08_accepted": false,
         "fs_08_draft_path": ".floppy/templates/Floppy-E-FS-08.draft.md",
         "fs_08_work_package_status": "DRAFT_NOT_AUTHORIZED",
-        "fs_08_draft_status": "DRAFT_NOT_AUTHORIZED"
+        "fs_08_draft_status": "DRAFT_NOT_AUTHORIZED",
+        "fs_09_active": false,
+        "fs_09_authorized": false,
+        "fs_09_accepted": false,
+        "fs_09_draft_path": ".floppy/templates/Floppy-E-FS-09.draft.md",
+        "fs_09_work_package_status": "DRAFT_NOT_AUTHORIZED",
+        "fs_09_draft_status": "DRAFT_NOT_AUTHORIZED"
     },
     "records": {
         "evidence": ".floppy/evidence/README.md",
@@ -197,11 +204,12 @@
         "fs_06_administrator_acceptance": ".floppy/floppies/Floppy-E-Current-Section.md",
         "fs_06_closeout": ".floppy/closeouts/FS-06-closeout.md",
         "fs_07_work_package_draft": ".floppy/templates/Floppy-E-FS-07.draft.md",
-        "fs_08_work_package_draft": ".floppy/templates/Floppy-E-FS-08.draft.md"
+        "fs_08_work_package_draft": ".floppy/templates/Floppy-E-FS-08.draft.md",
+        "fs_08_administrator_acceptance": ".floppy/floppies/Floppy-E-Current-Section.md"
     },
     "continuation_point": {
-        "state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-        "decision_required": "Administrator acceptance of FS-08 implementation and verification.",
+        "state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "decision_required": "Prepare the distinct FS-08 closeout proposal.",
         "implementation_may_begin": false,
         "fs_04_status": "CLOSED",
         "fs_04_implementation_complete": true,
@@ -254,17 +262,22 @@
         "fs_07_verification": "COMPLETE",
         "fs_07_administrator_acceptance": "ACCEPTED",
         "fs_07_closeout": "APPLIED",
-        "fs_08": "IMPLEMENTATION COMPLETE / VERIFICATION COMPLETE / ADMINISTRATOR ACCEPTANCE PENDING",
+        "fs_08": "ACCEPTED / CLOSEOUT NOT_STARTED",
         "fs_08_active": false,
         "fs_08_accepted": true,
         "fs_08_authorized": false,
         "fs_08_implementation": "COMPLETE",
         "fs_08_verification": "COMPLETE",
-        "fs_08_administrator_acceptance": "PENDING",
+        "fs_08_administrator_acceptance": "ACCEPTED",
         "fs_08_closeout": "NOT_STARTED",
         "fs_08_draft_path": ".floppy/templates/Floppy-E-FS-08.draft.md",
-        "fs_08_work_package_status": "ACCEPTED AS PLANNING BASELINE",
-        "fs_09": "INACTIVE / NOT AUTHORIZED"
+        "fs_08_work_package_status": "ACCEPTED",
+        "fs_09": "INACTIVE / NOT AUTHORIZED",
+        "fs_09_active": false,
+        "fs_09_accepted": false,
+        "fs_09_authorized": false,
+        "fs_09_implementation": "NOT STARTED",
+        "fs_09_draft_path": ".floppy/templates/Floppy-E-FS-09.draft.md"
     },
     "historical_work_authorizations": [
         {
@@ -1446,14 +1459,14 @@
             "id": "FS-08",
             "sequence": 8,
             "title": "Validated boot-package ZIP and checksum manifest",
-            "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+            "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
             "accepted": true,
             "activation_authorized": true,
             "implementation_authorized": true,
             "implementation_started": true,
             "implementation_complete": true,
             "verification_complete": true,
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "closeout": "NOT_STARTED",
             "active": false,
             "authorization_id": null,
@@ -1639,7 +1652,16 @@
                     "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
                 },
                 "source_files_unchanged_during_generation": true
-            }
+            },
+            "accepted_on": "2026-08-04",
+            "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+            "administrator_acceptance_checkpoint": "THIS_COMMIT",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_STARTED",
+            "closeout_started": false,
+            "closeout_execution": "NOT_STARTED",
+            "closeout_applied": false
         }
     ],
     "fs_02_draft": {
@@ -3218,14 +3240,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+        "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -3411,7 +3433,16 @@
                 "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
             },
             "source_files_unchanged_during_generation": true
-        }
+        },
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false
     },
     "fs_08_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-08.draft.md",
@@ -3419,14 +3450,14 @@
         "id": "FS-08",
         "sequence": 8,
         "title": "Validated boot-package ZIP and checksum manifest",
-        "status": "ADMINISTRATOR_ACCEPTANCE_PENDING",
+        "status": "SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -3612,6 +3643,15 @@
                 "modified_manifest_diagnostic": "ERROR: checksum manifest serialization is not deterministic"
             },
             "source_files_unchanged_during_generation": true
-        }
+        },
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "e87fece035c1307646bb787e4c625162d9a79e31",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false
     }
 }

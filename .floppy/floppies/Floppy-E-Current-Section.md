@@ -117,34 +117,53 @@ Additional FS-07 product writes: NOT AUTHORIZED
 
 No reusable-product path changed during Phase 2.
 
-## FS-08 state
+## FS-08 final state
 
 ```text
-Section: FS-08 - Validated boot-package ZIP and checksum manifest
-Status: ADMINISTRATOR_ACCEPTANCE_PENDING
-Accepted work package: YES
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Status: ACCEPTED — CLOSEOUT NOT STARTED
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
 Closeout: NOT STARTED
+Closeout proposal: NOT STARTED
+Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
+Reusable-product paths: tools/floppyctl.py, tests/test_validated_boot_package.py
+Focused FS-08 tests: 21 PASSED
+Complete repository suite: 123 PASSED
+Accepted package members: 46
 Active authorization: NONE
 Repository writer: NONE
-Accepted work-package commit: e7543b8165cf86ab7f59b2773badb19cc64c0063
-Activation commit: 12c6b64760b1dd74d0c2dfc5379b483f3c695d07
-Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
-Completion commit: THIS_COMMIT
+Additional FS-08 product writes: NOT AUTHORIZED
 ```
 
-Validated artifacts:
+Validated artifacts remain unchanged:
 
 ```text
 ZIP: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.zip
+ZIP SHA-256: c14bbab0c1b5475a020a15b3e9a539364719be75f77ac8194612a860ee17ef9c
 Checksum manifest: C:\Users\alvar.TERMINAL1\Downloads\floppy-source-0.4.1-dev-b05e8d6bd6205ad17f10eceae0d319de981b07f8-boot-package.checksums.json
-Package members: 46
-Deterministic two-build comparison: PASSED
-Final package verification: PASSED
-Corruption rejection: PASSED
+Checksum manifest SHA-256: 8605ed35d9ed0673ae1bc74e140923867521fe155339b56e852fbe55c94088ed
 ```
 
-The ZIP is a validated FS-08 boot package and is not yet the finished no-Python
-Windows release. FS-09 remains inactive and unauthorized.
+The ZIP remains a validated FS-08 boot package and is not the finished
+no-Python Windows release.
+
+## FS-09 state
+
+```text
+Section: FS-09 - Controlled FS-01 lifecycle writes with dry-run and atomic replacement
+Draft: .floppy/templates/Floppy-E-FS-09.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Maximum reusable-product paths: 3
+Maximum reusable-product commits: 2
+Active authorization: NONE
+Repository writer: NONE
+```
+
+The next operation is the distinct FS-08 closeout-proposal commit.
