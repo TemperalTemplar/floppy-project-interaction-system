@@ -2,23 +2,23 @@
 
 ## Lifecycle state
 
-`LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
+`LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
 
 ## Applied transition
 
-`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
+`TR-006-RECORD-VERIFICATION-COMPLETE`
 
 ## Authority
 
-`EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION`
+`NO_ACTIVE_WORK_AUTHORIZATION`
 
 ## Active implementation section
 
-`FS-06`
+`NONE`
 
 ## Current authorized section
 
-`FS-06`
+`NONE`
 
 ## Historical sections
 
@@ -73,23 +73,32 @@ Additional FS-05 product writes: NOT AUTHORIZED
 
 ```text
 Draft path: .floppy/templates/Floppy-E-FS-06.draft.md
-Status: IMPLEMENTATION IN PROGRESS
+Status: VERIFICATION COMPLETE - ACCEPTANCE PENDING
 Accepted: YES
-Active: YES
-Authorized: YES
-Implementation: IN PROGRESS
-Verification: NOT STARTED
+Active: NO
+Authorized: NO
+Implementation: COMPLETE
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: FS_06_IMPLEMENTATION
-Repository writer: FS_06_WORKING_MODEL
+Active authorization: NONE
+Repository writer: NONE
 Reusable-product paths: tools/validate_floppy.py, tests/test_authorization_git_integrity.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
 FS-07: INACTIVE / NOT AUTHORIZED
 Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
-Activation: THIS_COMMIT
-Reusable-product commit: NOT YET CREATED
+Activation: 065826bd7743bf6d98cbf98cfe97a20b9bf4d3fb
+Reusable-product commit: f323659185cb36705ca2209dfab650bf7bc628a0
+Focused FS-06 tests: 11 PASSED
+FS-05 closeout-completeness tests: 11 PASSED
+FS-04 CLI tests: 13 PASSED
+FS-03 semantic tests: 18 PASSED
+FS-02 schema tests: 6 PASSED
+Complete suite: 84 PASSED
+Source validator: PASSED
+floppyctl validate: PASSED
+git diff --check: PASSED
 ```
 
-FS-06 implementation is active only within the accepted two-path reusable-product scope. FS-07 remains inactive and unauthorized.
+FS-06 implementation and verification are complete. Administrator acceptance is pending. FS-07 remains inactive and unauthorized.

@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 
 Authority:
-EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
+NO_ACTIVE_WORK_AUTHORIZATION
 
 Active implementation section:
-FS-06
+NONE
 
 Current authorized section:
-FS-06
+NONE
 
 FS-01:
 CLOSED
@@ -32,7 +32,7 @@ FS-05:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
 Repository writer:
-FS_06_WORKING_MODEL
+NONE
 
 Integration:
 NOT AUTHORIZED
@@ -128,12 +128,12 @@ Repository writer: NONE
 ```text
 Work package: ACCEPTED AS PLANNING BASELINE
 Activation: RECORDED
-Implementation: IN PROGRESS
-Verification: NOT STARTED
+Implementation: COMPLETE
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
-Active authorization: FS_06_IMPLEMENTATION
-Repository writer: FS_06_WORKING_MODEL
+Active authorization: NONE
+Repository writer: NONE
 FS-07: INACTIVE / NOT AUTHORIZED
 ```
 
@@ -182,15 +182,15 @@ The variables identify the already-authorized operation; they do not assign auth
 ## Required regression verification
 
 ```text
-Focused FS-06 tests: NOT RUN
-Existing FS-05 closeout-completeness tests: NOT RUN
-Existing FS-04 CLI tests: NOT RUN
-Existing FS-03 semantic tests: NOT RUN
-Existing FS-02 schema tests: NOT RUN
-Source validator: NOT RUN
-floppyctl validate: NOT RUN
-Complete repository suite: NOT RUN
-git diff --check: NOT RUN
+Focused FS-06 tests: 11 PASSED
+Existing FS-05 closeout-completeness tests: 11 PASSED
+Existing FS-04 CLI tests: 13 PASSED
+Existing FS-03 semantic tests: 18 PASSED
+Existing FS-02 schema tests: 6 PASSED
+Source validator: PASSED
+floppyctl validate: PASSED
+Complete repository suite: 84 PASSED
+git diff --check: PASSED
 ```
 
 ## Authorized repository context
@@ -198,9 +198,9 @@ git diff --check: NOT RUN
 ```text
 Starting checkpoint: 3e9758f6b7b9a3ee92c34ac1f3936e3295187a8f
 Work-package acceptance: d6c89fc156ddcec9fe3e3a5a7c1f3c9d3851c82a
-Activation: THIS_COMMIT
-Reusable-product commit: NOT YET CREATED
-Completion and verification: NOT YET CREATED
+Activation: 065826bd7743bf6d98cbf98cfe97a20b9bf4d3fb
+Reusable-product commit: f323659185cb36705ca2209dfab650bf7bc628a0
+Completion and verification: THIS_COMMIT
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
 ```
@@ -216,12 +216,12 @@ Closeout: NOT STARTED
 - Product validation must not write repository or lifecycle state.
 - No FS-07 package-content scanning is authorized.
 
-FS-06 implementation is active only under `FS_06_IMPLEMENTATION` with `FS_06_WORKING_MODEL` as the sole repository writer.
+FS-06 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE.
 
 Push, merge, integration, release, tag, migration, production changes, administrator acceptance recording, closeout, and FS-07 remain unauthorized.
 
 ## Continuation boundary
 
-FS-06 implementation is active under exact authorization. FS-07 remains inactive and unauthorized.
+FS-06 implementation and verification are complete. Administrator acceptance is pending. Active authorization and repository writer are NONE. FS-07 remains inactive and unauthorized.
 
 Push, merge, integration, release, tag, migration, production changes, administrator acceptance recording, closeout, and FS-07 remain unauthorized.
