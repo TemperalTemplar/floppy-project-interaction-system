@@ -35,6 +35,12 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def sha256_lf_text(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def validate_registry(registry: dict[str, Any]) -> None:
     require(set(registry["status_values"]) == ALLOWED_STATUSES, "invalid status values")
 
@@ -187,7 +193,7 @@ class OrchestratorRegistryTests(unittest.TestCase):
         )
         self.assertEqual(
             self.system_manifest["orchestrator"]["sha256"],
-            sha256(FLOPPY_Z_PATH),
+            sha256_lf_text(FLOPPY_Z_PATH),
         )
 
 
