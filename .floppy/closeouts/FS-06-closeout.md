@@ -2,19 +2,23 @@
 
 ## Status
 
-`PROPOSED_NOT_APPLIED`
+`APPLIED`
 
-## Transition
+## Applied transition
 
-`TR-008-PROPOSE-SECTION-CLOSEOUT`
+`TR-009-APPLY-SECTION-CLOSEOUT`
+
+## Resulting lifecycle state
+
+`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
 
 ## Section
 
 `FS-06`
 
-## Proposal base checkpoint
+## Approved proposal checkpoint
 
-`a7da009580c25a614e0012e26645816e12ea728c`
+`ca8bce0fb687503431de05b17e09637ab4558c15`
 
 ## Fixed implementation and verification evidence
 
@@ -24,6 +28,7 @@
 - Reusable-product commit: `f323659185cb36705ca2209dfab650bf7bc628a0`
 - Implementation and verification completion: `a73449a3ada083113ede487bcdefd03e4f577de0`
 - Administrator-acceptance record: `a7da009580c25a614e0012e26645816e12ea728c`
+- Closeout-proposal commit: `ca8bce0fb687503431de05b17e09637ab4558c15`
 - Exact reusable-product paths: `tools/validate_floppy.py`, `tests/test_authorization_git_integrity.py`
 - Focused FS-06 tests: `11 PASSED`
 - FS-05 closeout-completeness tests: `11 PASSED`
@@ -37,12 +42,13 @@
 - Final Phase-1 worktree: `CLEAN`
 - Source version: `0.4.1-dev`
 
-## Proposal boundary
+## Final disposition
 
-FS-06 implementation, verification, and administrator acceptance are complete.
-Closeout is proposed but not applied. The proposal authorizes no product change
-and does not activate, accept, or authorize FS-07.
+FS-06 implementation, verification, administrator acceptance, and closeout are
+complete. FS-06 status is `CLOSED`.
 
-Application of `TR-009-APPLY-SECTION-CLOSEOUT` is permitted only after this committed
-proposal is verified unchanged and exact. Active authorization and repository
-writer remain `NONE`.
+The FS-07 draft was created at `.floppy/templates/Floppy-E-FS-07.draft.md`. It is inactive, unaccepted, and
+unauthorized. Active authorization and repository writer are `NONE`.
+
+No reusable-product path changed during Phase 2. Push, merge, integration,
+release, tag, migration, and production changes remain unauthorized.

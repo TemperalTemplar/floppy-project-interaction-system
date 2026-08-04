@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -121,20 +121,38 @@ Active authorization: NONE
 Repository writer: NONE
 ```
 
-### FS-06 — Closeout proposed
+### FS-06 — Closed
 
 ```text
-Status: ACCEPTED / CLOSEOUT PROPOSED - NOT APPLIED
-Proposal base checkpoint: a7da009580c25a614e0012e26645816e12ea728c
-Closeout record: .floppy/closeouts/FS-06-closeout.md
+Status: CLOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: a7da009580c25a614e0012e26645816e12ea728c
+Closeout proposal: ca8bce0fb687503431de05b17e09637ab4558c15
+Closeout application: THIS_COMMIT
 Active authorization: NONE
 Repository writer: NONE
-FS-07: INACTIVE / NOT AUTHORIZED
 ```
+
+### FS-07 — Deterministic package-content scan
+
+**Draft boundary**
+
+- Status: `DRAFT_NOT_AUTHORIZED`
+- Accepted: `NO`
+- Active: `NO`
+- Authorized: `NO`
+- Repository writer: `NONE`
+- Maximum reusable-product paths: `2`
+- Maximum reusable-product commits: `1`
+- Exact product filenames, detailed scan inventories, package formats, command syntax, architecture, dependencies, and FS-08 details are deferred.
+
+This draft does not authorize intake, activation, or implementation.
 
 ## Continuation boundary
 
-FS-06 closeout is proposed but not applied. The exact proposal must be verified before TR-009 is applied. FS-07 remains unauthorized.
+FS-06 is closed. FS-07 exists only as DRAFT_NOT_AUTHORIZED and remains inactive, unaccepted, and unauthorized.
 
 Active authorization and repository writer are `NONE`. Push, merge, integration,
 release, tag, migration, production changes, and FS-07 implementation remain unauthorized.
