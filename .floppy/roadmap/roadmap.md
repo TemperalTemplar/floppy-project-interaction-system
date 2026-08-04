@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -23,7 +23,7 @@ FS-02:
 CLOSED
 
 FS-03:
-ACCEPTED / CLOSEOUT NOT PROPOSED
+ACCEPTED / CLOSEOUT PROPOSED
 
 FS-04:
 INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
@@ -111,7 +111,7 @@ FS-03 is accepted and closeout has not yet been applied. FS-04 remains inactive,
 FS-03 implementation: COMPLETE
 FS-03 verification: COMPLETE
 FS-03 administrator acceptance: ACCEPTED
-FS-03 closeout: NOT PROPOSED
+FS-03 closeout: PROPOSED - NOT APPLIED
 FS-03 reusable-product commit: 253412fcd518a915e4995cda4653ed7d777ce45e
 FS-04 draft path: NOT YET CREATED
 FS-04 accepted: NO

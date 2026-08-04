@@ -91,7 +91,7 @@
             "id": "FS-03",
             "sequence": 3,
             "title": "Semantic Validator",
-            "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+            "status": "ACCEPTED_CLOSEOUT_PROPOSED",
             "implementation_started": true,
             "depends_on": [
                 "FS-02"
@@ -330,8 +330,11 @@
             "accepted_implementation_checkpoint": "d5e377569f869b4c1bf313199397574a261dca53",
             "acceptance_transition": "TR-007-ACCEPT-SECTION",
             "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-            "section_closeout": "NOT_PROPOSED",
-            "closeout_started": false
+            "section_closeout": "PROPOSED",
+            "closeout_started": true,
+            "closeout_proposal_status": "PROPOSED_NOT_APPLIED",
+            "closeout_proposal_base_checkpoint": "53c1bd7c0facd2dcfbdf8b0705003f5f5a26622d",
+            "closeout_record": ".floppy/closeouts/FS-03-closeout.md"
         },
         {
             "id": "FS-04",
@@ -561,7 +564,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-03 implementation and verification are complete and administrator acceptance is recorded. Closeout is not yet proposed. FS-04 remains inactive, unaccepted, and unauthorized.",
+    "continuation_point": "FS-03 closeout is proposed but not applied. The exact proposal commit must be verified before TR-009. FS-04 remains inactive, unaccepted, and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -578,8 +581,8 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-    "last_applied_transition": "TR-007-ACCEPT-SECTION",
+    "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+    "last_applied_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
@@ -637,7 +640,7 @@
         "status": "APPLIED",
         "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
     },
-    "next_proposed_section_status": "NO_CLOSEOUT_PROPOSAL",
+    "next_proposed_section_status": "FS_03_CLOSEOUT_PROPOSED",
     "fs_02": {
         "status": "CLOSED",
         "implementation": "COMPLETE",
@@ -658,7 +661,7 @@
     },
     "fs_03_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-03.draft.md",
-        "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+        "status": "ACCEPTED_CLOSEOUT_PROPOSED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
@@ -676,7 +679,8 @@
         "verification_complete": true,
         "product_commit": "253412fcd518a915e4995cda4653ed7d777ce45e",
         "administrator_acceptance": "ACCEPTED",
-        "closeout": "NOT_PROPOSED"
+        "closeout": "PROPOSED",
+        "closeout_started": true
     },
     "remaining_section_operating_rules": {
         "applies_to": [
