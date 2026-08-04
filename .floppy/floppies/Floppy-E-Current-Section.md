@@ -2,11 +2,11 @@
 
 ## Lifecycle state
 
-`LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE`
+`LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
 
 ## Applied transition
 
-`TR-009-APPLY-SECTION-CLOSEOUT`
+`TR-002-ACCEPT-WORK-PACKAGE`
 
 ## Authority
 
@@ -48,14 +48,20 @@ Additional FS-04 product writes: NOT AUTHORIZED
 
 ```text
 Draft path: .floppy/templates/Floppy-E-FS-05.draft.md
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
+Status: ACCEPTED AS PLANNING BASELINE
+Accepted: YES
 Active: NO
 Authorized: NO
 Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
 Repository writer: NONE
+Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
 Maximum reusable-product paths: 3
 Maximum reusable-product commits: 1
+FS-06: INACTIVE / NOT AUTHORIZED
 ```
 
 FS-04 closure does not authorize FS-05 implementation, push, merge, integration,

@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
 
 Authority:
 NO_ACTIVE_WORK_AUTHORIZATION
@@ -107,35 +107,52 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 - Source version: `0.4.1-dev`
 
 <!-- FS-05-DRAFT-BOUNDARY:BEGIN -->
-### FS-05 — Closeout-completeness rules
+### FS-05 â€” Closeout-completeness rules
 
 **Objective**
 
-Add closeout-completeness rules to the existing validator and CLI.
+Add closeout-completeness rules to the existing validator and expose
+the same result through the existing read-only CLI validation path.
 
-**Draft boundary**
+**Phase-1 control state**
 
-- Status: `DRAFT_NOT_AUTHORIZED`
-- Accepted: `NO`
-- Active: `NO`
-- Authorized: `NO`
-- Repository writer: `NONE`
-- Maximum reusable-product paths: `3`
-- Maximum reusable-product commits: `1`
-- Exact reusable-product filenames are deferred until FS-05 begins.
-- Exact command syntax is deferred until FS-05 begins.
-- Detailed test inventory is deferred until FS-05 begins.
-- No new closeout framework, domain or service layer, loader hierarchy, dependency, or FS-06 implementation detail is authorized.
+```text
+Status: ACCEPTED AS PLANNING BASELINE
+Accepted: YES
+Active: NO
+Authorized: NO
+Authorization: NONE
+Repository writer: NONE
+Branch: feature/fs-05-closeout-completeness
+Worktree: D:\A\Floppy-FS-05
+Reusable-product paths: tools/validate_floppy.py, tests/test_closeout_completeness.py
+Maximum reusable-product paths: 3
+Maximum reusable-product commits: 1
+Work-package acceptance: THIS_COMMIT
+Activation: NOT YET RECORDED
+Reusable-product commit: NOT YET CREATED
+Implementation: NOT STARTED
+Verification: NOT STARTED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+FS-06: INACTIVE / NOT AUTHORIZED
+Focused FS-05 tests: NOT RUN
+FS-04 CLI tests: NOT RUN
+FS-03 semantic tests: NOT RUN
+FS-02 schema tests: NOT RUN
+Source validator: NOT RUN
+Complete suite: NOT RUN
+git diff --check: NOT RUN
+```
 
-This draft does not authorize intake, activation, or implementation.
+`tools/floppyctl.py` requires no modification because existing
+`validate` behavior preserves validator output, diagnostics, and exit status.
 
 <!-- FS-05-DRAFT-BOUNDARY:END -->
 
 ## Continuation boundary
 
-FS-04 is closed. FS-05 exists only as a draft and remains inactive, unaccepted, and unauthorized.
+FS-05 work-package acceptance is recorded. Activation has not started.
 
-Active authorization and repository writer are `NONE`. The next legal operation
-is preparation, revision, acceptance, or withholding of the FS-05 work package,
-not intake, activation, implementation, push, merge, integration, release, tag,
-migration, or production application.
+Push, merge, integration, release, tag, migration, production changes,
+administrator acceptance recording, closeout, and FS-06 remain unauthorized.
