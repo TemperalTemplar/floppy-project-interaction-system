@@ -684,6 +684,547 @@ def validate_normative_bce_schemas(
             )
 
 
+SEMANTIC_SCHEMA_PATHS = {
+    "lifecycle_states": "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+    "work_authorizations": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+    "lifecycle_transitions": "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+}
+
+
+def _semantic_add(errors: list[str], message: str) -> None:
+    if message not in errors:
+        errors.append(message)
+
+
+def _semantic_list(
+    bundle: dict[str, Any],
+    name: str,
+    errors: list[str],
+) -> list[dict[str, Any]]:
+    value = bundle.get(name)
+    if not isinstance(value, list) or not all(
+        isinstance(item, dict) for item in value
+    ):
+        _semantic_add(errors, f"SEMANTIC_RECORD_LIST_INVALID: {name}")
+        return []
+    return value
+
+
+def _semantic_index(
+    records: list[dict[str, Any]],
+    id_field: str,
+    label: str,
+    errors: list[str],
+) -> dict[str, dict[str, Any]]:
+    result: dict[str, dict[str, Any]] = {}
+    encoded: dict[str, str] = {}
+
+    for record in records:
+        identifier = record.get(id_field)
+        if not isinstance(identifier, str) or not identifier:
+            _semantic_add(errors, f"SEMANTIC_IDENTIFIER_MISSING: {label}")
+            continue
+
+        canonical = json.dumps(
+            record,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        if identifier in encoded:
+            kind = (
+                "DUPLICATE"
+                if encoded[identifier] == canonical
+                else "CONFLICTING"
+            )
+            _semantic_add(
+                errors,
+                f"SEMANTIC_{kind}_IDENTIFIER: {label} {identifier}",
+            )
+            continue
+
+        encoded[identifier] = canonical
+        result[identifier] = record
+
+    return result
+
+
+def _semantic_schema_check(
+    root: Path,
+    records: dict[str, list[dict[str, Any]]],
+    errors: list[str],
+) -> None:
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        _semantic_add(
+            errors,
+            f"SEMANTIC_SCHEMA_DEPENDENCY_MISSING: {exc}",
+        )
+        return
+
+    for name, relative in SEMANTIC_SCHEMA_PATHS.items():
+        schema = validate_json(root / relative, errors)
+        if schema is None:
+            continue
+
+        validator = Draft202012Validator(schema)
+        for index, record in enumerate(records[name]):
+            failures = sorted(
+                validator.iter_errors(record),
+                key=lambda item: (
+                    tuple(str(part) for part in item.absolute_path),
+                    item.message,
+                ),
+            )
+            if failures:
+                location = ".".join(
+                    str(part) for part in failures[0].absolute_path
+                ) or "<root>"
+                _semantic_add(
+                    errors,
+                    f"SEMANTIC_SCHEMA_INVALID: {name}[{index}] "
+                    f"{location}",
+                )
+
+
+def _semantic_repository_path(value: Any) -> str | None:
+    if not isinstance(value, str) or not value:
+        return None
+
+    normalized = value.replace("\\", "/")
+    parts = normalized.split("/")
+    if (
+        normalized.startswith("/")
+        or (parts and parts[0].endswith(":"))
+        or any(part in {"", ".", ".."} for part in parts)
+    ):
+        return None
+    return normalized
+
+
+def validate_bce_semantics(
+    bundle: dict[str, Any],
+    root: Path | None = None,
+) -> list[str]:
+    """Validate cross-record BCE relationships without changing any record."""
+
+    if not isinstance(bundle, dict):
+        return ["SEMANTIC_BUNDLE_INVALID"]
+
+    root = (
+        root.expanduser().resolve()
+        if root is not None
+        else Path(__file__).resolve().parents[1]
+    )
+    errors: list[str] = []
+
+    states = _semantic_list(bundle, "lifecycle_states", errors)
+    authorizations = _semantic_list(
+        bundle,
+        "work_authorizations",
+        errors,
+    )
+    transitions = _semantic_list(
+        bundle,
+        "lifecycle_transitions",
+        errors,
+    )
+    bindings = _semantic_list(
+        bundle,
+        "authorization_bindings",
+        errors,
+    )
+    represented = _semantic_list(
+        bundle,
+        "represented_transitions",
+        errors,
+    )
+    evidence_records = _semantic_list(bundle, "evidence", errors)
+    commits = _semantic_list(bundle, "commits", errors)
+
+    _semantic_schema_check(
+        root,
+        {
+            "lifecycle_states": states,
+            "work_authorizations": authorizations,
+            "lifecycle_transitions": transitions,
+        },
+        errors,
+    )
+
+    state_by_id = _semantic_index(
+        states,
+        "state_id",
+        "lifecycle_state",
+        errors,
+    )
+    authorization_by_id = _semantic_index(
+        authorizations,
+        "authorization_id",
+        "work_authorization",
+        errors,
+    )
+    transition_by_id = _semantic_index(
+        transitions,
+        "id",
+        "lifecycle_transition",
+        errors,
+    )
+    binding_by_id = _semantic_index(
+        bindings,
+        "authorization_id",
+        "authorization_binding",
+        errors,
+    )
+    represented_by_id = _semantic_index(
+        represented,
+        "id",
+        "represented_transition",
+        errors,
+    )
+    evidence_by_id = _semantic_index(
+        evidence_records,
+        "id",
+        "evidence",
+        errors,
+    )
+    _semantic_index(commits, "id", "commit", errors)
+
+    table = validate_json(
+        root / "specs/lifecycle-transition-table.json",
+        errors,
+    )
+    if table is None:
+        return errors
+
+    state_definitions = {
+        record["id"]: record
+        for record in table.get("states", [])
+        if isinstance(record, dict) and isinstance(record.get("id"), str)
+    }
+    transition_definitions = {
+        record["id"]: record
+        for record in table.get("transitions", [])
+        if isinstance(record, dict) and isinstance(record.get("id"), str)
+    }
+
+    if len(states) != 1:
+        _semantic_add(
+            errors,
+            "SEMANTIC_CURRENT_LIFECYCLE_COUNT: "
+            f"expected 1 found {len(states)}",
+        )
+        current_state = None
+    else:
+        current_state = states[0]
+
+    active_authorization_id: str | None = None
+    active_authorization: dict[str, Any] | None = None
+
+    if current_state is not None:
+        state_id = current_state.get("state_id")
+        definition = state_definitions.get(state_id)
+        if definition is None:
+            _semantic_add(
+                errors,
+                f"SEMANTIC_UNKNOWN_LIFECYCLE_STATE: {state_id}",
+            )
+        elif current_state.get("dimensions") != definition.get(
+            "dimensions"
+        ):
+            _semantic_add(
+                errors,
+                f"SEMANTIC_LIFECYCLE_DIMENSIONS_MISMATCH: {state_id}",
+            )
+
+        dimensions = current_state.get("dimensions", {})
+        authority = (
+            dimensions.get("authority")
+            if isinstance(dimensions, dict)
+            else None
+        )
+        section = current_state.get("section")
+        authorization_id = current_state.get("authorization_id")
+        active_sections = current_state.get(
+            "active_implementation_sections"
+        )
+
+        if authority in {
+            "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+            "EXACT_MIGRATION_AUTHORIZATION",
+        }:
+            if (
+                not isinstance(authorization_id, str)
+                or authorization_id not in authorization_by_id
+            ):
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_ACTIVE_AUTHORIZATION_MISSING",
+                )
+            else:
+                active_authorization_id = authorization_id
+                active_authorization = authorization_by_id[authorization_id]
+
+            expected_sections = (
+                [section]
+                if authority
+                == "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION"
+                else []
+            )
+            if active_sections != expected_sections:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_ACTIVE_SECTION_MISMATCH",
+                )
+        else:
+            if authorization_id is not None:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_UNAUTHORIZED_AUTHORIZATION_REFERENCE",
+                )
+            if active_sections != []:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_UNAUTHORIZED_ACTIVE_SECTION",
+                )
+
+        if active_authorization is not None:
+            if active_authorization.get("section") != section:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_AUTHORIZATION_SECTION_MISMATCH",
+                )
+            if (
+                active_authorization.get("base_checkpoint")
+                != current_state.get("base_checkpoint")
+            ):
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_AUTHORIZATION_CHECKPOINT_MISMATCH",
+                )
+
+    registry = bundle.get("orchestrator_registry")
+    if not isinstance(registry, dict):
+        _semantic_add(errors, "SEMANTIC_ORCHESTRATOR_REGISTRY_INVALID")
+        registry = {}
+
+    orchestrator_by_id = _semantic_index(
+        [
+            record
+            for record in registry.get("orchestrators", [])
+            if isinstance(record, dict)
+        ],
+        "id",
+        "orchestrator",
+        errors,
+    )
+    assignments = registry.get("current_assignments")
+    if not isinstance(assignments, dict):
+        _semantic_add(errors, "SEMANTIC_CURRENT_ASSIGNMENTS_INVALID")
+        assignments = {}
+
+    current_orchestrator = assignments.get("current_orchestrator")
+    if (
+        current_orchestrator is not None
+        and current_orchestrator not in orchestrator_by_id
+    ):
+        _semantic_add(
+            errors,
+            f"SEMANTIC_UNKNOWN_ORCHESTRATOR: {current_orchestrator}",
+        )
+
+    repository_writer = assignments.get("repository_writer")
+    writer_valid = (
+        repository_writer is None
+        or isinstance(repository_writer, str)
+    )
+    if isinstance(repository_writer, list) and len(repository_writer) > 1:
+        _semantic_add(
+            errors,
+            "SEMANTIC_MULTIPLE_CURRENT_WRITERS: "
+            f"found {len(repository_writer)}",
+        )
+        writer_valid = False
+    elif not writer_valid:
+        _semantic_add(errors, "SEMANTIC_REPOSITORY_WRITER_INVALID")
+
+    if active_authorization_id is not None:
+        binding = binding_by_id.get(active_authorization_id)
+        if binding is None:
+            _semantic_add(
+                errors,
+                "SEMANTIC_AUTHORIZATION_BINDING_MISSING: "
+                f"{active_authorization_id}",
+            )
+        else:
+            orchestrator_id = binding.get("orchestrator_id")
+            if orchestrator_id not in orchestrator_by_id:
+                _semantic_add(
+                    errors,
+                    f"SEMANTIC_UNKNOWN_ORCHESTRATOR: {orchestrator_id}",
+                )
+            elif orchestrator_id != current_orchestrator:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_ORCHESTRATOR_ASSIGNMENT_MISMATCH",
+                )
+
+            working_model_id = binding.get("working_model_id")
+            if working_model_id != assignments.get(
+                "current_section_working_model"
+            ):
+                _semantic_add(
+                    errors,
+                    f"SEMANTIC_UNKNOWN_WORKING_MODEL: "
+                    f"{working_model_id}",
+                )
+
+            writer_id = binding.get("repository_writer_id")
+            if writer_valid and writer_id != repository_writer:
+                _semantic_add(
+                    errors,
+                    f"SEMANTIC_UNKNOWN_REPOSITORY_WRITER: {writer_id}",
+                )
+
+        if (
+            writer_valid
+            and assignments.get("writer_authorization_reference")
+            != active_authorization_id
+        ):
+            _semantic_add(
+                errors,
+                "SEMANTIC_WRITER_AUTHORIZATION_MISMATCH",
+            )
+
+    for transition_id, transition in transition_by_id.items():
+        definition = transition_definitions.get(transition_id)
+        if definition is None:
+            _semantic_add(
+                errors,
+                f"SEMANTIC_UNKNOWN_TRANSITION: {transition_id}",
+            )
+            continue
+
+        for field in (
+            "from_state_ids",
+            "to_state_id",
+            "changed_dimensions",
+            "preconditions",
+        ):
+            if transition.get(field) != definition.get(field):
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_TRANSITION_DEFINITION_MISMATCH: "
+                    f"{transition_id}",
+                )
+                break
+
+    represented_evidence: set[str] = set()
+    for represented_id, record in represented_by_id.items():
+        transition_id = record.get("transition_id")
+        definition = transition_definitions.get(transition_id)
+        if definition is None or transition_id not in transition_by_id:
+            _semantic_add(
+                errors,
+                f"SEMANTIC_UNKNOWN_TRANSITION: {transition_id}",
+            )
+            continue
+
+        source = record.get("from_state_id")
+        destination = record.get("to_state_id")
+        if source not in definition.get("from_state_ids", []):
+            _semantic_add(
+                errors,
+                "SEMANTIC_ILLEGAL_TRANSITION_SOURCE: "
+                f"{represented_id} {source}",
+            )
+        if destination != definition.get("to_state_id"):
+            _semantic_add(
+                errors,
+                "SEMANTIC_ILLEGAL_TRANSITION_DESTINATION: "
+                f"{represented_id} {destination}",
+            )
+
+        satisfied = record.get("satisfied_preconditions", [])
+        if not isinstance(satisfied, list):
+            satisfied = []
+        if any(
+            item not in satisfied
+            for item in definition.get("preconditions", [])
+        ):
+            _semantic_add(
+                errors,
+                "SEMANTIC_TRANSITION_PRECONDITION_MISSING: "
+                f"{represented_id}",
+            )
+
+        refs = record.get("evidence_refs", [])
+        if isinstance(refs, list):
+            represented_evidence.update(
+                item for item in refs if isinstance(item, str)
+            )
+
+    required_evidence = (
+        current_state.get("evidence", [])
+        if current_state is not None
+        else []
+    )
+    if isinstance(required_evidence, list):
+        for reference in required_evidence:
+            if reference not in represented_evidence:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_REQUIRED_EVIDENCE_UNREPRESENTED: "
+                    f"{reference}",
+                )
+            elif (
+                reference not in evidence_by_id
+                or evidence_by_id[reference].get("present") is not True
+            ):
+                _semantic_add(
+                    errors,
+                    f"SEMANTIC_REQUIRED_EVIDENCE_MISSING: {reference}",
+                )
+
+    for commit in commits:
+        commit_id = commit.get("id", "<unknown>")
+        authorization_id = commit.get("authorization_id")
+        authorization = authorization_by_id.get(authorization_id)
+        if authorization is None:
+            _semantic_add(
+                errors,
+                "SEMANTIC_COMMIT_AUTHORIZATION_UNKNOWN: "
+                f"{commit_id} {authorization_id}",
+            )
+            continue
+
+        scope = {
+            normalized
+            for path in authorization.get("exact_file_scope", [])
+            if (
+                normalized := _semantic_repository_path(path)
+            ) is not None
+        }
+        paths = commit.get("paths")
+        if not isinstance(paths, list):
+            _semantic_add(
+                errors,
+                f"SEMANTIC_COMMIT_PATHS_INVALID: {commit_id}",
+            )
+            continue
+
+        for path in paths:
+            normalized = _semantic_repository_path(path)
+            if normalized is None or normalized not in scope:
+                _semantic_add(
+                    errors,
+                    "SEMANTIC_COMMIT_PATH_OUTSIDE_SCOPE: "
+                    f"{commit_id} {path}",
+                )
+
+    return errors
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
