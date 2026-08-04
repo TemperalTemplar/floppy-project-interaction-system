@@ -11,9 +11,9 @@ Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator-acceptance commit: 75656b680b44f81972d9ff2dfab9ff7d244f9a59
-Closeout proposal commit: THIS_COMMIT
-Closeout application: NOT APPLIED
-Closeout status: PROPOSED
+Closeout proposal commit: 3969ade7efc7b08b7665bd0dcb7324d202ba50c4
+Closeout application: THIS_COMMIT
+Closeout status: APPLIED
 Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
 Active authorization: NONE
 Repository writer: NONE

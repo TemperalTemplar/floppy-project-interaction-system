@@ -166,14 +166,14 @@ Verification evidence: focused FS-07 `18 PASSED`; complete repository suite
 ### FS-08 — Validated boot-package ZIP and checksum manifest
 
 ```text
-Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
-Status: ACCEPTED — CLOSEOUT PROPOSED
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Status: CLOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator-acceptance commit: 75656b680b44f81972d9ff2dfab9ff7d244f9a59
-Closeout: PROPOSED
-Closeout proposal commit: THIS_COMMIT
+Closeout: APPLIED
+Closeout proposal commit: 3969ade7efc7b08b7665bd0dcb7324d202ba50c4
 Reusable-product commit: b05e8d6bd6205ad17f10eceae0d319de981b07f8
 Active authorization: NONE
 Repository writer: NONE
