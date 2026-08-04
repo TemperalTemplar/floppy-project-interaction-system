@@ -5,16 +5,16 @@ Development roadmap:
 ACCEPTED
 
 Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 
 Authority:
-EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
+NO_ACTIVE_WORK_AUTHORIZATION
 
 Active implementation section:
-FS-04
+NONE
 
 Current authorized section:
-FS-04
+NONE
 
 FS-01:
 CLOSED
@@ -26,10 +26,10 @@ FS-03:
 CLOSED
 
 FS-04:
-IMPLEMENTATION IN PROGRESS
+VERIFICATION COMPLETE / ACCEPTANCE PENDING
 
 Repository writer:
-FS_04_WORKING_MODEL
+NONE
 
 Integration:
 NOT AUTHORIZED
@@ -107,8 +107,8 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 FS-01, FS-02, and FS-03 are closed.
 
-FS-04 implementation is in progress and verification is
-not started. Administrator acceptance remains pending.
+FS-04 implementation is complete and verification is
+complete. Administrator acceptance remains pending.
 
 FS-05 is inactive and unauthorized. Push, merge, integration, release, tag,
 migration, production changes, administrator acceptance recording, and
@@ -118,25 +118,26 @@ closeout remain unauthorized.
 ## FS-04 Phase 1 control state
 
 ```text
-Status: IMPLEMENTATION IN PROGRESS
+Status: VERIFICATION COMPLETE / ACCEPTANCE PENDING
 Branch: feature/fs-04-read-only-floppyctl
 Worktree: D:\A\Floppy-FS-04
-Authorization: FS_04_IMPLEMENTATION
-Repository writer: FS_04_WORKING_MODEL
+Authorization: NONE
+Repository writer: NONE
 Reusable-product paths: tools/floppyctl.py, tests/test_floppyctl.py
 Maximum reusable-product commits: 1
 Work-package acceptance commit: fb9b3b26f8023b0f2912bbd918dca2178063fe20
-Activation commit: NOT YET RECORDED
-Reusable-product commit: NOT YET CREATED
-Implementation: IN PROGRESS
-Verification: NOT STARTED
+Activation commit: 841707c6544e2fbddaf4bb3c88d5d7e1626cf6c1
+Reusable-product commit: 88d0642f62db17502cf2b3c6f64f24303c1be2b1
+Implementation: COMPLETE
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT STARTED
 FS-05: INACTIVE / NOT AUTHORIZED
-Focused floppyctl tests: NOT RUN
-FS-03 semantic tests: NOT RUN
-FS-02 schema tests: NOT RUN
-Source validator: NOT RUN
-Complete suite: NOT RUN
+Focused floppyctl tests: 13 PASSED
+FS-03 semantic tests: 18 PASSED
+FS-02 schema tests: 6 PASSED
+Source validator: PASSED
+Complete suite: 62 PASSED
+git diff --check: PASSED
 ```
 <!-- FS-04-PHASE-1-STATE:END -->
