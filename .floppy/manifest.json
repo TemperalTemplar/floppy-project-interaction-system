@@ -30,15 +30,15 @@
         "accepted_fs_04_implementation_checkpoint": "0ac206b074a256e5f4917d556984380e7dd04005",
         "closed_fs_04_checkpoint": "THIS_COMMIT"
     },
-    "status": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "status": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
     "authority": {
         "human_authority_required": true,
-        "last_authorized_control_operation": "FS_06_IMPLEMENTATION_AND_VERIFICATION_COMPLETION",
+        "last_authorized_control_operation": "FS_06_PHASE_2_CLOSEOUT",
         "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
         "active_implementation_section": null,
         "current_authorized_section": null,
         "prohibited_inference": true,
-        "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "last_applied_transition": "TR-007-ACCEPT-SECTION",
         "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION"
     },
     "onboarding": {
@@ -175,11 +175,12 @@
         "fs_05_work_package_draft": ".floppy/templates/Floppy-E-FS-05.draft.md",
         "fs_05_administrator_acceptance": ".floppy/floppies/Floppy-E-Current-Section.md",
         "fs_05_closeout": ".floppy/closeouts/FS-05-closeout.md",
-        "fs_06_work_package_draft": ".floppy/templates/Floppy-E-FS-06.draft.md"
+        "fs_06_work_package_draft": ".floppy/templates/Floppy-E-FS-06.draft.md",
+        "fs_06_administrator_acceptance": ".floppy/floppies/Floppy-E-Current-Section.md"
     },
     "continuation_point": {
-        "state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-        "decision_required": "FS-06 implementation and verification are complete. Administrator acceptance is pending.",
+        "state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "decision_required": "Create and verify the distinct FS-06 closeout proposal.",
         "implementation_may_begin": false,
         "fs_04_status": "CLOSED",
         "fs_04_implementation_complete": true,
@@ -217,10 +218,10 @@
         "fs_06_authorized": false,
         "fs_06_implementation": "COMPLETE",
         "fs_06_verification": "COMPLETE",
-        "fs_06_administrator_acceptance": "PENDING",
+        "fs_06_administrator_acceptance": "ACCEPTED",
         "fs_06_closeout": "NOT_STARTED",
         "fs_06_draft_created": true,
-        "fs_06_draft_status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+        "fs_06_draft_status": "ACCEPTED",
         "fs_06_may_begin": false,
         "fs_07": "INACTIVE / NOT AUTHORIZED"
     },
@@ -1049,14 +1050,14 @@
             "path": ".floppy/templates/Floppy-E-FS-06.draft.md",
             "section": "FS-06",
             "title": "Read-only authorization and Git-integrity checks",
-            "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+            "status": "ACCEPTED",
             "accepted": true,
             "activation_authorized": true,
             "implementation_authorized": true,
             "implementation_started": true,
             "implementation_complete": true,
             "verification_complete": true,
-            "administrator_acceptance": "PENDING",
+            "administrator_acceptance": "ACCEPTED",
             "closeout": "NOT_STARTED",
             "active": false,
             "authorization_id": null,
@@ -1164,8 +1165,8 @@
             "implementation_checkpoint": "f323659185cb36705ca2209dfab650bf7bc628a0",
             "product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
             "reusable_product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
-            "completion_record_checkpoint": "THIS_COMMIT",
-            "completion_checkpoint": "THIS_COMMIT",
+            "completion_record_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+            "completion_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
             "verification_evidence": {
                 "recorded_on": "2026-08-04",
                 "focused_fs_06_tests": 11,
@@ -1184,10 +1185,21 @@
                     "tests/test_authorization_git_integrity.py"
                 ],
                 "source_version": "0.4.1-dev",
+                "final_phase_1_worktree_clean": true,
                 "pushed": false
             },
             "additional_product_writes": "NOT AUTHORIZED",
-            "additional_product_writes_permitted": false
+            "additional_product_writes_permitted": false,
+            "accepted_on": "2026-08-04",
+            "accepted_implementation_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+            "administrator_acceptance_checkpoint": "THIS_COMMIT",
+            "acceptance_transition": "TR-007-ACCEPT-SECTION",
+            "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "section_closeout": "NOT_STARTED",
+            "closeout_started": false,
+            "closeout_execution": "NOT_STARTED",
+            "closeout_applied": false,
+            "closeout_proposal_status": "NOT_PROPOSED"
         }
     ],
     "closeout_proposal": {
@@ -2052,14 +2064,14 @@
         "path": ".floppy/templates/Floppy-E-FS-06.draft.md",
         "section": "FS-06",
         "title": "Read-only authorization and Git-integrity checks",
-        "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+        "status": "ACCEPTED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -2167,8 +2179,8 @@
         "implementation_checkpoint": "f323659185cb36705ca2209dfab650bf7bc628a0",
         "product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
         "reusable_product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
-        "completion_record_checkpoint": "THIS_COMMIT",
-        "completion_checkpoint": "THIS_COMMIT",
+        "completion_record_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+        "completion_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
         "verification_evidence": {
             "recorded_on": "2026-08-04",
             "focused_fs_06_tests": 11,
@@ -2187,23 +2199,34 @@
                 "tests/test_authorization_git_integrity.py"
             ],
             "source_version": "0.4.1-dev",
+            "final_phase_1_worktree_clean": true,
             "pushed": false
         },
         "additional_product_writes": "NOT AUTHORIZED",
-        "additional_product_writes_permitted": false
+        "additional_product_writes_permitted": false,
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false,
+        "closeout_proposal_status": "NOT_PROPOSED"
     },
     "fs_06_work_package_draft": {
         "path": ".floppy/templates/Floppy-E-FS-06.draft.md",
         "section": "FS-06",
         "title": "Read-only authorization and Git-integrity checks",
-        "status": "VERIFICATION COMPLETE - ACCEPTANCE PENDING",
+        "status": "ACCEPTED",
         "accepted": true,
         "activation_authorized": true,
         "implementation_authorized": true,
         "implementation_started": true,
         "implementation_complete": true,
         "verification_complete": true,
-        "administrator_acceptance": "PENDING",
+        "administrator_acceptance": "ACCEPTED",
         "closeout": "NOT_STARTED",
         "active": false,
         "authorization_id": null,
@@ -2311,8 +2334,8 @@
         "implementation_checkpoint": "f323659185cb36705ca2209dfab650bf7bc628a0",
         "product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
         "reusable_product_commit": "f323659185cb36705ca2209dfab650bf7bc628a0",
-        "completion_record_checkpoint": "THIS_COMMIT",
-        "completion_checkpoint": "THIS_COMMIT",
+        "completion_record_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+        "completion_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
         "verification_evidence": {
             "recorded_on": "2026-08-04",
             "focused_fs_06_tests": 11,
@@ -2331,9 +2354,20 @@
                 "tests/test_authorization_git_integrity.py"
             ],
             "source_version": "0.4.1-dev",
+            "final_phase_1_worktree_clean": true,
             "pushed": false
         },
         "additional_product_writes": "NOT AUTHORIZED",
-        "additional_product_writes_permitted": false
+        "additional_product_writes_permitted": false,
+        "accepted_on": "2026-08-04",
+        "accepted_implementation_checkpoint": "a73449a3ada083113ede487bcdefd03e4f577de0",
+        "administrator_acceptance_checkpoint": "THIS_COMMIT",
+        "acceptance_transition": "TR-007-ACCEPT-SECTION",
+        "accepted_lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        "section_closeout": "NOT_STARTED",
+        "closeout_started": false,
+        "closeout_execution": "NOT_STARTED",
+        "closeout_applied": false,
+        "closeout_proposal_status": "NOT_PROPOSED"
     }
 }
