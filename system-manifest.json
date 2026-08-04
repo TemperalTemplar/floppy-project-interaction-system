@@ -128,7 +128,7 @@
       },
       "handoff_template": {
         "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
-        "sha256": "aafe1e0f9c91cc8acc26296506e3bdb44440e63e1c05dd98bd0c17fd417810e8"
+        "sha256": "51af866296cb5b730f46b7b6b837ac7f365b0361a7035f825f590aecd031297f"
       },
       "tests": {
         "path": "tests/test_orchestrator_registry.py",
