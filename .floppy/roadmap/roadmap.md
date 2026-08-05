@@ -16,22 +16,25 @@ NONE
 Current authorized section:
 NONE
 
-FS-01:
-CLOSED
+FS-09:
+CLOSED / CLOSEOUT APPLIED
 
-FS-02:
-CLOSED
-
-FS-03:
-CLOSED
-
-FS-04:
-CLOSED
-
-FS-05:
+FS-10:
 DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 
+FS-11:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+
+FS-12:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+
+FS-13:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+
 Repository writer:
+NONE
+
+Writer authorization reference:
 NONE
 
 Integration:
@@ -51,9 +54,10 @@ Only the current next section may have exact product paths, exact tests, and a c
 | FS-07 | Add a small package-content scan reused by packaging and export. | **2** | **1** |
 | FS-08 | Produce one validated boot-package ZIP with one checksum manifest. | **3** | **1** |
 | FS-09 | Add dry-run and controlled writes for FS-01 lifecycle transitions. | **3** | **2** |
-| FS-10 | Implement only proven real migrations; no migration may be invented. | **4 per real path** | **1 per real path** |
-| FS-11 | Add final-project closure using the existing validator, CLI, and write code. | **4** | **1** |
-| FS-12 | Export and verify one portable ZIP and integrity manifest. | **3** | **1** |
+| FS-10 | Implement only qualifying evidence-backed migrations; otherwise close after verification with no product change. | **4 per accepted real path** | **1 per accepted real path** |
+| FS-11 | Establish bounded project-control provisioning and integration; real-root reconciliation remains separately authorized. | **DEFERRED** | **NOT AUTHORIZED** |
+| FS-12 | Add final-project closure using the existing validator, CLI, and write code. | **4** | **1** |
+| FS-13 | Export and verify one portable ZIP and integrity manifest. | **3** | **1** |
 
 ### FS-03 exact product scope
 
@@ -66,15 +70,42 @@ FS-03 must reuse the FS-02 normative schemas and the existing validator. It must
 
 ### Explicit scope limits
 
-- FS-04 through FS-12 do not receive exact filenames or detailed test inventories until their own work-package drafts are prepared.
+- FS-04 through FS-13 do not receive exact filenames or detailed test inventories until their own work-package drafts are prepared.
 - FS-05 extends the validator and CLI; it is not a separate closeout engine.
 - FS-06 uses Git directly; it does not create a Git abstraction, transaction layer, lock manager, or custom work-package hashing.
 - FS-07 is a small deterministic package-content scan, not a DLP or repository-security platform.
-- FS-08 and FS-12 reuse the same packaging foundation.
+- FS-08 and FS-13 reuse the same packaging foundation.
 - FS-09 uses Git commits as the recovery boundary; no rollback engine, recovery journal, transaction coordinator, or automatic branch restoration is permitted.
-- FS-10 supports only real source formats proven by fixtures and may close with no product changes when no migration is required.
-- FS-11 is one validated operation, not a separate closure engine.
-- FS-12 excludes history compaction, signing infrastructure, hosting, synchronization, and multiple export formats.
+- FS-10 supports only actual prior Floppy formats proven by a qualifying real adopting-project source-format fixture and may close after verification with no reusable-product changes when no qualifying migration path is proven.
+- FS-11 owns future reusable project-control provisioning and integration; self-hosted-root reconciliation requires separate exact administrative authority and a separate commit.
+- FS-12 is one validated final-closure operation, not a separate closure engine.
+- FS-13 excludes history compaction, signing infrastructure, hosting, synchronization, and multiple export formats.
+
+## FS-10 corrective routing revision
+
+The administrator accepted:
+
+`OPTION 3 — SEPARATE REUSABLE PROVISIONING FROM ONE-TIME SELF-HOSTED RECONCILIATION`
+
+The accepted routing is:
+
+1. FS-10 remains Targeted Migration and owns only actual prior Floppy formats
+   used by real adopting projects and proven by qualifying real source-format
+   fixtures.
+2. FS-10 may close after verification with no reusable-product changes when no
+   qualifying migration path is proven.
+3. FS-11 is roadmap-only Project Control-State Provisioning and Integration.
+4. FS-12 is Final-Project Closure.
+5. FS-13 is Export and Integrity.
+6. Reusable project-seed or initialization changes and real self-hosted-root
+   reconciliation require separate authorities and separate commits.
+7. TR-004 remains prohibited from real-project use.
+8. No FS-11 work-package draft, product path, test inventory, or product commit
+   is authorized by this administrative revision.
+
+The finished Windows release must not require ordinary users to install Python,
+configure PATH, download loose `.py` files, or manually execute Python
+commands.
 
 ## Common operating rules
 

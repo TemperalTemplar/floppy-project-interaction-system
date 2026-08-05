@@ -102,10 +102,10 @@
         "machine_readable": ".floppy/roadmap/roadmap.json",
         "user_readable": ".floppy/roadmap/roadmap.md",
         "status": "ACCEPTED",
-        "section_count": 12,
+        "section_count": 13,
         "first_section": "FS-01",
-        "last_section": "FS-12",
-        "next_proposed_section": "FS-09",
+        "last_section": "FS-13",
+        "next_proposed_section": "FS-10",
         "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
         "fs_01_work_package": "ACCEPTED AS PLANNING BASELINE",
         "fs_01_implementation": "COMPLETE",
@@ -186,7 +186,8 @@
         "fs_08_verification": "COMPLETE",
         "fs_08_administrator_acceptance": "ACCEPTED",
         "fs_08_closeout": "APPLIED",
-        "fs_08_status": "CLOSED"
+        "fs_08_status": "CLOSED",
+        "fs_10_corrective_routing_revision": ".floppy/revisions/FS-10-corrective-routing.md"
     },
     "records": {
         "evidence": ".floppy/evidence/README.md",
@@ -217,11 +218,12 @@
         "fs_08_closeout": ".floppy/closeouts/FS-08-closeout.md",
         "fs_09_work_package_draft": ".floppy/templates/Floppy-E-FS-09.draft.md",
         "fs_09_closeout": ".floppy/closeouts/FS-09-closeout.md",
-        "fs_10_work_package_draft": ".floppy/templates/Floppy-E-FS-10.draft.md"
+        "fs_10_work_package_draft": ".floppy/templates/Floppy-E-FS-10.draft.md",
+        "fs_10_corrective_routing": ".floppy/revisions/FS-10-corrective-routing.md"
     },
     "continuation_point": {
         "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "decision_required": "FS-09 is closed. FS-10 exists only as an inactive, unaccepted, unauthorized draft for evidence-backed targeted migration review. Active authorization and repository writer are NONE.",
+        "decision_required": "FS-09 is closed. FS-10 remains an inactive, unaccepted, unauthorized Targeted Migration draft. FS-11 is roadmap-only for future project-control provisioning and integration. Active authorization, repository writer, and writer authorization reference remain NONE.",
         "implementation_may_begin": false,
         "fs_04_status": "CLOSED",
         "fs_04_implementation_complete": true,
@@ -4381,15 +4383,17 @@
         "depends_on": [
             "FS-09"
         ],
-        "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+        "objective": "Implement only migration paths for actual prior Floppy formats used by real adopting projects and proven by a qualifying real source-format fixture. If no qualifying migration path is proven, close after verification with no reusable-product changes.",
         "maximum_reusable_product_paths": 4,
         "commit_maximum": "1 per accepted real migration path",
-        "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
+        "product_scope_rule": "At most three implementation/test paths plus one qualifying real adopting-project source-format fixture per accepted migration path.",
         "explicit_exclusions": [
+            "No new-project provisioning, project initialization, lifecycle-state creation, or orchestrator-registry creation.",
+            "No generic control-record reconciliation or one-time repair of the self-hosted source repository.",
             "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
         ],
-        "exact_paths_deferred_until_section_draft": true,
-        "tests_deferred_until_section_draft": true,
+        "exact_paths_deferred_until_evidence_backed_migration_path_acceptance": true,
+        "tests_deferred_until_evidence_backed_migration_path_acceptance": true,
         "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
         "accepted": false,
         "activation_authorized": false,
@@ -4411,7 +4415,7 @@
         "real_project_modification_authorized": false,
         "tr_004_real_project_use": "PROHIBITED",
         "lifecycle_state_provisioning": "NOT AUTHORIZED",
-        "evidence_backed_migration_required": true,
+        "migration_acceptance_requires_qualifying_real_source_fixture": true,
         "no_migration_change_may_be_required": true,
         "real_migration_path_exists_deferred": true,
         "affected_project_types_deferred": true,
@@ -4437,15 +4441,17 @@
         "depends_on": [
             "FS-09"
         ],
-        "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+        "objective": "Implement only migration paths for actual prior Floppy formats used by real adopting projects and proven by a qualifying real source-format fixture. If no qualifying migration path is proven, close after verification with no reusable-product changes.",
         "maximum_reusable_product_paths": 4,
         "commit_maximum": "1 per accepted real migration path",
-        "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
+        "product_scope_rule": "At most three implementation/test paths plus one qualifying real adopting-project source-format fixture per accepted migration path.",
         "explicit_exclusions": [
+            "No new-project provisioning, project initialization, lifecycle-state creation, or orchestrator-registry creation.",
+            "No generic control-record reconciliation or one-time repair of the self-hosted source repository.",
             "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
         ],
-        "exact_paths_deferred_until_section_draft": true,
-        "tests_deferred_until_section_draft": true,
+        "exact_paths_deferred_until_evidence_backed_migration_path_acceptance": true,
+        "tests_deferred_until_evidence_backed_migration_path_acceptance": true,
         "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
         "accepted": false,
         "activation_authorized": false,
@@ -4467,7 +4473,7 @@
         "real_project_modification_authorized": false,
         "tr_004_real_project_use": "PROHIBITED",
         "lifecycle_state_provisioning": "NOT AUTHORIZED",
-        "evidence_backed_migration_required": true,
+        "migration_acceptance_requires_qualifying_real_source_fixture": true,
         "no_migration_change_may_be_required": true,
         "real_migration_path_exists_deferred": true,
         "affected_project_types_deferred": true,
@@ -4483,5 +4489,20 @@
         "accepted_path_commit_count_deferred": true,
         "production_or_deployment_behavior_deferred": true,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only."
+    },
+    "fs_10_corrective_routing": {
+        "status": "APPLIED_ADMINISTRATIVE_ROADMAP_REVISION",
+        "authorization_reference": "AUTHORIZED_FOR_ONE_BOUNDED_ADMINISTRATIVE_ROADMAP_REVISION",
+        "record": ".floppy/revisions/FS-10-corrective-routing.md",
+        "base_branch": "feature/fs-09-controlled-lifecycle-writes",
+        "base_head": "935556a0d3a7629c0dfcb89930d840a5179f610c",
+        "accepted_option": "OPTION 3 — SEPARATE REUSABLE PROVISIONING FROM ONE-TIME SELF-HOSTED RECONCILIATION",
+        "proven_real_migration_paths": 0,
+        "proven_provisioning_or_integration_needs": 2,
+        "qualifying_source_format_fixtures": 0,
+        "reusable_product_paths_named": false,
+        "product_commit_authorized": false,
+        "section_accepted_or_activated": false,
+        "project_provisioned_reconciled_or_migrated": false
     }
 }

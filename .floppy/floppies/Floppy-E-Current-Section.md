@@ -209,3 +209,58 @@ FS-10: DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 Real-project use of TR-004 remains prohibited. Project provisioning and
 lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
+
+<!-- FS10_CORRECTIVE_ROUTING_BEGIN -->
+## FS-10 administrative corrective routing
+
+```text
+Revision status: APPLIED_ADMINISTRATIVE_ROADMAP_REVISION
+Administrator authorization reference: AUTHORIZED_FOR_ONE_BOUNDED_ADMINISTRATIVE_ROADMAP_REVISION
+
+FS-10 title: Targeted Migration
+FS-10 status: DRAFT_NOT_AUTHORIZED
+FS-10 active: NO
+FS-10 accepted: NO
+FS-10 authorized: NO
+FS-10 implementation: NOT STARTED
+
+FS-11 title: Project Control-State Provisioning and Integration
+FS-11 status: PLANNED_NOT_AUTHORIZED
+FS-11 active: NO
+FS-11 accepted: NO
+FS-11 authorized: NO
+FS-11 implementation: NOT STARTED
+
+FS-12 title: Final-Project Closure
+FS-12 status: PLANNED_NOT_AUTHORIZED
+FS-12 active: NO
+FS-12 accepted: NO
+FS-12 authorized: NO
+FS-12 implementation: NOT STARTED
+
+FS-13 title: Export and Integrity
+FS-13 status: PLANNED_NOT_AUTHORIZED
+FS-13 active: NO
+FS-13 accepted: NO
+FS-13 authorized: NO
+FS-13 implementation: NOT STARTED
+
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+```
+
+FS-10 owns only evidence-backed migration from an actual prior Floppy format
+used by a real adopting project. No qualifying migration path or source-format
+fixture is presently proven.
+
+PROV-01 is routed to future FS-11 reusable project-control provisioning and
+integration. INT-01 requires a separate one-time self-hosted administrative
+reconciliation authority and a separate commit.
+
+No complete FS-11 work-package draft, reusable-product path, test inventory, or
+product commit is authorized.
+
+TR-004 remains prohibited from real-project use. No lifecycle-state or root
+orchestrator-registry creation is authorized.
+<!-- FS10_CORRECTIVE_ROUTING_END -->

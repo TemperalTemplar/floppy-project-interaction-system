@@ -23,11 +23,14 @@ verified, accepted, and formally closed.
    unimplemented.
 6. Secret and unsafe-content scanning remains unimplemented.
 7. Boot-package generation and verification remain unimplemented.
-8. Controlled lifecycle write commands remain unimplemented.
-9. Migration planning and application remain unimplemented.
-10. Final-project closure remains unimplemented.
-11. BCE export, integrity, and history compaction remain unimplemented.
-12. Source-version and BCE/schema-format versioning remain separately controlled.
+8. Controlled lifecycle write commands are implemented only within the accepted
+   FS-09 boundary; real-project use remains prohibited.
+9. Evidence-backed Targeted Migration remains unimplemented and may close after
+   verification with no reusable-product change.
+10. Project Control-State Provisioning and Integration remains unimplemented.
+11. Final-project closure remains unimplemented.
+12. BCE export and integrity remain unimplemented.
+13. Source-version and BCE/schema-format versioning remain separately controlled.
 
 ## Current disposition
 
@@ -56,3 +59,28 @@ FALSE
 
 The next legal operation is preparation, revision, acceptance, or withholding of
 the FS-02 work package—not implementation.
+
+## FS-10 corrective-routing issues
+
+The accepted administrative routing decision is Option 3: separate reusable
+provisioning from one-time self-hosted reconciliation.
+
+- `PROV-01` is routed to future FS-11 reusable project-control provisioning and
+  integration.
+- `INT-01` shares the future architectural contract but requires a separate
+  one-time self-hosted administrative reconciliation authority and a separate
+  commit.
+- The older-adopting-project migration question remains hypothetical.
+- No qualifying older-adopter source-format fixture currently exists.
+- FS-10 may not infer migration scope from provisioning or integration
+  evidence.
+- Source-of-truth precedence remains unresolved for future FS-11 preparation.
+- Split-brain prevention remains unresolved for future FS-11 preparation.
+- Rollback and partial-failure behavior remain unresolved for future FS-11
+  preparation.
+- Compatibility classes remain unresolved for future FS-11 preparation.
+- Real-project reconciliation authority remains unresolved for future FS-11
+  preparation.
+
+The nonnormative provisioning/integration contract outline is planning evidence
+only. It is not accepted implementation architecture and grants no authority.

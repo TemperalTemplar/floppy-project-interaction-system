@@ -1315,15 +1315,17 @@
             "depends_on": [
                 "FS-09"
             ],
-            "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+            "objective": "Implement only migration paths for actual prior Floppy formats used by real adopting projects and proven by a qualifying real source-format fixture. If no qualifying migration path is proven, close after verification with no reusable-product changes.",
             "maximum_reusable_product_paths": 4,
             "commit_maximum": "1 per accepted real migration path",
-            "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
+            "product_scope_rule": "At most three implementation/test paths plus one qualifying real adopting-project source-format fixture per accepted migration path.",
             "explicit_exclusions": [
+                "No new-project provisioning, project initialization, lifecycle-state creation, or orchestrator-registry creation.",
+                "No generic control-record reconciliation or one-time repair of the self-hosted source repository.",
                 "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
             ],
-            "exact_paths_deferred_until_section_draft": true,
-            "tests_deferred_until_section_draft": true,
+            "exact_paths_deferred_until_evidence_backed_migration_path_acceptance": true,
+            "tests_deferred_until_evidence_backed_migration_path_acceptance": true,
             "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
             "accepted": false,
             "activation_authorized": false,
@@ -1345,7 +1347,7 @@
             "real_project_modification_authorized": false,
             "tr_004_real_project_use": "PROHIBITED",
             "lifecycle_state_provisioning": "NOT AUTHORIZED",
-            "evidence_backed_migration_required": true,
+            "migration_acceptance_requires_qualifying_real_source_fixture": true,
             "no_migration_change_may_be_required": true,
             "real_migration_path_exists_deferred": true,
             "affected_project_types_deferred": true,
@@ -1365,11 +1367,48 @@
         {
             "id": "FS-11",
             "sequence": 11,
-            "title": "Final-Project Closure",
+            "title": "Project Control-State Provisioning and Integration",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
                 "FS-10"
+            ],
+            "objective": "Establish a bounded reusable capability for canonical project-control provisioning and integration, including lifecycle-state and orchestrator-registry establishment, compatibility detection, cross-record consistency, and split-brain prevention. Reusable-product implementation must not apply changes to a real project; any self-hosted-root reconciliation requires separate exact administrative authority.",
+            "maximum_reusable_product_paths": null,
+            "commit_maximum": null,
+            "explicit_exclusions": [
+                "No application to a real project under reusable-product implementation authority.",
+                "No silent modification of the self-hosted root .floppy control state.",
+                "No generalized migration, repair, reconciliation, or transaction framework."
+            ],
+            "exact_paths_deferred_until_work_package_acceptance": true,
+            "tests_deferred_until_work_package_acceptance": true,
+            "commit_scope_deferred_until_work_package_acceptance": true,
+            "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
+            "accepted": false,
+            "work_package_accepted": false,
+            "work_package_status": "PLANNED_NOT_AUTHORIZED",
+            "activation_authorized": false,
+            "implementation_authorized": false,
+            "active": false,
+            "repository_writer": null,
+            "writer_authorization_reference": null,
+            "authorization_id": null,
+            "product_paths_defined": false,
+            "test_inventory_defined": false,
+            "product_commit_authorized": false,
+            "self_hosted_root_reconciliation_requires_separate_authority": true,
+            "reusable_capability_and_root_reconciliation_require_separate_commits": true,
+            "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only."
+        },
+        {
+            "id": "FS-12",
+            "sequence": 12,
+            "title": "Final-Project Closure",
+            "status": "PLANNED_NOT_AUTHORIZED",
+            "implementation_started": false,
+            "depends_on": [
+                "FS-11"
             ],
             "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
             "maximum_reusable_product_paths": 4,
@@ -1387,13 +1426,13 @@
             "repository_writer": null
         },
         {
-            "id": "FS-12",
-            "sequence": 12,
+            "id": "FS-13",
+            "sequence": 13,
             "title": "Export and Integrity",
             "status": "PLANNED_NOT_AUTHORIZED",
             "implementation_started": false,
             "depends_on": [
-                "FS-11"
+                "FS-12"
             ],
             "objective": "Export and verify one portable ZIP containing the accepted context and one integrity manifest.",
             "maximum_reusable_product_paths": 3,
@@ -1421,7 +1460,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-09 is closed. FS-10 exists only as an inactive, unaccepted, unauthorized draft for evidence-backed targeted migration review. Active authorization and repository writer are NONE.",
+    "continuation_point": "FS-09 is closed. FS-10 remains an inactive, unaccepted, unauthorized Targeted Migration draft. FS-11 is roadmap-only for future project-control provisioning and integration. Active authorization, repository writer, and writer authorization reference are NONE.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -2163,7 +2202,8 @@
             "FS-09",
             "FS-10",
             "FS-11",
-            "FS-12"
+            "FS-12",
+            "FS-13"
         ],
         "current_next_section_only": [
             "exact reusable-product paths",
@@ -4128,15 +4168,17 @@
         "depends_on": [
             "FS-09"
         ],
-        "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+        "objective": "Implement only migration paths for actual prior Floppy formats used by real adopting projects and proven by a qualifying real source-format fixture. If no qualifying migration path is proven, close after verification with no reusable-product changes.",
         "maximum_reusable_product_paths": 4,
         "commit_maximum": "1 per accepted real migration path",
-        "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
+        "product_scope_rule": "At most three implementation/test paths plus one qualifying real adopting-project source-format fixture per accepted migration path.",
         "explicit_exclusions": [
+            "No new-project provisioning, project initialization, lifecycle-state creation, or orchestrator-registry creation.",
+            "No generic control-record reconciliation or one-time repair of the self-hosted source repository.",
             "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
         ],
-        "exact_paths_deferred_until_section_draft": true,
-        "tests_deferred_until_section_draft": true,
+        "exact_paths_deferred_until_evidence_backed_migration_path_acceptance": true,
+        "tests_deferred_until_evidence_backed_migration_path_acceptance": true,
         "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
         "accepted": false,
         "activation_authorized": false,
@@ -4158,7 +4200,7 @@
         "real_project_modification_authorized": false,
         "tr_004_real_project_use": "PROHIBITED",
         "lifecycle_state_provisioning": "NOT AUTHORIZED",
-        "evidence_backed_migration_required": true,
+        "migration_acceptance_requires_qualifying_real_source_fixture": true,
         "no_migration_change_may_be_required": true,
         "real_migration_path_exists_deferred": true,
         "affected_project_types_deferred": true,
@@ -4184,15 +4226,17 @@
         "depends_on": [
             "FS-09"
         ],
-        "objective": "Implement only migration paths for real prior Floppy formats proven by an actual source fixture. If no real migration is required, close with verification and no reusable-product changes.",
+        "objective": "Implement only migration paths for actual prior Floppy formats used by real adopting projects and proven by a qualifying real source-format fixture. If no qualifying migration path is proven, close after verification with no reusable-product changes.",
         "maximum_reusable_product_paths": 4,
         "commit_maximum": "1 per accepted real migration path",
-        "product_scope_rule": "At most three implementation/test paths plus one real source-format fixture per accepted migration path.",
+        "product_scope_rule": "At most three implementation/test paths plus one qualifying real adopting-project source-format fixture per accepted migration path.",
         "explicit_exclusions": [
+            "No new-project provisioning, project initialization, lifecycle-state creation, or orchestrator-registry creation.",
+            "No generic control-record reconciliation or one-time repair of the self-hosted source repository.",
             "No generic migration framework, migration language, plugin system, hypothetical version matrix, or separate rollback system."
         ],
-        "exact_paths_deferred_until_section_draft": true,
-        "tests_deferred_until_section_draft": true,
+        "exact_paths_deferred_until_evidence_backed_migration_path_acceptance": true,
+        "tests_deferred_until_evidence_backed_migration_path_acceptance": true,
         "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
         "accepted": false,
         "activation_authorized": false,
@@ -4214,7 +4258,7 @@
         "real_project_modification_authorized": false,
         "tr_004_real_project_use": "PROHIBITED",
         "lifecycle_state_provisioning": "NOT AUTHORIZED",
-        "evidence_backed_migration_required": true,
+        "migration_acceptance_requires_qualifying_real_source_fixture": true,
         "no_migration_change_may_be_required": true,
         "real_migration_path_exists_deferred": true,
         "affected_project_types_deferred": true,
@@ -4230,5 +4274,20 @@
         "accepted_path_commit_count_deferred": true,
         "production_or_deployment_behavior_deferred": true,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only."
+    },
+    "fs_10_corrective_routing": {
+        "status": "APPLIED_ADMINISTRATIVE_ROADMAP_REVISION",
+        "authorization_reference": "AUTHORIZED_FOR_ONE_BOUNDED_ADMINISTRATIVE_ROADMAP_REVISION",
+        "record": ".floppy/revisions/FS-10-corrective-routing.md",
+        "base_branch": "feature/fs-09-controlled-lifecycle-writes",
+        "base_head": "935556a0d3a7629c0dfcb89930d840a5179f610c",
+        "accepted_option": "OPTION 3 — SEPARATE REUSABLE PROVISIONING FROM ONE-TIME SELF-HOSTED RECONCILIATION",
+        "roadmap_section_count": 13,
+        "last_section": "FS-13",
+        "fs_10_implementation_authorized": false,
+        "fs_11_work_package_accepted": false,
+        "fs_11_implementation_authorized": false,
+        "reusable_product_paths_named": false,
+        "product_commit_authorized": false
     }
 }

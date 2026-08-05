@@ -2,7 +2,11 @@
 
 ## Roadmap status
 
-`ACCEPTED`
+`ACCEPTED — ADMINISTRATIVELY REVISED`
+
+The original roadmap acceptance remains historical evidence. The later FS-10
+corrective-routing revision inserts one roadmap-only capability and renumbers
+only future planned and unauthorized sections.
 
 ## Ordered source-development sections
 
@@ -15,20 +19,26 @@
 7. **FS-07 — Secret and Unsafe-Content Scanning**
 8. **FS-08 — Boot-Package Generation and Verification**
 9. **FS-09 — Controlled Lifecycle Write Commands**
-10. **FS-10 — Migration Planning and Application**
-11. **FS-11 — Final-Project Closure**
-12. **FS-12 — BCE Export, Integrity, and History Compaction**
+10. **FS-10 — Targeted Migration**
+11. **FS-11 — Project Control-State Provisioning and Integration**
+12. **FS-12 — Final-Project Closure**
+13. **FS-13 — Export and Integrity**
 
-## Established repository facts
+## Corrective-routing boundaries
 
-- Canonical source branch checkpoint: `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
-- Source-development feature branch: `feature/fs-01-lifecycle-specification`
-- Accepted FS-01 implementation: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- FS-01 acceptance recording: `5eeb3435644653534a6a430714a84b840ca497c0`
-- Approved closeout proposal: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
-- Source version: `0.4.1-dev`
-- Root control and reusable-product commits remained separate.
-- No adopting project, deployment, production service, or environment changed.
+- FS-10 owns only actual prior Floppy formats used by real adopting projects and
+  proven by qualifying real source-format fixtures.
+- FS-10 may close after verification with no reusable-product changes when no
+  qualifying migration path is proven.
+- FS-11 is roadmap-only and owns future reusable project-control provisioning
+  and integration.
+- Reusable project-seed or initialization changes and real self-hosted-root
+  reconciliation require separate authorities and separate commits.
+- FS-11 implementation must not silently modify the real source repository's
+  root `.floppy` control state.
+- TR-004 remains prohibited from real-project use.
+- Exact FS-11 product paths, tests, and commit scope remain deferred.
+- No complete FS-11 work-package draft exists.
 
 ## Current position
 
@@ -45,15 +55,34 @@ NONE
 Current authorized section:
 NONE
 
-FS-01:
+FS-01 through FS-09:
 CLOSED
 
-FS-02:
-DRAFT PRESENT — WORK PACKAGE NOT ACCEPTED — NOT AUTHORIZED
+FS-10:
+DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION NOT STARTED
+
+FS-11:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION NOT STARTED
+
+FS-12:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION NOT STARTED
+
+FS-13:
+PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION NOT STARTED
+
+Active authorization:
+NONE
+
+Repository writer:
+NONE
+
+Writer authorization reference:
+NONE
 ```
 
-The next legal operation is preparation, revision, acceptance, or withholding of
-the FS-02 work package—not implementation.
-
-Integration, merge, tag, release, migration, FS-02 implementation, and later
-sections remain unauthorized.
+No provisioning, initialization, reconciliation, migration, lifecycle write,
+integration, merge, tag, release, packaging, or production action is authorized.
