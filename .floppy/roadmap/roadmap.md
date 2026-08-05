@@ -219,3 +219,20 @@ Repository writer: NONE
 FS-10: INACTIVE / NOT AUTHORIZED
 ```
 <!-- FS09_PHASE1_END -->
+
+<!-- FS09_PHASE2_BEGIN -->
+## FS-09 Phase-2 control state — ADMINISTRATOR ACCEPTED
+
+```text
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Administrator-acceptance commit: THIS_COMMIT
+Closeout: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+FS-10: INACTIVE / NOT AUTHORIZED
+```
+<!-- FS09_PHASE2_END -->
