@@ -188,15 +188,16 @@ FS-10: INACTIVE / NOT AUTHORIZED
 <!-- FS09_PHASE1_END -->
 
 <!-- FS09_PHASE2_BEGIN -->
-## FS-09 Phase-2 control state — ADMINISTRATOR ACCEPTED
+## FS-09 Phase-2 control state — CLOSEOUT PROPOSED
 
 ```text
-Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator-acceptance commit: THIS_COMMIT
-Closeout: NOT STARTED
+Administrator-acceptance commit: c4c748388d05ab1ec50d25ea05fb2fb558d49632
+Closeout: PROPOSED
+Closeout proposal commit: THIS_COMMIT
 Active authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
