@@ -88,3 +88,15 @@ Accepted checkpoint text SHA-256: `28eb429afe718c9b0216d80042ca509facf028e760537
 Administrator acceptance: `ACCEPTED`
 
 Closeout: `NOT_PROPOSED`
+
+## Phase-2 closeout proposal
+
+Administrator acceptance Commit 5: `b585c21e6a43d6f5bf782e4e958463816c3f87c3`
+
+Proposal authority: `CTRL_02_CLOSEOUT_PROPOSAL`
+
+Canonical proposal SHA-256: `99495db76422c235e9a98e9802301f24f88deaf4ba72917486dcade90c34e5ee`
+
+Closeout proposal: `PROPOSED_NOT_APPLIED`
+
+Proposal record checkpoint: `THIS_COMMIT`
