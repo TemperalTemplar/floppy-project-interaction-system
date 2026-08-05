@@ -275,16 +275,17 @@ lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
 
 <!-- BEGIN FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
-## FS-10 verification-only work package — verification complete
+## FS-10 verification-only section — administrator accepted
 
 ```text
 Section: FS-10 — Targeted Migration
-Status: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
+Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-Lifecycle: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
+Lifecycle: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 Implementation: NOT_REQUIRED
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator decision: ACCEPT FS-10 VERIFIED RESULT
 Closeout: NOT_PROPOSED
 Migration: NONE
 Reusable-product paths: 0
@@ -303,10 +304,13 @@ Work-package acceptance transition:
 Verification-completion transition:
 `TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
 
-The complete repository suite passed at `a7e7eb35c958a2df36cca339e2714403d6cfe145`. No qualifying real
-migration path, real source-format fixture, reusable-product path, product
-commit, authorization, writer, or real-project modification exists.
+Administrator-acceptance transition:
+`TR-018-ACCEPT-VERIFICATION-ONLY-SECTION`
 
-Administrator acceptance and closeout have not occurred. FS-11 remains
-`PLANNED_NOT_AUTHORIZED`; no FS-11 draft exists.
+The verified no-change result is accepted by the administrator. Implementation
+remains `NOT_REQUIRED`, verification remains `COMPLETE`, and closeout remains
+`NOT_PROPOSED`.
+
+No closeout proposal or FS-11 draft exists. FS-11 remains
+`PLANNED_NOT_AUTHORIZED`.
 <!-- END FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->

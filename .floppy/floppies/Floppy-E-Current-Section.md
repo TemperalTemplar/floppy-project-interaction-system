@@ -44,12 +44,13 @@ Push, merge, integration, tag, release, packaging, installer, runtime bundle, ex
 
 ```text
 Section: FS-10 — Targeted Migration
-Lifecycle state: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
+Lifecycle state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
 Work package: ACCEPTED_PLANNING_BASELINE
 Implementation: NOT_REQUIRED
 Verification: COMPLETE
-Administrator acceptance: PENDING
+Administrator acceptance: ACCEPTED
+Administrator decision: ACCEPT FS-10 VERIFIED RESULT
 Closeout: NOT_PROPOSED
 Migration: NONE
 Reusable-product paths: 0
@@ -60,22 +61,28 @@ Active implementation authorization: NONE
 Active migration authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
-Verification base checkpoint: a7e7eb35c958a2df36cca339e2714403d6cfe145
-Verification completion checkpoint: THIS_COMMIT
+Administrator-acceptance base checkpoint: effcc3a02bfab99e7b64a68191f4b33eb93a7e7f
+Administrator-acceptance checkpoint: THIS_COMMIT
 ```
 
-Accepted work-package transition:
+Work-package acceptance transition:
 `TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
 
 Verification-completion transition:
 `TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
 
-The accepted `NOT_REQUIRED` implementation disposition remains authoritative.
-No reusable-product path or product commit exists.
+Administrator-acceptance transition:
+`TR-018-ACCEPT-VERIFICATION-ONLY-SECTION`
 
-Administrator acceptance remains `PENDING`. Closeout remains `NOT_PROPOSED`.
-FS-11 remains roadmap-only, inactive, unaccepted, unauthorized, and without a
-draft.
+The explicit administrator decision is:
 
-**MANDATORY STOP:** TR-018 and every later lifecycle transition require a
+`ACCEPT FS-10 VERIFIED RESULT`
+
+Implementation remains `NOT_REQUIRED`; verification remains `COMPLETE`; no
+reusable-product path or product commit exists.
+
+Closeout remains `NOT_PROPOSED`. FS-11 remains roadmap-only, inactive,
+unaccepted, unauthorized, and without a draft.
+
+**MANDATORY STOP:** TR-019 and every later lifecycle transition require a
 separate explicit administrator directive.

@@ -173,3 +173,30 @@ The accepted `NOT_REQUIRED` implementation disposition is preserved. This
 record does not include administrator acceptance, a closeout proposal, a
 closeout application, or an FS-11 draft.
 <!-- END FS-10 VERIFICATION-ONLY COMPLETION -->
+
+<!-- BEGIN FS-10 ADMINISTRATOR ACCEPTANCE -->
+## Administrator acceptance
+
+```text
+Decision: ACCEPT FS-10 VERIFIED RESULT
+Transition: TR-018-ACCEPT-VERIFICATION-ONLY-SECTION
+Source state: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
+Target state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Implementation disposition: NOT_REQUIRED
+Verification result: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: NOT_PROPOSED
+Reusable-product paths: 0
+Reusable-product commits: 0
+Product commit: null
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Acceptance base checkpoint: effcc3a02bfab99e7b64a68191f4b33eb93a7e7f
+Acceptance checkpoint: THIS_COMMIT
+```
+
+The administrator explicitly accepts the completed FS-10 verification-only
+no-change result. This record does not propose closeout, apply closeout, create
+an FS-11 draft, or authorize any reusable-product or real-project operation.
+<!-- END FS-10 ADMINISTRATOR ACCEPTANCE -->
