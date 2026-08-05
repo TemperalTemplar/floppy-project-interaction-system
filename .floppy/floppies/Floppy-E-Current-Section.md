@@ -188,19 +188,24 @@ FS-10: INACTIVE / NOT AUTHORIZED
 <!-- FS09_PHASE1_END -->
 
 <!-- FS09_PHASE2_BEGIN -->
-## FS-09 Phase-2 control state — CLOSEOUT PROPOSED
+## FS-09 Phase-2 control state — CLOSED
 
 ```text
-Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-09 status: CLOSED
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator-acceptance commit: c4c748388d05ab1ec50d25ea05fb2fb558d49632
-Closeout: PROPOSED
-Closeout proposal commit: THIS_COMMIT
+Closeout proposal commit: 2b73428daae08d94ee634ce810b9fc59794a1116
+Closeout: APPLIED
+Closeout application commit: THIS_COMMIT
 Active authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
-FS-10: INACTIVE / NOT AUTHORIZED
+FS-10: DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
 ```
+
+Real-project use of TR-004 remains prohibited. Project provisioning and
+lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
