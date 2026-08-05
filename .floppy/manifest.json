@@ -223,7 +223,7 @@
   },
   "continuation_point": {
     "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-    "decision_required": "CTRL-02 closeout proposal is recorded but not applied. Application may proceed only after exact proposal validation under CTRL_02_CLOSEOUT_APPLICATION.",
+    "decision_required": "CTRL-02 is closed. FS-10 remains draft, inactive, unaccepted, and unauthorized.",
     "implementation_may_begin": false,
     "fs_04_status": "CLOSED",
     "fs_04_implementation_complete": true,
@@ -1962,7 +1962,7 @@
   "control_work": {
     "active_control_work_item": "CTRL-02",
     "active_control_authorization": null,
-    "control_work_state": "CTRL-WORK-ACCEPTED-CLOSEOUT-PROPOSED",
+    "control_work_state": "CTRL-WORK-CLOSED",
     "accepted_work_package_checkpoint": "THIS_COMMIT",
     "implementation_branch": "feature/ctrl-02-verification-only-lifecycle",
     "implementation_worktree": "D:\\A\\Floppy-CTRL-02",
@@ -1977,7 +1977,7 @@
     "migration": "NOT AUTHORIZED",
     "fs_02": "NOT AUTHORIZED",
     "implementation_checkpoint": "5787ea50f993ad1fe2e1cabb97fdb039dd6d63d0",
-    "closure_applied": false,
+    "closure_applied": true,
     "verification_evidence": {
       "ctrl_01_tests": 10,
       "full_test_suite": 25,
@@ -4509,7 +4509,7 @@
     "id": "CTRL-02",
     "title": "Verification-Only Lifecycle Disposition",
     "classification": "BOUNDED PREREQUISITE NORMATIVE CORRECTION WITH REUSABLE-PRODUCT WORK",
-    "status": "CTRL-WORK-ACCEPTED-CLOSEOUT-PROPOSED",
+    "status": "CTRL-WORK-CLOSED",
     "active": false,
     "accepted_design_report_sha256": "95775bea0000e100f927ed1046561de4a5d72b3ec2f085f10724afec2bbed258",
     "accepted_design_binding": {
@@ -4572,7 +4572,7 @@
       3,
       4
     ],
-    "phase_2_authorized": true,
+    "phase_2_authorized": false,
     "authority_references": {
       "commit_1": "CTRL_02_WORK_PACKAGE_ACCEPTANCE",
       "commit_2": "CTRL_02_ACTIVATION",
@@ -4687,7 +4687,7 @@
       "administrator_acceptance": "ACCEPTED"
     },
     "administrator_acceptance": "ACCEPTED",
-    "closeout": "PROPOSED_NOT_APPLIED",
+    "closeout": "APPLIED",
     "fs_10_authorized": false,
     "fs_11_draft_authorized": false,
     "activation_authority_reference": "CTRL_02_ACTIVATION",
@@ -4713,11 +4713,11 @@
       "proposal_checkpoint": "THIS_COMMIT"
     },
     "closeout_application": {
-      "status": "NOT_APPLIED",
-      "authority_reference": null,
-      "proposal_commit": null,
+      "status": "APPLIED",
+      "authority_reference": "CTRL_02_CLOSEOUT_APPLICATION",
+      "proposal_commit": "c43a99edc637c55d6d3fc07d0b30ed7ab6e9459d",
       "proposal_sha256": "99495db76422c235e9a98e9802301f24f88deaf4ba72917486dcade90c34e5ee",
-      "application_checkpoint": null
+      "application_checkpoint": "THIS_COMMIT"
     }
   }
 }

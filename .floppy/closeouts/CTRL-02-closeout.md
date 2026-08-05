@@ -7,9 +7,9 @@ Status: `PROPOSED_NOT_APPLIED`
 <!-- CTRL02_CLOSEOUT_PROPOSAL_CANONICAL_END -->
 
 <!-- CTRL02_CLOSEOUT_APPLICATION_BEGIN -->
-Application status: NOT_APPLIED
-Application authority: NONE
-Proposal commit: NONE
+Application status: APPLIED
+Application authority: CTRL_02_CLOSEOUT_APPLICATION
+Proposal commit: c43a99edc637c55d6d3fc07d0b30ed7ab6e9459d
 Proposal SHA-256: 99495db76422c235e9a98e9802301f24f88deaf4ba72917486dcade90c34e5ee
-Application checkpoint: NONE
+Application checkpoint: THIS_COMMIT
 <!-- CTRL02_CLOSEOUT_APPLICATION_END -->

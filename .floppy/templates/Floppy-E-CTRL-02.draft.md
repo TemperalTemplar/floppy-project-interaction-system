@@ -100,3 +100,17 @@ Canonical proposal SHA-256: `99495db76422c235e9a98e9802301f24f88deaf4ba72917486d
 Closeout proposal: `PROPOSED_NOT_APPLIED`
 
 Proposal record checkpoint: `THIS_COMMIT`
+
+## Phase-2 closeout application
+
+Proposal commit: `c43a99edc637c55d6d3fc07d0b30ed7ab6e9459d`
+
+Proposal SHA-256: `99495db76422c235e9a98e9802301f24f88deaf4ba72917486dcade90c34e5ee`
+
+Application authority: `CTRL_02_CLOSEOUT_APPLICATION`
+
+Application checkpoint: `THIS_COMMIT`
+
+CTRL-02 state: `CTRL-WORK-CLOSED`
+
+Closeout: `APPLIED`
