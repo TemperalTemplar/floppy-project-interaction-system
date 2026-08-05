@@ -225,7 +225,23 @@ class FS09ControlledLifecycleWritesTests(unittest.TestCase):
         contract_path = ROOT / "specs/lifecycle-write-contract.json"
         raw = contract_path.read_bytes()
         contract = json.loads(raw)
-        self.assertEqual(raw, canonical(contract))
+        committed_raw = subprocess.run(
+            [
+                "git",
+                "-c",
+                f"safe.directory={ROOT.as_posix()}",
+                "-C",
+                str(ROOT),
+                "show",
+                "HEAD:specs/lifecycle-write-contract.json",
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        ).stdout
+        committed_contract = json.loads(committed_raw)
+        self.assertEqual(contract, committed_contract)
+        self.assertEqual(committed_raw, canonical(committed_contract))
         self.assertEqual(contract["status"], "ACCEPTED_NORMATIVE")
         self.assertEqual(
             contract["accepted_design_proposal_sha256"],
