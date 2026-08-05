@@ -686,6 +686,44 @@ def validate_normative_bce_schemas(
             )
 
 
+
+def validate_verification_only_lifecycle_extension(root: Path, manifest: dict[str, Any], errors: list[str]) -> None:
+    """Validate the CTRL-02 lifecycle-state 1.1.0 extension."""
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        errors.append(f"jsonschema is required for CTRL-02 validation: {exc}")
+        return
+    registry = manifest.get("verification_only_lifecycle_extension")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register verification-only lifecycle extension")
+        return
+    record = registry.get("artifacts", {}).get("lifecycle_state")
+    if not isinstance(record, dict):
+        errors.append("verification-only lifecycle-state registration is invalid")
+        return
+    path = root / record.get("path", "")
+    schema = validate_json(path, errors)
+    if schema is None:
+        return
+    if schema.get("$id") != "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.1.0": errors.append("verification-only lifecycle-state $id is invalid")
+    if schema.get("schema_version") != "1.1.0": errors.append("verification-only lifecycle-state version is invalid")
+    if record.get("sha256") != sha256(path): errors.append("verification-only lifecycle-state digest does not match")
+    try: Draft202012Validator.check_schema(schema)
+    except Exception as exc: errors.append(f"invalid verification-only lifecycle schema: {exc}")
+
+def validate_verification_only_contract(record: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if record.get("work_package_type") != "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE": return errors
+    if record.get("implementation_state") != "NOT_REQUIRED": errors.append("VERIFICATION_ONLY_IMPLEMENTATION_MUST_BE_NOT_REQUIRED")
+    if record.get("authorization_id") is not None: errors.append("VERIFICATION_ONLY_AUTHORIZATION_MUST_BE_NULL")
+    if record.get("repository_writer") is not None: errors.append("VERIFICATION_ONLY_WRITER_MUST_BE_NULL")
+    if record.get("writer_authorization_reference") is not None: errors.append("VERIFICATION_ONLY_WRITER_REFERENCE_MUST_BE_NULL")
+    if record.get("reusable_product_paths") not in ([], None): errors.append("VERIFICATION_ONLY_PRODUCT_PATHS_MUST_BE_EMPTY")
+    if record.get("reusable_product_commits") not in ([], None): errors.append("VERIFICATION_ONLY_PRODUCT_COMMITS_MUST_BE_EMPTY")
+    if record.get("product_commit") is not None: errors.append("VERIFICATION_ONLY_PRODUCT_COMMIT_MUST_BE_NULL")
+    return errors
+
 SEMANTIC_SCHEMA_PATHS = {
     "lifecycle_states": "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "work_authorizations": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
@@ -772,6 +810,10 @@ def _semantic_schema_check(
 
         validator = Draft202012Validator(schema)
         for index, record in enumerate(records[name]):
+            if name == "lifecycle_states" and record.get("schema_version") == "1.1.0":
+                schema_11 = validate_json(root / "schemas/bce/1.1.0/bce-lifecycle-state.schema.json", errors)
+                if schema_11 is not None:
+                    validator = Draft202012Validator(schema_11)
             failures = sorted(
                 validator.iter_errors(record),
                 key=lambda item: (
@@ -1849,6 +1891,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
 
     validate_lifecycle_artifacts(root, manifest, errors)
     validate_normative_bce_schemas(root, manifest, errors)
+    validate_verification_only_lifecycle_extension(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():

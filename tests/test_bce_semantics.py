@@ -377,6 +377,13 @@ class BceSemanticValidationTests(unittest.TestCase):
             {path: file_digest(path) for path in watched},
         )
 
+    def test_verification_only_contract_helper(self) -> None:
+        valid = {"work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE", "implementation_state": "NOT_REQUIRED", "authorization_id": None, "repository_writer": None, "writer_authorization_reference": None, "reusable_product_paths": [], "reusable_product_commits": [], "product_commit": None}
+        self.assertEqual(VALIDATOR.validate_verification_only_contract(valid), [])
+        invalid = copy.deepcopy(valid)
+        invalid["product_commit"] = "0" * 40
+        self.assertIn("VERIFICATION_ONLY_PRODUCT_COMMIT_MUST_BE_NULL", VALIDATOR.validate_verification_only_contract(invalid))
+
 
 if __name__ == "__main__":
     unittest.main()

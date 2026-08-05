@@ -1,6 +1,6 @@
 # Floppy Project Interaction System
 
-**Status:** development source, version `0.4.1-dev`
+**Status:** development source, version `0.4.2-dev`
 
 The Floppy Project Interaction System is a reusable Human-in-the-Loop project-control layer for AI-assisted development. This repository is the **source of the system**, not the active record for every project that uses it.
 

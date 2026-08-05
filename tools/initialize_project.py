@@ -9,7 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 
-SYSTEM_VERSION = "0.4.1-dev"
+SYSTEM_VERSION_TOKEN = "0.4.1-dev"
 TOKEN_PROJECT = "{{PROJECT_NAME}}"
 TOKEN_SOURCE = "{{SOURCE_REPOSITORY}}"
 
@@ -28,9 +28,9 @@ def fail(message: str) -> None:
     raise SystemExit(2)
 
 
-def render_text(source: Path, destination: Path, project_name: str, source_repo: str) -> None:
+def render_text(source: Path, destination: Path, project_name: str, source_repo: str, system_version: str) -> None:
     text = source.read_text(encoding="utf-8")
-    text = text.replace(TOKEN_PROJECT, project_name).replace(TOKEN_SOURCE, source_repo)
+    text = text.replace(TOKEN_PROJECT, project_name).replace(TOKEN_SOURCE, source_repo).replace(SYSTEM_VERSION_TOKEN, system_version)
     destination.write_text(text, encoding="utf-8", newline="\n")
 
 
@@ -39,6 +39,7 @@ def main() -> int:
     target = args.target.expanduser().resolve()
     source_root = Path(__file__).resolve().parents[1]
     seed = source_root / "project-seed" / ".floppy"
+    system_version = (source_root / "VERSION").read_text(encoding="utf-8").strip()
     destination = target / ".floppy"
 
     if not target.exists() or not target.is_dir():
@@ -53,7 +54,7 @@ def main() -> int:
         fail("project name cannot be blank")
 
     files = sorted(p for p in seed.rglob("*") if p.is_file())
-    print(f"Floppy source version: {SYSTEM_VERSION}")
+    print(f"Floppy source version: {system_version}")
     print(f"Project target: {target}")
     print(f"Will create: {destination}")
     print(f"Files: {len(files)}")
@@ -71,14 +72,14 @@ def main() -> int:
             dest = destination / relative
             dest.parent.mkdir(parents=True, exist_ok=True)
             try:
-                render_text(source, dest, args.project_name.strip(), args.source_repository.strip())
+                render_text(source, dest, args.project_name.strip(), args.source_repository.strip(), system_version)
             except UnicodeDecodeError:
                 shutil.copy2(source, dest)
 
         manifest_path = destination / "manifest.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         manifest["initialized_by"] = "tools/initialize_project.py"
-        manifest["system"]["version"] = SYSTEM_VERSION
+        manifest["system"]["version"] = system_version
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n")
     except Exception:
         shutil.rmtree(destination, ignore_errors=True)

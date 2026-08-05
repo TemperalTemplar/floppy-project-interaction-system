@@ -59,6 +59,7 @@ BOOT_PACKAGE_FILE_PATHS = (
     "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+    "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",

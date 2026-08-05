@@ -81,7 +81,7 @@ class LifecycleSpecificationTests(unittest.TestCase):
 
     def test_state_identifiers_are_unique(self) -> None:
         state_ids = [state["id"] for state in self.table["states"]]
-        self.assertEqual(len(state_ids), 16)
+        self.assertEqual(len(state_ids), 20)
         self.assertEqual(len(state_ids), len(set(state_ids)))
 
         for state in self.table["states"]:
@@ -91,7 +91,7 @@ class LifecycleSpecificationTests(unittest.TestCase):
         state_ids = {state["id"] for state in self.table["states"]}
         transition_ids = [transition["id"] for transition in self.table["transitions"]]
 
-        self.assertEqual(len(transition_ids), 15)
+        self.assertEqual(len(transition_ids), 20)
         self.assertEqual(len(transition_ids), len(set(transition_ids)))
 
         for transition in self.table["transitions"]:
@@ -118,7 +118,7 @@ class LifecycleSpecificationTests(unittest.TestCase):
         }
         self.assertEqual(
             invariant_ids,
-            {"INV-001", "INV-002", "INV-003", "INV-004", "INV-005"},
+            {"INV-001", "INV-002", "INV-003", "INV-004", "INV-005", "INV-010"},
         )
 
     def test_prohibited_implications_are_unique_and_complete(self) -> None:

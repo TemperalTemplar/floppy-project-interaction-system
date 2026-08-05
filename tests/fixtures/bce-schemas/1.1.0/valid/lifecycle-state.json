@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.1.0",
+  "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+  "state_id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+  "section": "FS-10",
+  "authorization_id": null,
+  "base_checkpoint": null,
+  "dimensions": {
+    "roadmap": "ACCEPTED",
+    "work_package": "ACCEPTED_PLANNING_BASELINE",
+    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+    "implementation": "NOT_REQUIRED",
+    "verification": "PENDING",
+    "acceptance": "PENDING",
+    "closeout": "NOT_PROPOSED",
+    "migration": "NONE",
+    "final_closure": "OPEN"
+  },
+  "active_implementation_sections": [],
+  "evidence": [
+    "accepted verification-only work package"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.4.1-dev",
+  "system_version": "0.4.2-dev",
   "status": "development-source",
   "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
@@ -69,11 +69,11 @@
     "artifacts": {
       "state_model": {
         "path": "specs/lifecycle-state-model.md",
-        "sha256": "b3db61a84eb93b213b9a989307f91369ea79099123a37ae1c949a54cb8a09075"
+        "sha256": "0a65cca4e1eca1edaea7fe215a933eedf373aa56a66f328606238d6784a73180"
       },
       "transition_table": {
         "path": "specs/lifecycle-transition-table.json",
-        "sha256": "9220087507f3ed22adefc8dade1af60cc85db1d563f212a8b1a35207fb7b0ef3"
+        "sha256": "075d4e66acea9801a4cb29ac7a591cae277c26103bd6b3df64195f567c06ec2a"
       },
       "draft_lifecycle_state_schema": {
         "path": "schemas/drafts/bce-lifecycle-state.schema.json",
@@ -93,8 +93,8 @@
     }
   },
   "migration": {
-    "from": "0.4.0-dev",
-    "impact": "Adds canonical ABOUT.md and BCE terminology. Existing project Floppies and accepted roadmaps are unchanged. Newly initialized projects record source version 0.4.1-dev."
+    "from": "0.4.1-dev",
+    "impact": "Newly initialized projects record source version 0.4.2-dev; existing historical records and project-seed bytes remain unchanged."
   },
   "project_orchestrator_registration": {
     "name": "Project Orchestrator Registration and Handoff",
@@ -161,6 +161,35 @@
         "path": "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
         "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-transition:1.0.0",
         "sha256": "6343c112e374d3e970e4ea377244589128def021ada425a995bc16f0b1e89562"
+      }
+    }
+  },
+  "verification_only_lifecycle_extension": {
+    "name": "Verification-Only Lifecycle Extension",
+    "owner": "CTRL-02",
+    "status": "reusable_product",
+    "specification_version": "1.1.0",
+    "base_bce_schema_version": "1.0.0",
+    "json_schema_draft": "2020-12",
+    "production_enforcement": false,
+    "validator": "tools/validate_floppy.py",
+    "artifacts": {
+      "lifecycle_state": {
+        "path": "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.1.0",
+        "sha256": "40d0263ebb3b3c3ec4ba3801a315a92ec245adedba94c7a9bbba4f63636df4f5"
+      }
+    },
+    "reused_unchanged_contracts": {
+      "lifecycle_transition": {
+        "path": "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-transition:1.0.0",
+        "sha256": "6343c112e374d3e970e4ea377244589128def021ada425a995bc16f0b1e89562"
+      },
+      "work_authorization": {
+        "path": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-work-authorization:1.0.0",
+        "sha256": "8bc4ea16955e4b220b10ac3a155d015c26a6cf05e257a25be0fe2d1c5c6466f1"
       }
     }
   }

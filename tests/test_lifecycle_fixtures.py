@@ -25,6 +25,11 @@ EXPECTED_VALID_FILES = {
     "12-project-finally-closed.json",
     "13-exact-section-implementation-authorization.json",
     "14-section-authorization-transition.json",
+    "15-verification-only-work-package-accepted-pending.json",
+    "16-verification-only-complete-acceptance-pending.json",
+    "17-verification-only-section-accepted-closeout-not-proposed.json",
+    "18-verification-only-section-accepted-closeout-proposed.json",
+    "19-verification-only-closeout-applied.json",
 }
 
 EXPECTED_INVALID_FILES = {
@@ -40,6 +45,11 @@ EXPECTED_INVALID_FILES = {
     "10-multiple-active-sections.json",
     "11-authorization-missing-exact-file-scope.json",
     "12-transition-missing-forbidden-side-effects.json",
+    "13-not-required-with-standard-work-package.json",
+    "14-verification-only-with-active-authorization.json",
+    "15-verification-only-with-active-section.json",
+    "16-verification-only-with-product-scope.json",
+    "17-verification-only-with-product-commit.json",
 }
 
 ASSERTION_ERRORS = {
@@ -139,6 +149,13 @@ class FixtureSemantics:
         if fixture.get("next_section_authorized") is True:
             errors.append("section_closeout_must_not_authorize_next_section")
 
+        if fixture.get("work_package_type") == "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE" and state_id.startswith("LC-VERIFICATION-ONLY-"):
+            if state.get("dimensions", {}).get("implementation") != "NOT_REQUIRED": errors.append("verification_only_contract_invalid")
+            if fixture.get("reusable_product_paths") not in ([], None): errors.append("verification_only_contract_invalid")
+            if fixture.get("reusable_product_commits") not in ([], None): errors.append("verification_only_contract_invalid")
+        elif state.get("dimensions", {}).get("implementation") == "NOT_REQUIRED":
+            errors.append("verification_only_contract_invalid")
+
         if (
             fixture.get("draft_artifact_status") == "draft_non_normative"
             and assertions.get("draft_creation_activates_section") is True
@@ -186,7 +203,7 @@ class LifecycleFixtureTests(unittest.TestCase):
         paths = sorted(VALID_DIR.glob("*.json")) + sorted(
             INVALID_DIR.glob("*.json")
         )
-        self.assertEqual(len(paths), 26)
+        self.assertEqual(len(paths), 36)
 
         for path in paths:
             with self.subTest(path=path):

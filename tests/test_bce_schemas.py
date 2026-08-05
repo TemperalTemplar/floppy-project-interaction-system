@@ -185,6 +185,25 @@ class BceSchemaTests(unittest.TestCase):
             result.stdout + result.stderr,
         )
 
+    def test_ctrl02_lifecycle_state_extension(self) -> None:
+        schema_path = ROOT / "schemas" / "bce" / "1.1.0" / "bce-lifecycle-state.schema.json"
+        fixture_root = ROOT / "tests" / "fixtures" / "bce-schemas" / "1.1.0"
+        schema = load_json(schema_path)
+        Draft202012Validator.check_schema(schema)
+        Draft202012Validator(schema).validate(load_json(fixture_root / "valid" / "lifecycle-state.json"))
+        with self.assertRaises(ValidationError):
+            Draft202012Validator(schema).validate(load_json(fixture_root / "invalid" / "lifecycle-state.json"))
+        legacy = load_json(CASES["lifecycle_state"]["schema"])
+        with self.assertRaises(ValidationError):
+            Draft202012Validator(legacy).validate(load_json(fixture_root / "valid" / "lifecycle-state.json"))
+
+    def test_ctrl02_registry_digest(self) -> None:
+        manifest = load_json(ROOT / "system-manifest.json")
+        registry = manifest["verification_only_lifecycle_extension"]
+        record = registry["artifacts"]["lifecycle_state"]
+        path = ROOT / record["path"]
+        self.assertEqual(record["sha256"], load_validator_module().sha256(path))
+
 
 if __name__ == "__main__":
     unittest.main()
