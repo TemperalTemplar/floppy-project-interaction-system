@@ -202,19 +202,20 @@ All detailed implementation choices remain deferred. FS-09 grants no write,
 migration, integration, release, or production authority.
 
 <!-- FS09_PHASE1_BEGIN -->
-## FS-09 Phase-1 control state — IMPLEMENTATION ACTIVE
+## FS-09 Phase-1 control state — IMPLEMENTATION AND VERIFICATION COMPLETE
 
 ```text
-Status: ACTIVE
-Accepted work-package checkpoint: 688814e5d2382cf2bb3794730a6bdb435c62d022
-Active authorization: FS_09_IMPLEMENTATION
-Repository writer: FS_09_WORKING_MODEL
-Writer authorization reference: FS_09_IMPLEMENTATION
-Exact product paths:
-- specs/lifecycle-write-contract.json
-- tools/floppyctl.py
-- tests/test_controlled_lifecycle_writes.py
-Real-project lifecycle writes: PROHIBITED
-Disposable fixture use: AUTHORIZED FOR TESTING ONLY
+Implementation: COMPLETE
+Verification: COMPLETE
+Product commit: f732cdbbadcc0c92489ad178de3a4fb6d5fffd5a
+Accepted corrective architecture: 6a221e89ac49dd1478906a8c80a26c99e0d9f5037384b3bca9dc225ffdb83b41
+Normative contract SHA-256: 3ca2c7a398b6bca82b98eab48a93f9cf9ea944f44411854767b2f6e011d3c34e
+Focused FS-09 tests: 28 PASSED
+Complete repository suite: 151 PASSED
+Administrator acceptance: PENDING
+Closeout: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+FS-10: INACTIVE / NOT AUTHORIZED
 ```
 <!-- FS09_PHASE1_END -->
