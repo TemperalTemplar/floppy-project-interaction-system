@@ -42,3 +42,33 @@ Authority references:
 Mandatory stop: `CTRL-WORK-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
 
 Push, merge, integration, tag, release, packaging, installer, runtime bundle, external-repository modification, and production action: `PROHIBITED`
+
+## Phase-1 completion evidence
+
+Commit 1: `62fee54e4fc6ac4bafcc1a6cae78d02aea7217af`
+
+Commit 2: `02820cb62c07e0622754a21a7fb25ae364b7270e`
+
+Reusable-product Commit 3: `5787ea50f993ad1fe2e1cabb97fdb039dd6d63d0`
+
+Reusable-product paths: `28 exactly`
+
+All required product validations: `PASSED`
+
+Changed registered-artifact digests:
+
+- `specs/lifecycle-state-model.md`: `0a65cca4e1eca1edaea7fe215a933eedf373aa56a66f328606238d6784a73180`
+- `specs/lifecycle-transition-table.json`: `075d4e66acea9801a4cb29ac7a591cae277c26103bd6b3df64195f567c06ec2a`
+- `schemas/bce/1.1.0/bce-lifecycle-state.schema.json`: `40d0263ebb3b3c3ec4ba3801a315a92ec245adedba94c7a9bbba4f63636df4f5`
+
+Source version: `0.4.2-dev`
+
+Backward compatibility: `PASSED`
+
+Immutable paths and FS-10 preservation: `PASSED`
+
+Completion record checkpoint: `THIS_COMMIT`
+
+Administrator acceptance: `PENDING`
+
+Commits 5 through 7: `NOT AUTHORIZED`
