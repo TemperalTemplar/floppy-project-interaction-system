@@ -1065,7 +1065,7 @@ def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     return _root_path(root_value), command, remaining[1:]
 
 
-def main(argv: list[str] | None = None) -> int:
+def _legacy_main(argv: list[str] | None = None) -> int:
     try:
         root, command, args = _parse(list(sys.argv[1:] if argv is None else argv))
 
@@ -1107,6 +1107,669 @@ def main(argv: list[str] | None = None) -> int:
     except CliError as exc:
         return _error(str(exc))
 
+
+# === FS-09 CONTROLLED LIFECYCLE WRITES BEGIN ===
+import argparse as _fs09_argparse
+import hashlib as _fs09_hashlib
+import inspect as _fs09_inspect
+import json as _fs09_json
+import os as _fs09_os
+import re as _fs09_re
+import stat as _fs09_stat
+import subprocess as _fs09_subprocess
+from pathlib import Path as _FS09Path
+from typing import Any as _FS09Any
+
+_FS09_TRANSITION = "TR-004-START-SECTION-IMPLEMENTATION"
+_FS09_SOURCE_STATE = "LC-SECTION-AUTHORIZED-NOT-STARTED"
+_FS09_DESTINATION_STATE = "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+_FS09_TARGET = ".floppy/lifecycle-state.json"
+_FS09_CONTRACT = "specs/lifecycle-write-contract.json"
+_FS09_STATE_SCHEMA = "schemas/bce/1.0.0/bce-lifecycle-state.schema.json"
+_FS09_AUTH_SCHEMA = "schemas/bce/1.0.0/bce-work-authorization.schema.json"
+_FS09_TEST_HOOK = None
+
+
+def _fs09_fail(message: str) -> None:
+    raise CliError(message)
+
+
+def _fs09_sha256(data: bytes) -> str:
+    return _fs09_hashlib.sha256(data).hexdigest()
+
+
+def _fs09_canonical_json(value: _FS09Any) -> bytes:
+    return (
+        _fs09_json.dumps(
+            value,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def _fs09_load_json_bytes(data: bytes, label: str) -> _FS09Any:
+    if data.startswith(b"\xef\xbb\xbf"):
+        _fs09_fail(f"{label} must not contain a UTF-8 byte-order mark")
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        _fs09_fail(f"{label} is not valid UTF-8: {exc}")
+    try:
+        return _fs09_json.loads(text)
+    except Exception as exc:
+        _fs09_fail(f"{label} is not valid JSON: {exc}")
+
+
+def _fs09_read_json(path: _FS09Path, label: str) -> tuple[_FS09Any, bytes]:
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        _fs09_fail(f"cannot read {label}: {exc}")
+    return _fs09_load_json_bytes(data, label), data
+
+
+def _fs09_source_root() -> _FS09Path:
+    return _FS09Path(__file__).resolve().parents[1]
+
+
+def _fs09_resolve_ref(schema: dict[str, _FS09Any], ref: str) -> _FS09Any:
+    if not ref.startswith("#/"):
+        _fs09_fail(f"unsupported JSON Schema reference: {ref}")
+    value: _FS09Any = schema
+    for raw in ref[2:].split("/"):
+        key = raw.replace("~1", "/").replace("~0", "~")
+        if not isinstance(value, dict) or key not in value:
+            _fs09_fail(f"unresolved JSON Schema reference: {ref}")
+        value = value[key]
+    return value
+
+
+def _fs09_type_matches(value: _FS09Any, expected: str) -> bool:
+    if expected == "null":
+        return value is None
+    if expected == "object":
+        return isinstance(value, dict)
+    if expected == "array":
+        return isinstance(value, list)
+    if expected == "string":
+        return isinstance(value, str)
+    if expected == "boolean":
+        return isinstance(value, bool)
+    if expected == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    return False
+
+
+def _fs09_validate_schema(
+    value: _FS09Any,
+    node: _FS09Any,
+    root_schema: dict[str, _FS09Any],
+    location: str = "$",
+) -> None:
+    if not isinstance(node, dict):
+        _fs09_fail(f"invalid schema node at {location}")
+    if "$ref" in node:
+        ref_node = _fs09_resolve_ref(root_schema, node["$ref"])
+        _fs09_validate_schema(value, ref_node, root_schema, location)
+        return
+    if "allOf" in node:
+        for child in node["allOf"]:
+            _fs09_validate_schema(value, child, root_schema, location)
+    if "anyOf" in node:
+        failures: list[str] = []
+        for child in node["anyOf"]:
+            try:
+                _fs09_validate_schema(value, child, root_schema, location)
+                break
+            except CliError as exc:
+                failures.append(str(exc))
+        else:
+            _fs09_fail(f"{location} does not match any permitted schema")
+    if "oneOf" in node:
+        matches = 0
+        for child in node["oneOf"]:
+            try:
+                _fs09_validate_schema(value, child, root_schema, location)
+                matches += 1
+            except CliError:
+                pass
+        if matches != 1:
+            _fs09_fail(f"{location} must match exactly one schema")
+    if "const" in node and value != node["const"]:
+        _fs09_fail(f"{location} must equal {node['const']!r}")
+    if "enum" in node and value not in node["enum"]:
+        _fs09_fail(f"{location} contains a value outside the accepted enumeration")
+    expected_type = node.get("type")
+    if expected_type is not None:
+        accepted = [expected_type] if isinstance(expected_type, str) else list(expected_type)
+        if not any(_fs09_type_matches(value, item) for item in accepted):
+            _fs09_fail(f"{location} has the wrong JSON type")
+    if isinstance(value, str):
+        if "minLength" in node and len(value) < int(node["minLength"]):
+            _fs09_fail(f"{location} is shorter than the accepted minimum")
+        if "maxLength" in node and len(value) > int(node["maxLength"]):
+            _fs09_fail(f"{location} exceeds the accepted maximum")
+        if "pattern" in node and _fs09_re.search(str(node["pattern"]), value) is None:
+            _fs09_fail(f"{location} does not match the accepted pattern")
+    if isinstance(value, list):
+        if "minItems" in node and len(value) < int(node["minItems"]):
+            _fs09_fail(f"{location} contains too few items")
+        if "maxItems" in node and len(value) > int(node["maxItems"]):
+            _fs09_fail(f"{location} contains too many items")
+        if node.get("uniqueItems"):
+            serialized = [_fs09_json.dumps(item, sort_keys=True) for item in value]
+            if len(serialized) != len(set(serialized)):
+                _fs09_fail(f"{location} contains duplicate items")
+        item_schema = node.get("items")
+        if item_schema is not None:
+            for index, item in enumerate(value):
+                _fs09_validate_schema(item, item_schema, root_schema, f"{location}[{index}]")
+    if isinstance(value, dict):
+        required = node.get("required", [])
+        for key in required:
+            if key not in value:
+                _fs09_fail(f"{location}.{key} is required")
+        properties = node.get("properties", {})
+        if isinstance(properties, dict):
+            for key, child in properties.items():
+                if key in value:
+                    _fs09_validate_schema(value[key], child, root_schema, f"{location}.{key}")
+        if node.get("additionalProperties") is False:
+            extras = sorted(set(value) - set(properties))
+            if extras:
+                _fs09_fail(f"{location} contains unsupported properties: {', '.join(extras)}")
+
+
+def _fs09_load_contract_and_schemas() -> tuple[dict[str, _FS09Any], str, dict[str, _FS09Any], dict[str, _FS09Any]]:
+    source = _fs09_source_root()
+    contract, contract_bytes = _fs09_read_json(source / _FS09_CONTRACT, "FS-09 lifecycle-write contract")
+    state_schema, _ = _fs09_read_json(source / _FS09_STATE_SCHEMA, "FS-02 lifecycle-state schema")
+    auth_schema, _ = _fs09_read_json(source / _FS09_AUTH_SCHEMA, "FS-02 work-authorization schema")
+    if not isinstance(contract, dict):
+        _fs09_fail("FS-09 lifecycle-write contract root must be an object")
+    if contract.get("status") != "ACCEPTED_NORMATIVE":
+        _fs09_fail("FS-09 lifecycle-write contract is not accepted and normative")
+    if contract.get("supported_transitions", [{}])[0].get("transition_id") != _FS09_TRANSITION:
+        _fs09_fail("FS-09 lifecycle-write contract does not define the accepted transition")
+    if not isinstance(state_schema, dict) or not isinstance(auth_schema, dict):
+        _fs09_fail("FS-02 schemas must be JSON objects")
+    if contract_bytes != _fs09_canonical_json(contract):
+        _fs09_fail("FS-09 lifecycle-write contract serialization is not deterministic")
+    return contract, _fs09_sha256(contract_bytes), state_schema, auth_schema
+
+
+def _fs09_git(root: _FS09Path, *arguments: str, check: bool = True) -> str:
+    command = [
+        "git",
+        "-c",
+        f"safe.directory={root}",
+        "-C",
+        str(root),
+        *arguments,
+    ]
+    result = _fs09_subprocess.run(
+        command,
+        stdout=_fs09_subprocess.PIPE,
+        stderr=_fs09_subprocess.PIPE,
+        check=False,
+    )
+    if check and result.returncode != 0:
+        detail = (result.stderr or result.stdout).decode("utf-8", errors="replace").strip()
+        _fs09_fail(f"Git command failed ({' '.join(arguments)}): {detail or result.returncode}")
+    return result.stdout.decode("utf-8", errors="replace").strip()
+
+
+def _fs09_normalized_path(path: _FS09Path) -> str:
+    return _fs09_os.path.normcase(_fs09_os.path.abspath(_fs09_os.fspath(path)))
+
+
+def _fs09_same_path(left: _FS09Path, right: _FS09Path) -> bool:
+    try:
+        return _fs09_os.path.samefile(left, right)
+    except OSError:
+        return _fs09_normalized_path(left) == _fs09_normalized_path(right)
+
+
+def _fs09_check_reparse(path: _FS09Path, label: str) -> None:
+    try:
+        info = path.lstat()
+    except OSError as exc:
+        _fs09_fail(f"cannot inspect {label}: {exc}")
+    if _fs09_stat.S_ISLNK(info.st_mode):
+        _fs09_fail(f"{label} must not be a symbolic link")
+    attributes = getattr(info, "st_file_attributes", 0)
+    reparse_flag = getattr(_fs09_stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    if attributes & reparse_flag:
+        _fs09_fail(f"{label} must not be a junction or reparse point")
+
+
+def _fs09_safe_target(root: _FS09Path) -> _FS09Path:
+    if not root.is_absolute():
+        _fs09_fail("target project root must be absolute")
+    try:
+        resolved_root = root.resolve(strict=True)
+    except OSError as exc:
+        _fs09_fail(f"target project root does not exist: {exc}")
+    _fs09_check_reparse(resolved_root, "target project root")
+    dot_floppy = resolved_root / ".floppy"
+    target = dot_floppy / "lifecycle-state.json"
+    if not dot_floppy.is_dir():
+        _fs09_fail("target project .floppy directory is missing")
+    _fs09_check_reparse(dot_floppy, "target project .floppy directory")
+    if not target.exists():
+        _fs09_fail("canonical lifecycle-state file is missing; file creation is not supported")
+    _fs09_check_reparse(target, "canonical lifecycle-state file")
+    if not target.is_file():
+        _fs09_fail("canonical lifecycle-state target is not a regular file")
+    matches = [
+        child.name
+        for child in dot_floppy.iterdir()
+        if child.name.casefold() == "lifecycle-state.json".casefold()
+    ]
+    if matches != ["lifecycle-state.json"]:
+        _fs09_fail("Windows case-colliding lifecycle-state paths are prohibited")
+    try:
+        target.resolve(strict=True).relative_to(resolved_root)
+    except (OSError, ValueError):
+        _fs09_fail("canonical lifecycle-state path escapes the target project")
+    return target
+
+
+def _fs09_project_identity(manifest: dict[str, _FS09Any], root: _FS09Path) -> tuple[str, str]:
+    repository = manifest.get("repository") or manifest.get("source_repository")
+    system = manifest.get("system")
+    if not repository and isinstance(system, dict):
+        repository = system.get("source_repository")
+    source_version = manifest.get("source_version")
+    if not source_version and isinstance(system, dict):
+        source_version = system.get("source_version")
+    version_path = root / "VERSION"
+    if not source_version and version_path.is_file():
+        source_version = version_path.read_text(encoding="utf-8").strip()
+    if not isinstance(repository, str) or not repository:
+        _fs09_fail("target project identity is missing from .floppy/manifest.json")
+    if not isinstance(source_version, str) or not source_version:
+        _fs09_fail("target project source version is missing")
+    return repository, source_version
+
+
+def _fs09_hook(name: str, context: dict[str, _FS09Any]) -> None:
+    hook = globals().get("_FS09_TEST_HOOK")
+    if callable(hook):
+        hook(name, context)
+
+
+def _fs09_prepare(
+    root: _FS09Path,
+    *,
+    transition: str,
+    authorization_reference: str,
+    repository_writer: str,
+    expected_branch: str,
+    expected_head: str,
+) -> dict[str, _FS09Any]:
+    if transition != _FS09_TRANSITION:
+        _fs09_fail(f"unsupported lifecycle transition: {transition}")
+    if not _fs09_re.fullmatch(r"[0-9a-f]{40}", expected_head):
+        _fs09_fail("expected HEAD must be an exact lowercase 40-character Git commit")
+    target = _fs09_safe_target(root)
+    resolved_root = root.resolve(strict=True)
+    branch = _fs09_git(resolved_root, "branch", "--show-current")
+    if not branch:
+        _fs09_fail("detached HEAD is prohibited")
+    if branch != expected_branch:
+        _fs09_fail(f"wrong branch: expected {expected_branch}, found {branch}")
+    head = _fs09_git(resolved_root, "rev-parse", "HEAD")
+    if head != expected_head:
+        _fs09_fail(f"wrong HEAD: expected {expected_head}, found {head}")
+    status = _fs09_git(resolved_root, "status", "--porcelain=v1", "--untracked-files=all")
+    if status:
+        _fs09_fail("target repository must be clean; staged, tracked, and untracked changes are prohibited")
+
+    contract, contract_digest, state_schema, auth_schema = _fs09_load_contract_and_schemas()
+    manifest, _ = _fs09_read_json(resolved_root / ".floppy/manifest.json", "target project manifest")
+    registry, _ = _fs09_read_json(resolved_root / ".floppy/orchestrator-registry.json", "target project orchestrator registry")
+    if not isinstance(manifest, dict) or not isinstance(registry, dict):
+        _fs09_fail("target project authority and writer records must be JSON objects")
+    project_repository, source_version = _fs09_project_identity(manifest, resolved_root)
+
+    authorization = manifest.get("active_work_authorization")
+    if not isinstance(authorization, dict):
+        _fs09_fail("active lifecycle authorization is missing")
+    _fs09_validate_schema(authorization, auth_schema, auth_schema)
+    if authorization.get("authorization_kind") != "section_implementation":
+        _fs09_fail("active authorization has the wrong kind")
+    human = authorization.get("human_authority")
+    if not isinstance(human, dict) or human.get("issued_explicitly") is not True:
+        _fs09_fail("active authorization was not explicitly issued by human authority")
+    if authorization.get("authorization_id") != authorization_reference:
+        _fs09_fail("authorization reference does not match the active authorization")
+    if authorization.get("repository") != project_repository:
+        _fs09_fail("authorization repository does not match the target project")
+    if authorization.get("source_version") != source_version:
+        _fs09_fail("authorization source version does not match the target project")
+    if authorization.get("branch") != expected_branch:
+        _fs09_fail("authorization branch does not match the expected branch")
+    auth_worktree = authorization.get("worktree")
+    if not isinstance(auth_worktree, str) or not _fs09_same_path(_FS09Path(auth_worktree), resolved_root):
+        _fs09_fail("authorization worktree does not match the exact target root")
+    required_head = authorization.get("required_head")
+    if required_head not in (None, "THIS_COMMIT", expected_head):
+        _fs09_fail("authorization required HEAD does not match the expected HEAD")
+    base = authorization.get("base_checkpoint")
+    if not isinstance(base, str) or not _fs09_re.fullmatch(r"[0-9a-f]{40}", base):
+        _fs09_fail("authorization base checkpoint is malformed")
+    ancestor = _fs09_subprocess.run(
+        [
+            "git", "-c", f"safe.directory={resolved_root}", "-C", str(resolved_root),
+            "merge-base", "--is-ancestor", base, expected_head,
+        ],
+        stdout=_fs09_subprocess.PIPE,
+        stderr=_fs09_subprocess.PIPE,
+        check=False,
+    )
+    if ancestor.returncode != 0:
+        _fs09_fail("authorization base checkpoint is stale or is not an ancestor of expected HEAD")
+    scope = authorization.get("exact_file_scope")
+    if not isinstance(scope, list) or _FS09_TARGET not in scope:
+        _fs09_fail("active authorization exact_file_scope omits the normative lifecycle target")
+
+    assignments = registry.get("current_assignments")
+    if not isinstance(assignments, dict):
+        _fs09_fail("orchestrator registry current assignments are missing")
+    if assignments.get("current_section_working_model") != repository_writer:
+        _fs09_fail("registered section working model does not match the invocation writer")
+    if assignments.get("repository_writer") != repository_writer:
+        _fs09_fail("registered repository writer does not match the invocation writer")
+    if assignments.get("writer_authorization_reference") != authorization_reference:
+        _fs09_fail("registered writer authorization reference is stale or mismatched")
+    if authorization.get("repository_writer") not in (None, repository_writer):
+        _fs09_fail("authorization repository writer does not match the registered writer")
+    if authorization.get("writer_authorization_reference") not in (None, authorization_reference):
+        _fs09_fail("authorization writer reference does not match the invocation")
+    if authorization.get("working_model_id") not in (None, repository_writer):
+        _fs09_fail("authorization working model does not match the registered writer")
+
+    state, state_bytes = _fs09_read_json(target, "canonical lifecycle-state file")
+    if not isinstance(state, dict):
+        _fs09_fail("canonical lifecycle-state root must be an object")
+    if state_bytes != _fs09_canonical_json(state):
+        _fs09_fail("canonical lifecycle-state serialization is not deterministic")
+    _fs09_validate_schema(state, state_schema, state_schema)
+    if state.get("state_id") != _FS09_SOURCE_STATE:
+        _fs09_fail("canonical lifecycle-state is not the accepted TR-004 source state")
+    section = authorization.get("section")
+    if not isinstance(section, str) or not section:
+        _fs09_fail("active authorization section is missing")
+    if state.get("section") != section:
+        _fs09_fail("lifecycle-state section does not match the active authorization")
+    if state.get("authorization_id") != authorization_reference:
+        _fs09_fail("lifecycle-state authorization_id does not match active authority")
+    if state.get("base_checkpoint") != base:
+        _fs09_fail("lifecycle-state base checkpoint does not match active authority")
+    dimensions = state.get("dimensions")
+    accepted_source = contract["supported_transitions"][0]["source_dimensions"]
+    if dimensions != accepted_source:
+        _fs09_fail("lifecycle-state dimensions do not match the accepted TR-004 source profile")
+    if state.get("active_implementation_sections") != [section]:
+        _fs09_fail("lifecycle-state active section does not match the authorized section")
+
+    proposed = {
+        "state_id": _FS09_DESTINATION_STATE,
+        "section": section,
+        "authorization_id": authorization_reference,
+        "base_checkpoint": base,
+        "dimensions": contract["supported_transitions"][0]["destination_dimensions"],
+        "active_implementation_sections": [section],
+        "evidence": [
+            f"AUTHORIZATION:{authorization_reference}",
+            f"START_CHECKPOINT:{expected_head}",
+            f"APPLIED_TRANSITION:{_FS09_TRANSITION}",
+        ],
+    }
+    _fs09_validate_schema(proposed, state_schema, state_schema)
+    proposed_bytes = _fs09_canonical_json(proposed)
+    current_digest = _fs09_sha256(state_bytes)
+    proposed_digest = _fs09_sha256(proposed_bytes)
+
+    plan_core = {
+        "target_project_identity": project_repository,
+        "target_branch": branch,
+        "target_head": head,
+        "authorization_reference": authorization_reference,
+        "registered_repository_writer": repository_writer,
+        "transition_id": transition,
+        "exact_target_path": _FS09_TARGET,
+        "operation": "REPLACE",
+        "expected_current_sha256": current_digest,
+        "proposed_replacement_sha256": proposed_digest,
+        "proposed_byte_size": len(proposed_bytes),
+        "contract_sha256": contract_digest,
+        "validation_result": "PASSED",
+        "application_permitted": True,
+    }
+    plan_digest = _fs09_sha256(_fs09_canonical_json(plan_core))
+    return {
+        "root": resolved_root,
+        "target": target,
+        "state_bytes": state_bytes,
+        "proposed_bytes": proposed_bytes,
+        "current_mode": target.stat().st_mode,
+        "plan_core": plan_core,
+        "plan_sha256": plan_digest,
+    }
+
+
+def _fs09_sync_file(handle: _FS09Any) -> None:
+    handle.flush()
+    _fs09_os.fsync(handle.fileno())
+
+
+def _fs09_sync_directory(directory: _FS09Path) -> None:
+    if _fs09_os.name == "nt":
+        return
+    flags = getattr(_fs09_os, "O_DIRECTORY", 0) | _fs09_os.O_RDONLY
+    descriptor = None
+    try:
+        descriptor = _fs09_os.open(str(directory), flags)
+        _fs09_os.fsync(descriptor)
+    except OSError:
+        pass
+    finally:
+        if descriptor is not None:
+            _fs09_os.close(descriptor)
+
+
+def _fs09_stage(path: _FS09Path, data: bytes, mode: int, *, restoring: bool = False) -> None:
+    label = "restore" if restoring else "stage"
+    flags = _fs09_os.O_WRONLY | _fs09_os.O_CREAT | _fs09_os.O_EXCL
+    descriptor = None
+    try:
+        descriptor = _fs09_os.open(str(path), flags, mode & 0o777)
+        with _fs09_os.fdopen(descriptor, "wb", closefd=True) as handle:
+            descriptor = None
+            midpoint = len(data) // 2
+            handle.write(data[:midpoint])
+            _fs09_hook(f"during_{label}_write", {"path": path, "handle": handle})
+            handle.write(data[midpoint:])
+            _fs09_sync_file(handle)
+        try:
+            _fs09_os.chmod(path, mode & 0o777)
+        except OSError:
+            pass
+    except FileExistsError:
+        _fs09_fail(f"exclusive {label} file already exists")
+    except CliError:
+        raise
+    except OSError as exc:
+        _fs09_fail(f"{label} file write failed: {exc}")
+    finally:
+        if descriptor is not None:
+            _fs09_os.close(descriptor)
+
+
+def _fs09_apply(prepared: dict[str, _FS09Any]) -> None:
+    target: _FS09Path = prepared["target"]
+    original: bytes = prepared["state_bytes"]
+    proposed: bytes = prepared["proposed_bytes"]
+    expected_digest = prepared["plan_core"]["expected_current_sha256"]
+    proposed_digest = prepared["plan_core"]["proposed_replacement_sha256"]
+    mode = int(prepared["current_mode"])
+    stage = target.with_name(".lifecycle-state.json.fs09-stage")
+    restore = target.with_name(".lifecycle-state.json.fs09-restore")
+    for candidate in (stage, restore):
+        if candidate.exists():
+            _fs09_fail(f"temporary lifecycle-write file collision: {candidate.name}")
+    replaced = False
+    try:
+        _fs09_hook("before_stage", {"target": target})
+        _fs09_stage(stage, proposed, mode)
+        _fs09_hook("after_stage", {"target": target, "stage": stage})
+        if _fs09_sha256(stage.read_bytes()) != proposed_digest:
+            _fs09_fail("staged replacement SHA-256 verification failed")
+        _fs09_hook("after_validation", {"target": target, "stage": stage})
+        if _fs09_sha256(target.read_bytes()) != expected_digest:
+            _fs09_fail("canonical lifecycle-state changed after planning")
+        _fs09_hook("before_replace", {"target": target, "stage": stage})
+        _fs09_hook("replacement", {"target": target, "stage": stage})
+        _fs09_os.replace(stage, target)
+        replaced = True
+        _fs09_sync_directory(target.parent)
+        _fs09_hook("before_final_verify", {"target": target})
+        final = target.read_bytes()
+        if len(final) != len(proposed) or _fs09_sha256(final) != proposed_digest:
+            _fs09_fail("final lifecycle-state verification failed")
+    except Exception as primary:
+        if replaced:
+            try:
+                if restore.exists():
+                    restore.unlink()
+                _fs09_stage(restore, original, mode, restoring=True)
+                _fs09_hook("before_restore_replace", {"target": target, "restore": restore})
+                _fs09_os.replace(restore, target)
+                _fs09_sync_directory(target.parent)
+                restored = target.read_bytes()
+                if len(restored) != len(original) or _fs09_sha256(restored) != expected_digest:
+                    _fs09_fail("restored lifecycle-state verification failed")
+            except Exception as restoration:
+                raise CliError(
+                    "HIGH-SEVERITY: lifecycle-state restoration failed after apply failure: "
+                    f"{restoration}"
+                ) from restoration
+            raise CliError(f"lifecycle-state apply failed; original bytes restored: {primary}") from primary
+        if isinstance(primary, CliError):
+            raise
+        raise CliError(f"lifecycle-state apply failed before replacement: {primary}") from primary
+    finally:
+        for candidate in (stage, restore):
+            try:
+                if candidate.exists():
+                    candidate.unlink()
+            except OSError:
+                pass
+
+
+def _fs09_operation(
+    root: _FS09Path,
+    *,
+    mode: str,
+    transition: str,
+    authorization_reference: str,
+    repository_writer: str,
+    expected_branch: str,
+    expected_head: str,
+    plan_sha256: str | None = None,
+) -> dict[str, _FS09Any]:
+    prepared = _fs09_prepare(
+        root,
+        transition=transition,
+        authorization_reference=authorization_reference,
+        repository_writer=repository_writer,
+        expected_branch=expected_branch,
+        expected_head=expected_head,
+    )
+    result = dict(prepared["plan_core"])
+    result["plan_sha256"] = prepared["plan_sha256"]
+    if mode == "dry-run":
+        if plan_sha256 is not None:
+            _fs09_fail("--plan-sha256 is not accepted during dry-run")
+        result["operation_mode"] = "DRY_RUN"
+        result["applied"] = False
+        return result
+    if mode != "apply":
+        _fs09_fail("operation mode must be dry-run or apply")
+    if not isinstance(plan_sha256, str) or plan_sha256 != prepared["plan_sha256"]:
+        _fs09_fail("apply requires the exact current dry-run plan SHA-256")
+    _fs09_apply(prepared)
+    result["operation_mode"] = "APPLY"
+    result["applied"] = True
+    return result
+
+
+def _fs09_parse_cli(arguments: list[str]) -> _FS09Any:
+    parser = _fs09_argparse.ArgumentParser(prog="floppyctl")
+    parser.add_argument("--root", required=True)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    lifecycle = subparsers.add_parser("lifecycle-write")
+    lifecycle.add_argument("--mode", required=True, choices=("dry-run", "apply"))
+    lifecycle.add_argument("--transition", required=True)
+    lifecycle.add_argument("--authorization-reference", required=True)
+    lifecycle.add_argument("--repository-writer", required=True)
+    lifecycle.add_argument("--expected-branch", required=True)
+    lifecycle.add_argument("--expected-head", required=True)
+    lifecycle.add_argument("--plan-sha256")
+    return parser.parse_args(arguments)
+
+
+def _fs09_cli(arguments: list[str]) -> int:
+    try:
+        namespace = _fs09_parse_cli(arguments)
+        result = _fs09_operation(
+            _FS09Path(namespace.root),
+            mode=namespace.mode,
+            transition=namespace.transition,
+            authorization_reference=namespace.authorization_reference,
+            repository_writer=namespace.repository_writer,
+            expected_branch=namespace.expected_branch,
+            expected_head=namespace.expected_head,
+            plan_sha256=namespace.plan_sha256,
+        )
+        print(
+            _fs09_json.dumps(
+                result,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+        )
+        return 0
+    except SystemExit as exc:
+        return int(exc.code)
+    except CliError as exc:
+        return _error(str(exc))
+
+
+def main(argv: list[str] | None = None) -> int:
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if "lifecycle-write" in arguments:
+        return _fs09_cli(arguments)
+    signature = _fs09_inspect.signature(_legacy_main)
+    if len(signature.parameters) == 0:
+        if argv is None:
+            return _legacy_main()
+        original = sys.argv
+        try:
+            sys.argv = [original[0], *arguments]
+            return _legacy_main()
+        finally:
+            sys.argv = original
+    return _legacy_main(arguments)
+# === FS-09 CONTROLLED LIFECYCLE WRITES END ===
 
 if __name__ == "__main__":
     raise SystemExit(main())
