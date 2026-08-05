@@ -1,0 +1,24 @@
+{
+  "fixture_id": "valid-18-verification-only",
+  "expected_valid": true,
+  "state": {
+    "state_id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+    "section": "FS-10",
+    "authorization_id": null,
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "ACCEPTED_PLANNING_BASELINE",
+      "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+      "implementation": "NOT_REQUIRED",
+      "verification": "COMPLETE",
+      "acceptance": "ACCEPTED",
+      "closeout": "PROPOSED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": []
+  },
+  "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+  "reusable_product_paths": [],
+  "reusable_product_commits": []
+}

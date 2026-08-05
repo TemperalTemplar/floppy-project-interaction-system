@@ -386,6 +386,10 @@ class CloseoutCompletenessTests(unittest.TestCase):
             self.assertEqual(before_manifest, manifest)
             self.assertEqual(before, {path: digest(path) for path in watched})
 
+    def test_verification_only_no_change_contract(self) -> None:
+        record = {"work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE", "implementation_state": "NOT_REQUIRED", "authorization_id": None, "repository_writer": None, "writer_authorization_reference": None, "reusable_product_paths": [], "reusable_product_commits": [], "product_commit": None}
+        self.assertEqual(VALIDATOR.validate_verification_only_contract(record), [])
+
 
 if __name__ == "__main__":
     unittest.main()

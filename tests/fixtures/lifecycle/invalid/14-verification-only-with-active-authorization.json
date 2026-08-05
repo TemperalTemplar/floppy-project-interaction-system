@@ -1,0 +1,34 @@
+{
+  "fixture_id": "invalid-14-verification-only-with-active-authorization",
+  "expected_valid": false,
+  "expected_error": "authorization_record_without_active_authority",
+  "state": {
+    "state_id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+    "section": "FS-10",
+    "authorization_id": null,
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "ACCEPTED_PLANNING_BASELINE",
+      "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+      "implementation": "NOT_REQUIRED",
+      "verification": "PENDING",
+      "acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": []
+  },
+  "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+  "reusable_product_paths": [],
+  "reusable_product_commits": [],
+  "authorization": {
+    "kind": "section_implementation",
+    "section": "FS-10",
+    "authorization_id": "AUTH",
+    "exact_file_scope": [
+      "x"
+    ],
+    "base_checkpoint": "0000000000000000000000000000000000000000"
+  }
+}

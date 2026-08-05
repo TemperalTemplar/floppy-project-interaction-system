@@ -26,7 +26,8 @@
     "implementation": [
       "NOT_STARTED",
       "IN_PROGRESS",
-      "COMPLETE"
+      "COMPLETE",
+      "NOT_REQUIRED"
     ],
     "verification": [
       "NOT_STARTED",
@@ -82,6 +83,10 @@
       "id": "INV-005",
       "statement": "The transition table is declarative and never executes or applies a transition.",
       "machine_rule": "execution_capability == false and applies_transitions == false and writes_lifecycle_state == false"
+    },
+    {
+      "id": "INV-010",
+      "statement": "Closed section outcome remains authoritative after closeout; NOT_REQUIRED must not be rewritten."
     }
   ],
   "prohibited_implications": [
@@ -430,6 +435,70 @@
       },
       "active_implementation_section": null,
       "description": "The administrator applied final project closure. No active implementation or migration authority may coexist."
+    },
+    {
+      "id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+      "title": "Lc Verification Only Work Package Accepted Pending",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_REQUIRED",
+        "verification": "PENDING",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null
+    },
+    {
+      "id": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
+      "title": "Lc Verification Only Complete Acceptance Pending",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_REQUIRED",
+        "verification": "COMPLETE",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null
+    },
+    {
+      "id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+      "title": "Lc Verification Only Section Accepted Closeout Not Proposed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_REQUIRED",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null
+    },
+    {
+      "id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+      "title": "Lc Verification Only Section Accepted Closeout Proposed",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "ACCEPTED_PLANNING_BASELINE",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_REQUIRED",
+        "verification": "COMPLETE",
+        "acceptance": "ACCEPTED",
+        "closeout": "PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN"
+      },
+      "active_implementation_section": null
     }
   ],
   "transitions": [
@@ -1103,6 +1172,164 @@
         "Final closure must not silently compact or delete history.",
         "A finally closed project must reject active section or migration authority."
       ]
+    },
+    {
+      "id": "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+      "title": "Accept verification-only work package",
+      "from_state_ids": [
+        "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+      ],
+      "to_state_id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+      "changed_dimensions": [
+        "work_package",
+        "implementation",
+        "verification"
+      ],
+      "preconditions": [
+        "Exact accepted verification-only work-package conditions are satisfied."
+      ],
+      "required_human_authority": {
+        "actor": "Project administrator",
+        "decision": "Accept verification-only work package"
+      },
+      "required_inputs": [
+        "Accepted CTRL-02 lifecycle contract."
+      ],
+      "required_outputs": [
+        "Updated lifecycle state record."
+      ],
+      "stop_conditions": [
+        "Stop on any authority, scope, evidence, or state contradiction."
+      ],
+      "forbidden_side_effects": [
+        "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
+    },
+    {
+      "id": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+      "title": "Record verification-only completion",
+      "from_state_ids": [
+        "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING"
+      ],
+      "to_state_id": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
+      "changed_dimensions": [
+        "verification"
+      ],
+      "preconditions": [
+        "Exact accepted verification-only work-package conditions are satisfied."
+      ],
+      "required_human_authority": {
+        "actor": "Project administrator",
+        "decision": "Record verification-only completion"
+      },
+      "required_inputs": [
+        "Accepted CTRL-02 lifecycle contract."
+      ],
+      "required_outputs": [
+        "Updated lifecycle state record."
+      ],
+      "stop_conditions": [
+        "Stop on any authority, scope, evidence, or state contradiction."
+      ],
+      "forbidden_side_effects": [
+        "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
+    },
+    {
+      "id": "TR-018-ACCEPT-VERIFICATION-ONLY-SECTION",
+      "title": "Accept verification-only section",
+      "from_state_ids": [
+        "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING"
+      ],
+      "to_state_id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+      "changed_dimensions": [
+        "acceptance"
+      ],
+      "preconditions": [
+        "Exact accepted verification-only work-package conditions are satisfied."
+      ],
+      "required_human_authority": {
+        "actor": "Project administrator",
+        "decision": "Accept verification-only section"
+      },
+      "required_inputs": [
+        "Accepted CTRL-02 lifecycle contract."
+      ],
+      "required_outputs": [
+        "Updated lifecycle state record."
+      ],
+      "stop_conditions": [
+        "Stop on any authority, scope, evidence, or state contradiction."
+      ],
+      "forbidden_side_effects": [
+        "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
+    },
+    {
+      "id": "TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT",
+      "title": "Propose verification-only closeout",
+      "from_state_ids": [
+        "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED"
+      ],
+      "to_state_id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+      "changed_dimensions": [
+        "closeout"
+      ],
+      "preconditions": [
+        "Exact accepted verification-only work-package conditions are satisfied."
+      ],
+      "required_human_authority": {
+        "actor": "Project administrator",
+        "decision": "Propose verification-only closeout"
+      },
+      "required_inputs": [
+        "Accepted CTRL-02 lifecycle contract."
+      ],
+      "required_outputs": [
+        "Updated lifecycle state record."
+      ],
+      "stop_conditions": [
+        "Stop on any authority, scope, evidence, or state contradiction."
+      ],
+      "forbidden_side_effects": [
+        "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
+    },
+    {
+      "id": "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT",
+      "title": "Apply verification-only closeout",
+      "from_state_ids": [
+        "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED"
+      ],
+      "to_state_id": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+      "changed_dimensions": [
+        "work_package",
+        "implementation",
+        "verification",
+        "acceptance",
+        "closeout"
+      ],
+      "preconditions": [
+        "Exact accepted verification-only work-package conditions are satisfied."
+      ],
+      "required_human_authority": {
+        "actor": "Project administrator",
+        "decision": "Apply verification-only closeout"
+      },
+      "required_inputs": [
+        "Accepted CTRL-02 lifecycle contract."
+      ],
+      "required_outputs": [
+        "Updated lifecycle state record."
+      ],
+      "stop_conditions": [
+        "Stop on any authority, scope, evidence, or state contradiction."
+      ],
+      "forbidden_side_effects": [
+        "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
     }
-  ]
+  ],
+  "specification_version": "1.1.0"
 }

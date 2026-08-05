@@ -268,3 +268,20 @@ closed, and followed by separate FS-03 authorization.
 
 The FS-01 specification and transition table do not activate or complete either
 later section.
+
+## Verification-only lifecycle extension (1.1.0)
+
+CTRL-02 adds the implementation disposition `NOT_REQUIRED` for accepted work packages of type `VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE`. Such a package has no reusable-product paths, no reusable-product commits, no active implementation authorization, and no repository writer.
+
+The extension adds these states:
+
+- `LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING`
+- `LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING`
+- `LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+- `LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+
+It adds transitions TR-016 through TR-020. TR-020 returns the current operational state to `LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE` without rewriting the closed section's accepted `NOT_REQUIRED` disposition.
+
+### INV-010-CLOSED-SECTION-OUTCOME-PRESERVED
+
+Applying closeout changes the current operational lifecycle position but must not rewrite the closed section's accepted implementation disposition, verification result, acceptance result, or no-product-change result.

@@ -1,0 +1,39 @@
+{
+  "fixture_id": "valid-19-verification-only-closeout-applied",
+  "expected_valid": true,
+  "state": {
+    "state_id": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "section": null,
+    "authorization_id": null,
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "NOT_ACCEPTED",
+      "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+      "implementation": "NOT_STARTED",
+      "verification": "NOT_STARTED",
+      "acceptance": "PENDING",
+      "closeout": "APPLIED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": []
+  },
+  "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+  "reusable_product_paths": [],
+  "reusable_product_commits": [],
+  "transition_record": {
+    "id": "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT",
+    "from_state_id": "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+    "to_state_id": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "changed_dimensions": [
+      "work_package",
+      "implementation",
+      "verification",
+      "acceptance",
+      "closeout"
+    ],
+    "forbidden_side_effects": [
+      "No next section authorization."
+    ]
+  }
+}

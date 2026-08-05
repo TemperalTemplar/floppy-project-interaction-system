@@ -1,0 +1,25 @@
+{
+  "fixture_id": "invalid-13-not-required-with-standard-work-package",
+  "expected_valid": false,
+  "expected_error": "verification_only_contract_invalid",
+  "state": {
+    "state_id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+    "section": "FS-10",
+    "authorization_id": null,
+    "dimensions": {
+      "roadmap": "ACCEPTED",
+      "work_package": "ACCEPTED_PLANNING_BASELINE",
+      "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+      "implementation": "NOT_REQUIRED",
+      "verification": "PENDING",
+      "acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "migration": "NONE",
+      "final_closure": "OPEN"
+    },
+    "active_implementation_sections": []
+  },
+  "work_package_type": "STANDARD_IMPLEMENTATION",
+  "reusable_product_paths": [],
+  "reusable_product_commits": []
+}
