@@ -200,3 +200,17 @@ Repository writer: NONE
 
 All detailed implementation choices remain deferred. FS-09 grants no write,
 migration, integration, release, or production authority.
+
+<!-- FS09_PHASE1_BEGIN -->
+## FS-09 Phase-1 control state — WORK PACKAGE ACCEPTED
+
+```text
+Status: ACCEPTED AS PLANNING BASELINE
+Active: NO
+Implementation: NOT STARTED
+Accepted corrective architecture: 6a221e89ac49dd1478906a8c80a26c99e0d9f5037384b3bca9dc225ffdb83b41
+Active authorization: NONE
+Repository writer: NONE
+Next legal operation: distinct FS-09 activation commit
+```
+<!-- FS09_PHASE1_END -->
