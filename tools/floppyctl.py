@@ -1288,9 +1288,37 @@ def _fs09_validate_schema(
 
 def _fs09_load_contract_and_schemas() -> tuple[dict[str, _FS09Any], str, dict[str, _FS09Any], dict[str, _FS09Any]]:
     source = _fs09_source_root()
-    contract, contract_bytes = _fs09_read_json(source / _FS09_CONTRACT, "FS-09 lifecycle-write contract")
+    contract, _ = _fs09_read_json(source / _FS09_CONTRACT, "FS-09 lifecycle-write contract")
     state_schema, _ = _fs09_read_json(source / _FS09_STATE_SCHEMA, "FS-02 lifecycle-state schema")
     auth_schema, _ = _fs09_read_json(source / _FS09_AUTH_SCHEMA, "FS-02 work-authorization schema")
+    try:
+        committed_contract_bytes = subprocess.run(
+            [
+                "git",
+                "-c",
+                f"safe.directory={source.as_posix()}",
+                "-C",
+                str(source),
+                "show",
+                "HEAD:specs/lifecycle-write-contract.json",
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        ).stdout
+    except (OSError, subprocess.SubprocessError) as exc:
+        _fs09_fail(
+            f"FS-09 committed lifecycle-write contract blob is unavailable: {exc}"
+        )
+    committed_contract = _fs09_load_json_bytes(
+        committed_contract_bytes,
+        "FS-09 committed lifecycle-write contract",
+    )
+    if committed_contract != contract:
+        _fs09_fail(
+            "FS-09 checked-out lifecycle-write contract content diverges "
+            "from committed content"
+        )
     if not isinstance(contract, dict):
         _fs09_fail("FS-09 lifecycle-write contract root must be an object")
     if contract.get("status") != "ACCEPTED_NORMATIVE":
@@ -1299,9 +1327,9 @@ def _fs09_load_contract_and_schemas() -> tuple[dict[str, _FS09Any], str, dict[st
         _fs09_fail("FS-09 lifecycle-write contract does not define the accepted transition")
     if not isinstance(state_schema, dict) or not isinstance(auth_schema, dict):
         _fs09_fail("FS-02 schemas must be JSON objects")
-    if contract_bytes != _fs09_canonical_json(contract):
+    if committed_contract_bytes != _fs09_canonical_json(committed_contract):
         _fs09_fail("FS-09 lifecycle-write contract serialization is not deterministic")
-    return contract, _fs09_sha256(contract_bytes), state_schema, auth_schema
+    return contract, _fs09_sha256(committed_contract_bytes), state_schema, auth_schema
 
 
 def _fs09_git(root: _FS09Path, *arguments: str, check: bool = True) -> str:
