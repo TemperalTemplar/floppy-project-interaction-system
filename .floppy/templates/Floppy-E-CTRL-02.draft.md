@@ -72,3 +72,19 @@ Completion record checkpoint: `THIS_COMMIT`
 Administrator acceptance: `PENDING`
 
 Commits 5 through 7: `NOT AUTHORIZED`
+
+## Phase-2 administrator acceptance
+
+Administrator decision: `ACCEPT CTRL-02 VERIFIED RESULT`
+
+Authority reference: `CTRL_02_ADMINISTRATOR_ACCEPTANCE`
+
+Accepted verification checkpoint: `7eabdbc34e41dce6c6715e2b2a85a49563aafbca`
+
+Accepted checkpoint JSON SHA-256: `cdeb8a8cfe375e3c98f6e7f14b81c3edae6a9da89ddb6823d3dab3f1a429f74a`
+
+Accepted checkpoint text SHA-256: `28eb429afe718c9b0216d80042ca509facf028e760537266df04f366264b9994`
+
+Administrator acceptance: `ACCEPTED`
+
+Closeout: `NOT_PROPOSED`

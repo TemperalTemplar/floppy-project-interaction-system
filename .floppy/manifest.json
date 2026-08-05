@@ -223,7 +223,7 @@
   },
   "continuation_point": {
     "state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-    "decision_required": "Administrator must ACCEPT CTRL-02 VERIFIED RESULT or REJECT CTRL-02 VERIFIED RESULT. Commits 5 through 7 are not authorized.",
+    "decision_required": "CTRL-02 administrator acceptance is recorded. Closeout proposal may proceed only under CTRL_02_CLOSEOUT_PROPOSAL.",
     "implementation_may_begin": false,
     "fs_04_status": "CLOSED",
     "fs_04_implementation_complete": true,
@@ -1962,13 +1962,13 @@
   "control_work": {
     "active_control_work_item": "CTRL-02",
     "active_control_authorization": null,
-    "control_work_state": "CTRL-WORK-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "control_work_state": "CTRL-WORK-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
     "accepted_work_package_checkpoint": "THIS_COMMIT",
     "implementation_branch": "feature/ctrl-02-verification-only-lifecycle",
     "implementation_worktree": "D:\\A\\Floppy-CTRL-02",
     "implementation_started": true,
     "verification_status": "COMPLETE",
-    "administrator_acceptance": "PENDING",
+    "administrator_acceptance": "ACCEPTED",
     "repository_writer": null,
     "writer_authorization_reference": null,
     "integration": "NOT AUTHORIZED",
@@ -4509,7 +4509,7 @@
     "id": "CTRL-02",
     "title": "Verification-Only Lifecycle Disposition",
     "classification": "BOUNDED PREREQUISITE NORMATIVE CORRECTION WITH REUSABLE-PRODUCT WORK",
-    "status": "CTRL-WORK-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+    "status": "CTRL-WORK-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
     "active": false,
     "accepted_design_report_sha256": "95775bea0000e100f927ed1046561de4a5d72b3ec2f085f10724afec2bbed258",
     "accepted_design_binding": {
@@ -4572,7 +4572,7 @@
       3,
       4
     ],
-    "phase_2_authorized": false,
+    "phase_2_authorized": true,
     "authority_references": {
       "commit_1": "CTRL_02_WORK_PACKAGE_ACCEPTANCE",
       "commit_2": "CTRL_02_ACTIVATION",
@@ -4684,10 +4684,10 @@
       "no_push": true,
       "worktree_clean_before_completion_record": true,
       "completion_record_checkpoint": "THIS_COMMIT",
-      "administrator_acceptance": "PENDING"
+      "administrator_acceptance": "ACCEPTED"
     },
-    "administrator_acceptance": "PENDING",
-    "closeout": "NOT AUTHORIZED",
+    "administrator_acceptance": "ACCEPTED",
+    "closeout": "NOT_PROPOSED",
     "fs_10_authorized": false,
     "fs_11_draft_authorized": false,
     "activation_authority_reference": "CTRL_02_ACTIVATION",
@@ -4696,6 +4696,14 @@
     "writer_authorization_reference": null,
     "accepted_work_package_commit": "62fee54e4fc6ac4bafcc1a6cae78d02aea7217af",
     "activation_commit": "02820cb62c07e0622754a21a7fb25ae364b7270e",
-    "reusable_product_commit_count": 1
+    "reusable_product_commit_count": 1,
+    "administrator_acceptance_record": {
+      "status": "ACCEPTED",
+      "decision": "ACCEPT CTRL-02 VERIFIED RESULT",
+      "authority_reference": "CTRL_02_ADMINISTRATOR_ACCEPTANCE",
+      "verification_checkpoint_commit": "7eabdbc34e41dce6c6715e2b2a85a49563aafbca",
+      "verification_checkpoint_json_sha256": "cdeb8a8cfe375e3c98f6e7f14b81c3edae6a9da89ddb6823d3dab3f1a429f74a",
+      "verification_checkpoint_text_sha256": "28eb429afe718c9b0216d80042ca509facf028e760537266df04f366264b9994"
+    }
   }
 }
