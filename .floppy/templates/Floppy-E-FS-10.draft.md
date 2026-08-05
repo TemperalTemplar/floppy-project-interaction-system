@@ -200,3 +200,33 @@ The administrator explicitly accepts the completed FS-10 verification-only
 no-change result. This record does not propose closeout, apply closeout, create
 an FS-11 draft, or authorize any reusable-product or real-project operation.
 <!-- END FS-10 ADMINISTRATOR ACCEPTANCE -->
+
+<!-- BEGIN FS-10 CLOSEOUT PROPOSAL -->
+## Closeout proposal
+
+```text
+Transition: TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT
+Source state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Target state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Implementation disposition: NOT_REQUIRED
+Verification result: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: PROPOSED
+Closeout application: NOT_APPLIED
+Closeout proposal record: .floppy/closeouts/FS-10-closeout.md
+Closeout proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
+Reusable-product paths: 0
+Reusable-product commits: 0
+Product commit: null
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Proposal base checkpoint: 29b83d61df42b3043a767049c9615215ad2beb25
+Proposal checkpoint: THIS_COMMIT
+FS-11 draft: ABSENT
+```
+
+The proposal preserves the accepted verification-only no-change disposition.
+It does not apply closeout, create the FS-11 draft, or authorize any product,
+project, release, migration, provisioning, or production operation.
+<!-- END FS-10 CLOSEOUT PROPOSAL -->

@@ -44,14 +44,17 @@ Push, merge, integration, tag, release, packaging, installer, runtime bundle, ex
 
 ```text
 Section: FS-10 — Targeted Migration
-Lifecycle state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Lifecycle state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
 Work package: ACCEPTED_PLANNING_BASELINE
 Implementation: NOT_REQUIRED
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator decision: ACCEPT FS-10 VERIFIED RESULT
-Closeout: NOT_PROPOSED
+Closeout: PROPOSED
+Closeout application: NOT_APPLIED
+Closeout proposal record: .floppy/closeouts/FS-10-closeout.md
+Closeout proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
 Migration: NONE
 Reusable-product paths: 0
 Reusable-product commits: 0
@@ -61,8 +64,8 @@ Active implementation authorization: NONE
 Active migration authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
-Administrator-acceptance base checkpoint: effcc3a02bfab99e7b64a68191f4b33eb93a7e7f
-Administrator-acceptance checkpoint: THIS_COMMIT
+Closeout-proposal base checkpoint: 29b83d61df42b3043a767049c9615215ad2beb25
+Closeout-proposal checkpoint: THIS_COMMIT
 ```
 
 Work-package acceptance transition:
@@ -74,15 +77,14 @@ Verification-completion transition:
 Administrator-acceptance transition:
 `TR-018-ACCEPT-VERIFICATION-ONLY-SECTION`
 
-The explicit administrator decision is:
+Closeout-proposal transition:
+`TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT`
 
-`ACCEPT FS-10 VERIFIED RESULT`
+Implementation remains `NOT_REQUIRED`; verification remains `COMPLETE`;
+administrator acceptance remains `ACCEPTED`; no reusable-product path or
+product commit exists.
 
-Implementation remains `NOT_REQUIRED`; verification remains `COMPLETE`; no
-reusable-product path or product commit exists.
-
-Closeout remains `NOT_PROPOSED`. FS-11 remains roadmap-only, inactive,
+Closeout is proposed but not applied. FS-11 remains roadmap-only, inactive,
 unaccepted, unauthorized, and without a draft.
 
-**MANDATORY STOP:** TR-019 and every later lifecycle transition require a
-separate explicit administrator directive.
+**MANDATORY STOP:** TR-020 requires a separate explicit administrator directive.

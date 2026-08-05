@@ -275,18 +275,21 @@ lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
 
 <!-- BEGIN FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
-## FS-10 verification-only section — administrator accepted
+## FS-10 verification-only section — closeout proposed
 
 ```text
 Section: FS-10 — Targeted Migration
-Status: SECTION_ACCEPTED_CLOSEOUT_NOT_PROPOSED
+Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-Lifecycle: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Lifecycle: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 Implementation: NOT_REQUIRED
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
 Administrator decision: ACCEPT FS-10 VERIFIED RESULT
-Closeout: NOT_PROPOSED
+Closeout: PROPOSED
+Closeout application: NOT_APPLIED
+Closeout proposal record: .floppy/closeouts/FS-10-closeout.md
+Closeout proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
 Migration: NONE
 Reusable-product paths: 0
 Reusable-product commits: 0
@@ -298,19 +301,9 @@ Repository writer: NONE
 Writer authorization reference: NONE
 ```
 
-Work-package acceptance transition:
-`TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
+Closeout-proposal transition:
+`TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT`
 
-Verification-completion transition:
-`TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
-
-Administrator-acceptance transition:
-`TR-018-ACCEPT-VERIFICATION-ONLY-SECTION`
-
-The verified no-change result is accepted by the administrator. Implementation
-remains `NOT_REQUIRED`, verification remains `COMPLETE`, and closeout remains
-`NOT_PROPOSED`.
-
-No closeout proposal or FS-11 draft exists. FS-11 remains
-`PLANNED_NOT_AUTHORIZED`.
+The canonical closeout proposal exists and is not applied. TR-020 has not been
+executed. FS-11 remains `PLANNED_NOT_AUTHORIZED`; no FS-11 draft exists.
 <!-- END FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
