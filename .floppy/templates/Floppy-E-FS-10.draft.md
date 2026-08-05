@@ -139,3 +139,37 @@ The next operation requires a separate read-only FS-10 verification directive
 and a distinct future `TR-017-RECORD-VERIFICATION-ONLY-COMPLETE` commit.
 
 FS-11 remains planned, inactive, unaccepted, unauthorized, and without a draft.
+
+<!-- BEGIN FS-10 VERIFICATION-ONLY COMPLETION -->
+## Verification completion
+
+```text
+Transition: TR-017-RECORD-VERIFICATION-ONLY-COMPLETE
+Source state: LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING
+Target state: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
+Verification result: COMPLETE
+Implementation disposition: NOT_REQUIRED
+Administrator acceptance: PENDING
+Closeout: NOT_PROPOSED
+Reusable-product paths: 0
+Reusable-product commits: 0
+Product commit: null
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Verified checkpoint: a7e7eb35c958a2df36cca339e2714403d6cfe145
+Completion checkpoint: THIS_COMMIT
+Complete repository tests: PASSED (155)
+Source validation: PASSED
+floppyctl source validation: PASSED
+Tracked JSON: PASSED (59 files)
+```
+
+Every accepted verification criterion passed. No qualifying migration path or
+qualifying real adopting-project source-format fixture exists. No reusable
+product was changed and no real project was modified.
+
+The accepted `NOT_REQUIRED` implementation disposition is preserved. This
+record does not include administrator acceptance, a closeout proposal, a
+closeout application, or an FS-11 draft.
+<!-- END FS-10 VERIFICATION-ONLY COMPLETION -->

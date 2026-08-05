@@ -275,29 +275,38 @@ lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
 
 <!-- BEGIN FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
-## FS-10 accepted verification-only work package
+## FS-10 verification-only work package — verification complete
 
 ```text
 Section: FS-10 — Targeted Migration
-Status: ACCEPTED_PLANNING_BASELINE
+Status: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-Lifecycle: LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING
+Lifecycle: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
 Implementation: NOT_REQUIRED
-Verification: PENDING
+Verification: COMPLETE
 Administrator acceptance: PENDING
 Closeout: NOT_PROPOSED
 Migration: NONE
 Reusable-product paths: 0
 Reusable-product commits: 0
 Product commit: null
+Active work authorization: NONE
 Active implementation authorization: NONE
 Active migration authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
 ```
 
-Accepted transition: `TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
+Work-package acceptance transition:
+`TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
 
-FS-11 remains `PLANNED_NOT_AUTHORIZED`; no FS-11 draft exists. This record does
-not execute verification or any later lifecycle transition.
+Verification-completion transition:
+`TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
+
+The complete repository suite passed at `a7e7eb35c958a2df36cca339e2714403d6cfe145`. No qualifying real
+migration path, real source-format fixture, reusable-product path, product
+commit, authorization, writer, or real-project modification exists.
+
+Administrator acceptance and closeout have not occurred. FS-11 remains
+`PLANNED_NOT_AUTHORIZED`; no FS-11 draft exists.
 <!-- END FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->

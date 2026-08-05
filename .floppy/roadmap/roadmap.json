@@ -1310,7 +1310,7 @@
             "id": "FS-10",
             "sequence": 10,
             "title": "Targeted Migration",
-            "status": "ACCEPTED_PLANNING_BASELINE",
+            "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
             "implementation_started": false,
             "depends_on": [
                 "FS-09"
@@ -1335,7 +1335,7 @@
             "path": ".floppy/templates/Floppy-E-FS-10.draft.md",
             "section": "FS-10",
             "implementation_complete": false,
-            "verification_complete": false,
+            "verification_complete": true,
             "administrator_acceptance": "PENDING",
             "closeout": "NOT_PROPOSED",
             "authorization_id": null,
@@ -1368,16 +1368,70 @@
             "authorized": false,
             "implementation": "NOT_REQUIRED",
             "implementation_state": "NOT_REQUIRED",
-            "verification": "PENDING",
-            "verification_state": "PENDING",
+            "verification": "COMPLETE",
+            "verification_state": "COMPLETE",
             "migration": "NONE",
             "reusable_product_path_count": 0,
             "reusable_product_commit_count": 0,
             "product_commit": null,
             "active_implementation_authorization": null,
             "active_migration_authorization": null,
-            "lifecycle_state": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
-            "transition_id": "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE"
+            "lifecycle_state": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
+            "transition_id": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+            "section_closeout": "NOT_PROPOSED",
+            "reusable_product_paths": [],
+            "reusable_product_commits": [],
+            "proven_real_migration_paths": 0,
+            "qualifying_real_source_format_fixtures": [],
+            "active_work_authorization": null,
+            "active_control_work_authorization": null,
+            "active_implementation_section": null,
+            "current_authorized_section": null,
+            "verification_completion_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+            "verification_completion_base_checkpoint": "a7e7eb35c958a2df36cca339e2714403d6cfe145",
+            "verification_completion_checkpoint": "THIS_COMMIT",
+            "verification_evidence": {
+                "result": "PASSED",
+                "verified_checkpoint": "a7e7eb35c958a2df36cca339e2714403d6cfe145",
+                "recorded_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+                "complete_repository_tests": {
+                    "status": "PASSED",
+                    "test_count": 155
+                },
+                "source_validator": "PASSED",
+                "floppyctl_source_validation": "PASSED",
+                "tracked_json": {
+                    "status": "PASSED",
+                    "file_count": 59
+                },
+                "accepted_no_change_findings": {
+                    "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+                    "implementation_state": "NOT_REQUIRED",
+                    "qualifying_real_migration_paths": 0,
+                    "qualifying_real_source_format_fixtures": [],
+                    "reusable_product_paths": [],
+                    "reusable_product_path_count": 0,
+                    "reusable_product_commits": [],
+                    "reusable_product_commit_count": 0,
+                    "product_commit": null,
+                    "real_project_modification": "NOT_PERFORMED",
+                    "active_authorization": null,
+                    "repository_writer": null,
+                    "writer_authorization_reference": null
+                }
+            },
+            "dimensions": {
+                "roadmap": "ACCEPTED",
+                "work_package": "ACCEPTED_PLANNING_BASELINE",
+                "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+                "implementation": "NOT_REQUIRED",
+                "verification": "COMPLETE",
+                "acceptance": "PENDING",
+                "closeout": "NOT_PROPOSED",
+                "migration": "NONE",
+                "final_closure": "OPEN"
+            },
+            "mandatory_next_operation": "Administrator acceptance remains pending. TR-018 requires a separate explicit administrator directive and distinct commit."
         },
         {
             "id": "FS-11",
@@ -1475,7 +1529,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-10 verification-only work package is accepted. Verification remains pending; implementation is NOT_REQUIRED; FS-11 remains planned, inactive, unaccepted, and unauthorized.",
+    "continuation_point": "FS-10 verification is COMPLETE with implementation NOT_REQUIRED. Administrator acceptance remains PENDING; closeout remains NOT_PROPOSED; FS-11 remains planned and unauthorized.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -1492,8 +1546,8 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
-    "last_applied_transition": "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+    "lifecycle_state": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
+    "last_applied_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
     "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
@@ -4178,7 +4232,7 @@
         "id": "FS-10",
         "sequence": 10,
         "title": "Targeted Migration",
-        "status": "ACCEPTED_PLANNING_BASELINE",
+        "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
         "implementation_started": false,
         "depends_on": [
             "FS-09"
@@ -4203,7 +4257,7 @@
         "path": ".floppy/templates/Floppy-E-FS-10.draft.md",
         "section": "FS-10",
         "implementation_complete": false,
-        "verification_complete": false,
+        "verification_complete": true,
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_PROPOSED",
         "authorization_id": null,
@@ -4233,15 +4287,15 @@
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only.",
         "work_package": "ACCEPTED_PLANNING_BASELINE",
         "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
-        "lifecycle_state": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
-        "transition_id": "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+        "lifecycle_state": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
+        "transition_id": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
         "authority_reference": "FS_10_WORK_PACKAGE_ACCEPTANCE",
         "authorized": false,
         "implementation_required": false,
         "implementation": "NOT_REQUIRED",
         "implementation_state": "NOT_REQUIRED",
-        "verification": "PENDING",
-        "verification_state": "PENDING",
+        "verification": "COMPLETE",
+        "verification_state": "COMPLETE",
         "acceptance": "PENDING",
         "section_closeout": "NOT_PROPOSED",
         "closeout_execution": "NOT_APPLIED",
@@ -4271,7 +4325,7 @@
             "work_package": "ACCEPTED_PLANNING_BASELINE",
             "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
             "implementation": "NOT_REQUIRED",
-            "verification": "PENDING",
+            "verification": "COMPLETE",
             "acceptance": "PENDING",
             "closeout": "NOT_PROPOSED",
             "migration": "NONE",
@@ -4279,17 +4333,17 @@
         },
         "lifecycle_state_record": {
             "schema_version": "1.1.0",
-            "state_id": "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+            "state_id": "LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING",
             "section": "FS-10",
             "authorization_id": null,
-            "base_checkpoint": "af96eebf4d4753aeb31c217af084ffa7f3d8c832",
+            "base_checkpoint": "a7e7eb35c958a2df36cca339e2714403d6cfe145",
             "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
             "dimensions": {
                 "roadmap": "ACCEPTED",
                 "work_package": "ACCEPTED_PLANNING_BASELINE",
                 "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
                 "implementation": "NOT_REQUIRED",
-                "verification": "PENDING",
+                "verification": "COMPLETE",
                 "acceptance": "PENDING",
                 "closeout": "NOT_PROPOSED",
                 "migration": "NONE",
@@ -4297,7 +4351,11 @@
             },
             "active_implementation_sections": [],
             "evidence": [
-                "accepted verification-only work-package checkpoint"
+                "accepted FS-10 verification-only work-package checkpoint",
+                "complete repository validation suite passed",
+                "no qualifying migration path or real source-format fixture exists",
+                "zero reusable-product paths and zero product commits verified",
+                "implementation disposition NOT_REQUIRED preserved"
             ]
         },
         "evidence": [
@@ -4314,7 +4372,42 @@
             "No real project is modified.",
             "Provisioning and integration remain routed to FS-11."
         ],
-        "mandatory_next_operation": "Separate read-only FS-10 verification directive and distinct TR-017 completion commit."
+        "mandatory_next_operation": "Administrator acceptance remains pending. TR-018 requires a separate explicit administrator directive and distinct commit.",
+        "active_control_work_authorization": null,
+        "current_authorized_section": null,
+        "verification_completion_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+        "verification_completion_base_checkpoint": "a7e7eb35c958a2df36cca339e2714403d6cfe145",
+        "verification_completion_checkpoint": "THIS_COMMIT",
+        "verification_evidence": {
+            "result": "PASSED",
+            "verified_checkpoint": "a7e7eb35c958a2df36cca339e2714403d6cfe145",
+            "recorded_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+            "complete_repository_tests": {
+                "status": "PASSED",
+                "test_count": 155
+            },
+            "source_validator": "PASSED",
+            "floppyctl_source_validation": "PASSED",
+            "tracked_json": {
+                "status": "PASSED",
+                "file_count": 59
+            },
+            "accepted_no_change_findings": {
+                "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+                "implementation_state": "NOT_REQUIRED",
+                "qualifying_real_migration_paths": 0,
+                "qualifying_real_source_format_fixtures": [],
+                "reusable_product_paths": [],
+                "reusable_product_path_count": 0,
+                "reusable_product_commits": [],
+                "reusable_product_commit_count": 0,
+                "product_commit": null,
+                "real_project_modification": "NOT_PERFORMED",
+                "active_authorization": null,
+                "repository_writer": null,
+                "writer_authorization_reference": null
+            }
+        }
     },
     "fs_10_work_package_draft": {
         "id": "FS-10",
@@ -4388,5 +4481,7 @@
         "fs_11_implementation_authorized": false,
         "reusable_product_paths_named": false,
         "product_commit_authorized": false
-    }
+    },
+    "repository_writer": null,
+    "writer_authorization_reference": null
 }

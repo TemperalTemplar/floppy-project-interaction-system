@@ -43,75 +43,39 @@ Push, merge, integration, tag, release, packaging, installer, runtime bundle, ex
 ## FS-10 state
 
 ```text
-Draft path:
-.floppy/templates/Floppy-E-FS-10.draft.md
-
-Status:
-ACCEPTED_PLANNING_BASELINE
-
-Work-package type:
-VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-
-Accepted:
-YES
-
-Active:
-NO
-
-Authorized:
-NO
-
-Implementation:
-NOT_REQUIRED
-
-Verification:
-PENDING
-
-Administrator acceptance:
-PENDING
-
-Closeout:
-NOT_PROPOSED
-
-Migration:
-NONE
-
-Reusable-product paths:
-0
-
-Reusable-product commits:
-0
-
-Product commit:
-null
-
-Active implementation authorization:
-NONE
-
-Active migration authorization:
-NONE
-
-Repository writer:
-NONE
-
-Writer authorization reference:
-NONE
+Section: FS-10 — Targeted Migration
+Lifecycle state: LC-VERIFICATION-ONLY-COMPLETE-ACCEPTANCE-PENDING
+Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
+Work package: ACCEPTED_PLANNING_BASELINE
+Implementation: NOT_REQUIRED
+Verification: COMPLETE
+Administrator acceptance: PENDING
+Closeout: NOT_PROPOSED
+Migration: NONE
+Reusable-product paths: 0
+Reusable-product commits: 0
+Product commit: null
+Active work authorization: NONE
+Active implementation authorization: NONE
+Active migration authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Verification base checkpoint: a7e7eb35c958a2df36cca339e2714403d6cfe145
+Verification completion checkpoint: THIS_COMMIT
 ```
 
-Accepted transition:
-
+Accepted work-package transition:
 `TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
 
-Authority reference:
+Verification-completion transition:
+`TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
 
-`FS_10_WORK_PACKAGE_ACCEPTANCE`
+The accepted `NOT_REQUIRED` implementation disposition remains authoritative.
+No reusable-product path or product commit exists.
 
-The accepted finding remains: proven real migration paths `0`, qualifying real
-source-format fixtures `NONE`, and provisioning/integration `ROUTED TO FS-11`.
+Administrator acceptance remains `PENDING`. Closeout remains `NOT_PROPOSED`.
+FS-11 remains roadmap-only, inactive, unaccepted, unauthorized, and without a
+draft.
 
-FS-11 remains `PLANNED_NOT_AUTHORIZED`, inactive, unaccepted, unauthorized,
-implementation not started, and without a draft.
-
-**MANDATORY STOP:** verification remains pending. Administrator acceptance,
-closeout proposal, closeout application, and FS-11 draft creation are not
-authorized by this commit.
+**MANDATORY STOP:** TR-018 and every later lifecycle transition require a
+separate explicit administrator directive.
