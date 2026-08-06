@@ -1,6 +1,7 @@
 # Start Here — Canonical Source-System Development
 
 This BCE controls development of the canonical Floppy Project Interaction System.
+The self-hosted root control state is now in canonical integrated mode.
 
 ## Required read order
 
@@ -11,58 +12,79 @@ This BCE controls development of the canonical Floppy Project Interaction System
 5. `.floppy/floppies/Floppy-C-Project-Baseline.md`
 6. `.floppy/floppies/Floppy-B-Development-Issues.md`
 7. `.floppy/roadmap/roadmap.md`
-8. `.floppy/closeouts/FS-01-closeout.md`
-9. `.floppy/templates/Floppy-E-FS-02.draft.md`
+8. `.floppy/lifecycle-state.json`
+9. `.floppy/orchestrator-registry.json`
+10. `.floppy/templates/Floppy-E-FS-11.draft.md`
 
 ## Present state
 
 ```text
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
-Applied transition:
-TR-009-APPLY-SECTION-CLOSEOUT
+Applied lifecycle transition:
+TR-004-START-SECTION-IMPLEMENTATION
 
-Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+Control mode:
+CANONICAL_INTEGRATED
 
 Active implementation section:
-NONE
+FS-11
 
-Current authorized section:
-NONE
+Active authorization:
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 
-FS-01:
-CLOSED
+Repository writer:
+FS_11_INT_01_WORKING_MODEL
 
-FS-02 work package:
-NOT ACCEPTED
+Writer authorization reference:
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 
-FS-02 activation:
-NOT AUTHORIZED
+PROV-01 reusable-product output:
+COMMITTED AND VERIFIED
 
-FS-02 implementation:
+INT-01 authority handoff:
+COMMITTED AND VERIFIED
+
+INT-01 self-hosted reconciliation:
+APPLIED
+
+FS-11 implementation:
+IN PROGRESS
+
+FS-11 verification:
 NOT STARTED
 
-FS-02 active:
-FALSE
+FS-11 administrator result acceptance:
+PENDING
+
+FS-12:
+INACTIVE / NOT AUTHORIZED
 ```
 
-## Fixed checkpoints
+## Controlling checkpoints
 
-- Accepted FS-01 implementation: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- FS-01 acceptance recording: `5eeb3435644653534a6a430714a84b840ca497c0`
-- Approved closeout proposal: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
-- FS-01 product completion: `d907643874f9aa278f31311527f3e7ec907c6cb6`
+- Reusable-product commit: `b4e9ffb520545a312d596aaf3aca53be7c2fd67b`
+- INT-01 authority-handoff commit: `d0df2cf85011e068bc13d74ae9db9aedc5a376ae`
+- Accepted INT-01 plan SHA-256: `a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6`
 - Source version: `0.4.1-dev`
 
-## Final closeout boundary
+## Current boundary
 
-Only `TR-009-APPLY-SECTION-CLOSEOUT` has been applied.
+The exact ten-path self-hosted reconciliation has been applied under INT-01.
+No lifecycle state changed in that implementation commit.
 
-FS-01 closure does not authorize integration, a pull request, merge, tag, release,
-migration, additional FS-01 product writes, FS-02 work-package acceptance,
-FS-02 activation, FS-02 implementation, or later work.
+The next legal FS-11 operation is the separately recorded implementation and
+verification completion sequence:
 
-The next legal operation is preparation, revision, acceptance, or withholding of
-the FS-02 work package—not implementation.
+```text
+TR-005-RECORD-IMPLEMENTATION-COMPLETE
+TR-006-RECORD-VERIFICATION-COMPLETE
+```
+
+INT-01 remains the only active authorization and writer until the later
+administrator-result acceptance commit clears it.
+
+No push, merge, integration into `main`, tag, release, package publication,
+migration, production change, FS-12 activation, or additional path is
+authorized.

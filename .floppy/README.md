@@ -1,7 +1,7 @@
 # Root Source-Development BCE
 
-This directory is the active project-control state for development of the canonical
-Floppy source system itself.
+This directory is the active project-control state for development of the
+canonical Floppy source system itself.
 
 ## Identity
 
@@ -9,83 +9,97 @@ Floppy source system itself.
 - Repository: `TemperalTemplar/floppy-project-interaction-system`
 - Role: `canonical_source_system_development`
 - Source-system version: `0.4.1-dev`
-- Canonical starting checkpoint: `main` at `3efc15a9c232669ddcd3b49cee3ff99f9459dbc3`
-- Onboarding control checkpoint: `b12928e7365149813c00c65c1e409fe2a5d0d36f`
-- Accepted FS-01 implementation checkpoint: `d03969aa93debb6b705098483c8b59bb9d37d58f`
-- FS-01 administrator-acceptance checkpoint: `5eeb3435644653534a6a430714a84b840ca497c0`
-- Approved FS-01 closeout-proposal checkpoint: `6355dcf9daf8a0bcb4c7cbe4b701cdc49c57d479`
-- FS-01 product completion checkpoint: `d907643874f9aa278f31311527f3e7ec907c6cb6`
-- Feature branch: `feature/fs-01-lifecycle-specification`
+- Feature branch: `feature/ctrl-02-verification-only-lifecycle`
+- Reusable-product commit: `b4e9ffb520545a312d596aaf3aca53be7c2fd67b`
+- INT-01 authority-handoff commit: `d0df2cf85011e068bc13d74ae9db9aedc5a376ae`
 
 ## Repository boundary
 
-Root `.floppy/` remains source-development control state, not reusable source
+Root `.floppy/` is source-development control state, not reusable source
 product. It must not enter canonical `main`, product packages,
 `project-seed/.floppy/`, adopting projects, or releases.
+
+The reusable project seed remains under `project-seed/.floppy/`. The root
+control state is now reconciled to the same canonical control-record contract
+without becoming distributable product content.
 
 ## Current lifecycle state
 
 ```text
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
 
-Applied transition:
-TR-009-APPLY-SECTION-CLOSEOUT
+Control mode:
+CANONICAL_INTEGRATED
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-11
 
 Current authorized section:
-NONE
+FS-11
 
-FS-01 historical implementation:
-COMPLETE
+Active authorization:
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 
-FS-01 historical verification:
-COMPLETE
+Repository writer:
+FS_11_INT_01_WORKING_MODEL
 
-FS-01 historical administrator acceptance:
+Writer authorization reference:
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+
+FS-10:
+CLOSED
+Implementation disposition: NOT_REQUIRED
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+
+FS-11 work package:
 ACCEPTED
 
-FS-01 closeout:
+FS-11 reusable-product implementation:
+COMMITTED AND VERIFIED
+
+FS-11 INT-01 authority handoff:
+COMMITTED AND VERIFIED
+
+FS-11 root-control reconciliation:
 APPLIED
 
-FS-01 status:
-CLOSED
+FS-11 implementation:
+IN PROGRESS
 
-Additional FS-01 product writes:
-NOT AUTHORIZED
-
-FS-02 work package:
-NOT ACCEPTED
-
-FS-02 activation:
-NOT AUTHORIZED
-
-FS-02 implementation:
+FS-11 verification:
 NOT STARTED
 
-FS-02 active:
-FALSE
+FS-11 administrator acceptance:
+PENDING
 
-Integration:
-NOT AUTHORIZED
+FS-11 closeout:
+NOT PROPOSED
 
-Merge:
-NOT AUTHORIZED
+FS-12:
+INACTIVE / NOT AUTHORIZED
 
-Tag or release:
-NOT AUTHORIZED
-
-Migration:
+Integration, merge, tag, release, migration, and production:
 NOT AUTHORIZED
 ```
 
-FS-01 is formally closed.
+## Canonical authority
 
-The FS-02 draft remains non-authoritative. The next legal operation is
-preparation, revision, acceptance, or withholding of the FS-02 work package—not
-implementation.
+`.floppy/lifecycle-state.json` is authoritative for lifecycle state.
+`.floppy/orchestrator-registry.json` is authoritative for repository-writer
+assignment. `.floppy/manifest.json`, the roadmap, and Floppy E are required
+projections and must agree with those canonical records.
+
+Malformed or conflicting canonical records may not fall back to legacy manifest
+authority.
+
+## Next legal operation
+
+Record FS-11 implementation completion and verification completion as separate,
+ordered transition evidence in the distinct Commit 6 control commit. The
+current INT-01 authorization remains active for that commit.

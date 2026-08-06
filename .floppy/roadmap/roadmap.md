@@ -2,42 +2,51 @@
 
 ```text
 Development roadmap:
-ACCEPTED
+ACCEPTED — ADMINISTRATIVELY REVISED
 
 Lifecycle state:
-LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+
+Control mode:
+CANONICAL_INTEGRATED
 
 Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
+EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
 
 Active implementation section:
-NONE
+FS-11
 
 Current authorized section:
-NONE
+FS-11
 
-FS-09:
-CLOSED / CLOSEOUT APPLIED
+FS-01 through FS-09:
+CLOSED
 
 FS-10:
-DRAFT_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+CLOSED / IMPLEMENTATION NOT_REQUIRED / VERIFICATION COMPLETE
 
 FS-11:
-PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+IMPLEMENTATION IN PROGRESS
+REUSABLE PRODUCT COMMITTED AND VERIFIED
+INT-01 AUTHORITY HANDOFF COMMITTED
+ROOT-CONTROL RECONCILIATION APPLIED
 
 FS-12:
-PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+PLANNED_NOT_AUTHORIZED / INACTIVE
 
 FS-13:
-PLANNED_NOT_AUTHORIZED / INACTIVE / NOT ACCEPTED / NOT AUTHORIZED
+PLANNED_NOT_AUTHORIZED / INACTIVE
+
+Active authorization:
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 
 Repository writer:
-NONE
+FS_11_INT_01_WORKING_MODEL
 
 Writer authorization reference:
-NONE
+FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 
-Integration:
+Integration, merge, tag, release, and production:
 NOT AUTHORIZED
 ```
 
@@ -342,3 +351,28 @@ Commit 4 replaced the PROV-01 writer with the one INT-01 writer without changing
 the lifecycle state. Commit 5 remains a separate exact ten-path root-control
 implementation and has not been applied.
 <!-- FS11_PROV01_ACTIVATION_END -->
+
+
+<!-- FS11_INT01_RECONCILIATION_APPLIED_BEGIN -->
+## FS-11 INT-01 reconciliation applied
+
+```text
+Lifecycle state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Operation: ROOT_CONTROL_IMPLEMENTATION
+Lifecycle transition: NONE
+Reusable-product commit: b4e9ffb520545a312d596aaf3aca53be7c2fd67b
+Authority-handoff commit: d0df2cf85011e068bc13d74ae9db9aedc5a376ae
+Exact root-control paths: 10
+Root-control reconciliation: APPLIED
+Active authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Implementation completion: NOT YET RECORDED
+Verification completion: NOT YET RECORDED
+Administrator acceptance: PENDING
+Closeout: NOT PROPOSED
+FS-12: INACTIVE / NOT AUTHORIZED
+```
+
+The next planned commit records ordered TR-005 and TR-006 evidence while
+retaining INT-01.
+<!-- FS11_INT01_RECONCILIATION_APPLIED_END -->
