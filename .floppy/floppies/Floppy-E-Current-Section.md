@@ -44,18 +44,17 @@ Push, merge, integration, tag, release, packaging, installer, runtime bundle, ex
 
 ```text
 Section: FS-10 — Targeted Migration
-Lifecycle state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Global lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-10 status: CLOSED
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-Work package: ACCEPTED_PLANNING_BASELINE
-Implementation: NOT_REQUIRED
+Implementation disposition: NOT_REQUIRED
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator decision: ACCEPT FS-10 VERIFIED RESULT
-Closeout: PROPOSED
-Closeout application: NOT_APPLIED
-Closeout proposal record: .floppy/closeouts/FS-10-closeout.md
+Closeout: APPLIED
+Closeout proposal commit: ed0967eb300fe6d47ce6c07b53d5cbdcd8d1fefc
 Closeout proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
-Migration: NONE
+Closeout application transition: TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT
+Closeout application checkpoint: THIS_COMMIT
 Reusable-product paths: 0
 Reusable-product commits: 0
 Product commit: null
@@ -64,27 +63,33 @@ Active implementation authorization: NONE
 Active migration authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
-Closeout-proposal base checkpoint: 29b83d61df42b3043a767049c9615215ad2beb25
-Closeout-proposal checkpoint: THIS_COMMIT
 ```
 
-Work-package acceptance transition:
-`TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE`
+The global state now represents the inactive starting condition for FS-11. It
+does not rewrite FS-10's accepted implementation disposition.
 
-Verification-completion transition:
-`TR-017-RECORD-VERIFICATION-ONLY-COMPLETE`
+FS-10's authoritative closed-section outcome remains:
 
-Administrator-acceptance transition:
-`TR-018-ACCEPT-VERIFICATION-ONLY-SECTION`
+```text
+Implementation: NOT_REQUIRED
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+```
 
-Closeout-proposal transition:
-`TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT`
+## FS-11 state
 
-Implementation remains `NOT_REQUIRED`; verification remains `COMPLETE`;
-administrator acceptance remains `ACCEPTED`; no reusable-product path or
-product commit exists.
+```text
+Draft: .floppy/templates/Floppy-E-FS-11.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation: NOT STARTED
+Active authorization: NONE
+Repository writer: NONE
+```
 
-Closeout is proposed but not applied. FS-11 remains roadmap-only, inactive,
-unaccepted, unauthorized, and without a draft.
-
-**MANDATORY STOP:** TR-020 requires a separate explicit administrator directive.
+FS-11 remains inactive, unaccepted, and unauthorized. No provisioning,
+integration, reconciliation, migration, release, packaging, or production
+action was performed.

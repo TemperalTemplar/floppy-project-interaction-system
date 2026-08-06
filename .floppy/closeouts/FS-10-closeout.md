@@ -7,11 +7,24 @@ Status: `PROPOSED_NOT_APPLIED`
 <!-- FS10_CLOSEOUT_PROPOSAL_CANONICAL_END -->
 
 <!-- FS10_CLOSEOUT_APPLICATION_BEGIN -->
-Application status: NOT_APPLIED
-Application authority: NONE
+Application status: APPLIED
+Administrator decision: ACCEPT FS-10 CLOSEOUT PROPOSAL
+Application authority: FS_10_CLOSEOUT_APPLICATION
 Application transition: TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT
-Proposal commit: NONE
+Proposal commit: ed0967eb300fe6d47ce6c07b53d5cbdcd8d1fefc
 Proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
-Application checkpoint: NONE
-Separate administrator directive required: YES
+Application checkpoint: THIS_COMMIT
+Resulting lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-10 status: CLOSED
+FS-10 implementation disposition: NOT_REQUIRED
+FS-10 verification: COMPLETE
+FS-10 administrator acceptance: ACCEPTED
+FS-10 closeout: APPLIED
+FS-11 draft: .floppy/templates/Floppy-E-FS-11.draft.md
+FS-11 draft status: DRAFT_NOT_AUTHORIZED
+FS-11 accepted: NO
+FS-11 active: NO
+FS-11 authorized: NO
+Active authorization: NONE
+Repository writer: NONE
 <!-- FS10_CLOSEOUT_APPLICATION_END -->

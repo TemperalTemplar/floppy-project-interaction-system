@@ -275,35 +275,43 @@ lifecycle-state integration remain incomplete and separately controlled.
 <!-- FS09_PHASE2_END -->
 
 <!-- BEGIN FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
-## FS-10 verification-only section — closeout proposed
+## FS-10 verification-only section — closed
 
 ```text
 Section: FS-10 — Targeted Migration
-Status: SECTION_ACCEPTED_CLOSEOUT_PROPOSED
+Status: CLOSED
+Global lifecycle: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 Work-package type: VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE
-Lifecycle: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
-Implementation: NOT_REQUIRED
+Implementation disposition: NOT_REQUIRED
 Verification: COMPLETE
 Administrator acceptance: ACCEPTED
-Administrator decision: ACCEPT FS-10 VERIFIED RESULT
-Closeout: PROPOSED
-Closeout application: NOT_APPLIED
-Closeout proposal record: .floppy/closeouts/FS-10-closeout.md
+Closeout: APPLIED
+Closeout proposal commit: ed0967eb300fe6d47ce6c07b53d5cbdcd8d1fefc
 Closeout proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
-Migration: NONE
+Closeout application transition: TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT
+Closeout application checkpoint: THIS_COMMIT
 Reusable-product paths: 0
 Reusable-product commits: 0
 Product commit: null
 Active work authorization: NONE
-Active implementation authorization: NONE
-Active migration authorization: NONE
 Repository writer: NONE
-Writer authorization reference: NONE
 ```
 
-Closeout-proposal transition:
-`TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT`
+The global next-section-inactive state does not replace FS-10's closed-section
+outcome. `NOT_REQUIRED` remains authoritative.
 
-The canonical closeout proposal exists and is not applied. TR-020 has not been
-executed. FS-11 remains `PLANNED_NOT_AUTHORIZED`; no FS-11 draft exists.
+## FS-11 inactive draft
+
+```text
+Draft: .floppy/templates/Floppy-E-FS-11.draft.md
+Status: DRAFT_NOT_AUTHORIZED
+Accepted: NO
+Active: NO
+Authorized: NO
+Implementation started: NO
+Repository writer: NONE
+```
+
+The next legal operation is preparation, revision, acceptance, or withholding
+of the FS-11 work package under separate authority.
 <!-- END FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->

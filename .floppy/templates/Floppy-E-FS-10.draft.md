@@ -230,3 +230,35 @@ The proposal preserves the accepted verification-only no-change disposition.
 It does not apply closeout, create the FS-11 draft, or authorize any product,
 project, release, migration, provisioning, or production operation.
 <!-- END FS-10 CLOSEOUT PROPOSAL -->
+
+<!-- BEGIN FS-10 CLOSEOUT APPLICATION -->
+## Final closeout application
+
+```text
+Administrator decision: ACCEPT FS-10 CLOSEOUT PROPOSAL
+Transition: TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT
+Source state: LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Resulting global state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-10 status: CLOSED
+Implementation disposition: NOT_REQUIRED
+Verification result: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+Proposal commit: ed0967eb300fe6d47ce6c07b53d5cbdcd8d1fefc
+Proposal SHA-256: 71937643c79c969adb668ad3d16041ff3182cd457f5f735225957a289445a5d0
+Application checkpoint: THIS_COMMIT
+Reusable-product paths: 0
+Reusable-product commits: 0
+Product commit: null
+Active authorization: NONE
+Repository writer: NONE
+FS-11 draft: .floppy/templates/Floppy-E-FS-11.draft.md
+FS-11 status: DRAFT_NOT_AUTHORIZED
+```
+
+The global state represents FS-11's inactive starting condition. FS-10's
+accepted `NOT_REQUIRED` implementation disposition remains authoritative in
+this closed-section record.
+
+FS-11 is inactive, unaccepted, and unauthorized.
+<!-- END FS-10 CLOSEOUT APPLICATION -->
