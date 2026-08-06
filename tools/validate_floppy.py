@@ -2142,15 +2142,40 @@ def _verification_only_next_section_valid(manifest, root, application):
     draft_path = application.get(f"fs_{next_section[3:]}_draft_path")
     if not isinstance(draft_path, str) or not draft_path or not (root / draft_path).is_file():
         return False, next_section
-    if next_record.get("accepted") is not False:
+
+    # TR-020 establishes the existence and identity of the next-section draft
+    # and work-package record.  It does not permanently freeze that section in
+    # its application-time inactive state.  Later current-state progression is
+    # validated by the lifecycle and authorization validators.
+    for identity_field in ("section", "id"):
+        value = next_record.get(identity_field)
+        if value is not None and value != next_section:
+            return False, next_section
+
+    required_flags = ("accepted", "active", "implementation_authorized")
+    if any(not isinstance(next_record.get(field), bool) for field in required_flags):
         return False, next_section
-    if next_record.get("active") is not False:
+
+    authorization_id = next_record.get("authorization_id")
+    repository_writer = next_record.get("repository_writer")
+    writer_reference = next_record.get("writer_authorization_reference")
+    for value in (authorization_id, repository_writer, writer_reference):
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            return False, next_section
+
+    accepted = next_record["accepted"]
+    active = next_record["active"]
+    authorized = next_record["implementation_authorized"]
+    if active and not authorized:
         return False, next_section
-    if next_record.get("implementation_authorized") is not False:
+    if authorized and not accepted:
         return False, next_section
-    if next_record.get("repository_writer") is not None:
-        return False, next_section
-    if next_record.get("authorization_id") is not None:
+    if authorized:
+        if authorization_id is None or repository_writer is None:
+            return False, next_section
+        if writer_reference is not None and writer_reference != authorization_id:
+            return False, next_section
+    elif any(value is not None for value in (authorization_id, repository_writer, writer_reference)):
         return False, next_section
     return True, next_section
 
