@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_CLOSEOUT_PROPOSED
+STATUS: CLOSED
 
 # Floppy E — FS-11 Accepted Work Package
 
@@ -232,3 +232,29 @@ FS-12: INACTIVE / NOT AUTHORIZED
 
 Commit 9 is prohibited until the administrator explicitly accepts the exact
 Commit 8 proposal record and unchanged SHA-256 digest.
+
+
+<!-- BEGIN FS-11 CLOSEOUT APPLICATION -->
+## Final closeout application
+
+```text
+Administrator decision: ACCEPT FS-11 CLOSEOUT PROPOSAL 97e544b67c0b3a7954cb37eb9baacc30e571f3a4 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Source state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Resulting global state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-11 status: CLOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+Proposal commit: 97e544b67c0b3a7954cb37eb9baacc30e571f3a4
+Proposal SHA-256: 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
+Application checkpoint: THIS_COMMIT
+Active authorization: NONE
+Repository writer: NONE
+FS-12 draft: .floppy/templates/Floppy-E-FS-12.draft.md
+FS-12 status: DRAFT_NOT_AUTHORIZED
+```
+
+FS-12 remains inactive, unaccepted, and unauthorized.
+<!-- END FS-11 CLOSEOUT APPLICATION -->

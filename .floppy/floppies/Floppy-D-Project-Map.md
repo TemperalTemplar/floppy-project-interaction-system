@@ -2,10 +2,7 @@
 
 ## Roadmap status
 
-`ACCEPTED — ADMINISTRATIVELY REVISED — FS-11 ACTIVE`
-
-The accepted roadmap remains authoritative. FS-10 is closed with implementation
-disposition `NOT_REQUIRED`. FS-11 is the one active implementation section.
+`ACCEPTED — ADMINISTRATIVELY REVISED — FS-11 CLOSED`
 
 ## Ordered source-development sections
 
@@ -19,78 +16,26 @@ disposition `NOT_REQUIRED`. FS-11 is the one active implementation section.
 8. **FS-08 — Boot-Package Generation and Verification** — CLOSED
 9. **FS-09 — Controlled Lifecycle Write Commands** — CLOSED
 10. **FS-10 — Targeted Migration** — CLOSED / IMPLEMENTATION NOT_REQUIRED
-11. **FS-11 — Project Control-State Provisioning and Integration** — IMPLEMENTATION IN PROGRESS
-12. **FS-12 — Final-Project Closure** — INACTIVE / NOT AUTHORIZED
+11. **FS-11 — Project Control-State Provisioning and Integration** — CLOSED
+12. **FS-12 — Final-Project Closure** — DRAFT_NOT_AUTHORIZED / INACTIVE
 13. **FS-13 — Export and Integrity** — PLANNED / NOT AUTHORIZED
-
-## FS-11 delivered implementation
-
-```text
-Reusable deterministic project-control provisioning:
-COMMITTED AND VERIFIED
-
-Reusable-product commit:
-b4e9ffb520545a312d596aaf3aca53be7c2fd67b
-
-Self-hosted canonical authority bootstrap:
-COMMITTED AND VERIFIED
-
-INT-01 authority-handoff commit:
-d0df2cf85011e068bc13d74ae9db9aedc5a376ae
-
-Exact ten-path self-hosted reconciliation:
-APPLIED
-
-Canonical control mode:
-CANONICAL_INTEGRATED
-```
-
-Reusable project provisioning and one-time root reconciliation remain distinct
-authorities and commits. Root `.floppy` remains excluded from reusable product
-and release content.
 
 ## Current position
 
 ```text
-Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
-
-Active implementation section:
-FS-11
-
-Current authorized section:
-FS-11
-
-Active authorization:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-
-Repository writer:
-FS_11_INT_01_WORKING_MODEL
-
-Writer authorization reference:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-
-FS-11 implementation completion:
-NOT YET RECORDED
-
-FS-11 verification completion:
-NOT YET RECORDED
-
-FS-11 administrator acceptance:
-PENDING
-
-FS-11 closeout:
-NOT PROPOSED
-
-FS-12:
-INACTIVE / NOT AUTHORIZED
-
-FS-13:
-PLANNED / NOT AUTHORIZED
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-11 closeout transition: TR-009-APPLY-SECTION-CLOSEOUT
+FS-11 proposal commit: 97e544b67c0b3a7954cb37eb9baacc30e571f3a4
+FS-11 proposal SHA-256: 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
+FS-12 draft: .floppy/templates/Floppy-E-FS-12.draft.md
+FS-12 accepted: NO
+FS-12 active: NO
+FS-12 authorized: NO
+Active authorization: NONE
+Repository writer: NONE
 ```
 
 ## Next bounded action
 
-The next planned repository commit is the seven-path lifecycle-control commit
-that records TR-005 and then TR-006 while retaining INT-01. No later section or
-release action is implied.
+Prepare and review an exact FS-12 work package in read-only mode. No FS-12
+repository write is authorized by the draft or by FS-11 closeout.

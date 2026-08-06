@@ -1,52 +1,19 @@
 # BCE Control Layer Development Roadmap
 
 ```text
-Development roadmap:
-ACCEPTED — ADMINISTRATIVELY REVISED
-
-Lifecycle state:
-LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
-
-Control mode:
-CANONICAL_INTEGRATED
-
-Authority:
-NO_ACTIVE_WORK_AUTHORIZATION
-
-Active implementation section:
-NONE
-
-Current authorized section:
-NONE
-
-FS-01 through FS-10:
-CLOSED
-
-FS-11:
-IMPLEMENTATION COMPLETE
-VERIFICATION COMPLETE
-ADMINISTRATOR ACCEPTANCE ACCEPTED
-CLOSEOUT PROPOSED_NOT_APPLIED
-REUSABLE PRODUCT COMMITTED AND VERIFIED
-ROOT-CONTROL RECONCILIATION APPLIED
-
-FS-12:
-PLANNED_NOT_AUTHORIZED / INACTIVE
-
-FS-13:
-PLANNED_NOT_AUTHORIZED / INACTIVE
-
-Active authorization:
-NONE
-
-Repository writer:
-NONE
-
-Writer authorization reference:
-NONE
-
-Integration, merge, tag, release, and production:
-NOT AUTHORIZED
+Development roadmap: ACCEPTED — ADMINISTRATIVELY REVISED
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Control mode: CANONICAL_INTEGRATED
+Authority: NO_ACTIVE_WORK_AUTHORIZATION
+Active implementation section: NONE
+Current authorized section: NONE
+FS-01 through FS-11: CLOSED
+FS-12: DRAFT_NOT_AUTHORIZED / INACTIVE
+FS-13: PLANNED_NOT_AUTHORIZED / INACTIVE
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Integration, merge, tag, release, and production: NOT AUTHORIZED
 ```
 
 ## Remaining package boundaries
@@ -454,3 +421,15 @@ FS-12: INACTIVE / NOT AUTHORIZED
 The administrator must accept the exact committed proposal and SHA-256 digest
 before TR-009 may apply closeout.
 <!-- FS11_CLOSEOUT_PROPOSAL_END -->
+
+
+## FS-11 closeout application
+
+```text
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Proposal commit: 97e544b67c0b3a7954cb37eb9baacc30e571f3a4
+Proposal SHA-256: 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
+FS-11 status: CLOSED
+FS-12 draft: .floppy/templates/Floppy-E-FS-12.draft.md
+FS-12 status: DRAFT_NOT_AUTHORIZED / INACTIVE
+```

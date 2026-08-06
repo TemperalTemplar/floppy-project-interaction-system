@@ -1,7 +1,6 @@
 # Start Here — Canonical Source-System Development
 
 This BCE controls development of the canonical Floppy Project Interaction System.
-The self-hosted root control state is now in canonical integrated mode.
 
 ## Required read order
 
@@ -14,77 +13,34 @@ The self-hosted root control state is now in canonical integrated mode.
 7. `.floppy/roadmap/roadmap.md`
 8. `.floppy/lifecycle-state.json`
 9. `.floppy/orchestrator-registry.json`
-10. `.floppy/templates/Floppy-E-FS-11.draft.md`
+10. `.floppy/templates/Floppy-E-FS-12.draft.md`
 
 ## Present state
 
 ```text
-Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
-
-Applied lifecycle transition:
-TR-004-START-SECTION-IMPLEMENTATION
-
-Control mode:
-CANONICAL_INTEGRATED
-
-Active implementation section:
-FS-11
-
-Active authorization:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-
-Repository writer:
-FS_11_INT_01_WORKING_MODEL
-
-Writer authorization reference:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-
-PROV-01 reusable-product output:
-COMMITTED AND VERIFIED
-
-INT-01 authority handoff:
-COMMITTED AND VERIFIED
-
-INT-01 self-hosted reconciliation:
-APPLIED
-
-FS-11 implementation:
-IN PROGRESS
-
-FS-11 verification:
-NOT STARTED
-
-FS-11 administrator result acceptance:
-PENDING
-
-FS-12:
-INACTIVE / NOT AUTHORIZED
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Applied transition: TR-009-APPLY-SECTION-CLOSEOUT
+Control mode: CANONICAL_INTEGRATED
+FS-01 through FS-11: CLOSED
+FS-11 implementation: COMPLETE
+FS-11 verification: COMPLETE
+FS-11 administrator acceptance: ACCEPTED
+FS-11 closeout: APPLIED
+FS-12: DRAFT_NOT_AUTHORIZED / INACTIVE
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
 ```
 
-## Controlling checkpoints
+## Closeout checkpoints
 
-- Reusable-product commit: `b4e9ffb520545a312d596aaf3aca53be7c2fd67b`
-- INT-01 authority-handoff commit: `d0df2cf85011e068bc13d74ae9db9aedc5a376ae`
-- Accepted INT-01 plan SHA-256: `a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6`
-- Source version: `0.4.1-dev`
+- Commit 8 proposal: `97e544b67c0b3a7954cb37eb9baacc30e571f3a4`
+- Accepted proposal SHA-256: `3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc`
+- Administrator decision: `ACCEPT FS-11 CLOSEOUT PROPOSAL 97e544b67c0b3a7954cb37eb9baacc30e571f3a4 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc`
+- FS-12 draft: `.floppy/templates/Floppy-E-FS-12.draft.md`
 
 ## Current boundary
 
-The exact ten-path self-hosted reconciliation has been applied under INT-01.
-No lifecycle state changed in that implementation commit.
-
-The next legal FS-11 operation is the separately recorded implementation and
-verification completion sequence:
-
-```text
-TR-005-RECORD-IMPLEMENTATION-COMPLETE
-TR-006-RECORD-VERIFICATION-COMPLETE
-```
-
-INT-01 remains the only active authorization and writer until the later
-administrator-result acceptance commit clears it.
-
-No push, merge, integration into `main`, tag, release, package publication,
-migration, production change, FS-12 activation, or additional path is
-authorized.
+FS-12 is only an inactive draft. No FS-12 work package has been accepted and no
+activation, implementation, final closure, FS-13, push, merge, release,
+packaging, migration, or production action is authorized.
