@@ -5,32 +5,29 @@ Development roadmap:
 ACCEPTED — ADMINISTRATIVELY REVISED
 
 Lifecycle state:
-LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 
 Control mode:
 CANONICAL_INTEGRATED
 
 Authority:
-EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION
+NO_ACTIVE_WORK_AUTHORIZATION
 
 Active implementation section:
-FS-11
+NONE
 
 Current authorized section:
-FS-11
+NONE
 
-FS-01 through FS-09:
+FS-01 through FS-10:
 CLOSED
-
-FS-10:
-CLOSED / IMPLEMENTATION NOT_REQUIRED / VERIFICATION COMPLETE
 
 FS-11:
 IMPLEMENTATION COMPLETE
 VERIFICATION COMPLETE
-ADMINISTRATOR ACCEPTANCE PENDING
+ADMINISTRATOR ACCEPTANCE ACCEPTED
+CLOSEOUT PROPOSED_NOT_APPLIED
 REUSABLE PRODUCT COMMITTED AND VERIFIED
-INT-01 AUTHORITY HANDOFF COMMITTED
 ROOT-CONTROL RECONCILIATION APPLIED
 
 FS-12:
@@ -40,13 +37,13 @@ FS-13:
 PLANNED_NOT_AUTHORIZED / INACTIVE
 
 Active authorization:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+NONE
 
 Repository writer:
-FS_11_INT_01_WORKING_MODEL
+NONE
 
 Writer authorization reference:
-FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+NONE
 
 Integration, merge, tag, release, and production:
 NOT AUTHORIZED
@@ -422,3 +419,38 @@ FS-12: INACTIVE / NOT AUTHORIZED
 The next planned commit may propose FS-11 closeout. Proposal must remain separate
 from closeout application.
 <!-- FS11_ADMINISTRATOR_ACCEPTANCE_END -->
+
+
+<!-- FS11_POST_ACCEPTANCE_CORRECTION_BEGIN -->
+## FS-11 post-acceptance bounded correction
+
+```text
+Commit: e0486b3a25721812e5a69b52f655e3bae1402e34
+Subject: fix(bce): permit bounded corrections after authority clearance
+Lifecycle transition: NONE
+Exact paths: 3
+Repository tests: 237 passed
+Active authorization: NONE
+Repository writer: NONE
+```
+
+The correction preserved the accepted FS-11 result and enabled exact validation
+of the subsequent no-authority closeout proposal.
+<!-- FS11_POST_ACCEPTANCE_CORRECTION_END -->
+
+
+<!-- FS11_CLOSEOUT_PROPOSAL_BEGIN -->
+## FS-11 closeout proposal — proposed, not applied
+
+```text
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Proposal base checkpoint: e0486b3a25721812e5a69b52f655e3bae1402e34
+Proposal record: .floppy/closeouts/FS-11-closeout.md
+Proposal checkpoint: THIS_COMMIT
+Application status: NOT_APPLIED
+FS-12: INACTIVE / NOT AUTHORIZED
+```
+
+The administrator must accept the exact committed proposal and SHA-256 digest
+before TR-009 may apply closeout.
+<!-- FS11_CLOSEOUT_PROPOSAL_END -->

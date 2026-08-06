@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_CLOSEOUT_NOT_PROPOSED
+STATUS: ACCEPTED_CLOSEOUT_PROPOSED
 
 # Floppy E — FS-11 Accepted Work Package
 
@@ -99,7 +99,7 @@ Implementation authorized: NO
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator result acceptance: ACCEPTED
-Closeout: NOT_PROPOSED
+Closeout: PROPOSED_NOT_APPLIED
 PROV-01 authorization: CLEARED
 INT-01 authorization: CLEARED
 Repository writer: NONE
@@ -193,3 +193,42 @@ Acceptance checkpoint: THIS_COMMIT
 ```
 
 Commit 8 may only propose closeout. It must not apply closeout or authorize FS-12.
+
+
+## Post-acceptance bounded validator correction
+
+```text
+Commit: e0486b3a25721812e5a69b52f655e3bae1402e34
+Direct parent: 50f10a129d34a4eae78c184d41523ba973caad93
+Subject: fix(bce): permit bounded corrections after authority clearance
+Operation: BOUNDED_VALIDATOR_CORRECTION
+Lifecycle transition: NONE
+Exact paths: 3
+Repository tests: 237 passed
+Active authorization: NONE
+Repository writer: NONE
+Closeout: NOT_PROPOSED
+```
+
+This correction did not change the accepted FS-11 result and did not count as an
+FS-11 planned commit.
+
+
+## Commit 8 — closeout proposal
+
+```text
+Subject: chore(bce): propose FS-11 closeout
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Proposal base checkpoint: e0486b3a25721812e5a69b52f655e3bae1402e34
+Proposal record: .floppy/closeouts/FS-11-closeout.md
+Proposal checkpoint: THIS_COMMIT
+Closeout application: NOT_APPLIED
+Active authorization: NONE
+Repository writer: NONE
+FS-12: INACTIVE / NOT AUTHORIZED
+```
+
+Commit 9 is prohibited until the administrator explicitly accepts the exact
+Commit 8 proposal record and unchanged SHA-256 digest.

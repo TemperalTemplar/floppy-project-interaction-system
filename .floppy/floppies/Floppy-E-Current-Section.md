@@ -1,6 +1,6 @@
 # Floppy E — FS-11 Current Section
 
-Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
 
 Applied lifecycle transitions, in order:
 
@@ -9,6 +9,7 @@ Applied lifecycle transitions, in order:
 3. `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
 4. `TR-006-RECORD-VERIFICATION-COMPLETE`
 5. `TR-007-ACCEPT-SECTION`
+6. `TR-008-PROPOSE-SECTION-CLOSEOUT`
 
 State-preserving authority operation:
 
@@ -29,7 +30,7 @@ FS-11 activation: INACTIVE
 FS-11 implementation: COMPLETE
 FS-11 verification: COMPLETE
 FS-11 administrator result acceptance: ACCEPTED
-FS-11 closeout: NOT_PROPOSED
+FS-11 closeout: PROPOSED_NOT_APPLIED
 PROV-01 authorization: CLEARED
 INT-01 authorization: CLEARED
 Authorization kind: section_implementation
@@ -135,3 +136,47 @@ Commit 7 checkpoint: THIS_COMMIT
 TR-007 clears the INT-01 authorization and writer without proposing or applying
 closeout. FS-12 remains inactive and unauthorized.
 <!-- FS11_ADMINISTRATOR_ACCEPTANCE_END -->
+
+
+<!-- FS11_POST_ACCEPTANCE_CORRECTION_BEGIN -->
+## Post-acceptance bounded validator correction
+
+```text
+Commit: e0486b3a25721812e5a69b52f655e3bae1402e34
+Direct parent: 50f10a129d34a4eae78c184d41523ba973caad93
+Subject: fix(bce): permit bounded corrections after authority clearance
+Operation: BOUNDED_VALIDATOR_CORRECTION
+Lifecycle transition: NONE
+Exact paths: 3
+Repository tests: 237 passed
+Active authorization: NONE
+Repository writer: NONE
+Closeout before proposal: NOT_PROPOSED
+```
+
+This correction changed no root `.floppy` record and did not alter the accepted
+FS-11 result. It enabled exact no-authority closeout-control validation.
+<!-- FS11_POST_ACCEPTANCE_CORRECTION_END -->
+
+
+<!-- FS11_CLOSEOUT_PROPOSAL_BEGIN -->
+## FS-11 closeout proposal
+
+```text
+Subject: chore(bce): propose FS-11 closeout
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Proposal base checkpoint: e0486b3a25721812e5a69b52f655e3bae1402e34
+Proposal record: .floppy/closeouts/FS-11-closeout.md
+Proposal checkpoint: THIS_COMMIT
+Application status: NOT_APPLIED
+Application authorization: NONE
+Active authorization: NONE
+Repository writer: NONE
+FS-12: INACTIVE / NOT AUTHORIZED
+```
+
+Mandatory stop: the administrator must review the exact committed proposal
+record and SHA-256 digest. This proposal is not closeout application.
+<!-- FS11_CLOSEOUT_PROPOSAL_END -->
