@@ -1,4 +1,4 @@
-STATUS: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
+STATUS: ACCEPTED_CLOSEOUT_NOT_PROPOSED
 
 # Floppy E — FS-11 Accepted Work Package
 
@@ -94,17 +94,17 @@ Commit 9: TR-009-APPLY-SECTION-CLOSEOUT
 
 ```text
 Accepted: YES
-Active: YES
-Implementation authorized: YES
+Active: NO
+Implementation authorized: NO
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator result acceptance: PENDING
+Administrator result acceptance: ACCEPTED
 Closeout: NOT_PROPOSED
 PROV-01 authorization: CLEARED
-INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-Repository writer: FS_11_INT_01_WORKING_MODEL
-Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-Active implementation section: FS-11
+INT-01 authorization: CLEARED
+Repository writer: NONE
+Writer authorization reference: NONE
+Active implementation section: NONE
 Reusable-product implementation output applied: YES
 Root reconciliation output applied: YES
 INT-01 plan SHA-256: a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6
@@ -153,11 +153,11 @@ Transition 2 post-state: LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 Base checkpoint: 1f3d8b382ca29531c60213b9b4dd12ce66e5b836
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator result acceptance: PENDING
+Administrator result acceptance: ACCEPTED
 Active authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-Repository writer: FS_11_INT_01_WORKING_MODEL
-Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
-Active implementation section: FS-11
+Repository writer: NONE
+Writer authorization reference: NONE
+Active implementation section: NONE
 Completion checkpoint: THIS_COMMIT
 ```
 
@@ -172,3 +172,24 @@ Commit 7: PROHIBITED until explicit administrator decision
 Required administrator decision: ACCEPT FS-11 VERIFIED RESULT or corrective rejection
 FS-12: INACTIVE / NOT AUTHORIZED
 ```
+
+
+## Commit 7 — administrator acceptance
+
+```text
+Subject: chore(bce): record FS-11 administrator acceptance
+Decision: ACCEPT FS-11 VERIFIED RESULT
+Transition: TR-007-ACCEPT-SECTION
+Pre-state: LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Verified checkpoint: fa3d33384354395626b0ea928aad4afc6d52ebd2
+Administrator result acceptance: ACCEPTED
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Active implementation section: NONE
+Closeout: NOT_PROPOSED
+Acceptance checkpoint: THIS_COMMIT
+```
+
+Commit 8 may only propose closeout. It must not apply closeout or authorize FS-12.
