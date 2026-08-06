@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_PLANNING_BASELINE
+STATUS: IMPLEMENTATION_IN_PROGRESS
 
 # Floppy E — FS-11 Accepted Work Package
 
@@ -19,7 +19,8 @@ Binding report SHA-256: 76b59c93e150e8ec965a7fba5a10dda92e4b112170a83032aa91c5b2
 Acceptance checkpoint: THIS_COMMIT
 ```
 
-Acceptance is a planning baseline only. It does not authorize activation or implementation.
+The accepted work package is now active under the explicit administrator
+decision `AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION`.
 
 ## Exact reusable-product scope
 
@@ -93,17 +94,33 @@ Commit 9: TR-009-APPLY-SECTION-CLOSEOUT
 
 ```text
 Accepted: YES
-Active: NO
-Implementation authorized: NO
-Implementation: NOT_STARTED
+Active: YES
+Implementation authorized: YES
+Implementation: IN_PROGRESS
 Verification: NOT_STARTED
 Administrator result acceptance: PENDING
 Closeout: NOT_PROPOSED
-PROV-01 authorization: NONE
+PROV-01 authorization: FS_11_PROV_01_IMPLEMENTATION
 INT-01 authorization: NONE
-Repository writer: NONE
-Writer authorization reference: NONE
-Active implementation section: NONE
+Repository writer: FS_11_PROV_01_WORKING_MODEL
+Writer authorization reference: FS_11_PROV_01_IMPLEMENTATION
+Active implementation section: FS-11
+Implementation output applied: NO
+```
+
+## Activation record
+
+```text
+Administrator decision: AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION
+Authorization: FS_11_PROV_01_IMPLEMENTATION
+Authorization kind: section_implementation
+Base checkpoint: 09eebe6ff1854e98d9b866754b3bd200b02b027d
+Transition 1: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION
+Intermediate state: LC-SECTION-AUTHORIZED-NOT-STARTED
+Transition 2: TR-004-START-SECTION-IMPLEMENTATION
+Final state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Activation checkpoint: THIS_COMMIT
+Commit 3 authorization: ALREADY COVERED BY THE SAME ADMINISTRATOR DECISION
 ```
 
 ## Binding effects
@@ -116,5 +133,6 @@ New authorization kind: NO
 Ordinary-user Python requirement: NO
 ```
 
-The next repository action requires a separate administrator decision authorizing
-`FS_11_PROV_01_IMPLEMENTATION`.
+The next repository action is preparation of the separate Commit 3
+implementation runner from this activation checkpoint. No additional
+administrator authorization decision is required before Commit 3.

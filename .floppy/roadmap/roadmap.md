@@ -317,29 +317,27 @@ of the FS-11 work package under separate authority.
 <!-- END FS-10 VERIFICATION-ONLY WORK-PACKAGE ACCEPTANCE -->
 
 
-<!-- FS11_TR002_ACCEPTANCE_BEGIN -->
-## FS-11 accepted work package
+<!-- FS11_PROV01_ACTIVATION_BEGIN -->
+## FS-11 PROV-01 implementation active
 
 ```text
-Lifecycle state: LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
-Transition: TR-002-ACCEPT-WORK-PACKAGE
-Work-package type: STANDARD_IMPLEMENTATION
-Accepted: YES
-Active: NO
-Authorized: NO
-Implementation: NOT_STARTED
-Verification: NOT_STARTED
-Administrator result acceptance: PENDING
-Closeout: NOT_PROPOSED
-Exact reusable-product paths: 14
-Exact administrative paths: 13
-Exact planned commits: 9
-Exact phases: 7
-Repository writer: NONE
-Binding report SHA-256: 76b59c93e150e8ec965a7fba5a10dda92e4b112170a83032aa91c5b23e8143f1
-Acceptance checkpoint: THIS_COMMIT
+Lifecycle state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Administrator decision: AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION
+Transition 1: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION
+Intermediate state: LC-SECTION-AUTHORIZED-NOT-STARTED
+Transition 2: TR-004-START-SECTION-IMPLEMENTATION
+Authorization: FS_11_PROV_01_IMPLEMENTATION
+Authorization kind: section_implementation
+Repository writer: FS_11_PROV_01_WORKING_MODEL
+Writer authorization reference: FS_11_PROV_01_IMPLEMENTATION
+Active implementation section: FS-11
+Exact authorized reusable-product paths: 14
+Implementation output applied: NO
+INT-01 authorization: NONE
+Activation checkpoint: THIS_COMMIT
 ```
 
-The next repository action requires separate administrator authorization for
-`FS_11_PROV_01_IMPLEMENTATION`.
-<!-- FS11_TR002_ACCEPTANCE_END -->
+Commit 3 remains a separate reusable-product commit over exactly the accepted
+14 paths. It is already covered by the same administrator decision and requires
+a separately generated runner, not another authorization decision.
+<!-- FS11_PROV01_ACTIVATION_END -->

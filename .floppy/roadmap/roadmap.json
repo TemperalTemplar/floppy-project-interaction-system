@@ -13,8 +13,8 @@
         "commit": "6f79872fa563a7a9c4820bad10ab86edc13782cd",
         "source_version": "0.4.1-dev"
     },
-    "active_implementation_section": null,
-    "current_authorized_section": null,
+    "active_implementation_section": "FS-11",
+    "current_authorized_section": "FS-11",
     "next_proposed_section": "FS-11",
     "fs_01": {
         "status": "CLOSED",
@@ -1648,7 +1648,7 @@
         "mixed_control_and_product_commits_permitted": false,
         "root_control_state_integrates_to_main": false
     },
-    "continuation_point": "FS-11 work package is accepted. Separate administrator authorization is required for FS_11_PROV_01_IMPLEMENTATION.",
+    "continuation_point": "FS-11 PROV-01 implementation is active. Prepare Commit 3 under the existing authorization; no additional administrator decision is required.",
     "accepted_fs_01_implementation_authorization_checkpoint": {
         "branch": "control/source-development-bce-onboarding",
         "commit": "b12928e7365149813c00c65c1e409fe2a5d0d36f",
@@ -1656,7 +1656,75 @@
         "implementation_branch": "feature/fs-01-lifecycle-specification",
         "implementation_worktree": "D:\\A\\Floppy\\floppy-fs-01-lifecycle-specification"
     },
-    "active_work_authorization": null,
+    "active_work_authorization": {
+        "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+        "authorization_kind": "section_implementation",
+        "section": "FS-11",
+        "human_authority": {
+            "actor": "Alva Roberts",
+            "decision": "AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION",
+            "issued_explicitly": true
+        },
+        "repository": "TemperalTemplar/floppy-project-interaction-system",
+        "base_checkpoint": "09eebe6ff1854e98d9b866754b3bd200b02b027d",
+        "source_version": "0.4.1-dev",
+        "branch": "feature/ctrl-02-verification-only-lifecycle",
+        "worktree": "D:\\A\\Floppy-CTRL-02",
+        "exact_file_scope": [
+            "README.md",
+            "docs/User-Guide.md",
+            "project-seed/.floppy/lifecycle-state.json",
+            "project-seed/.floppy/manifest.json",
+            "project-seed/.floppy/orchestrator-registry.json",
+            "schemas/floppy-fields.md",
+            "system-manifest.json",
+            "tools/floppyctl.py",
+            "tools/initialize_project.py",
+            "tools/validate_floppy.py",
+            "tests/test_floppyctl.py",
+            "tests/test_orchestrator_registry.py",
+            "tests/test_project_provisioning.py",
+            "tests/test_validated_boot_package.py"
+        ],
+        "required_validation": [
+            "Verify exact 14-path reusable-product scope.",
+            "Run focused FS-11 provisioning tests.",
+            "Run the complete repository test suite.",
+            "Run source validation and floppyctl source validation.",
+            "Validate all tracked JSON.",
+            "Run git diff --check.",
+            "Verify tested tree equals committed tree.",
+            "Verify no root .floppy administrative path changes in Commit 3."
+        ],
+        "commit_sequence": [
+            {
+                "id": "P1",
+                "message": "feat(fs-11): add deterministic project control-state provisioning",
+                "path_class": "reusable_product"
+            }
+        ],
+        "push_boundary": {
+            "permitted": false,
+            "branch": "feature/ctrl-02-verification-only-lifecycle",
+            "force_push": false
+        },
+        "forbidden_side_effects": [
+            "root .floppy administrative changes during Commit 3",
+            "INT-01 activation",
+            "real-project reconciliation",
+            "push",
+            "merge",
+            "integration",
+            "tag",
+            "release",
+            "package",
+            "production change"
+        ],
+        "administrator_acceptance": "PENDING",
+        "section_closeout": "NOT AUTHORIZED",
+        "integration": "NOT AUTHORIZED",
+        "later_section_authority": "NOT AUTHORIZED"
+    },
     "fs_01_product_completion_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d907643874f9aa278f31311527f3e7ec907c6cb6",
@@ -1665,9 +1733,9 @@
         "verification": "COMPLETE",
         "administrator_acceptance": "ACCEPTED"
     },
-    "lifecycle_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-    "last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
-    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+    "lifecycle_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+    "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
     "accepted_fs_01_implementation_checkpoint": {
         "branch": "feature/fs-01-lifecycle-specification",
         "commit": "d03969aa93debb6b705098483c8b59bb9d37d58f",
@@ -4620,14 +4688,14 @@
         "reusable_product_paths_named": false,
         "product_commit_authorized": false
     },
-    "repository_writer": null,
-    "writer_authorization_reference": null,
+    "repository_writer": "FS_11_PROV_01_WORKING_MODEL",
+    "writer_authorization_reference": "FS_11_PROV_01_IMPLEMENTATION",
     "fs_11_work_package": {
         "id": "FS-11",
         "sequence": 11,
         "title": "Project Control-State Provisioning and Integration",
-        "status": "ACCEPTED_INACTIVE",
-        "implementation_started": false,
+        "status": "IMPLEMENTATION_IN_PROGRESS",
+        "implementation_started": true,
         "depends_on": [
             "FS-10"
         ],
@@ -4646,15 +4714,15 @@
         "accepted": true,
         "work_package_accepted": true,
         "work_package_status": "ACCEPTED AS PLANNING BASELINE",
-        "activation_authorized": false,
-        "implementation_authorized": false,
-        "active": false,
-        "repository_writer": null,
-        "writer_authorization_reference": null,
-        "authorization_id": null,
+        "activation_authorized": true,
+        "implementation_authorized": true,
+        "active": true,
+        "repository_writer": "FS_11_PROV_01_WORKING_MODEL",
+        "writer_authorization_reference": "FS_11_PROV_01_IMPLEMENTATION",
+        "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
         "product_paths_defined": true,
         "test_inventory_defined": true,
-        "product_commit_authorized": false,
+        "product_commit_authorized": true,
         "self_hosted_root_reconciliation_requires_separate_authority": true,
         "reusable_capability_and_root_reconciliation_require_separate_commits": true,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only.",
@@ -4666,9 +4734,9 @@
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_PROPOSED",
         "section_closeout": "NOT_PROPOSED",
-        "active_work_authorization": null,
+        "active_work_authorization": "FS_11_PROV_01_IMPLEMENTATION",
         "active_control_work_authorization": null,
-        "active_implementation_authorization": null,
+        "active_implementation_authorization": "FS_11_PROV_01_IMPLEMENTATION",
         "active_migration_authorization": null,
         "product_commit": null,
         "draft_created_by_transition": "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT",
@@ -4740,14 +4808,35 @@
             "Commit 8: TR-008-PROPOSE-SECTION-CLOSEOUT",
             "Commit 9: TR-009-APPLY-SECTION-CLOSEOUT"
         ],
-        "prov_01_and_int_01_separate": true
+        "prov_01_and_int_01_separate": true,
+        "implementation_state": "IN_PROGRESS",
+        "implementation": "IN_PROGRESS",
+        "activation_administrator_decision": "AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION",
+        "activation_base_checkpoint": "09eebe6ff1854e98d9b866754b3bd200b02b027d",
+        "activation_checkpoint": "THIS_COMMIT",
+        "activation_transition_sequence": [
+            {
+                "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+                "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+            },
+            {
+                "id": "TR-004-START-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+                "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+            }
+        ],
+        "activation_intermediate_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "activation_final_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "implementation_output_applied": false,
+        "int_01_authorization": null
     },
     "fs_11_work_package_draft": {
         "id": "FS-11",
         "sequence": 11,
         "title": "Project Control-State Provisioning and Integration",
-        "status": "ACCEPTED_INACTIVE",
-        "implementation_started": false,
+        "status": "IMPLEMENTATION_IN_PROGRESS",
+        "implementation_started": true,
         "depends_on": [
             "FS-10"
         ],
@@ -4766,15 +4855,15 @@
         "accepted": true,
         "work_package_accepted": true,
         "work_package_status": "ACCEPTED AS PLANNING BASELINE",
-        "activation_authorized": false,
-        "implementation_authorized": false,
-        "active": false,
-        "repository_writer": null,
-        "writer_authorization_reference": null,
-        "authorization_id": null,
+        "activation_authorized": true,
+        "implementation_authorized": true,
+        "active": true,
+        "repository_writer": "FS_11_PROV_01_WORKING_MODEL",
+        "writer_authorization_reference": "FS_11_PROV_01_IMPLEMENTATION",
+        "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
         "product_paths_defined": true,
         "test_inventory_defined": true,
-        "product_commit_authorized": false,
+        "product_commit_authorized": true,
         "self_hosted_root_reconciliation_requires_separate_authority": true,
         "reusable_capability_and_root_reconciliation_require_separate_commits": true,
         "windows_release_requirement": "Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only.",
@@ -4786,9 +4875,9 @@
         "administrator_acceptance": "PENDING",
         "closeout": "NOT_PROPOSED",
         "section_closeout": "NOT_PROPOSED",
-        "active_work_authorization": null,
+        "active_work_authorization": "FS_11_PROV_01_IMPLEMENTATION",
         "active_control_work_authorization": null,
-        "active_implementation_authorization": null,
+        "active_implementation_authorization": "FS_11_PROV_01_IMPLEMENTATION",
         "active_migration_authorization": null,
         "product_commit": null,
         "draft_created_by_transition": "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT",
@@ -4860,7 +4949,28 @@
             "Commit 8: TR-008-PROPOSE-SECTION-CLOSEOUT",
             "Commit 9: TR-009-APPLY-SECTION-CLOSEOUT"
         ],
-        "prov_01_and_int_01_separate": true
+        "prov_01_and_int_01_separate": true,
+        "implementation_state": "IN_PROGRESS",
+        "implementation": "IN_PROGRESS",
+        "activation_administrator_decision": "AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION",
+        "activation_base_checkpoint": "09eebe6ff1854e98d9b866754b3bd200b02b027d",
+        "activation_checkpoint": "THIS_COMMIT",
+        "activation_transition_sequence": [
+            {
+                "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+                "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+            },
+            {
+                "id": "TR-004-START-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+                "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+            }
+        ],
+        "activation_intermediate_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "activation_final_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "implementation_output_applied": false,
+        "int_01_authorization": null
     },
     "closeout_application": {
         "section": "FS-10",
@@ -4894,5 +5004,29 @@
         "installer": "NOT AUTHORIZED",
         "runtime_bundle": "NOT AUTHORIZED",
         "production_changes": "NOT AUTHORIZED"
+    },
+    "authorization_activation": {
+        "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+        "operation": "ACTIVATION_CONTROL_COMMIT",
+        "implementation_scope_exercised": false,
+        "exact_control_paths": [
+            ".floppy/floppies/Floppy-E-Current-Section.md",
+            ".floppy/manifest.json",
+            ".floppy/roadmap/roadmap.json",
+            ".floppy/roadmap/roadmap.md",
+            ".floppy/templates/Floppy-E-FS-11.draft.md"
+        ],
+        "transition_sequence": [
+            {
+                "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+                "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+            },
+            {
+                "id": "TR-004-START-SECTION-IMPLEMENTATION",
+                "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+                "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+            }
+        ]
     }
 }
