@@ -1276,6 +1276,8 @@ GIT_AUTHORIZATION_ENV = "FLOPPY_AUTHORIZATION_REFERENCE"
 GIT_WRITER_ENV = "FLOPPY_REPOSITORY_WRITER"
 GIT_EXPECTED_HEAD_ENV = "FLOPPY_EXPECTED_HEAD"
 GIT_SCOPE_COMMIT_ENV = "FLOPPY_SCOPE_COMMIT"
+GIT_CONTROL_OPERATION_ENV = "FLOPPY_CONTROL_OPERATION"
+GIT_CONTROL_SCOPE_ENV = "FLOPPY_CONTROL_SCOPE"
 
 
 def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
@@ -1452,14 +1454,433 @@ def _git_integrity_activation_evidence_valid(
     return True
 
 
+
+GIT_OPERATION_EVIDENCE_KEY = "git_integrity_operation"
+
+_GIT_CONTROL_TRANSITIONS = {
+    "ACTIVATION_CONTROL_COMMIT": [
+        (
+            "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+            "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+            "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        ),
+        (
+            "TR-004-START-SECTION-IMPLEMENTATION",
+            "LC-SECTION-AUTHORIZED-NOT-STARTED",
+            "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        ),
+    ],
+    "COMPLETION_VERIFICATION_CONTROL": [
+        (
+            "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+            "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+            "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        ),
+        (
+            "TR-006-RECORD-VERIFICATION-COMPLETE",
+            "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+            "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        ),
+    ],
+    "ADMINISTRATOR_ACCEPTANCE_CONTROL": [
+        (
+            "TR-007-ACCEPT-SECTION",
+            "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+            "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+        )
+    ],
+    "CLOSEOUT_PROPOSAL_CONTROL": [
+        (
+            "TR-008-PROPOSE-SECTION-CLOSEOUT",
+            "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+            "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+        )
+    ],
+    "CLOSEOUT_APPLICATION_CONTROL": [
+        (
+            "TR-009-APPLY-SECTION-CLOSEOUT",
+            "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+            "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        )
+    ],
+}
+
+_GIT_STATE_PRESERVING_OPERATIONS = {
+    "STATE_PRESERVING_AUTHORITY_HANDOFF",
+    "ROOT_CONTROL_IMPLEMENTATION",
+}
+
+_GIT_NO_AUTHORITY_OPERATIONS = {
+    "CLOSEOUT_PROPOSAL_CONTROL",
+    "CLOSEOUT_APPLICATION_CONTROL",
+}
+
+
+def _git_integrity_section_record(
+    manifest: dict[str, Any] | None,
+    section: str,
+) -> dict[str, Any]:
+    if not isinstance(manifest, dict):
+        return {}
+    key = f"fs_{section[3:]}_work_package"
+    value = manifest.get(key)
+    return value if isinstance(value, dict) else {}
+
+
+def _git_integrity_section_from_context(
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    active: dict[str, Any] | None,
+    parent_active: dict[str, Any] | None,
+) -> str | None:
+    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+    values = [
+        evidence.get("section") if isinstance(evidence, dict) else None,
+        active.get("section") if isinstance(active, dict) else None,
+        parent_active.get("section") if isinstance(parent_active, dict) else None,
+    ]
+    for source in (manifest, parent_manifest):
+        if not isinstance(source, dict):
+            continue
+        for key in ("closeout_application", "closeout_proposal"):
+            record = source.get(key)
+            values.append(record.get("section") if isinstance(record, dict) else None)
+    for value in values:
+        if isinstance(value, str) and re.fullmatch(r"FS-[0-9]{2}", value):
+            return value
+    return None
+
+
+def _git_integrity_draft_path(
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    section: str,
+) -> str | None:
+    for source in (manifest, parent_manifest):
+        record = _git_integrity_section_record(source, section)
+        candidate = _semantic_repository_path(record.get("path"))
+        if candidate is not None:
+            return candidate
+    return f".floppy/templates/Floppy-E-{section}.draft.md"
+
+
+def _git_integrity_closeout_path(
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    section: str,
+) -> str:
+    for source in (manifest, parent_manifest):
+        if not isinstance(source, dict):
+            continue
+        for key in ("closeout_application", "closeout_proposal"):
+            record = source.get(key)
+            if not isinstance(record, dict) or record.get("section") != section:
+                continue
+            candidate = _semantic_repository_path(record.get("record"))
+            if candidate is not None:
+                return candidate
+    return f".floppy/closeouts/{section}-closeout.md"
+
+
+def _git_integrity_control_paths(
+    operation: str,
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    section: str,
+) -> set[str] | None:
+    draft = _git_integrity_draft_path(manifest, parent_manifest, section)
+    if draft is None:
+        return None
+    common = {
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        draft,
+    }
+    if operation == "ACTIVATION_CONTROL_COMMIT":
+        return common
+    if operation in {
+        "STATE_PRESERVING_AUTHORITY_HANDOFF",
+        "COMPLETION_VERIFICATION_CONTROL",
+        "ADMINISTRATOR_ACCEPTANCE_CONTROL",
+    }:
+        return common | {
+            ".floppy/lifecycle-state.json",
+            ".floppy/orchestrator-registry.json",
+        }
+    if operation == "CLOSEOUT_PROPOSAL_CONTROL":
+        return common | {
+            ".floppy/lifecycle-state.json",
+            _git_integrity_closeout_path(
+                manifest,
+                parent_manifest,
+                section,
+            ),
+        }
+    if operation == "CLOSEOUT_APPLICATION_CONTROL":
+        try:
+            next_section = f"FS-{int(section[3:]) + 1:02d}"
+        except ValueError:
+            return None
+        next_draft = _git_integrity_draft_path(
+            manifest,
+            parent_manifest,
+            next_section,
+        )
+        if next_draft is None:
+            return None
+        return common | {
+            ".floppy/START-HERE.md",
+            ".floppy/README.md",
+            ".floppy/floppies/Floppy-D-Project-Map.md",
+            ".floppy/lifecycle-state.json",
+            ".floppy/orchestrator-registry.json",
+            _git_integrity_closeout_path(
+                manifest,
+                parent_manifest,
+                section,
+            ),
+            next_draft,
+        }
+    return None
+
+
+def _git_integrity_manifest_writer(
+    manifest: dict[str, Any] | None,
+) -> tuple[str | None, str | None]:
+    if not isinstance(manifest, dict):
+        return None, None
+    continuation = manifest.get("continuation_point")
+    continuation = continuation if isinstance(continuation, dict) else {}
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    writers = {
+        value
+        for value in (
+            manifest.get("repository_writer"),
+            continuation.get("repository_writer"),
+            authority.get("repository_writer"),
+        )
+        if isinstance(value, str) and value
+    }
+    references = {
+        value
+        for value in (
+            manifest.get("writer_authorization_reference"),
+            continuation.get("writer_authorization_reference"),
+            authority.get("writer_authorization_reference"),
+        )
+        if isinstance(value, str) and value
+    }
+    writer = next(iter(writers)) if len(writers) == 1 else None
+    reference = next(iter(references)) if len(references) == 1 else None
+    return writer, reference
+
+
+def _git_integrity_operation_name(
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    active: dict[str, Any] | None,
+    parent_active: dict[str, Any] | None,
+) -> str:
+    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+    if isinstance(evidence, dict):
+        value = evidence.get("operation")
+        if isinstance(value, str) and value:
+            return value
+    if (
+        isinstance(parent_manifest, dict)
+        and parent_active is None
+        and isinstance(active, dict)
+    ):
+        return "ACTIVATION_CONTROL_COMMIT"
+    if isinstance(parent_active, dict) and isinstance(active, dict):
+        return "AUTHORIZED_IMPLEMENTATION_COMMIT"
+    return "LEGACY_IMPLEMENTATION"
+
+
+def _git_integrity_transition_evidence_valid(
+    operation: str,
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    errors: list[str],
+) -> None:
+    expected = _GIT_CONTROL_TRANSITIONS.get(operation)
+    if expected is None:
+        return
+    if operation == "ACTIVATION_CONTROL_COMMIT":
+        return
+    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+    if not isinstance(evidence, dict):
+        errors.append("GIT_INTEGRITY_CONTROL_EVIDENCE_MISSING")
+        return
+    transitions = evidence.get("transition_sequence")
+    if not isinstance(transitions, list) or len(transitions) != len(expected):
+        errors.append("GIT_INTEGRITY_TRANSITION_SEQUENCE_INVALID")
+        return
+    for index, ((identifier, pre_state, post_state), item) in enumerate(
+        zip(expected, transitions, strict=True)
+    ):
+        if not isinstance(item, dict):
+            errors.append(
+                f"GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: index {index}"
+            )
+            continue
+        if (
+            item.get("id") != identifier
+            or item.get("pre_state") != pre_state
+            or item.get("post_state") != post_state
+        ):
+            errors.append(
+                f"GIT_INTEGRITY_TRANSITION_SEQUENCE_INVALID: index {index}"
+            )
+        for field in ("actor", "decision"):
+            value = item.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(
+                    f"GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: "
+                    f"index {index} field {field}"
+                )
+        for field in ("inputs", "outputs", "validation_evidence"):
+            value = item.get(field)
+            if not isinstance(value, (list, dict)) or not value:
+                errors.append(
+                    f"GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: "
+                    f"index {index} field {field}"
+                )
+    parent_status = (
+        parent_manifest.get("status")
+        if isinstance(parent_manifest, dict)
+        else None
+    )
+    if parent_status != expected[0][1]:
+        errors.append(
+            "GIT_INTEGRITY_TRANSITION_PARENT_STATE_MISMATCH: "
+            f"expected {expected[0][1]} found {parent_status}"
+        )
+    if manifest.get("status") != expected[-1][2]:
+        errors.append(
+            "GIT_INTEGRITY_TRANSITION_CANDIDATE_STATE_MISMATCH: "
+            f"expected {expected[-1][2]} found {manifest.get('status')}"
+        )
+
+
+def _git_integrity_operation_evidence_valid(
+    operation: str,
+    manifest: dict[str, Any],
+    parent_manifest: dict[str, Any] | None,
+    section: str | None,
+    expected_paths: set[str],
+    errors: list[str],
+) -> None:
+    if operation == "ACTIVATION_CONTROL_COMMIT":
+        active = manifest.get("active_work_authorization")
+        if not isinstance(active, dict) or not _git_integrity_activation_evidence_valid(
+            manifest,
+            active,
+            expected_paths,
+        ):
+            errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_INVALID")
+        return
+    if operation in {
+        "AUTHORIZED_IMPLEMENTATION_COMMIT",
+        "LEGACY_IMPLEMENTATION",
+        "BOUNDED_VALIDATOR_CORRECTION",
+    }:
+        return
+    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+    if not isinstance(evidence, dict):
+        errors.append("GIT_INTEGRITY_CONTROL_EVIDENCE_MISSING")
+        return
+    if evidence.get("operation") != operation:
+        errors.append("GIT_INTEGRITY_CONTROL_OPERATION_MISMATCH")
+    if evidence.get("section") != section:
+        errors.append("GIT_INTEGRITY_CONTROL_SECTION_MISMATCH")
+    paths = evidence.get("exact_control_paths")
+    normalized_paths = {
+        normalized
+        for item in paths if isinstance(paths, list) and isinstance(item, str)
+        if (normalized := _semantic_repository_path(item)) is not None
+    } if isinstance(paths, list) else set()
+    if (
+        not isinstance(paths, list)
+        or len(normalized_paths) != len(paths)
+        or normalized_paths != expected_paths
+    ):
+        errors.append("GIT_INTEGRITY_CONTROL_PATH_EVIDENCE_INVALID")
+    expected_exercised = operation == "ROOT_CONTROL_IMPLEMENTATION"
+    if evidence.get("implementation_scope_exercised") is not expected_exercised:
+        errors.append("GIT_INTEGRITY_SCOPE_EXERCISE_EVIDENCE_INVALID")
+    if operation in _GIT_STATE_PRESERVING_OPERATIONS:
+        parent_status = (
+            parent_manifest.get("status")
+            if isinstance(parent_manifest, dict)
+            else None
+        )
+        if manifest.get("status") != parent_status:
+            errors.append("GIT_INTEGRITY_STATE_PRESERVATION_FAILED")
+        if evidence.get("transition_sequence") != []:
+            errors.append("GIT_INTEGRITY_STATE_PRESERVING_TRANSITION_FORBIDDEN")
+    _git_integrity_transition_evidence_valid(
+        operation,
+        manifest,
+        parent_manifest,
+        errors,
+    )
+
+
+def _git_integrity_clearance_valid(
+    manifest: dict[str, Any],
+    section: str,
+    errors: list[str],
+) -> None:
+    continuation = manifest.get("continuation_point")
+    continuation = continuation if isinstance(continuation, dict) else {}
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    values = (
+        manifest.get("active_work_authorization"),
+        manifest.get("repository_writer"),
+        manifest.get("writer_authorization_reference"),
+        continuation.get("active_work_authorization"),
+        continuation.get("repository_writer"),
+        continuation.get("writer_authorization_reference"),
+        continuation.get("active_implementation_section"),
+        authority.get("active_work_authorization"),
+        authority.get("active_implementation_authorization"),
+        authority.get("active_implementation_section"),
+        authority.get("current_authorized_section"),
+        authority.get("repository_writer"),
+        authority.get("writer_authorization_reference"),
+        authority.get("authorization_id"),
+    )
+    if any(value is not None for value in values):
+        errors.append("GIT_INTEGRITY_AUTHORITY_CLEARANCE_INCOMPLETE")
+    writer, reference = _git_integrity_manifest_writer(manifest)
+    if writer is not None or reference is not None:
+        errors.append("GIT_INTEGRITY_WRITER_CLEARANCE_INCOMPLETE")
+    record = _git_integrity_section_record(manifest, section)
+    for field in (
+        "authorization_id",
+        "repository_writer",
+        "writer_authorization_reference",
+    ):
+        if record.get(field) is not None:
+            errors.append(
+                f"GIT_INTEGRITY_SECTION_CLEARANCE_INCOMPLETE: {field}"
+            )
+
+
 def validate_authorization_git_integrity(
     root: Path,
     manifest: dict[str, Any],
     environ: dict[str, str] | None = None,
 ) -> list[str]:
-    """Validate authorization, writer, operation kind, and exact Git scope."""
+    """Validate authorization, writer, operation class, and exact Git scope."""
 
     environment = os.environ if environ is None else environ
+    candidate_evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
     runtime_requested = any(
         environment.get(name)
         for name in (
@@ -1467,152 +1888,26 @@ def validate_authorization_git_integrity(
             GIT_WRITER_ENV,
             GIT_EXPECTED_HEAD_ENV,
             GIT_SCOPE_COMMIT_ENV,
+            GIT_CONTROL_OPERATION_ENV,
+            GIT_CONTROL_SCOPE_ENV,
         )
-    )
-    active = manifest.get("active_work_authorization")
-    if active is None and not runtime_requested:
-        return []
-    if not isinstance(active, dict):
-        return ["GIT_INTEGRITY_ACTIVE_AUTHORIZATION_MISSING"]
+    ) or isinstance(candidate_evidence, dict)
 
     errors: list[str] = []
-    continuation = manifest.get("continuation_point")
-    if not isinstance(continuation, dict):
-        continuation = {}
-
-    expected_authorization = active.get("authorization_id")
-    if not isinstance(expected_authorization, str) or not expected_authorization:
-        errors.append("GIT_INTEGRITY_ACTIVE_AUTHORIZATION_INVALID")
-        expected_authorization = None
-
-    supplied_authorization = environment.get(GIT_AUTHORIZATION_ENV)
-    if not supplied_authorization:
-        errors.append("GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISSING")
-    elif (
-        expected_authorization is not None
-        and supplied_authorization != expected_authorization
-    ):
-        errors.append(
-            "GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISMATCH: "
-            f"expected {expected_authorization} found {supplied_authorization}"
-        )
-
-    recorded_references = {
-        value
-        for value in (
-            active.get("writer_authorization_reference"),
-            continuation.get("active_work_authorization"),
-            continuation.get("writer_authorization_reference"),
-        )
-        if isinstance(value, str) and value
-    }
-    if (
-        expected_authorization is not None
-        and recorded_references != {expected_authorization}
-    ):
-        if not recorded_references:
-            errors.append("GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_MISSING")
-        else:
-            errors.append(
-                "GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_CONFLICT: "
-                + ", ".join(sorted(recorded_references))
-            )
-
-    expected_writer = _git_integrity_expected_writer(
-        active,
-        continuation,
-        errors,
-    )
-    supplied_writer = environment.get(GIT_WRITER_ENV)
-    if not supplied_writer:
-        errors.append("GIT_INTEGRITY_EXECUTING_WRITER_MISSING")
-    elif expected_writer is not None and supplied_writer != expected_writer:
-        errors.append(
-            "GIT_INTEGRITY_EXECUTING_WRITER_MISMATCH: "
-            f"expected {expected_writer} found {supplied_writer}"
-        )
-
-    expected_branch = active.get("branch")
-    if not isinstance(expected_branch, str) or not expected_branch:
-        section = active.get("section")
-        package_key = (
-            f"fs_{section[3:]}_work_package"
-            if isinstance(section, str) and re.fullmatch(r"FS-[0-9]{2}", section)
-            else "fs_06_work_package"
-        )
-        package = manifest.get(package_key)
-        expected_branch = package.get("branch") if isinstance(package, dict) else None
-    if not isinstance(expected_branch, str) or not expected_branch:
-        errors.append("GIT_INTEGRITY_EXPECTED_BRANCH_MISSING")
-        expected_branch = None
-
-    branch_result = _git_integrity_run(
-        root,
-        "symbolic-ref",
-        "--quiet",
-        "--short",
-        "HEAD",
-    )
-    if branch_result.returncode == 1:
-        if expected_branch is not None:
-            errors.append(
-                "GIT_INTEGRITY_DETACHED_HEAD: "
-                f"expected branch {expected_branch}"
-            )
-    elif branch_result.returncode != 0:
-        errors.append(
-            "GIT_INTEGRITY_BRANCH_READ_FAILED: "
-            + branch_result.stderr.strip()
-        )
-    else:
-        actual_branch = branch_result.stdout.strip()
-        if expected_branch is not None and actual_branch != expected_branch:
-            errors.append(
-                "GIT_INTEGRITY_BRANCH_MISMATCH: "
-                f"expected {expected_branch} found {actual_branch}"
-            )
-
-    head_result = _git_integrity_run(root, "rev-parse", "HEAD")
-    if head_result.returncode != 0:
-        errors.append(
-            "GIT_INTEGRITY_HEAD_READ_FAILED: "
-            + head_result.stderr.strip()
-        )
-        actual_head = None
-    else:
-        actual_head = head_result.stdout.strip()
-
-    expected_head = environment.get(GIT_EXPECTED_HEAD_ENV)
-    if not expected_head:
-        value = active.get("required_head")
-        expected_head = value if isinstance(value, str) else None
-    if not expected_head:
-        errors.append("GIT_INTEGRITY_EXPECTED_HEAD_MISSING")
-    elif actual_head is not None and actual_head != expected_head:
-        errors.append(
-            "GIT_INTEGRITY_HEAD_MISMATCH: "
-            f"expected {expected_head} found {actual_head}"
-        )
-
-    scope = active.get("exact_file_scope")
-    if not isinstance(scope, list):
-        errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
-        implementation_paths: set[str] = set()
-    else:
-        implementation_paths = {
-            normalized
-            for item in scope
-            if isinstance(item, str)
-            and (normalized := _semantic_repository_path(item)) is not None
-        }
-        if len(implementation_paths) != len(scope):
-            errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
-
     scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
     actual_paths: set[str] = set()
     parent_revision: str | None = None
     candidate_revision: str | None = None
     pending_candidate = not bool(scope_commit)
+
+    head_result = _git_integrity_run(root, "rev-parse", "HEAD")
+    if head_result.returncode != 0:
+        errors.append(
+            "GIT_INTEGRITY_HEAD_READ_FAILED: " + head_result.stderr.strip()
+        )
+        actual_head = None
+    else:
+        actual_head = head_result.stdout.strip()
 
     if scope_commit:
         resolved = _git_integrity_run(
@@ -1622,10 +1917,7 @@ def validate_authorization_git_integrity(
             f"{scope_commit}^{{commit}}",
         )
         if resolved.returncode != 0:
-            errors.append(
-                "GIT_INTEGRITY_SCOPE_COMMIT_INVALID: "
-                f"{scope_commit}"
-            )
+            errors.append(f"GIT_INTEGRITY_SCOPE_COMMIT_INVALID: {scope_commit}")
         else:
             candidate_revision = resolved.stdout.strip()
             parent_revision = f"{candidate_revision}^"
@@ -1657,12 +1949,11 @@ def validate_authorization_git_integrity(
                 }
     else:
         parent_revision = "HEAD"
-        pending_commands = [
+        for command in (
             ("diff", "--name-only", "--"),
             ("diff", "--cached", "--name-only", "--"),
             ("ls-files", "--others", "--exclude-standard"),
-        ]
-        for command in pending_commands:
+        ):
             result = _git_integrity_run(root, *command)
             if result.returncode != 0:
                 errors.append(
@@ -1685,51 +1976,354 @@ def validate_authorization_git_integrity(
         if isinstance(parent_manifest, dict)
         else None
     )
+    active = manifest.get("active_work_authorization")
+    active_dict = active if isinstance(active, dict) else None
+    parent_active_dict = parent_active if isinstance(parent_active, dict) else None
+    operation = _git_integrity_operation_name(
+        manifest,
+        parent_manifest,
+        active_dict,
+        parent_active_dict,
+    )
+    requested_operation = environment.get(GIT_CONTROL_OPERATION_ENV)
+    if requested_operation:
+        operation = requested_operation
+    section = _git_integrity_section_from_context(
+        manifest,
+        parent_manifest,
+        active_dict,
+        parent_active_dict,
+    )
+
+    if not runtime_requested and active is None and parent_active is None:
+        return []
+
+    effective_active: dict[str, Any] | None
+    effective_manifest: dict[str, Any] | None
+    if operation == "ADMINISTRATOR_ACCEPTANCE_CONTROL":
+        effective_active = parent_active_dict
+        effective_manifest = parent_manifest
+    elif operation in _GIT_NO_AUTHORITY_OPERATIONS:
+        effective_active = None
+        effective_manifest = manifest
+    else:
+        effective_active = active_dict
+        effective_manifest = manifest
+
+    expected_authorization: str | None = None
+    expected_writer: str | None = None
+    continuation: dict[str, Any] = {}
+    if isinstance(effective_manifest, dict):
+        value = effective_manifest.get("continuation_point")
+        continuation = value if isinstance(value, dict) else {}
+
+    if effective_active is not None:
+        expected_authorization = effective_active.get("authorization_id")
+        if not isinstance(expected_authorization, str) or not expected_authorization:
+            errors.append("GIT_INTEGRITY_ACTIVE_AUTHORIZATION_INVALID")
+            expected_authorization = None
+        supplied_authorization = environment.get(GIT_AUTHORIZATION_ENV)
+        if not supplied_authorization:
+            errors.append("GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISSING")
+        elif (
+            expected_authorization is not None
+            and supplied_authorization != expected_authorization
+        ):
+            errors.append(
+                "GIT_INTEGRITY_AUTHORIZATION_REFERENCE_MISMATCH: "
+                f"expected {expected_authorization} found {supplied_authorization}"
+            )
+        recorded_references = {
+            value
+            for value in (
+                effective_active.get("writer_authorization_reference"),
+                continuation.get("active_work_authorization"),
+                continuation.get("writer_authorization_reference"),
+            )
+            if isinstance(value, str) and value
+        }
+        if (
+            expected_authorization is not None
+            and recorded_references != {expected_authorization}
+        ):
+            if not recorded_references:
+                errors.append(
+                    "GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_MISSING"
+                )
+            else:
+                errors.append(
+                    "GIT_INTEGRITY_RECORDED_AUTHORIZATION_REFERENCE_CONFLICT: "
+                    + ", ".join(sorted(recorded_references))
+                )
+        expected_writer = _git_integrity_expected_writer(
+            effective_active,
+            continuation,
+            errors,
+        )
+        supplied_writer = environment.get(GIT_WRITER_ENV)
+        if not supplied_writer:
+            errors.append("GIT_INTEGRITY_EXECUTING_WRITER_MISSING")
+        elif expected_writer is not None and supplied_writer != expected_writer:
+            errors.append(
+                "GIT_INTEGRITY_EXECUTING_WRITER_MISMATCH: "
+                f"expected {expected_writer} found {supplied_writer}"
+            )
+    else:
+        if environment.get(GIT_AUTHORIZATION_ENV):
+            errors.append("GIT_INTEGRITY_UNEXPECTED_AUTHORIZATION_REFERENCE")
+        if environment.get(GIT_WRITER_ENV):
+            errors.append("GIT_INTEGRITY_UNEXPECTED_EXECUTING_WRITER")
+
+    expected_branch = (
+        effective_active.get("branch")
+        if isinstance(effective_active, dict)
+        else None
+    )
+    if not isinstance(expected_branch, str) or not expected_branch:
+        package = (
+            _git_integrity_section_record(manifest, section)
+            if isinstance(section, str)
+            else {}
+        )
+        if not package and isinstance(parent_manifest, dict) and isinstance(section, str):
+            package = _git_integrity_section_record(parent_manifest, section)
+        expected_branch = package.get("branch") if isinstance(package, dict) else None
+    if not isinstance(expected_branch, str) or not expected_branch:
+        errors.append("GIT_INTEGRITY_EXPECTED_BRANCH_MISSING")
+        expected_branch = None
+
+    branch_result = _git_integrity_run(
+        root,
+        "symbolic-ref",
+        "--quiet",
+        "--short",
+        "HEAD",
+    )
+    if branch_result.returncode == 1:
+        if expected_branch is not None:
+            errors.append(
+                "GIT_INTEGRITY_DETACHED_HEAD: "
+                f"expected branch {expected_branch}"
+            )
+    elif branch_result.returncode != 0:
+        errors.append(
+            "GIT_INTEGRITY_BRANCH_READ_FAILED: "
+            + branch_result.stderr.strip()
+        )
+    else:
+        actual_branch = branch_result.stdout.strip()
+        if expected_branch is not None and actual_branch != expected_branch:
+            errors.append(
+                "GIT_INTEGRITY_BRANCH_MISMATCH: "
+                f"expected {expected_branch} found {actual_branch}"
+            )
+
+    expected_head = environment.get(GIT_EXPECTED_HEAD_ENV)
+    if not expected_head and isinstance(effective_active, dict):
+        value = effective_active.get("required_head")
+        expected_head = value if isinstance(value, str) else None
+    if not expected_head:
+        errors.append("GIT_INTEGRITY_EXPECTED_HEAD_MISSING")
+    elif actual_head is not None and actual_head != expected_head:
+        errors.append(
+            "GIT_INTEGRITY_HEAD_MISMATCH: "
+            f"expected {expected_head} found {actual_head}"
+        )
+
+    implementation_paths: set[str] = set()
+    if isinstance(active_dict, dict):
+        scope = active_dict.get("exact_file_scope")
+        if not isinstance(scope, list):
+            errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
+        else:
+            implementation_paths = {
+                normalized
+                for item in scope
+                if isinstance(item, str)
+                and (normalized := _semantic_repository_path(item)) is not None
+            }
+            if len(implementation_paths) != len(scope):
+                errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
 
     if candidate_revision is not None:
         committed_manifest = _git_integrity_manifest_at(root, candidate_revision)
         if committed_manifest is not None and committed_manifest != manifest:
             errors.append("GIT_INTEGRITY_CANDIDATE_MANIFEST_MISMATCH")
 
-    operation = "LEGACY_IMPLEMENTATION"
     expected_paths = set(implementation_paths)
-    if parent_active is None and isinstance(parent_manifest, dict):
-        operation = "ACTIVATION_CONTROL_COMMIT"
-        activation_paths = _git_integrity_activation_paths(manifest, active)
-        if activation_paths is None:
+    if operation == "BOUNDED_VALIDATOR_CORRECTION":
+        encoded_scope = environment.get(GIT_CONTROL_SCOPE_ENV)
+        try:
+            supplied_scope = json.loads(encoded_scope) if encoded_scope else None
+        except json.JSONDecodeError:
+            supplied_scope = None
+        if not isinstance(supplied_scope, list):
+            errors.append("GIT_INTEGRITY_CONTROL_SCOPE_INVALID")
+            expected_paths = set()
+        else:
+            expected_paths = {
+                normalized
+                for item in supplied_scope
+                if isinstance(item, str)
+                and (normalized := _semantic_repository_path(item)) is not None
+            }
+            if len(expected_paths) != len(supplied_scope):
+                errors.append("GIT_INTEGRITY_CONTROL_SCOPE_INVALID")
+            allowed = all(
+                item in {"tools/validate_floppy.py", "system-manifest.json"}
+                or (item.startswith("tests/test_") and item.endswith(".py"))
+                for item in expected_paths
+            )
+            if (
+                not allowed
+                or "tools/validate_floppy.py" not in expected_paths
+                or "system-manifest.json" not in expected_paths
+                or not any(item.startswith("tests/test_") for item in expected_paths)
+            ):
+                errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_SCOPE_FORBIDDEN")
+        if parent_manifest != manifest:
+            errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_MANIFEST_CHANGED")
+        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
+            errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MISSING")
+        elif _git_integrity_authorization_signature(parent_active_dict) != (
+            _git_integrity_authorization_signature(active_dict)
+        ):
+            errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MUTATED")
+    elif operation == "ACTIVATION_CONTROL_COMMIT":
+        if section is None:
             errors.append("GIT_INTEGRITY_ACTIVATION_CONTROL_PATHS_INVALID")
             expected_paths = set()
         else:
-            expected_paths = activation_paths
-            if not _git_integrity_activation_evidence_valid(
+            derived = _git_integrity_control_paths(
+                operation,
                 manifest,
-                active,
-                activation_paths,
-            ):
-                errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_INVALID")
+                parent_manifest,
+                section,
+            )
+            if derived is None:
+                errors.append("GIT_INTEGRITY_ACTIVATION_CONTROL_PATHS_INVALID")
+                expected_paths = set()
+            else:
+                expected_paths = derived
         if actual_paths & implementation_paths:
             errors.append(
                 "GIT_INTEGRITY_ACTIVATION_CHANGED_IMPLEMENTATION_PATHS: "
                 + ", ".join(sorted(actual_paths & implementation_paths))
             )
-    elif isinstance(parent_active, dict):
-        operation = "AUTHORIZED_IMPLEMENTATION_COMMIT"
-        parent_signature = _git_integrity_authorization_signature(parent_active)
-        candidate_signature = _git_integrity_authorization_signature(active)
-        changed_fields = sorted(
-            key
-            for key in parent_signature
-            if parent_signature[key] != candidate_signature[key]
-        )
-        if changed_fields:
-            errors.append(
-                "GIT_INTEGRITY_AUTHORIZATION_MUTATED: "
-                + ", ".join(changed_fields)
+    elif operation in {
+        "STATE_PRESERVING_AUTHORITY_HANDOFF",
+        "COMPLETION_VERIFICATION_CONTROL",
+        "ADMINISTRATOR_ACCEPTANCE_CONTROL",
+        "CLOSEOUT_PROPOSAL_CONTROL",
+        "CLOSEOUT_APPLICATION_CONTROL",
+    }:
+        if section is None:
+            errors.append("GIT_INTEGRITY_CONTROL_SECTION_INVALID")
+            expected_paths = set()
+        else:
+            derived = _git_integrity_control_paths(
+                operation,
+                manifest,
+                parent_manifest,
+                section,
             )
-        parent_activation = parent_manifest.get("authorization_activation")
-        candidate_activation = manifest.get("authorization_activation")
-        if parent_activation != candidate_activation:
-            errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_MUTATED")
+            if derived is None:
+                errors.append("GIT_INTEGRITY_CONTROL_PATHS_INVALID")
+                expected_paths = set()
+            else:
+                expected_paths = derived
+    elif operation in {
+        "AUTHORIZED_IMPLEMENTATION_COMMIT",
+        "ROOT_CONTROL_IMPLEMENTATION",
+    }:
+        expected_paths = set(implementation_paths)
+    elif effective_active is None:
+        errors.append("GIT_INTEGRITY_ACTIVE_AUTHORIZATION_MISSING")
+        expected_paths = set()
+
+    _git_integrity_operation_evidence_valid(
+        operation,
+        manifest,
+        parent_manifest,
+        section,
+        expected_paths,
+        errors,
+    )
+
+    if operation == "AUTHORIZED_IMPLEMENTATION_COMMIT":
+        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
+            errors.append("GIT_INTEGRITY_IMPLEMENTATION_PARENT_AUTHORIZATION_MISSING")
+        else:
+            parent_signature = _git_integrity_authorization_signature(parent_active_dict)
+            candidate_signature = _git_integrity_authorization_signature(active_dict)
+            changed_fields = sorted(
+                key
+                for key in parent_signature
+                if parent_signature[key] != candidate_signature[key]
+            )
+            if changed_fields:
+                errors.append(
+                    "GIT_INTEGRITY_AUTHORIZATION_MUTATED: "
+                    + ", ".join(changed_fields)
+                )
+            parent_activation = parent_manifest.get("authorization_activation")
+            candidate_activation = manifest.get("authorization_activation")
+            if parent_activation != candidate_activation:
+                errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_MUTATED")
+    elif operation == "ROOT_CONTROL_IMPLEMENTATION":
+        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
+            errors.append("GIT_INTEGRITY_ROOT_CONTROL_AUTHORIZATION_MISSING")
+        elif _git_integrity_authorization_signature(parent_active_dict) != (
+            _git_integrity_authorization_signature(active_dict)
+        ):
+            errors.append("GIT_INTEGRITY_ROOT_CONTROL_AUTHORIZATION_MUTATED")
+    elif operation == "STATE_PRESERVING_AUTHORITY_HANDOFF":
+        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
+            errors.append("GIT_INTEGRITY_HANDOFF_AUTHORIZATION_MISSING")
+        else:
+            old_id = parent_active_dict.get("authorization_id")
+            new_id = active_dict.get("authorization_id")
+            if not isinstance(old_id, str) or not isinstance(new_id, str) or old_id == new_id:
+                errors.append("GIT_INTEGRITY_HANDOFF_AUTHORIZATION_NOT_REPLACED")
+            if parent_active_dict.get("section") != active_dict.get("section"):
+                errors.append("GIT_INTEGRITY_HANDOFF_SECTION_CHANGED")
+            parent_writer, parent_reference = _git_integrity_manifest_writer(parent_manifest)
+            candidate_writer, candidate_reference = _git_integrity_manifest_writer(manifest)
+            if parent_reference != old_id:
+                errors.append("GIT_INTEGRITY_HANDOFF_PARENT_REFERENCE_INVALID")
+            if candidate_reference != new_id:
+                errors.append("GIT_INTEGRITY_HANDOFF_CANDIDATE_REFERENCE_INVALID")
+            if parent_writer is None or candidate_writer is None or parent_writer == candidate_writer:
+                errors.append("GIT_INTEGRITY_HANDOFF_WRITER_NOT_REPLACED")
+            if old_id in {candidate_reference, active_dict.get("authorization_id")}:
+                errors.append("GIT_INTEGRITY_HANDOFF_STALE_AUTHORIZATION_REMAINS")
+            canonical = (
+                root / ".floppy/lifecycle-state.json",
+                root / ".floppy/orchestrator-registry.json",
+            )
+            if not all(path.is_file() for path in canonical):
+                errors.append("GIT_INTEGRITY_HANDOFF_CANONICAL_BOOTSTRAP_MISSING")
+    elif operation == "COMPLETION_VERIFICATION_CONTROL":
+        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
+            errors.append("GIT_INTEGRITY_COMPLETION_AUTHORIZATION_MISSING")
+        elif _git_integrity_authorization_signature(parent_active_dict) != (
+            _git_integrity_authorization_signature(active_dict)
+        ):
+            errors.append("GIT_INTEGRITY_COMPLETION_AUTHORIZATION_MUTATED")
+    elif operation == "ADMINISTRATOR_ACCEPTANCE_CONTROL":
+        if not isinstance(parent_active_dict, dict):
+            errors.append("GIT_INTEGRITY_ACCEPTANCE_PARENT_AUTHORIZATION_MISSING")
+        if active is not None:
+            errors.append("GIT_INTEGRITY_ACCEPTANCE_AUTHORIZATION_REMAINS")
+        if section is not None:
+            _git_integrity_clearance_valid(manifest, section, errors)
+    elif operation in _GIT_NO_AUTHORITY_OPERATIONS:
+        if active is not None or parent_active is not None:
+            errors.append("GIT_INTEGRITY_CLOSEOUT_AUTHORIZATION_PRESENT")
+        writer, reference = _git_integrity_manifest_writer(manifest)
+        parent_writer, parent_reference = _git_integrity_manifest_writer(parent_manifest)
+        if any(value is not None for value in (writer, reference, parent_writer, parent_reference)):
+            errors.append("GIT_INTEGRITY_CLOSEOUT_WRITER_PRESENT")
 
     status_result = _git_integrity_run(
         root,
@@ -1750,23 +2344,22 @@ def validate_authorization_git_integrity(
             if not line:
                 continue
             code = line[:2]
-            path = line[3:] if len(line) > 3 else "<unknown>"
+            value = line[3:] if len(line) > 3 else "<unknown>"
             if code == "??":
-                untracked.append(path)
+                untracked.append(value)
                 continue
             if code[0] != " ":
-                staged.append(path)
+                staged.append(value)
             if code[1] != " ":
-                tracked.append(path)
+                tracked.append(value)
         if untracked:
             rejected_untracked = list(untracked)
             if pending_candidate:
                 rejected_untracked = [
-                    path
-                    for path in untracked
+                    value
+                    for value in untracked
                     if (
-                        (normalized := _semantic_repository_path(path))
-                        is None
+                        (normalized := _semantic_repository_path(value)) is None
                         or normalized not in expected_paths
                     )
                 ]
@@ -1790,9 +2383,7 @@ def validate_authorization_git_integrity(
     extra = sorted(actual_paths - expected_paths)
     missing = sorted(expected_paths - actual_paths)
     if extra:
-        errors.append(
-            "GIT_INTEGRITY_UNAUTHORIZED_PATHS: " + ", ".join(extra)
-        )
+        errors.append("GIT_INTEGRITY_UNAUTHORIZED_PATHS: " + ", ".join(extra))
     if missing:
         errors.append(
             "GIT_INTEGRITY_REQUIRED_PATHS_MISSING: " + ", ".join(missing)
@@ -1825,7 +2416,7 @@ def _validate_ordinary_closeout_completeness(
     manifest: dict[str, Any],
     root: Path,
 ) -> list[str]:
-    """Validate the currently represented applied section closeout."""
+    """Validate an ordinary applied closeout without freezing its next section."""
 
     if not isinstance(manifest, dict):
         return ["CLOSEOUT_MANIFEST_INVALID"]
@@ -1835,7 +2426,13 @@ def _validate_ordinary_closeout_completeness(
     closed_state = manifest.get("status") == (
         "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
     )
-    if not closed_state:
+    historical_application = (
+        isinstance(application, dict)
+        and application.get("transition")
+        == "TR-009-APPLY-SECTION-CLOSEOUT"
+        and application.get("status") == "APPLIED"
+    )
+    if not closed_state and not historical_application:
         return []
 
     errors: list[str] = []
@@ -1985,59 +2582,88 @@ def _validate_ordinary_closeout_completeness(
     if not isinstance(next_record, dict):
         next_record = {}
 
-    if next_record.get("active") is not False:
-        errors.append(f"CLOSEOUT_NEXT_SECTION_ACTIVE: {next_section}")
-    if next_record.get("accepted") is not False:
-        errors.append(f"CLOSEOUT_NEXT_SECTION_ACCEPTED: {next_section}")
-    next_authorized = any(
-        (
-            next_record.get("activation_authorized") is True,
-            next_record.get("implementation_authorized") is True,
-            next_record.get("authorization_id") not in {None, ""},
-            next_record.get("status") not in {
-                "DRAFT_NOT_AUTHORIZED",
-                "NOT AUTHORIZED",
-            },
-            isinstance(application, dict)
-            and application.get(next_key) != "NOT AUTHORIZED",
-        )
-    )
-    if next_authorized:
-        errors.append(f"CLOSEOUT_NEXT_SECTION_AUTHORIZED: {next_section}")
-
     continuation = manifest.get("continuation_point")
-    if not isinstance(continuation, dict):
-        continuation = {}
+    continuation = continuation if isinstance(continuation, dict) else {}
     authority = manifest.get("authority")
-    if not isinstance(authority, dict):
-        authority = {}
-    active_authorization_remains = any(
-        (
-            manifest.get("active_work_authorization") is not None,
-            continuation.get("active_work_authorization") is not None,
-            authority.get("active_implementation_section") is not None,
-            authority.get("current_authorized_section") is not None,
-            isinstance(application, dict)
-            and application.get("active_implementation_section") is not None,
-            isinstance(application, dict)
-            and application.get("current_authorized_section") is not None,
+    authority = authority if isinstance(authority, dict) else {}
+    active = manifest.get("active_work_authorization")
+    active = active if isinstance(active, dict) else None
+    active_section = active.get("section") if isinstance(active, dict) else None
+
+    if closed_state:
+        if next_record.get("active") is not False:
+            errors.append(f"CLOSEOUT_NEXT_SECTION_ACTIVE: {next_section}")
+        if next_record.get("accepted") is not False:
+            errors.append(f"CLOSEOUT_NEXT_SECTION_ACCEPTED: {next_section}")
+        next_authorized = any(
+            (
+                next_record.get("activation_authorized") is True,
+                next_record.get("implementation_authorized") is True,
+                next_record.get("authorization_id") not in {None, ""},
+                next_record.get("status") not in {
+                    "DRAFT_NOT_AUTHORIZED",
+                    "NOT AUTHORIZED",
+                },
+                isinstance(application, dict)
+                and application.get(next_key) != "NOT AUTHORIZED",
+            )
         )
-    )
-    if active_authorization_remains:
+        if next_authorized:
+            errors.append(f"CLOSEOUT_NEXT_SECTION_AUTHORIZED: {next_section}")
+        active_authorization_remains = any(
+            (
+                active is not None,
+                continuation.get("active_work_authorization") is not None,
+                authority.get("active_implementation_section") is not None,
+                authority.get("current_authorized_section") is not None,
+                isinstance(application, dict)
+                and application.get("active_implementation_section") is not None,
+                isinstance(application, dict)
+                and application.get("current_authorized_section") is not None,
+            )
+        )
+        if active_authorization_remains:
+            errors.append(f"CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: {section}")
+        writer_remains = any(
+            (
+                record.get("repository_writer") is not None,
+                continuation.get("repository_writer") is not None,
+                next_record.get("repository_writer") is not None,
+                isinstance(application, dict)
+                and application.get("repository_writer") is not None,
+            )
+        )
+        if writer_remains:
+            errors.append(f"CLOSEOUT_REPOSITORY_WRITER_REMAINS: {section}")
+        return errors
+
+    # Historical closeout remains authoritative after the next section progresses.
+    # Only the closed section's own outcome and authority clearance remain frozen.
+    if record.get("repository_writer") is not None:
+        errors.append(f"CLOSEOUT_REPOSITORY_WRITER_REMAINS: {section}")
+    if isinstance(application, dict) and any(
+        application.get(field) is not None
+        for field in (
+            "repository_writer",
+            "active_implementation_section",
+            "current_authorized_section",
+        )
+    ):
         errors.append(f"CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: {section}")
 
-    writer_remains = any(
-        (
-            record.get("repository_writer") is not None,
-            continuation.get("repository_writer") is not None,
-            next_record.get("repository_writer") is not None,
-            isinstance(application, dict)
-            and application.get("repository_writer") is not None,
-        )
-    )
-    if writer_remains:
-        errors.append(f"CLOSEOUT_REPOSITORY_WRITER_REMAINS: {section}")
-
+    if active is not None and active_section != next_section:
+        errors.append(f"CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: {section}")
+    for field in ("active_implementation_section", "current_authorized_section"):
+        value = authority.get(field)
+        if value is not None and value != next_section:
+            errors.append(f"CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: {section}")
+    if active is not None:
+        authorization_id = active.get("authorization_id")
+        if next_record.get("authorization_id") != authorization_id:
+            errors.append(f"CLOSEOUT_NEXT_SECTION_AUTHORIZATION_MISMATCH: {next_section}")
+        writer = continuation.get("repository_writer")
+        if next_record.get("repository_writer") != writer:
+            errors.append(f"CLOSEOUT_NEXT_SECTION_WRITER_MISMATCH: {next_section}")
     return errors
 
 
@@ -2445,10 +3071,31 @@ def validate_self_hosted_control_mode(
     registry = validate_json(registry_path, errors)
     if not isinstance(lifecycle, dict) or not isinstance(registry, dict):
         return
+
+    _validate_canonical_json_file(
+        lifecycle_path,
+        lifecycle,
+        errors,
+        "canonical lifecycle-state",
+    )
+    _validate_canonical_json_file(
+        registry_path,
+        registry,
+        errors,
+        "canonical orchestrator registry",
+    )
+    _validate_lifecycle_schema_instance(
+        root,
+        lifecycle,
+        errors,
+        "canonical lifecycle-state",
+    )
+
     if lifecycle.get("state_id") != manifest.get("status"):
         errors.append("CANONICAL_INTEGRATED_LIFECYCLE_STATE_MISMATCH")
-    assignments = registry.get("current_assignments")
-    assignments = assignments if isinstance(assignments, dict) else {}
+
+    active = manifest.get("active_work_authorization")
+    active = active if isinstance(active, dict) else None
     authority = manifest.get("authority")
     authority = authority if isinstance(authority, dict) else {}
     manifest_writer = manifest.get(
@@ -2458,10 +3105,88 @@ def validate_self_hosted_control_mode(
         "writer_authorization_reference",
         authority.get("writer_authorization_reference"),
     )
+    manifest_section = authority.get("active_implementation_section")
+    if manifest_section is None and active is not None:
+        manifest_section = active.get("section")
+
+    expected_authorization = (
+        active.get("authorization_id") if active is not None else None
+    )
+    if lifecycle.get("authorization_id") != expected_authorization:
+        errors.append("CANONICAL_INTEGRATED_AUTHORIZATION_MISMATCH")
+    if lifecycle.get("section") not in {manifest_section, active.get("section") if active else None}:
+        errors.append("CANONICAL_INTEGRATED_SECTION_MISMATCH")
+    expected_sections = [manifest_section] if isinstance(manifest_section, str) else []
+    if lifecycle.get("active_implementation_sections") != expected_sections:
+        errors.append("CANONICAL_INTEGRATED_ACTIVE_SECTIONS_MISMATCH")
+
+    dimensions = lifecycle.get("dimensions")
+    dimensions = dimensions if isinstance(dimensions, dict) else {}
+    expected_authority_dimension = (
+        "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION"
+        if active is not None
+        else "NO_ACTIVE_WORK_AUTHORIZATION"
+    )
+    if dimensions.get("authority") != expected_authority_dimension:
+        errors.append("CANONICAL_INTEGRATED_AUTHORITY_DIMENSION_MISMATCH")
+    if active is not None and lifecycle.get("base_checkpoint") != active.get("base_checkpoint"):
+        errors.append("CANONICAL_INTEGRATED_BASE_CHECKPOINT_MISMATCH")
+
+    assignments = registry.get("current_assignments")
+    assignments = assignments if isinstance(assignments, dict) else {}
     if assignments.get("repository_writer") != manifest_writer:
         errors.append("CANONICAL_INTEGRATED_WRITER_MISMATCH")
     if assignments.get("writer_authorization_reference") != manifest_reference:
         errors.append("CANONICAL_INTEGRATED_WRITER_REFERENCE_MISMATCH")
+    expected_model = manifest_writer if active is not None else None
+    if assignments.get("current_section_working_model") != expected_model:
+        errors.append("CANONICAL_INTEGRATED_WORKING_MODEL_MISMATCH")
+
+    rules = registry.get("rules")
+    rules = rules if isinstance(rules, dict) else {}
+    if rules.get("maximum_repository_writers") != 1:
+        errors.append("CANONICAL_INTEGRATED_WRITER_LIMIT_INVALID")
+    if rules.get("writer_requires_exact_authorization_reference") is not True:
+        errors.append("CANONICAL_INTEGRATED_WRITER_REFERENCE_RULE_INVALID")
+    if rules.get("status_or_role_grants_write_authority") is not False:
+        errors.append("CANONICAL_INTEGRATED_ROLE_AUTHORITY_RULE_INVALID")
+
+    orchestrators = registry.get("orchestrators")
+    orchestrators = orchestrators if isinstance(orchestrators, list) else []
+    identifiers = [
+        item.get("id")
+        for item in orchestrators
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    ]
+    if len(identifiers) != len(set(identifiers)):
+        errors.append("CANONICAL_INTEGRATED_DUPLICATE_ORCHESTRATOR")
+    active_orchestrators = [
+        item
+        for item in orchestrators
+        if isinstance(item, dict) and item.get("status") == "ACTIVE"
+    ]
+    if len(active_orchestrators) > 1:
+        errors.append("CANONICAL_INTEGRATED_MULTIPLE_ACTIVE_ORCHESTRATORS")
+    if manifest_writer is not None and identifiers.count(manifest_writer) != 1:
+        errors.append("CANONICAL_INTEGRATED_WRITER_REGISTRATION_INVALID")
+
+    checkpoint = registry.get("project_checkpoint")
+    checkpoint = checkpoint if isinstance(checkpoint, dict) else {}
+    if active is not None:
+        expected_checkpoint = {
+            "repository": active.get("repository"),
+            "branch": active.get("branch"),
+            "worktree": active.get("worktree"),
+            "checkpoint": active.get("base_checkpoint"),
+        }
+        if checkpoint != expected_checkpoint:
+            errors.append("CANONICAL_INTEGRATED_CHECKPOINT_MISMATCH")
+
+    provisioning = registry.get("provisioning")
+    provisioning = provisioning if isinstance(provisioning, dict) else {}
+    if provisioning.get("status") in {None, "TEMPLATE"}:
+        errors.append("CANONICAL_INTEGRATED_BOOTSTRAP_MARKER_REMAINS")
+
 
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)

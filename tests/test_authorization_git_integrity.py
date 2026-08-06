@@ -819,5 +819,649 @@ class ActivationAndImplementationGitIntegrityTests(unittest.TestCase):
             )
 
 
+class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
+    SECTION = "FS-11"
+    NEXT_SECTION = "FS-12"
+    BRANCH = "feature/fs-11-remaining-control-fixture"
+    PROV_AUTH = "FS_11_PROV_01_IMPLEMENTATION"
+    PROV_WRITER = "FS_11_PROV_01_WORKING_MODEL"
+    INT_AUTH = "FS_11_INT_01_SELF_HOSTED_RECONCILIATION"
+    INT_WRITER = "FS_11_INT_01_WORKING_MODEL"
+    HANDOFF_PATHS = [
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        ".floppy/lifecycle-state.json",
+        ".floppy/orchestrator-registry.json",
+        ".floppy/templates/Floppy-E-FS-11.draft.md",
+    ]
+    RECONCILIATION_PATHS = [
+        ".floppy/START-HERE.md",
+        ".floppy/README.md",
+        ".floppy/floppies/Floppy-B-Development-Issues.md",
+        ".floppy/floppies/Floppy-D-Project-Map.md",
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        ".floppy/lifecycle-state.json",
+        ".floppy/orchestrator-registry.json",
+    ]
+    PROPOSAL_PATHS = [
+        ".floppy/closeouts/FS-11-closeout.md",
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        ".floppy/lifecycle-state.json",
+        ".floppy/templates/Floppy-E-FS-11.draft.md",
+    ]
+    APPLICATION_PATHS = [
+        ".floppy/START-HERE.md",
+        ".floppy/README.md",
+        ".floppy/closeouts/FS-11-closeout.md",
+        ".floppy/floppies/Floppy-D-Project-Map.md",
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        ".floppy/lifecycle-state.json",
+        ".floppy/orchestrator-registry.json",
+        ".floppy/templates/Floppy-E-FS-11.draft.md",
+        ".floppy/templates/Floppy-E-FS-12.draft.md",
+    ]
+
+    def active(self, authorization: str, writer: str, scope: list[str]) -> dict:
+        return {
+            "authorization_id": authorization,
+            "authorization_kind": "section_implementation",
+            "section": self.SECTION,
+            "base_checkpoint": "1" * 40,
+            "branch": self.BRANCH,
+            "worktree": r"D:\A\Floppy-CTRL-02",
+            "repository_writer": writer,
+            "writer_authorization_reference": authorization,
+            "exact_file_scope": list(scope),
+        }
+
+    def manifest_with_authority(
+        self,
+        *,
+        status: str,
+        authorization: str,
+        writer: str,
+        scope: list[str],
+    ) -> dict:
+        return {
+            "status": status,
+            "active_work_authorization": self.active(
+                authorization,
+                writer,
+                scope,
+            ),
+            "repository_writer": writer,
+            "writer_authorization_reference": authorization,
+            "continuation_point": {
+                "active_work_authorization": authorization,
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+                "active_implementation_section": self.SECTION,
+            },
+            "authority": {
+                "authority_state": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+                "active_work_authorization": authorization,
+                "active_implementation_authorization": authorization,
+                "active_implementation_section": self.SECTION,
+                "current_authorized_section": self.SECTION,
+                "authorization_id": authorization,
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+            },
+            "fs_11_work_package": {
+                "id": self.SECTION,
+                "section": self.SECTION,
+                "path": ".floppy/templates/Floppy-E-FS-11.draft.md",
+                "branch": self.BRANCH,
+                "accepted": True,
+                "active": True,
+                "implementation_authorized": True,
+                "authorization_id": authorization,
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+            },
+        }
+
+    def transition(
+        self,
+        identifier: str,
+        pre_state: str,
+        post_state: str,
+    ) -> dict:
+        return {
+            "id": identifier,
+            "pre_state": pre_state,
+            "post_state": post_state,
+            "actor": "fixture actor",
+            "decision": "fixture decision",
+            "inputs": ["fixture input"],
+            "outputs": ["fixture output"],
+            "validation_evidence": ["fixture validation"],
+        }
+
+    def operation(
+        self,
+        name: str,
+        paths: list[str],
+        transitions: list[dict],
+        *,
+        exercised: bool = False,
+    ) -> dict:
+        return {
+            "operation": name,
+            "section": self.SECTION,
+            "implementation_scope_exercised": exercised,
+            "exact_control_paths": list(paths),
+            "transition_sequence": transitions,
+        }
+
+    def write_json(self, path: Path, value: dict) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(value, indent=4, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
+    def make_repo(self):
+        td = tempfile.TemporaryDirectory()
+        root = Path(td.name)
+        require_git(root, "init")
+        require_git(root, "config", "user.name", "Remaining Control Test")
+        require_git(root, "config", "user.email", "remaining@example.invalid")
+        require_git(root, "checkout", "-b", self.BRANCH)
+        all_paths = (
+            set(self.HANDOFF_PATHS)
+            | set(self.RECONCILIATION_PATHS)
+            | set(self.PROPOSAL_PATHS)
+            | set(self.APPLICATION_PATHS)
+        )
+        all_paths.discard(".floppy/lifecycle-state.json")
+        all_paths.discard(".floppy/orchestrator-registry.json")
+        for relative in sorted(all_paths):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if relative.endswith(".json"):
+                self.write_json(path, {"baseline": relative})
+            else:
+                path.write_text(f"baseline: {relative}\n", encoding="utf-8")
+        parent = self.manifest_with_authority(
+            status="LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+            authorization=self.PROV_AUTH,
+            writer=self.PROV_WRITER,
+            scope=["README.md"],
+        )
+        self.write_json(root / ".floppy/manifest.json", parent)
+        require_git(root, "add", "--", ".")
+        require_git(root, "commit", "-m", "PROV-01 parent")
+        return td, root
+
+    def apply_commit(
+        self,
+        root: Path,
+        manifest: dict,
+        paths: list[str],
+        subject: str,
+    ) -> str:
+        for relative in paths:
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if relative == ".floppy/manifest.json":
+                self.write_json(path, manifest)
+            elif relative in {
+                ".floppy/lifecycle-state.json",
+                ".floppy/orchestrator-registry.json",
+                ".floppy/roadmap/roadmap.json",
+            }:
+                self.write_json(path, {"changed": relative, "subject": subject})
+            else:
+                with path.open("a", encoding="utf-8") as handle:
+                    handle.write(f"{subject}\n")
+        require_git(root, "add", "--", *paths)
+        require_git(root, "commit", "-m", subject)
+        return require_git(root, "rev-parse", "HEAD")
+
+    def environment(
+        self,
+        head: str,
+        authorization: str | None,
+        writer: str | None,
+    ) -> dict[str, str]:
+        value = {
+            "FLOPPY_EXPECTED_HEAD": head,
+            "FLOPPY_SCOPE_COMMIT": head,
+        }
+        if authorization is not None:
+            value["FLOPPY_AUTHORIZATION_REFERENCE"] = authorization
+        if writer is not None:
+            value["FLOPPY_REPOSITORY_WRITER"] = writer
+        return value
+
+    def validate(
+        self,
+        root: Path,
+        manifest: dict,
+        head: str,
+        authorization: str | None,
+        writer: str | None,
+    ) -> list[str]:
+        return VALIDATOR.validate_authorization_git_integrity(
+            root,
+            manifest,
+            self.environment(head, authorization, writer),
+        )
+
+    def handoff_manifest(self) -> dict:
+        candidate = self.manifest_with_authority(
+            status="LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+            authorization=self.INT_AUTH,
+            writer=self.INT_WRITER,
+            scope=self.RECONCILIATION_PATHS,
+        )
+        candidate["git_integrity_operation"] = self.operation(
+            "STATE_PRESERVING_AUTHORITY_HANDOFF",
+            self.HANDOFF_PATHS,
+            [],
+        )
+        return candidate
+
+    def commit_handoff(self, root: Path, paths: list[str] | None = None):
+        manifest = self.handoff_manifest()
+        selected = self.HANDOFF_PATHS if paths is None else paths
+        head = self.apply_commit(root, manifest, selected, "authority handoff")
+        return head, manifest
+
+    def test_state_preserving_authority_handoff_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            head, manifest = self.commit_handoff(root)
+            self.assertEqual(
+                [],
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def test_handoff_cannot_include_reconciliation_bytes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            extra = ".floppy/README.md"
+            head, manifest = self.commit_handoff(
+                root,
+                [*self.HANDOFF_PATHS, extra],
+            )
+            self.assertIn(
+                f"GIT_INTEGRITY_UNAUTHORIZED_PATHS: {extra}",
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def test_handoff_requires_distinct_writer_and_authorization(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            manifest = self.handoff_manifest()
+            manifest["active_work_authorization"]["authorization_id"] = self.PROV_AUTH
+            manifest["active_work_authorization"]["writer_authorization_reference"] = self.PROV_AUTH
+            manifest["writer_authorization_reference"] = self.PROV_AUTH
+            manifest["continuation_point"]["active_work_authorization"] = self.PROV_AUTH
+            manifest["continuation_point"]["writer_authorization_reference"] = self.PROV_AUTH
+            manifest["authority"]["active_work_authorization"] = self.PROV_AUTH
+            manifest["authority"]["active_implementation_authorization"] = self.PROV_AUTH
+            manifest["authority"]["authorization_id"] = self.PROV_AUTH
+            manifest["authority"]["writer_authorization_reference"] = self.PROV_AUTH
+            manifest["fs_11_work_package"]["authorization_id"] = self.PROV_AUTH
+            manifest["fs_11_work_package"]["writer_authorization_reference"] = self.PROV_AUTH
+            head = self.apply_commit(root, manifest, self.HANDOFF_PATHS, "bad handoff")
+            self.assertIn(
+                "GIT_INTEGRITY_HANDOFF_AUTHORIZATION_NOT_REPLACED",
+                self.validate(root, manifest, head, self.PROV_AUTH, self.INT_WRITER),
+            )
+
+    def test_root_control_implementation_exact_scope_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            manifest = self.handoff_manifest()
+            manifest["git_integrity_operation"] = self.operation(
+                "ROOT_CONTROL_IMPLEMENTATION",
+                self.RECONCILIATION_PATHS,
+                [],
+                exercised=True,
+            )
+            head = self.apply_commit(
+                root,
+                manifest,
+                self.RECONCILIATION_PATHS,
+                "reconciliation",
+            )
+            self.assertEqual(
+                [],
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def completion_manifest(self) -> dict:
+        manifest = self.handoff_manifest()
+        manifest["status"] = "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING"
+        manifest["git_integrity_operation"] = self.operation(
+            "COMPLETION_VERIFICATION_CONTROL",
+            self.HANDOFF_PATHS,
+            [
+                self.transition(
+                    "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+                    "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+                    "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+                ),
+                self.transition(
+                    "TR-006-RECORD-VERIFICATION-COMPLETE",
+                    "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+                    "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+                ),
+            ],
+        )
+        return manifest
+
+    def test_completion_verification_control_passes_and_retains_authority(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            manifest = self.completion_manifest()
+            head = self.apply_commit(root, manifest, self.HANDOFF_PATHS, "complete")
+            self.assertEqual(
+                [],
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def test_completion_requires_ordered_extended_transition_evidence(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            manifest = self.completion_manifest()
+            manifest["git_integrity_operation"]["transition_sequence"].reverse()
+            head = self.apply_commit(root, manifest, self.HANDOFF_PATHS, "bad complete")
+            errors = self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER)
+            self.assertTrue(
+                any(item.startswith("GIT_INTEGRITY_TRANSITION_SEQUENCE_INVALID") for item in errors),
+                errors,
+            )
+
+    def acceptance_manifest(self) -> dict:
+        manifest = self.completion_manifest()
+        manifest["status"] = "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED"
+        manifest["active_work_authorization"] = None
+        manifest["repository_writer"] = None
+        manifest["writer_authorization_reference"] = None
+        manifest["continuation_point"].update({
+            "active_work_authorization": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+            "active_implementation_section": None,
+        })
+        manifest["authority"].update({
+            "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION",
+            "active_work_authorization": None,
+            "active_implementation_authorization": None,
+            "active_implementation_section": None,
+            "current_authorized_section": None,
+            "authorization_id": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+        })
+        manifest["fs_11_work_package"].update({
+            "active": False,
+            "implementation_authorized": False,
+            "authorization_id": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+        })
+        manifest["git_integrity_operation"] = self.operation(
+            "ADMINISTRATOR_ACCEPTANCE_CONTROL",
+            self.HANDOFF_PATHS,
+            [
+                self.transition(
+                    "TR-007-ACCEPT-SECTION",
+                    "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+                    "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+                )
+            ],
+        )
+        return manifest
+
+    def test_administrator_acceptance_passes_and_clears_authority(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            manifest = self.acceptance_manifest()
+            head = self.apply_commit(root, manifest, self.HANDOFF_PATHS, "accept")
+            self.assertEqual(
+                [],
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def test_administrator_acceptance_rejects_incomplete_clearance(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            manifest = self.acceptance_manifest()
+            manifest["authority"]["repository_writer"] = self.INT_WRITER
+            head = self.apply_commit(root, manifest, self.HANDOFF_PATHS, "bad accept")
+            self.assertIn(
+                "GIT_INTEGRITY_AUTHORITY_CLEARANCE_INCOMPLETE",
+                self.validate(root, manifest, head, self.INT_AUTH, self.INT_WRITER),
+            )
+
+    def proposal_manifest(self) -> dict:
+        manifest = self.acceptance_manifest()
+        manifest["status"] = "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED"
+        manifest["closeout_proposal"] = {
+            "section": self.SECTION,
+            "transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
+            "record": ".floppy/closeouts/FS-11-closeout.md",
+        }
+        manifest["git_integrity_operation"] = self.operation(
+            "CLOSEOUT_PROPOSAL_CONTROL",
+            self.PROPOSAL_PATHS,
+            [
+                self.transition(
+                    "TR-008-PROPOSE-SECTION-CLOSEOUT",
+                    "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+                    "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+                )
+            ],
+        )
+        return manifest
+
+    def test_closeout_proposal_exact_scope_passes_without_active_writer(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            acceptance = self.acceptance_manifest()
+            self.apply_commit(root, acceptance, self.HANDOFF_PATHS, "accept")
+            manifest = self.proposal_manifest()
+            head = self.apply_commit(root, manifest, self.PROPOSAL_PATHS, "proposal")
+            self.assertEqual([], self.validate(root, manifest, head, None, None))
+
+    def application_manifest(self) -> dict:
+        manifest = self.proposal_manifest()
+        manifest["status"] = "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+        manifest["closeout_application"] = {
+            "section": self.SECTION,
+            "transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+            "record": ".floppy/closeouts/FS-11-closeout.md",
+            "fs_12_draft_path": ".floppy/templates/Floppy-E-FS-12.draft.md",
+        }
+        manifest["fs_12_work_package"] = {
+            "id": self.NEXT_SECTION,
+            "section": self.NEXT_SECTION,
+            "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
+            "branch": self.BRANCH,
+            "accepted": False,
+            "active": False,
+            "implementation_authorized": False,
+            "authorization_id": None,
+            "repository_writer": None,
+        }
+        manifest["git_integrity_operation"] = self.operation(
+            "CLOSEOUT_APPLICATION_CONTROL",
+            self.APPLICATION_PATHS,
+            [
+                self.transition(
+                    "TR-009-APPLY-SECTION-CLOSEOUT",
+                    "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+                    "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+                )
+            ],
+        )
+        return manifest
+
+    def test_closeout_application_exact_scope_passes_without_active_writer(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            acceptance = self.acceptance_manifest()
+            self.apply_commit(root, acceptance, self.HANDOFF_PATHS, "accept")
+            proposal = self.proposal_manifest()
+            self.apply_commit(root, proposal, self.PROPOSAL_PATHS, "proposal")
+            manifest = self.application_manifest()
+            head = self.apply_commit(root, manifest, self.APPLICATION_PATHS, "application")
+            self.assertEqual([], self.validate(root, manifest, head, None, None))
+
+    def test_closeout_control_rejects_extra_path(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            acceptance = self.acceptance_manifest()
+            self.apply_commit(root, acceptance, self.HANDOFF_PATHS, "accept")
+            manifest = self.proposal_manifest()
+            extra = ".floppy/floppies/Floppy-B-Development-Issues.md"
+            head = self.apply_commit(
+                root,
+                manifest,
+                [*self.PROPOSAL_PATHS, extra],
+                "bad proposal",
+            )
+            self.assertIn(
+                f"GIT_INTEGRITY_UNAUTHORIZED_PATHS: {extra}",
+                self.validate(root, manifest, head, None, None),
+            )
+
+
+    def bounded_environment(self, head: str, scope: list[str]) -> dict[str, str]:
+        env = self.environment(head, self.PROV_AUTH, self.PROV_WRITER)
+        env["FLOPPY_CONTROL_OPERATION"] = "BOUNDED_VALIDATOR_CORRECTION"
+        env["FLOPPY_CONTROL_SCOPE"] = json.dumps(scope)
+        return env
+
+    def test_bounded_validator_correction_exact_scope_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            scope = [
+                "tools/validate_floppy.py",
+                "tests/test_authorization_git_integrity.py",
+                "system-manifest.json",
+            ]
+            for relative in scope:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"baseline: {relative}\n", encoding="utf-8")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "correction baseline")
+            for relative in scope:
+                with (root / relative).open("a", encoding="utf-8") as handle:
+                    handle.write("bounded correction\n")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "bounded correction")
+            head = require_git(root, "rev-parse", "HEAD")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    manifest,
+                    self.bounded_environment(head, scope),
+                ),
+            )
+
+    def test_bounded_validator_correction_rejects_non_test_product_path(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            scope = [
+                "tools/validate_floppy.py",
+                "README.md",
+                "system-manifest.json",
+            ]
+            for relative in scope:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with path.open("a", encoding="utf-8") as handle:
+                    handle.write("bounded correction\n")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "bad bounded correction")
+            head = require_git(root, "rev-parse", "HEAD")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertIn(
+                "GIT_INTEGRITY_BOUNDED_CORRECTION_SCOPE_FORBIDDEN",
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    manifest,
+                    self.bounded_environment(head, scope),
+                ),
+            )
+
+    def test_bounded_validator_correction_cannot_change_manifest(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            scope = [
+                "tools/validate_floppy.py",
+                "tests/test_authorization_git_integrity.py",
+                "system-manifest.json",
+                ".floppy/manifest.json",
+            ]
+            for relative in scope[:-1]:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"bounded: {relative}\n", encoding="utf-8")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            manifest["unexpected"] = True
+            self.write_json(root / ".floppy/manifest.json", manifest)
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "manifest mutation")
+            head = require_git(root, "rev-parse", "HEAD")
+            errors = VALIDATOR.validate_authorization_git_integrity(
+                root,
+                manifest,
+                self.bounded_environment(head, scope),
+            )
+            self.assertIn(
+                "GIT_INTEGRITY_BOUNDED_CORRECTION_SCOPE_FORBIDDEN",
+                errors,
+            )
+            self.assertIn(
+                "GIT_INTEGRITY_BOUNDED_CORRECTION_MANIFEST_CHANGED",
+                errors,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()

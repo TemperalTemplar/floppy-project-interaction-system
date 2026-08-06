@@ -135,7 +135,7 @@
       },
       "tests": {
         "path": "tests/test_orchestrator_registry.py",
-        "sha256": "40c4ce4c1965c2efe8039ca687ca6ef37a85e4480cfeebb7f6374294e8b3ad43"
+        "sha256": "dce377e6bb575124d3e9b31a5ce34d92e57240c7f265c3ea47af4fc11c57025f"
       }
     }
   },
@@ -233,7 +233,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "d4a45669b6d3b0476c82b737ec3d92b011f4936163236f5194a742e1b83fb64e"
+        "sha256": "f3285e453ba4ba0787e326b01226a114095c06a2f000f66c93adcf7ff72a8898"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",

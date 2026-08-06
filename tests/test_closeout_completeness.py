@@ -391,6 +391,79 @@ class CloseoutCompletenessTests(unittest.TestCase):
         self.assertEqual(VALIDATOR.validate_verification_only_contract(record), [])
 
 
+    def test_ordinary_applied_closeout_allows_later_next_section_acceptance(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.valid_manifest()
+            self.write_project(root, manifest)
+            manifest["status"] = "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+            manifest["fs_05_work_package"].update({
+                "status": "ACCEPTED AS PLANNING BASELINE",
+                "accepted": True,
+                "active": False,
+                "implementation_authorized": False,
+            })
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_closeout_completeness(manifest, root),
+            )
+
+    def test_ordinary_applied_closeout_allows_later_next_section_authorization(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.valid_manifest()
+            self.write_project(root, manifest)
+            authorization = "FS_05_IMPLEMENTATION"
+            writer = "FS_05_WORKING_MODEL"
+            manifest["status"] = "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+            manifest["active_work_authorization"] = {
+                "authorization_id": authorization,
+                "section": "FS-05",
+            }
+            manifest["continuation_point"].update({
+                "active_work_authorization": authorization,
+                "active_implementation_section": "FS-05",
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+            })
+            manifest["authority"].update({
+                "active_implementation_section": "FS-05",
+                "current_authorized_section": "FS-05",
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+                "authorization_id": authorization,
+            })
+            manifest["fs_05_work_package"].update({
+                "status": "ACTIVE",
+                "accepted": True,
+                "active": True,
+                "implementation_authorized": True,
+                "authorization_id": authorization,
+                "repository_writer": writer,
+                "writer_authorization_reference": authorization,
+            })
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_closeout_completeness(manifest, root),
+            )
+
+    def test_ordinary_applied_closeout_rejects_unrelated_later_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.valid_manifest()
+            self.write_project(root, manifest)
+            manifest["status"] = "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+            manifest["active_work_authorization"] = {
+                "authorization_id": "FS_06_IMPLEMENTATION",
+                "section": "FS-06",
+            }
+            errors = VALIDATOR.validate_closeout_completeness(manifest, root)
+            self.assertIn(
+                "CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS: FS-04",
+                errors,
+            )
+
+
 # BEGIN CTRL-02 VERIFICATION-ONLY CLOSEOUT TESTS
 
 class VerificationOnlyCloseoutCompletenessTests(unittest.TestCase):
