@@ -592,6 +592,89 @@ class VerificationOnlyCloseoutCompletenessTests(unittest.TestCase):
             self.assertEqual(before_manifest, after_manifest)
             self.assertEqual(before_files, after_files)
 
+
+    def test_verification_only_applied_closeout_allows_tr002_next_section_acceptance(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            next_record = manifest["fs_11_work_package"]
+            next_record["accepted"] = True
+            self.assertEqual([], VALIDATOR.validate_closeout_completeness(manifest, root))
+
+    def test_verification_only_applied_closeout_allows_lawful_next_section_authorization_and_activation(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            baseline = self.write_verification_only_project(root, applied=True)
+            for active in (False, True):
+                with self.subTest(active=active):
+                    manifest = copy.deepcopy(baseline)
+                    next_record = manifest["fs_11_work_package"]
+                    next_record.update({
+                        "accepted": True,
+                        "active": active,
+                        "implementation_authorized": True,
+                        "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+                        "repository_writer": "FS_11_PROV_01_WORKING_MODEL",
+                        "writer_authorization_reference": "FS_11_PROV_01_IMPLEMENTATION",
+                    })
+                    self.assertEqual([], VALIDATOR.validate_closeout_completeness(manifest, root))
+
+    def test_verification_only_applied_closeout_missing_next_draft_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            (root / ".floppy/templates/Floppy-E-FS-11.draft.md").unlink()
+            self.assert_contains(manifest, root, "CLOSEOUT_NEXT_DRAFT_OR_STATE_INVALID: FS-11")
+
+    def test_verification_only_applied_closeout_missing_next_record_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            manifest.pop("fs_11_work_package")
+            self.assert_contains(manifest, root, "CLOSEOUT_NEXT_DRAFT_OR_STATE_INVALID: FS-11")
+
+    def test_verification_only_applied_closeout_rejects_rewritten_closed_outcome(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            baseline = self.write_verification_only_project(root, applied=True)
+            cases = (
+                ("implementation_state", "COMPLETE", "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_INVALID: FS-10"),
+                ("verification_state", "PENDING", "CLOSEOUT_VERIFICATION_INCOMPLETE: FS-10"),
+                ("administrator_acceptance", "PENDING", "CLOSEOUT_ADMINISTRATOR_ACCEPTANCE_MISSING: FS-10"),
+            )
+            for field, value, expected in cases:
+                with self.subTest(field=field):
+                    manifest = copy.deepcopy(baseline)
+                    manifest["fs_10_work_package"][field] = value
+                    self.assert_contains(manifest, root, expected)
+
+    def test_verification_only_applied_closeout_rejects_malformed_or_contradictory_next_record(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            baseline = self.write_verification_only_project(root, applied=True)
+            cases = (
+                {"section": "FS-12"},
+                {"accepted": "yes"},
+                {"accepted": True, "active": True, "implementation_authorized": False},
+                {"accepted": False, "active": False, "implementation_authorized": True,
+                 "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+                 "repository_writer": "FS_11_PROV_01_WORKING_MODEL"},
+                {"accepted": True, "active": False, "implementation_authorized": False,
+                 "authorization_id": "FS_11_PROV_01_IMPLEMENTATION"},
+                {"accepted": True, "active": False, "implementation_authorized": True,
+                 "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+                 "repository_writer": None},
+                {"accepted": True, "active": False, "implementation_authorized": True,
+                 "authorization_id": "FS_11_PROV_01_IMPLEMENTATION",
+                 "repository_writer": "FS_11_PROV_01_WORKING_MODEL",
+                 "writer_authorization_reference": "WRONG_AUTHORIZATION"},
+            )
+            for changes in cases:
+                with self.subTest(changes=changes):
+                    manifest = copy.deepcopy(baseline)
+                    manifest["fs_11_work_package"].update(changes)
+                    self.assert_contains(manifest, root, "CLOSEOUT_NEXT_DRAFT_OR_STATE_INVALID: FS-11")
+
 # END CTRL-02 VERIFICATION-ONLY CLOSEOUT TESTS
 
 if __name__ == "__main__":
