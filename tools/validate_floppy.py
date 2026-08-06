@@ -1633,7 +1633,7 @@ def _closeout_section_number(section: Any) -> int | None:
         return None
 
 
-def validate_closeout_completeness(
+def _validate_ordinary_closeout_completeness(
     manifest: dict[str, Any],
     root: Path,
 ) -> list[str]:
@@ -1982,6 +1982,257 @@ def main() -> int:
     print(f"VALIDATION PASSED: {args.mode} at {root}")
     return 0
 
+
+# BEGIN CTRL-02 VERIFICATION-ONLY CLOSEOUT CORRECTION
+
+_VERIFICATION_ONLY_CLOSEOUT_TYPE = "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE"
+_VERIFICATION_ONLY_PROPOSAL_STATE = "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED"
+_VERIFICATION_ONLY_FINAL_STATE = "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+_VERIFICATION_ONLY_COMPLETION_TRANSITION = "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE"
+_VERIFICATION_ONLY_PROPOSAL_TRANSITION = "TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT"
+_VERIFICATION_ONLY_APPLICATION_TRANSITION = "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT"
+
+
+def _verification_only_error(errors, code, section):
+    diagnostic = f"{code}: {section}"
+    if diagnostic not in errors:
+        errors.append(diagnostic)
+
+
+def _verification_only_closeout_context(manifest):
+    proposal = manifest.get("closeout_proposal")
+    application = manifest.get("closeout_application")
+    section = None
+    for candidate in (application, proposal):
+        if isinstance(candidate, dict):
+            value = candidate.get("section")
+            if isinstance(value, str) and value:
+                section = value
+                break
+
+    candidates = []
+    for key, value in manifest.items():
+        if not (
+            isinstance(key, str)
+            and key.startswith("fs_")
+            and key.endswith("_work_package")
+            and isinstance(value, dict)
+            and value.get("work_package_type") == _VERIFICATION_ONLY_CLOSEOUT_TYPE
+        ):
+            continue
+        record_section = value.get("section", value.get("id"))
+        if not isinstance(record_section, str):
+            digits = key[3:5]
+            record_section = f"FS-{digits}" if digits.isdigit() else None
+        if isinstance(record_section, str):
+            candidates.append((record_section, value))
+
+    if section is not None:
+        exact = [item for item in candidates if item[0] == section]
+        return exact[0] if len(exact) == 1 else None
+    return candidates[0] if len(candidates) == 1 else None
+
+
+def _verification_only_no_change_evidence_valid(record):
+    evidence = record.get("verification_evidence")
+    if not isinstance(evidence, dict):
+        return False
+    if evidence.get("result") != "PASSED":
+        return False
+    if evidence.get("recorded_transition") != _VERIFICATION_ONLY_COMPLETION_TRANSITION:
+        return False
+    tests = evidence.get("complete_repository_tests")
+    if not (
+        isinstance(tests, dict)
+        and tests.get("status") == "PASSED"
+        and isinstance(tests.get("test_count"), int)
+        and tests.get("test_count") > 0
+    ):
+        return False
+    if evidence.get("source_validator") != "PASSED":
+        return False
+    if evidence.get("floppyctl_source_validation") != "PASSED":
+        return False
+    tracked_json = evidence.get("tracked_json")
+    if not (
+        isinstance(tracked_json, dict)
+        and tracked_json.get("status") == "PASSED"
+        and isinstance(tracked_json.get("file_count"), int)
+        and tracked_json.get("file_count") > 0
+    ):
+        return False
+    findings = evidence.get("accepted_no_change_findings")
+    if not isinstance(findings, dict):
+        return False
+    required = {
+        "work_package_type": _VERIFICATION_ONLY_CLOSEOUT_TYPE,
+        "implementation_state": "NOT_REQUIRED",
+        "qualifying_real_migration_paths": 0,
+        "qualifying_real_source_format_fixtures": [],
+        "reusable_product_paths": [],
+        "reusable_product_path_count": 0,
+        "reusable_product_commits": [],
+        "reusable_product_commit_count": 0,
+        "product_commit": None,
+        "real_project_modification": "NOT_PERFORMED",
+        "active_authorization": None,
+        "repository_writer": None,
+        "writer_authorization_reference": None,
+    }
+    return all(findings.get(key) == value for key, value in required.items())
+
+
+def _verification_only_product_scope_empty(record):
+    for value in (
+        record.get("reusable_product_paths"),
+        record.get("exact_reusable_product_paths"),
+    ):
+        if value not in (None, []):
+            return False
+    for value in (
+        record.get("reusable_product_commits"),
+        record.get("reusable_product_commit"),
+    ):
+        if value not in (None, []):
+            return False
+    if record.get("reusable_product_path_count", 0) != 0:
+        return False
+    if record.get("reusable_product_commit_count", 0) != 0:
+        return False
+    return record.get("product_commit") is None
+
+
+def _verification_only_authority_empty(manifest, record):
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    fields = (
+        "active_work_authorization",
+        "active_control_work_authorization",
+        "active_implementation_authorization",
+        "active_migration_authorization",
+        "active_implementation_section",
+        "current_authorized_section",
+        "authorization_id",
+    )
+    return all(container.get(field) is None for container in (manifest, authority, record) for field in fields)
+
+
+def _verification_only_writer_empty(manifest, record):
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    return all(
+        container.get("repository_writer") is None
+        and container.get("writer_authorization_reference") is None
+        for container in (manifest, authority, record)
+    )
+
+
+def _verification_only_next_section_valid(manifest, root, application):
+    section = application.get("section")
+    if not isinstance(section, str) or not section.startswith("FS-"):
+        return False, "UNKNOWN"
+    try:
+        next_section = f"FS-{int(section[3:]) + 1:02d}"
+    except ValueError:
+        return False, "UNKNOWN"
+    next_key = f"fs_{next_section[3:]}_work_package"
+    next_record = manifest.get(next_key)
+    if not isinstance(next_record, dict):
+        return False, next_section
+    draft_path = application.get(f"fs_{next_section[3:]}_draft_path")
+    if not isinstance(draft_path, str) or not draft_path or not (root / draft_path).is_file():
+        return False, next_section
+    if next_record.get("accepted") is not False:
+        return False, next_section
+    if next_record.get("active") is not False:
+        return False, next_section
+    if next_record.get("implementation_authorized") is not False:
+        return False, next_section
+    if next_record.get("repository_writer") is not None:
+        return False, next_section
+    if next_record.get("authorization_id") is not None:
+        return False, next_section
+    return True, next_section
+
+
+def _validate_verification_only_closeout_completeness(manifest, root, section, record):
+    errors = []
+    state = manifest.get("status")
+    proposal = manifest.get("closeout_proposal")
+    application = manifest.get("closeout_application")
+
+    implementation = record.get("implementation_state", record.get("implementation"))
+    if implementation != "NOT_REQUIRED":
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_INVALID", section)
+    if record.get("implementation_complete") is True:
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_COMPLETE_FORBIDDEN", section)
+    if any(record.get(field) is not None for field in (
+        "implementation_checkpoint",
+        "implementation_evidence",
+        "implementation_completion_evidence",
+    )):
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_EVIDENCE_FORBIDDEN", section)
+
+    verification = record.get("verification_state", record.get("verification"))
+    if verification != "COMPLETE":
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_INCOMPLETE", section)
+    if not _verification_only_no_change_evidence_valid(record):
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_EVIDENCE_MISSING", section)
+    if record.get("administrator_acceptance") != "ACCEPTED":
+        _verification_only_error(errors, "CLOSEOUT_ADMINISTRATOR_ACCEPTANCE_MISSING", section)
+    if not _verification_only_product_scope_empty(record):
+        _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_PRODUCT_SCOPE_INVALID", section)
+    if not _verification_only_authority_empty(manifest, record):
+        _verification_only_error(errors, "CLOSEOUT_ACTIVE_AUTHORIZATION_REMAINS", section)
+    if not _verification_only_writer_empty(manifest, record):
+        _verification_only_error(errors, "CLOSEOUT_REPOSITORY_WRITER_REMAINS", section)
+
+    if not isinstance(proposal, dict):
+        _verification_only_error(errors, "CLOSEOUT_PROPOSAL_INCOMPLETE", section)
+    else:
+        if proposal.get("section") != section:
+            _verification_only_error(errors, "CLOSEOUT_PROPOSAL_INCOMPLETE", section)
+        if proposal.get("transition") != _VERIFICATION_ONLY_PROPOSAL_TRANSITION:
+            _verification_only_error(errors, "CLOSEOUT_PROPOSAL_TRANSITION_INVALID", section)
+        record_path = proposal.get("record")
+        if not isinstance(record_path, str) or not (root / record_path).is_file():
+            _verification_only_error(errors, "CLOSEOUT_PROPOSAL_INCOMPLETE", section)
+
+    applied = (
+        state == _VERIFICATION_ONLY_FINAL_STATE
+        or record.get("closeout") == "APPLIED"
+        or record.get("section_closeout") == "APPLIED"
+        or record.get("closeout_applied") is True
+    )
+    if applied:
+        if not isinstance(application, dict):
+            _verification_only_error(errors, "CLOSEOUT_APPLICATION_TRANSITION_INVALID", section)
+        else:
+            if application.get("section") != section:
+                _verification_only_error(errors, "CLOSEOUT_APPLICATION_TRANSITION_INVALID", section)
+            if application.get("transition") != _VERIFICATION_ONLY_APPLICATION_TRANSITION:
+                _verification_only_error(errors, "CLOSEOUT_APPLICATION_TRANSITION_INVALID", section)
+            if application.get("status") != "APPLIED":
+                _verification_only_error(errors, "CLOSEOUT_APPLICATION_TRANSITION_INVALID", section)
+            next_valid, next_section = _verification_only_next_section_valid(manifest, root, application)
+            if not next_valid:
+                _verification_only_error(errors, "CLOSEOUT_NEXT_DRAFT_OR_STATE_INVALID", next_section)
+    else:
+        if state != _VERIFICATION_ONLY_PROPOSAL_STATE:
+            _verification_only_error(errors, "CLOSEOUT_VERIFICATION_ONLY_LIFECYCLE_INVALID", section)
+        if isinstance(application, dict) and application.get("status") == "APPLIED":
+            _verification_only_error(errors, "CLOSEOUT_APPLICATION_TRANSITION_INVALID", section)
+    return errors
+
+
+def validate_closeout_completeness(manifest, root):
+    context = _verification_only_closeout_context(manifest)
+    if context is None:
+        return _validate_ordinary_closeout_completeness(manifest, root)
+    section, record = context
+    return _validate_verification_only_closeout_completeness(manifest, root, section, record)
+
+# END CTRL-02 VERIFICATION-ONLY CLOSEOUT CORRECTION
 
 if __name__ == "__main__":
     raise SystemExit(main())
