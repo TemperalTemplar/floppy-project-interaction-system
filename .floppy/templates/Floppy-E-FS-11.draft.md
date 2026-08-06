@@ -1,57 +1,120 @@
-STATUS: DRAFT_NOT_AUTHORIZED
+STATUS: ACCEPTED_PLANNING_BASELINE
 
-# Floppy E — FS-11 Draft
+# Floppy E — FS-11 Accepted Work Package
 
 ## Section
 
 `FS-11 — Project Control-State Provisioning and Integration`
 
-## Authority state
+## Acceptance
 
 ```text
-Status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
-Active: NO
-Activation authorized: NO
-Implementation authorized: NO
-Implementation started: NO
-Repository writer: NONE
-Writer authorization reference: NONE
-Authorization ID: null
-Created by transition: TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT
-Base checkpoint: 6df6f1c0a70fff6ca6d3b2840c75d7b571cbfcc1
-Draft checkpoint: THIS_COMMIT
+Administrator decision: ACCEPT FS-11 MINIMUM VERSION-1 WORK PACKAGE
+Transition: TR-002-ACCEPT-WORK-PACKAGE
+Pre-state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Post-state: LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+Work-package type: STANDARD_IMPLEMENTATION
+Binding report: FS11-Work-Package-Preparation-Report-Final-Corrected.md
+Binding report SHA-256: 76b59c93e150e8ec965a7fba5a10dda92e4b112170a83032aa91c5b23e8143f1
+Acceptance checkpoint: THIS_COMMIT
 ```
 
-This file is a proposed work package only.
+Acceptance is a planning baseline only. It does not authorize activation or implementation.
 
-It does not authorize implementation, provisioning, integration,
-reconciliation, migration, or modification of a real project.
+## Exact reusable-product scope
 
-## Dependency
+```text
+README.md
+docs/User-Guide.md
+project-seed/.floppy/lifecycle-state.json
+project-seed/.floppy/manifest.json
+project-seed/.floppy/orchestrator-registry.json
+schemas/floppy-fields.md
+system-manifest.json
+tools/floppyctl.py
+tools/initialize_project.py
+tools/validate_floppy.py
+tests/test_floppyctl.py
+tests/test_orchestrator_registry.py
+tests/test_project_provisioning.py
+tests/test_validated_boot_package.py
+```
 
-`FS-10`
+```text
+Exact reusable-product paths: 14
+Exact maximum reusable-product paths: 14
+Conditional reusable-product paths: 0
+```
 
-FS-10 is closed. FS-11 remains inactive, unaccepted, and unauthorized.
+## Exact unique administrative scope
 
-## Objective
+```text
+.floppy/START-HERE.md
+.floppy/README.md
+.floppy/floppies/Floppy-B-Development-Issues.md
+.floppy/floppies/Floppy-D-Project-Map.md
+.floppy/floppies/Floppy-E-Current-Section.md
+.floppy/manifest.json
+.floppy/roadmap/roadmap.json
+.floppy/roadmap/roadmap.md
+.floppy/lifecycle-state.json
+.floppy/orchestrator-registry.json
+.floppy/templates/Floppy-E-FS-11.draft.md
+.floppy/closeouts/FS-11-closeout.md
+.floppy/templates/Floppy-E-FS-12.draft.md
+```
 
-Establish a bounded reusable capability for canonical project-control provisioning and integration, including lifecycle-state and orchestrator-registry establishment, compatibility detection, cross-record consistency, and split-brain prevention. Reusable-product implementation must not apply changes to a real project; any self-hosted-root reconciliation requires separate exact administrative authority.
+```text
+Exact administrative paths: 13
+Exact maximum administrative paths: 13
+Conditional administrative paths: 0
+Exact total planned commits: 9
+Exact reusable-product commits: 1
+Exact root-control implementation commits: 1
+Exact lifecycle and authority commits: 7
+Exact phases: 7
+```
 
-## Explicit exclusions
+## Exact planned sequence
 
-* No application to a real project under reusable-product implementation authority.
-* No silent modification of the self-hosted root .floppy control state.
-* No generalized migration, repair, reconciliation, or transaction framework.
+```text
+Commit 1: TR-002-ACCEPT-WORK-PACKAGE
+Commit 2: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION then TR-004-START-SECTION-IMPLEMENTATION
+Commit 3: reusable-product implementation; no lifecycle transition
+Commit 4: state-preserving PROV-01 to INT-01 authority handoff; no lifecycle transition
+Commit 5: root-control reconciliation implementation; no lifecycle transition
+Commit 6: TR-005-RECORD-IMPLEMENTATION-COMPLETE then TR-006-RECORD-VERIFICATION-COMPLETE
+Commit 7: TR-007-ACCEPT-SECTION
+Commit 8: TR-008-PROPOSE-SECTION-CLOSEOUT
+Commit 9: TR-009-APPLY-SECTION-CLOSEOUT
+```
 
-## Deferred scope
+## Current authority
 
-Exact reusable-product paths, tests, and commit scope remain deferred until a
-separate FS-11 work-package acceptance directive.
+```text
+Accepted: YES
+Active: NO
+Implementation authorized: NO
+Implementation: NOT_STARTED
+Verification: NOT_STARTED
+Administrator result acceptance: PENDING
+Closeout: NOT_PROPOSED
+PROV-01 authorization: NONE
+INT-01 authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Active implementation section: NONE
+```
 
-The next legal operation is preparation, revision, acceptance, or withholding
-of the FS-11 work package—not implementation.
+## Binding effects
 
-## Windows release requirement
+```text
+Source-version change: NO
+Schema-version change: NO
+Dependency change: NO
+New authorization kind: NO
+Ordinary-user Python requirement: NO
+```
 
-Python may remain an internal implementation language and may remain in the source repository. The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands. Temporary Python runners remain administrator-side construction tools only.
+The next repository action requires a separate administrator decision authorizing
+`FS_11_PROV_01_IMPLEMENTATION`.
