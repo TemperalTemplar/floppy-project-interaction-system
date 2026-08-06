@@ -1,11 +1,13 @@
 # Floppy E — FS-11 Current Section
 
-Lifecycle state: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
+Lifecycle state: `LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
 
 Applied lifecycle transitions, in order:
 
 1. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 2. `TR-004-START-SECTION-IMPLEMENTATION`
+3. `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
+4. `TR-006-RECORD-VERIFICATION-COMPLETE`
 
 State-preserving authority operation:
 
@@ -23,8 +25,8 @@ Commit 4 checkpoint: THIS_COMMIT
 Work-package type: STANDARD_IMPLEMENTATION
 FS-11 acceptance: ACCEPTED
 FS-11 activation: ACTIVE
-FS-11 implementation: IN_PROGRESS
-FS-11 verification: NOT_STARTED
+FS-11 implementation: COMPLETE
+FS-11 verification: COMPLETE
 FS-11 administrator result acceptance: PENDING
 FS-11 closeout: NOT_PROPOSED
 PROV-01 authorization: CLEARED
@@ -42,9 +44,7 @@ FS-12: INACTIVE / NOT AUTHORIZED
 ```
 
 Both canonical root records were created atomically with the one-writer handoff.
-The lifecycle state did not change. The next possible repository action is the
-separate exact ten-path Commit 5 reconciliation, but it must not begin until the
-administrator reviews the Commit 4 checkpoint.
+The lifecycle state did not change during Commit 4. Commit 5 subsequently applied the exact ten-path root-control reconciliation.
 
 
 <!-- FS11_INT01_RECONCILIATION_BEGIN -->
@@ -76,3 +76,36 @@ Next planned transitions:
 
 FS-12 remains inactive and unauthorized.
 <!-- FS11_INT01_RECONCILIATION_END -->
+
+<!-- FS11_COMPLETION_VERIFICATION_BEGIN -->
+## FS-11 implementation and verification completion
+
+```text
+Operation: COMPLETION_VERIFICATION_CONTROL
+Commit subject: chore(bce): complete FS-11 implementation and verification
+Base checkpoint: 1f3d8b382ca29531c60213b9b4dd12ce66e5b836
+Transition 1: TR-005-RECORD-IMPLEMENTATION-COMPLETE
+Transition 1 pre-state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Transition 1 post-state: LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING
+Transition 2: TR-006-RECORD-VERIFICATION-COMPLETE
+Transition 2 pre-state: LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING
+Transition 2 post-state: LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: PENDING
+INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Active implementation section: FS-11
+Completion checkpoint: THIS_COMMIT
+Additional implementation after this commit: PROHIBITED
+```
+
+TR-005 and TR-006 are recorded as separate ordered evidence entries. The
+intermediate implementation-complete state is explicit and is not silently
+collapsed into the final verification-complete state.
+
+Mandatory stop: no repository action may occur until the administrator
+explicitly accepts or rejects the verified FS-11 result. INT-01 remains present
+only because the acceptance-pending lifecycle state requires it.
+<!-- FS11_COMPLETION_VERIFICATION_END -->

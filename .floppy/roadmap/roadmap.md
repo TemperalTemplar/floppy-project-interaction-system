@@ -5,7 +5,7 @@ Development roadmap:
 ACCEPTED — ADMINISTRATIVELY REVISED
 
 Lifecycle state:
-LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
 
 Control mode:
 CANONICAL_INTEGRATED
@@ -26,7 +26,9 @@ FS-10:
 CLOSED / IMPLEMENTATION NOT_REQUIRED / VERIFICATION COMPLETE
 
 FS-11:
-IMPLEMENTATION IN PROGRESS
+IMPLEMENTATION COMPLETE
+VERIFICATION COMPLETE
+ADMINISTRATOR ACCEPTANCE PENDING
 REUSABLE PRODUCT COMMITTED AND VERIFIED
 INT-01 AUTHORITY HANDOFF COMMITTED
 ROOT-CONTROL RECONCILIATION APPLIED
@@ -376,3 +378,25 @@ FS-12: INACTIVE / NOT AUTHORIZED
 The next planned commit records ordered TR-005 and TR-006 evidence while
 retaining INT-01.
 <!-- FS11_INT01_RECONCILIATION_APPLIED_END -->
+
+## FS-11 implementation and verification completion
+
+```text
+Commit class: COMPLETION_VERIFICATION_CONTROL
+Base checkpoint: 1f3d8b382ca29531c60213b9b4dd12ce66e5b836
+Transition 1: TR-005-RECORD-IMPLEMENTATION-COMPLETE
+Intermediate state: LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING
+Transition 2: TR-006-RECORD-VERIFICATION-COMPLETE
+Final state: LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: PENDING
+INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Additional implementation: PROHIBITED
+```
+
+The next repository action requires an explicit administrator decision on the
+verified FS-11 result. Authority and writer remain present because the
+acceptance-pending lifecycle state requires them; they do not authorize further
+implementation.
