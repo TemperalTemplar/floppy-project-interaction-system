@@ -3,6 +3,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import importlib.util
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -17,6 +20,19 @@ BOOTSTRAP_PATH = ROOT / "BOOTSTRAP.md"
 FLOPPY_Z_PATH = ROOT / "orchestrator" / "Floppy_Z.md"
 
 ALLOWED_STATUSES = {"ACTIVE", "PAUSED", "HANDOFF_PENDING", "RETIRED"}
+
+
+def load_validator_module():
+    path = ROOT / "tools" / "validate_floppy.py"
+    spec = importlib.util.spec_from_file_location("validate_floppy_self_hosted", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("unable to load validator")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+VALIDATOR = load_validator_module()
 
 
 class RegistryValidationError(ValueError):
@@ -261,6 +277,218 @@ class OrchestratorRegistryTests(unittest.TestCase):
             self.system_manifest["orchestrator"]["sha256"],
             sha256_lf_text(FLOPPY_Z_PATH),
         )
+
+
+class CanonicalIntegratedControlModeTests(unittest.TestCase):
+    AUTHORIZATION = "FS_11_INT_01_SELF_HOSTED_RECONCILIATION"
+    WRITER = "FS_11_INT_01_WORKING_MODEL"
+    BRANCH = "feature/fs-11-canonical-fixture"
+    CHECKPOINT = "2" * 40
+
+    def canonical_write(self, path: Path, value: dict) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(
+            (
+                json.dumps(
+                    value,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                + "\n"
+            ).encode("utf-8")
+        )
+
+    def manifest(self) -> dict:
+        active = {
+            "authorization_id": self.AUTHORIZATION,
+            "authorization_kind": "section_implementation",
+            "section": "FS-11",
+            "repository": "example/floppy",
+            "base_checkpoint": self.CHECKPOINT,
+            "branch": self.BRANCH,
+            "worktree": r"D:\A\Floppy-CTRL-02",
+            "exact_file_scope": [".floppy/manifest.json"],
+        }
+        return {
+            "status": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+            "active_work_authorization": active,
+            "repository_writer": self.WRITER,
+            "writer_authorization_reference": self.AUTHORIZATION,
+            "authority": {
+                "active_implementation_section": "FS-11",
+                "repository_writer": self.WRITER,
+                "writer_authorization_reference": self.AUTHORIZATION,
+            },
+        }
+
+    def lifecycle(self) -> dict:
+        return {
+            "state_id": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+            "section": "FS-11",
+            "authorization_id": self.AUTHORIZATION,
+            "base_checkpoint": self.CHECKPOINT,
+            "dimensions": {
+                "roadmap": "ACCEPTED",
+                "work_package": "ACCEPTED_PLANNING_BASELINE",
+                "authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+                "implementation": "IN_PROGRESS",
+                "verification": "PENDING",
+                "acceptance": "PENDING",
+                "closeout": "NOT_PROPOSED",
+                "migration": "NONE",
+                "final_closure": "OPEN",
+            },
+            "active_implementation_sections": ["FS-11"],
+            "evidence": ["canonical bootstrap fixture"],
+        }
+
+    def registry(self) -> dict:
+        return {
+            "artifact": "project-orchestrator-registry",
+            "format_version": 1,
+            "status_values": ["ACTIVE", "PAUSED", "HANDOFF_PENDING", "RETIRED"],
+            "rules": {
+                "maximum_active_orchestrators": 1,
+                "maximum_repository_writers": 1,
+                "writer_requires_exact_authorization_reference": True,
+                "status_or_role_grants_write_authority": False,
+            },
+            "project_checkpoint": {
+                "repository": "example/floppy",
+                "branch": self.BRANCH,
+                "worktree": r"D:\A\Floppy-CTRL-02",
+                "checkpoint": self.CHECKPOINT,
+            },
+            "provisioning": {
+                "version": 1,
+                "status": "CANONICAL_INTEGRATED",
+                "serialization": "UTF-8/LF/canonical-json-v1",
+                "initialized_by": "FS_11_INT_01_BOOTSTRAP",
+            },
+            "current_assignments": {
+                "current_orchestrator": "PROJECT_ORCHESTRATOR",
+                "current_section_working_model": self.WRITER,
+                "repository_writer": self.WRITER,
+                "writer_authorization_reference": self.AUTHORIZATION,
+            },
+            "orchestrators": [
+                {
+                    "id": "PROJECT_ORCHESTRATOR",
+                    "role": "PROJECT_ORCHESTRATOR",
+                    "status": "PAUSED",
+                },
+                {
+                    "id": self.WRITER,
+                    "role": "SECTION_WORKING_MODEL",
+                    "status": "ACTIVE",
+                },
+            ],
+        }
+
+    def fixture(self):
+        td = tempfile.TemporaryDirectory()
+        root = Path(td.name)
+        schema_source = ROOT / "schemas/bce/1.0.0/bce-lifecycle-state.schema.json"
+        schema_target = root / "schemas/bce/1.0.0/bce-lifecycle-state.schema.json"
+        schema_target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(schema_source, schema_target)
+        manifest = self.manifest()
+        self.canonical_write(root / ".floppy/manifest.json", manifest)
+        self.canonical_write(root / ".floppy/lifecycle-state.json", self.lifecycle())
+        self.canonical_write(root / ".floppy/orchestrator-registry.json", self.registry())
+        return td, root, manifest
+
+    def validate(self, root: Path, manifest: dict) -> list[str]:
+        errors: list[str] = []
+        VALIDATOR.validate_self_hosted_control_mode(root, manifest, errors)
+        return errors
+
+    def test_complete_canonical_bootstrap_passes(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            self.assertEqual([], self.validate(root, manifest))
+
+    def test_partial_canonical_bootstrap_fails_without_fallback(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            (root / ".floppy/orchestrator-registry.json").unlink()
+            self.assertEqual(
+                [
+                    "SELF_HOSTED_CONTROL_MODE_PARTIAL: lifecycle-state and "
+                    "orchestrator registry must appear together"
+                ],
+                self.validate(root, manifest),
+            )
+
+    def test_canonical_records_must_be_canonical_json(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            registry_path = root / ".floppy/orchestrator-registry.json"
+            registry_path.write_text(
+                json.dumps(self.registry(), indent=2) + "\n",
+                encoding="utf-8",
+            )
+            errors = self.validate(root, manifest)
+            self.assertIn(
+                "canonical orchestrator registry serialization is not canonical UTF-8/LF JSON",
+                errors,
+            )
+
+    def test_canonical_authorization_projection_mismatch_fails(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            lifecycle = self.lifecycle()
+            lifecycle["authorization_id"] = "STALE"
+            self.canonical_write(root / ".floppy/lifecycle-state.json", lifecycle)
+            self.assertIn(
+                "CANONICAL_INTEGRATED_AUTHORIZATION_MISMATCH",
+                self.validate(root, manifest),
+            )
+
+    def test_canonical_registry_requires_one_registered_writer(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            registry = self.registry()
+            registry["orchestrators"] = registry["orchestrators"][:1]
+            self.canonical_write(root / ".floppy/orchestrator-registry.json", registry)
+            self.assertIn(
+                "CANONICAL_INTEGRATED_WRITER_REGISTRATION_INVALID",
+                self.validate(root, manifest),
+            )
+
+    def test_canonical_registry_rejects_multiple_active_orchestrators(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            registry = self.registry()
+            registry["orchestrators"][0]["status"] = "ACTIVE"
+            self.canonical_write(root / ".floppy/orchestrator-registry.json", registry)
+            self.assertIn(
+                "CANONICAL_INTEGRATED_MULTIPLE_ACTIVE_ORCHESTRATORS",
+                self.validate(root, manifest),
+            )
+
+    def test_canonical_checkpoint_must_match_active_authorization(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            registry = self.registry()
+            registry["project_checkpoint"]["checkpoint"] = "3" * 40
+            self.canonical_write(root / ".floppy/orchestrator-registry.json", registry)
+            self.assertIn(
+                "CANONICAL_INTEGRATED_CHECKPOINT_MISMATCH",
+                self.validate(root, manifest),
+            )
+
+    def test_canonical_bootstrap_marker_must_be_cleared(self) -> None:
+        td, root, manifest = self.fixture()
+        with td:
+            registry = self.registry()
+            registry["provisioning"]["status"] = "TEMPLATE"
+            self.canonical_write(root / ".floppy/orchestrator-registry.json", registry)
+            self.assertIn(
+                "CANONICAL_INTEGRATED_BOOTSTRAP_MARKER_REMAINS",
+                self.validate(root, manifest),
+            )
 
 
 if __name__ == "__main__":
