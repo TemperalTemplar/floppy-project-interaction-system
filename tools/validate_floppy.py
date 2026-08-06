@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -1336,12 +1337,126 @@ def _git_integrity_expected_writer(
     return next(iter(writers))
 
 
+def _git_integrity_manifest_at(
+    root: Path,
+    revision: str,
+) -> dict[str, Any] | None:
+    result = _git_integrity_run(
+        root,
+        "show",
+        f"{revision}:.floppy/manifest.json",
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        value = json.loads(result.stdout)
+    except Exception:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _git_integrity_authorization_signature(
+    active: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        key: active.get(key)
+        for key in (
+            "authorization_id",
+            "authorization_kind",
+            "section",
+            "exact_file_scope",
+            "base_checkpoint",
+            "branch",
+            "worktree",
+            "repository_writer",
+            "writer_authorization_reference",
+        )
+    }
+
+
+def _git_integrity_activation_paths(
+    manifest: dict[str, Any],
+    active: dict[str, Any],
+) -> set[str] | None:
+    section = active.get("section")
+    if not isinstance(section, str) or not re.fullmatch(r"FS-[0-9]{2}", section):
+        return None
+    package_key = f"fs_{section[3:]}_work_package"
+    package = manifest.get(package_key)
+    if not isinstance(package, dict):
+        return None
+    draft_path = _semantic_repository_path(package.get("path"))
+    if draft_path is None:
+        return None
+    return {
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        draft_path,
+    }
+
+
+def _git_integrity_activation_evidence_valid(
+    manifest: dict[str, Any],
+    active: dict[str, Any],
+    expected_paths: set[str],
+) -> bool:
+    evidence = manifest.get("authorization_activation")
+    if not isinstance(evidence, dict):
+        return False
+    if evidence.get("authorization_id") != active.get("authorization_id"):
+        return False
+    if evidence.get("operation") != "ACTIVATION_CONTROL_COMMIT":
+        return False
+    if evidence.get("implementation_scope_exercised") is not False:
+        return False
+    paths = evidence.get("exact_control_paths")
+    if not isinstance(paths, list):
+        return False
+    normalized_paths = {
+        normalized
+        for item in paths
+        if isinstance(item, str)
+        and (normalized := _semantic_repository_path(item)) is not None
+    }
+    if len(normalized_paths) != len(paths) or normalized_paths != expected_paths:
+        return False
+    transitions = evidence.get("transition_sequence")
+    expected = [
+        {
+            "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+            "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+            "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        },
+        {
+            "id": "TR-004-START-SECTION-IMPLEMENTATION",
+            "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+            "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        },
+    ]
+    if transitions != expected:
+        return False
+    if manifest.get("status") != "LC-SECTION-IMPLEMENTATION-IN-PROGRESS":
+        return False
+    authority = manifest.get("authority")
+    if not isinstance(authority, dict):
+        return False
+    if authority.get("last_applied_transition") != (
+        "TR-004-START-SECTION-IMPLEMENTATION"
+    ):
+        return False
+    if authority.get("active_implementation_section") != active.get("section"):
+        return False
+    return True
+
+
 def validate_authorization_git_integrity(
     root: Path,
     manifest: dict[str, Any],
     environ: dict[str, str] | None = None,
 ) -> list[str]:
-    """Validate the applicable authorization and Git state without mutation."""
+    """Validate authorization, writer, operation kind, and exact Git scope."""
 
     environment = os.environ if environ is None else environ
     runtime_requested = any(
@@ -1418,12 +1533,14 @@ def validate_authorization_git_integrity(
 
     expected_branch = active.get("branch")
     if not isinstance(expected_branch, str) or not expected_branch:
-        package = manifest.get("fs_06_work_package")
-        expected_branch = (
-            package.get("branch")
-            if isinstance(package, dict)
-            else None
+        section = active.get("section")
+        package_key = (
+            f"fs_{section[3:]}_work_package"
+            if isinstance(section, str) and re.fullmatch(r"FS-[0-9]{2}", section)
+            else "fs_06_work_package"
         )
+        package = manifest.get(package_key)
+        expected_branch = package.get("branch") if isinstance(package, dict) else None
     if not isinstance(expected_branch, str) or not expected_branch:
         errors.append("GIT_INTEGRITY_EXPECTED_BRANCH_MISSING")
         expected_branch = None
@@ -1448,10 +1565,7 @@ def validate_authorization_git_integrity(
         )
     else:
         actual_branch = branch_result.stdout.strip()
-        if (
-            expected_branch is not None
-            and actual_branch != expected_branch
-        ):
+        if expected_branch is not None and actual_branch != expected_branch:
             errors.append(
                 "GIT_INTEGRITY_BRANCH_MISMATCH: "
                 f"expected {expected_branch} found {actual_branch}"
@@ -1478,6 +1592,143 @@ def validate_authorization_git_integrity(
             "GIT_INTEGRITY_HEAD_MISMATCH: "
             f"expected {expected_head} found {actual_head}"
         )
+
+    scope = active.get("exact_file_scope")
+    if not isinstance(scope, list):
+        errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
+        implementation_paths: set[str] = set()
+    else:
+        implementation_paths = {
+            normalized
+            for item in scope
+            if isinstance(item, str)
+            and (normalized := _semantic_repository_path(item)) is not None
+        }
+        if len(implementation_paths) != len(scope):
+            errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
+
+    scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
+    actual_paths: set[str] = set()
+    parent_revision: str | None = None
+    candidate_revision: str | None = None
+    pending_candidate = not bool(scope_commit)
+
+    if scope_commit:
+        resolved = _git_integrity_run(
+            root,
+            "rev-parse",
+            "--verify",
+            f"{scope_commit}^{{commit}}",
+        )
+        if resolved.returncode != 0:
+            errors.append(
+                "GIT_INTEGRITY_SCOPE_COMMIT_INVALID: "
+                f"{scope_commit}"
+            )
+        else:
+            candidate_revision = resolved.stdout.strip()
+            parent_revision = f"{candidate_revision}^"
+            if actual_head is not None and candidate_revision != actual_head:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_COMMIT_NOT_HEAD: "
+                    f"{candidate_revision}"
+                )
+            changed = _git_integrity_run(
+                root,
+                "diff-tree",
+                "--root",
+                "--no-commit-id",
+                "--name-only",
+                "-r",
+                candidate_revision,
+                "--",
+            )
+            if changed.returncode != 0:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
+                    + changed.stderr.strip()
+                )
+            else:
+                actual_paths = {
+                    normalized
+                    for item in _git_integrity_lines(changed)
+                    if (normalized := _semantic_repository_path(item)) is not None
+                }
+    else:
+        parent_revision = "HEAD"
+        pending_commands = [
+            ("diff", "--name-only", "--"),
+            ("diff", "--cached", "--name-only", "--"),
+            ("ls-files", "--others", "--exclude-standard"),
+        ]
+        for command in pending_commands:
+            result = _git_integrity_run(root, *command)
+            if result.returncode != 0:
+                errors.append(
+                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
+                    + result.stderr.strip()
+                )
+                continue
+            for item in _git_integrity_lines(result):
+                normalized = _semantic_repository_path(item)
+                if normalized is not None:
+                    actual_paths.add(normalized)
+
+    parent_manifest = (
+        _git_integrity_manifest_at(root, parent_revision)
+        if parent_revision is not None
+        else None
+    )
+    parent_active = (
+        parent_manifest.get("active_work_authorization")
+        if isinstance(parent_manifest, dict)
+        else None
+    )
+
+    if candidate_revision is not None:
+        committed_manifest = _git_integrity_manifest_at(root, candidate_revision)
+        if committed_manifest is not None and committed_manifest != manifest:
+            errors.append("GIT_INTEGRITY_CANDIDATE_MANIFEST_MISMATCH")
+
+    operation = "LEGACY_IMPLEMENTATION"
+    expected_paths = set(implementation_paths)
+    if parent_active is None and isinstance(parent_manifest, dict):
+        operation = "ACTIVATION_CONTROL_COMMIT"
+        activation_paths = _git_integrity_activation_paths(manifest, active)
+        if activation_paths is None:
+            errors.append("GIT_INTEGRITY_ACTIVATION_CONTROL_PATHS_INVALID")
+            expected_paths = set()
+        else:
+            expected_paths = activation_paths
+            if not _git_integrity_activation_evidence_valid(
+                manifest,
+                active,
+                activation_paths,
+            ):
+                errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_INVALID")
+        if actual_paths & implementation_paths:
+            errors.append(
+                "GIT_INTEGRITY_ACTIVATION_CHANGED_IMPLEMENTATION_PATHS: "
+                + ", ".join(sorted(actual_paths & implementation_paths))
+            )
+    elif isinstance(parent_active, dict):
+        operation = "AUTHORIZED_IMPLEMENTATION_COMMIT"
+        parent_signature = _git_integrity_authorization_signature(parent_active)
+        candidate_signature = _git_integrity_authorization_signature(active)
+        changed_fields = sorted(
+            key
+            for key in parent_signature
+            if parent_signature[key] != candidate_signature[key]
+        )
+        if changed_fields:
+            errors.append(
+                "GIT_INTEGRITY_AUTHORIZATION_MUTATED: "
+                + ", ".join(changed_fields)
+            )
+        parent_activation = parent_manifest.get("authorization_activation")
+        candidate_activation = manifest.get("authorization_activation")
+        if parent_activation != candidate_activation:
+            errors.append("GIT_INTEGRITY_ACTIVATION_EVIDENCE_MUTATED")
 
     status_result = _git_integrity_run(
         root,
@@ -1506,98 +1757,22 @@ def validate_authorization_git_integrity(
                 staged.append(path)
             if code[1] != " ":
                 tracked.append(path)
-        if staged:
-            errors.append(
-                "GIT_INTEGRITY_STAGED_CHANGES: "
-                + ", ".join(sorted(staged))
-            )
-        if tracked:
-            errors.append(
-                "GIT_INTEGRITY_TRACKED_CHANGES: "
-                + ", ".join(sorted(tracked))
-            )
         if untracked:
             errors.append(
                 "GIT_INTEGRITY_UNTRACKED_PATHS: "
                 + ", ".join(sorted(untracked))
             )
-
-    scope = active.get("exact_file_scope")
-    if not isinstance(scope, list):
-        errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
-        expected_paths: set[str] = set()
-    else:
-        expected_paths = {
-            normalized
-            for item in scope
-            if isinstance(item, str)
-            and (normalized := _semantic_repository_path(item)) is not None
-        }
-        if len(expected_paths) != len(scope):
-            errors.append("GIT_INTEGRITY_AUTHORIZED_SCOPE_INVALID")
-
-    scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
-    actual_paths: set[str] = set()
-    if scope_commit:
-        resolved = _git_integrity_run(
-            root,
-            "rev-parse",
-            "--verify",
-            f"{scope_commit}^{{commit}}",
-        )
-        if resolved.returncode != 0:
-            errors.append(
-                "GIT_INTEGRITY_SCOPE_COMMIT_INVALID: "
-                f"{scope_commit}"
-            )
-        else:
-            resolved_commit = resolved.stdout.strip()
-            if actual_head is not None and resolved_commit != actual_head:
+        if not pending_candidate:
+            if staged:
                 errors.append(
-                    "GIT_INTEGRITY_SCOPE_COMMIT_NOT_HEAD: "
-                    f"{resolved_commit}"
+                    "GIT_INTEGRITY_STAGED_CHANGES: "
+                    + ", ".join(sorted(staged))
                 )
-            changed = _git_integrity_run(
-                root,
-                "diff-tree",
-                "--root",
-                "--no-commit-id",
-                "--name-only",
-                "-r",
-                resolved_commit,
-                "--",
-            )
-            if changed.returncode != 0:
+            if tracked:
                 errors.append(
-                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
-                    + changed.stderr.strip()
+                    "GIT_INTEGRITY_TRACKED_CHANGES: "
+                    + ", ".join(sorted(tracked))
                 )
-            else:
-                actual_paths = {
-                    normalized
-                    for item in _git_integrity_lines(changed)
-                    if (
-                        normalized := _semantic_repository_path(item)
-                    ) is not None
-                }
-    else:
-        pending_commands = [
-            ("diff", "--name-only", "--"),
-            ("diff", "--cached", "--name-only", "--"),
-            ("ls-files", "--others", "--exclude-standard"),
-        ]
-        for command in pending_commands:
-            result = _git_integrity_run(root, *command)
-            if result.returncode != 0:
-                errors.append(
-                    "GIT_INTEGRITY_SCOPE_READ_FAILED: "
-                    + result.stderr.strip()
-                )
-                continue
-            for item in _git_integrity_lines(result):
-                normalized = _semantic_repository_path(item)
-                if normalized is not None:
-                    actual_paths.add(normalized)
 
     extra = sorted(actual_paths - expected_paths)
     missing = sorted(expected_paths - actual_paths)
