@@ -132,3 +132,41 @@ the transition or grant authority.
 
 The files under `schemas/drafts/` are FS-01 review candidates only. They are
 non-normative, not production-enforced, and do not activate FS-02.
+
+## Deterministic project control-state provisioning (FS-11)
+
+Every newly provisioned project must contain these canonical project-owned
+records:
+
+```text
+.floppy/lifecycle-state.json
+.floppy/manifest.json
+.floppy/orchestrator-registry.json
+```
+
+`lifecycle-state.json` uses the normative BCE lifecycle-state 1.0.0 schema and
+starts at `LC-ONBOARDING-REQUIRED`. Its initial dimensions are roadmap
+`ONBOARDING_REQUIRED`, work package `NOT_ACCEPTED`, authority
+`NO_ACTIVE_WORK_AUTHORIZATION`, implementation and verification `NOT_STARTED`,
+acceptance `PENDING`, closeout `NOT_PROPOSED`, migration `NONE`, and final
+closure `OPEN`. `active_implementation_sections` is empty.
+
+The manifest `control_state` object must include:
+
+- `provisioning_version`: `1`
+- `status`: `TEMPLATE` in the source seed or `PROVISIONED` in a project
+- canonical lifecycle-state and orchestrator-registry paths
+- lifecycle-state schema path
+- repository, branch, worktree, and checkpoint identity
+- serialization profile `UTF-8/LF/canonical-json-v1`
+- `implementation_authority`: `false`
+
+The orchestrator registry `project_checkpoint` object must exactly match the
+manifest control-state identity. The initial registry must have no repository
+writer and no writer-authorization reference. Provisioning status and
+serialization metadata must agree with the manifest.
+
+The initializer must stage and validate the complete tree before atomic
+installation, reject an existing destination, reject symlink or reparse-point
+inputs, remove partial output on failure, and produce the same bytes for the
+same inputs. Initialization never grants implementation authority.

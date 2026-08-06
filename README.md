@@ -184,3 +184,33 @@ Canonical source-system controllers must be pinned to a source version, tag, or 
 ## Licensing
 
 No license has been selected yet. Until the owner adds one, normal copyright rules apply.
+
+## Deterministic project control-state provisioning
+
+FS-11 provisions the initial project control state as one bounded operation. The
+initializer stages the complete project-owned `.floppy/` tree, writes canonical
+UTF-8/LF JSON for the manifest, lifecycle state, and orchestrator registry,
+validates the staged records, and then installs the directory atomically. If any
+step fails, the staged tree and any newly installed destination are removed.
+An existing `.floppy/` directory is never overwritten.
+
+The initial lifecycle state is `LC-ONBOARDING-REQUIRED`. It records no active
+section, no work authorization, and no repository writer. Git repository,
+branch, worktree, and checkpoint identity are captured when available; a
+non-Git directory receives an explicit local repository identity and null branch
+and checkpoint values.
+
+Use the packaged source CLI entrypoint:
+
+```bash
+python tools/floppyctl.py initialize \
+  --target /path/to/project \
+  --project-name "Project Name" \
+  --source-repository owner/floppy-source
+```
+
+Add `--dry-run` to print the exact path plan without writing. The direct
+`tools/initialize_project.py` entrypoint remains available for development and
+verification, but finished Windows distributions must expose this operation
+through the packaged application or executable rather than requiring ordinary
+users to run a loose Python file.

@@ -38,3 +38,34 @@ Review the packet first. After acceptance, allow the model or user to apply only
 ## Safety
 
 Do not store passwords, tokens, private keys, recovery codes, or secret values in Floppies. Record only a credential's name, role, owner, storage location, consumer relationship, and authorization status.
+
+## Provision the initial control state
+
+Run a dry run before creating a project's `.floppy` directory:
+
+```bash
+python tools/floppyctl.py initialize --target /path/to/project --project-name "Project Name" --source-repository owner/floppy-source --dry-run
+```
+
+Run the same command without `--dry-run` to provision the project. The operation
+creates the entire `.floppy` directory only when no `.floppy` directory already
+exists. It records a canonical `lifecycle-state.json`, a checkpoint-bound
+`orchestrator-registry.json`, and the matching manifest projection. The initial
+state is onboarding-only and grants no implementation authority or repository
+writer.
+
+Provisioning is deterministic for the same project path, project name, source
+version, source repository identity, and Git checkpoint. A failure removes the
+staging directory and any newly installed `.floppy` tree, so the project is not
+left partially initialized. Symlinks, reparse points, path escapes, stale stage
+paths, and overwrite attempts are stop conditions.
+
+After provisioning, validate the project:
+
+```bash
+python tools/floppyctl.py --root /path/to/project validate --mode project
+```
+
+A successful initialization still does not authorize implementation. Continue
+with Floppy 1E onboarding and obtain the required administrator decisions for
+the first work package and section activation.

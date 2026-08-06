@@ -246,8 +246,102 @@ class FloppyCtlTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertEqual(
             result.stderr,
-            "ERROR: command is required: status, validate, or inspect\n",
+            "ERROR: command is required: status, validate, inspect, or initialize\n",
         )
+
+    def test_initialize_dry_run_is_read_only(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            target = Path(td) / "project"
+            target.mkdir()
+            result = self.run_cli(
+                "initialize",
+                "--target",
+                str(target),
+                "--project-name",
+                "CLI Project",
+                "--source-repository",
+                "owner/floppy-source",
+                "--dry-run",
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("DRY RUN: no files changed", result.stdout)
+            self.assertIn("lifecycle-state.json", result.stdout)
+            self.assertFalse((target / ".floppy").exists())
+
+    def test_initialize_provisions_and_validates_project(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            target = Path(td) / "project"
+            target.mkdir()
+            result = self.run_cli(
+                "initialize",
+                "--target",
+                str(target),
+                "--project-name",
+                "CLI Project",
+                "--source-repository",
+                "owner/floppy-source",
+                "--project-repository",
+                "owner/project",
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertTrue((target / ".floppy/lifecycle-state.json").is_file())
+            manifest = json.loads(
+                (target / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                manifest["control_state"]["repository"],
+                "owner/project",
+            )
+            validation = self.run_cli(
+                "--root",
+                str(target),
+                "validate",
+                "--mode",
+                "project",
+            )
+            self.assertEqual(
+                validation.returncode,
+                0,
+                validation.stdout + validation.stderr,
+            )
+
+    def test_initialize_requires_target_and_project_name(self) -> None:
+        missing_target = self.run_cli(
+            "initialize",
+            "--project-name",
+            "Project",
+        )
+        self.assertEqual(missing_target.returncode, 2)
+        self.assertEqual(
+            missing_target.stderr,
+            "ERROR: initialize requires --target\n",
+        )
+        with tempfile.TemporaryDirectory() as td:
+            missing_name = self.run_cli(
+                "initialize",
+                "--target",
+                td,
+            )
+            self.assertEqual(missing_name.returncode, 2)
+            self.assertEqual(
+                missing_name.stderr,
+                "ERROR: initialize requires --project-name\n",
+            )
+
+    def test_initialize_refuses_existing_control_state(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            target = Path(td) / "project"
+            target.mkdir()
+            (target / ".floppy").mkdir()
+            result = self.run_cli(
+                "initialize",
+                "--target",
+                str(target),
+                "--project-name",
+                "Project",
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("destination already exists", result.stderr)
 
     def test_status_rejects_arguments_concisely(self) -> None:
         result = self.run_cli("status", "extra")
