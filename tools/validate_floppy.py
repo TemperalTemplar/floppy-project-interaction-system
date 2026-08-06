@@ -1278,6 +1278,7 @@ GIT_EXPECTED_HEAD_ENV = "FLOPPY_EXPECTED_HEAD"
 GIT_SCOPE_COMMIT_ENV = "FLOPPY_SCOPE_COMMIT"
 GIT_CONTROL_OPERATION_ENV = "FLOPPY_CONTROL_OPERATION"
 GIT_CONTROL_SCOPE_ENV = "FLOPPY_CONTROL_SCOPE"
+GIT_CONTROL_BRANCH_ENV = "FLOPPY_CONTROL_BRANCH"
 
 
 def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
@@ -1890,6 +1891,7 @@ def validate_authorization_git_integrity(
             GIT_SCOPE_COMMIT_ENV,
             GIT_CONTROL_OPERATION_ENV,
             GIT_CONTROL_SCOPE_ENV,
+            GIT_CONTROL_BRANCH_ENV,
         )
     ) or isinstance(candidate_evidence, dict)
 
@@ -2080,6 +2082,14 @@ def validate_authorization_git_integrity(
         else None
     )
     if not isinstance(expected_branch, str) or not expected_branch:
+        supplied_control_branch = environment.get(GIT_CONTROL_BRANCH_ENV)
+        expected_branch = (
+            supplied_control_branch
+            if isinstance(supplied_control_branch, str)
+            and supplied_control_branch
+            else None
+        )
+    if not isinstance(expected_branch, str) or not expected_branch:
         package = (
             _git_integrity_section_record(manifest, section)
             if isinstance(section, str)
@@ -2183,12 +2193,19 @@ def validate_authorization_git_integrity(
                 errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_SCOPE_FORBIDDEN")
         if parent_manifest != manifest:
             errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_MANIFEST_CHANGED")
-        if not isinstance(parent_active_dict, dict) or not isinstance(active_dict, dict):
-            errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MISSING")
-        elif _git_integrity_authorization_signature(parent_active_dict) != (
-            _git_integrity_authorization_signature(active_dict)
-        ):
-            errors.append("GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MUTATED")
+        if parent_active_dict is None and active_dict is None:
+            pass
+        elif isinstance(parent_active_dict, dict) and isinstance(active_dict, dict):
+            if _git_integrity_authorization_signature(parent_active_dict) != (
+                _git_integrity_authorization_signature(active_dict)
+            ):
+                errors.append(
+                    "GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MUTATED"
+                )
+        else:
+            errors.append(
+                "GIT_INTEGRITY_BOUNDED_CORRECTION_AUTHORIZATION_MISSING"
+            )
     elif operation == "ACTIVATION_CONTROL_COMMIT":
         if section is None:
             errors.append("GIT_INTEGRITY_ACTIVATION_CONTROL_PATHS_INVALID")

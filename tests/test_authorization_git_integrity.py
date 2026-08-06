@@ -361,6 +361,13 @@ class AuthorizationGitIntegrityTests(unittest.TestCase):
             manifest["fs_06_work_package"] = synthetic[
                 "fs_06_work_package"
             ]
+            # This fixture overlays an FS-06 authorization onto a copy of the
+            # current source tree. The current tree may itself be at any later
+            # control operation (for example closeout proposal/application).
+            # Remove that unrelated operation marker so Git-integrity
+            # classification is derived from the synthetic active
+            # authorization and its parent, not from current project history.
+            manifest.pop("git_integrity_operation", None)
             manifest_path.write_text(
                 json.dumps(manifest, indent=4, ensure_ascii=False) + "\n",
                 encoding="utf-8",
@@ -1365,6 +1372,7 @@ class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
         env = self.environment(head, self.PROV_AUTH, self.PROV_WRITER)
         env["FLOPPY_CONTROL_OPERATION"] = "BOUNDED_VALIDATOR_CORRECTION"
         env["FLOPPY_CONTROL_SCOPE"] = json.dumps(scope)
+        env["FLOPPY_CONTROL_BRANCH"] = self.BRANCH
         return env
 
     def test_bounded_validator_correction_exact_scope_passes(self) -> None:
@@ -1396,6 +1404,78 @@ class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
                     root,
                     manifest,
                     self.bounded_environment(head, scope),
+                ),
+            )
+
+
+    def test_bounded_validator_correction_passes_without_active_authority(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            acceptance = self.acceptance_manifest()
+            self.apply_commit(root, acceptance, self.HANDOFF_PATHS, "accept")
+            scope = [
+                "tools/validate_floppy.py",
+                "tests/test_authorization_git_integrity.py",
+                "system-manifest.json",
+            ]
+            for relative in scope:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"baseline: {{relative}}\n", encoding="utf-8")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "no-authority correction baseline")
+            for relative in scope:
+                with (root / relative).open("a", encoding="utf-8") as handle:
+                    handle.write("bounded no-authority correction\n")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "bounded no-authority correction")
+            head = require_git(root, "rev-parse", "HEAD")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            environment = {
+                "FLOPPY_EXPECTED_HEAD": head,
+                "FLOPPY_SCOPE_COMMIT": head,
+                "FLOPPY_CONTROL_OPERATION": "BOUNDED_VALIDATOR_CORRECTION",
+                "FLOPPY_CONTROL_SCOPE": json.dumps(scope),
+                "FLOPPY_CONTROL_BRANCH": self.BRANCH,
+            }
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    manifest,
+                    environment,
+                ),
+            )
+
+    def test_closeout_proposal_uses_explicit_control_branch_without_recorded_branch(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            self.commit_handoff(root)
+            completion = self.completion_manifest()
+            self.apply_commit(root, completion, self.HANDOFF_PATHS, "complete")
+            acceptance = self.acceptance_manifest()
+            self.apply_commit(root, acceptance, self.HANDOFF_PATHS, "accept")
+            proposal = self.proposal_manifest()
+            proposal["fs_11_work_package"].pop("branch", None)
+            head = self.apply_commit(
+                root,
+                proposal,
+                self.PROPOSAL_PATHS,
+                "proposal without recorded branch",
+            )
+            environment = self.environment(head, None, None)
+            environment["FLOPPY_CONTROL_BRANCH"] = self.BRANCH
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    proposal,
+                    environment,
                 ),
             )
 

@@ -233,7 +233,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "f3285e453ba4ba0787e326b01226a114095c06a2f000f66c93adcf7ff72a8898"
+        "sha256": "05359828a73a888bcc1e75fe80e86c9e6e9614fb4d7c4c50bd81971c41a8c672"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
