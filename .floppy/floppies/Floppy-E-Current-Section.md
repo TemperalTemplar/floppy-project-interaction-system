@@ -2,14 +2,22 @@
 
 Lifecycle state: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
-Applied transitions, in order:
+Applied lifecycle transitions, in order:
 
 1. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 2. `TR-004-START-SECTION-IMPLEMENTATION`
 
-Administrator decision: `AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION`
+State-preserving authority operation:
 
-Binding report SHA-256: `76b59c93e150e8ec965a7fba5a10dda92e4b112170a83032aa91c5b23e8143f1`
+```text
+Operation: STATE_PRESERVING_AUTHORITY_HANDOFF
+Lifecycle transition: NONE
+Accepted plan SHA-256: a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6
+Administrator decision: ACCEPT FS-11 INT-01 DRY-RUN PLAN a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6
+Commit 3 product checkpoint: b4e9ffb520545a312d596aaf3aca53be7c2fd67b
+Correction base checkpoint: 1b20d7e4f81a5cd84049da7b2f441a3d3ea17feb
+Commit 4 checkpoint: THIS_COMMIT
+```
 
 ```text
 Work-package type: STANDARD_IMPLEMENTATION
@@ -19,21 +27,21 @@ FS-11 implementation: IN_PROGRESS
 FS-11 verification: NOT_STARTED
 FS-11 administrator result acceptance: PENDING
 FS-11 closeout: NOT_PROPOSED
-Authorization: FS_11_PROV_01_IMPLEMENTATION
+PROV-01 authorization: CLEARED
+INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 Authorization kind: section_implementation
-Repository writer: FS_11_PROV_01_WORKING_MODEL
-Writer authorization reference: FS_11_PROV_01_IMPLEMENTATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 Active implementation section: FS-11
-Exact authorized reusable-product paths: 14
-Implementation output applied: NO
-INT-01 authorization: NONE
+INT-01 exact reconciliation paths: 10
+Reusable-product implementation output applied: YES
+Root reconciliation output applied: NO
+Canonical lifecycle-state: .floppy/lifecycle-state.json
+Canonical orchestrator registry: .floppy/orchestrator-registry.json
 FS-12: INACTIVE / NOT AUTHORIZED
-Activation checkpoint: THIS_COMMIT
 ```
 
-The intermediate state `LC-SECTION-AUTHORIZED-NOT-STARTED` was recorded by
-TR-003 before TR-004 entered `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`.
-
-Commit 3 is separately generated from this checkpoint but is already covered by
-the administrator decision above. It may modify only the exact 14 authorized
-reusable-product paths and may not modify a root `.floppy` administrative path.
+Both canonical root records were created atomically with the one-writer handoff.
+The lifecycle state did not change. The next possible repository action is the
+separate exact ten-path Commit 5 reconciliation, but it must not begin until the
+administrator reviews the Commit 4 checkpoint.

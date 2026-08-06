@@ -318,26 +318,27 @@ of the FS-11 work package under separate authority.
 
 
 <!-- FS11_PROV01_ACTIVATION_BEGIN -->
-## FS-11 PROV-01 implementation active
+## FS-11 INT-01 authority handoff complete
 
 ```text
 Lifecycle state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
-Administrator decision: AUTHORIZE AND START FS-11 PROV-01 IMPLEMENTATION
-Transition 1: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION
-Intermediate state: LC-SECTION-AUTHORIZED-NOT-STARTED
-Transition 2: TR-004-START-SECTION-IMPLEMENTATION
-Authorization: FS_11_PROV_01_IMPLEMENTATION
-Authorization kind: section_implementation
-Repository writer: FS_11_PROV_01_WORKING_MODEL
-Writer authorization reference: FS_11_PROV_01_IMPLEMENTATION
+Lifecycle transition: NONE
+Operation: STATE_PRESERVING_AUTHORITY_HANDOFF
+Accepted plan SHA-256: a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6
+Commit 3 product checkpoint: b4e9ffb520545a312d596aaf3aca53be7c2fd67b
+PROV-01 authorization: CLEARED
+INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 Active implementation section: FS-11
-Exact authorized reusable-product paths: 14
-Implementation output applied: NO
-INT-01 authorization: NONE
-Activation checkpoint: THIS_COMMIT
+INT-01 exact reconciliation paths: 10
+Canonical root records: CREATED TOGETHER
+Root reconciliation output applied: NO
+Commit 4 checkpoint: THIS_COMMIT
+FS-12: INACTIVE / NOT AUTHORIZED
 ```
 
-Commit 3 remains a separate reusable-product commit over exactly the accepted
-14 paths. It is already covered by the same administrator decision and requires
-a separately generated runner, not another authorization decision.
+Commit 4 replaced the PROV-01 writer with the one INT-01 writer without changing
+the lifecycle state. Commit 5 remains a separate exact ten-path root-control
+implementation and has not been applied.
 <!-- FS11_PROV01_ACTIVATION_END -->

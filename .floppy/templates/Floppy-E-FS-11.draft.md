@@ -100,12 +100,15 @@ Implementation: IN_PROGRESS
 Verification: NOT_STARTED
 Administrator result acceptance: PENDING
 Closeout: NOT_PROPOSED
-PROV-01 authorization: FS_11_PROV_01_IMPLEMENTATION
-INT-01 authorization: NONE
-Repository writer: FS_11_PROV_01_WORKING_MODEL
-Writer authorization reference: FS_11_PROV_01_IMPLEMENTATION
+PROV-01 authorization: CLEARED
+INT-01 authorization: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
+Repository writer: FS_11_INT_01_WORKING_MODEL
+Writer authorization reference: FS_11_INT_01_SELF_HOSTED_RECONCILIATION
 Active implementation section: FS-11
-Implementation output applied: NO
+Reusable-product implementation output applied: YES
+Root reconciliation output applied: NO
+INT-01 plan SHA-256: a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6
+Commit 4 checkpoint: THIS_COMMIT
 ```
 
 ## Activation record
@@ -133,6 +136,7 @@ New authorization kind: NO
 Ordinary-user Python requirement: NO
 ```
 
-The next repository action is preparation of the separate Commit 3
-implementation runner from this activation checkpoint. No additional
-administrator authorization decision is required before Commit 3.
+Commit 3 is complete. Commit 4 has atomically replaced PROV-01 with INT-01
+and created both canonical root records. The next possible repository action is
+the separate exact ten-path Commit 5 reconciliation after administrator review
+of the Commit 4 checkpoint.
