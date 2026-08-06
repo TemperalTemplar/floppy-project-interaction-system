@@ -391,5 +391,208 @@ class CloseoutCompletenessTests(unittest.TestCase):
         self.assertEqual(VALIDATOR.validate_verification_only_contract(record), [])
 
 
+# BEGIN CTRL-02 VERIFICATION-ONLY CLOSEOUT TESTS
+
+class VerificationOnlyCloseoutCompletenessTests(unittest.TestCase):
+    def verification_only_manifest(self, *, applied: bool) -> dict:
+        record = {
+            "section": "FS-10",
+            "id": "FS-10",
+            "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+            "implementation": "NOT_REQUIRED",
+            "implementation_state": "NOT_REQUIRED",
+            "implementation_complete": False,
+            "verification": "COMPLETE",
+            "verification_state": "COMPLETE",
+            "verification_complete": True,
+            "administrator_acceptance": "ACCEPTED",
+            "closeout": "APPLIED" if applied else "PROPOSED",
+            "section_closeout": "APPLIED" if applied else "PROPOSED",
+            "closeout_applied": applied,
+            "reusable_product_paths": [],
+            "reusable_product_path_count": 0,
+            "reusable_product_commits": [],
+            "reusable_product_commit_count": 0,
+            "product_commit": None,
+            "active_work_authorization": None,
+            "active_control_work_authorization": None,
+            "active_implementation_authorization": None,
+            "active_migration_authorization": None,
+            "active_implementation_section": None,
+            "current_authorized_section": None,
+            "authorization_id": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+            "verification_evidence": {
+                "result": "PASSED",
+                "verified_checkpoint": "a" * 40,
+                "recorded_transition": "TR-017-RECORD-VERIFICATION-ONLY-COMPLETE",
+                "complete_repository_tests": {"status": "PASSED", "test_count": 155},
+                "source_validator": "PASSED",
+                "floppyctl_source_validation": "PASSED",
+                "tracked_json": {"status": "PASSED", "file_count": 59},
+                "accepted_no_change_findings": {
+                    "work_package_type": "VERIFICATION_ONLY_NO_REUSABLE_PRODUCT_CHANGE",
+                    "implementation_state": "NOT_REQUIRED",
+                    "qualifying_real_migration_paths": 0,
+                    "qualifying_real_source_format_fixtures": [],
+                    "reusable_product_paths": [],
+                    "reusable_product_path_count": 0,
+                    "reusable_product_commits": [],
+                    "reusable_product_commit_count": 0,
+                    "product_commit": None,
+                    "real_project_modification": "NOT_PERFORMED",
+                    "active_authorization": None,
+                    "repository_writer": None,
+                    "writer_authorization_reference": None,
+                },
+            },
+        }
+        proposal = {
+            "section": "FS-10",
+            "transition": "TR-019-PROPOSE-VERIFICATION-ONLY-SECTION-CLOSEOUT",
+            "status": "APPROVED_AND_APPLIED" if applied else "PROPOSED_NOT_APPLIED",
+            "record": ".floppy/closeouts/FS-10-closeout.md",
+            "application_status": "APPLIED" if applied else "NOT_APPLIED",
+        }
+        manifest = {
+            "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE" if applied else "LC-VERIFICATION-ONLY-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+            "active_work_authorization": None,
+            "active_control_work_authorization": None,
+            "active_implementation_authorization": None,
+            "active_migration_authorization": None,
+            "active_implementation_section": None,
+            "current_authorized_section": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+            "authority": {
+                "active_work_authorization": None,
+                "active_implementation_authorization": None,
+                "active_migration_authorization": None,
+                "active_implementation_section": None,
+                "current_authorized_section": None,
+                "authorization_id": None,
+                "repository_writer": None,
+                "writer_authorization_reference": None,
+            },
+            "fs_10_work_package": record,
+            "closeout_proposal": proposal,
+        }
+        if applied:
+            manifest["closeout_application"] = {
+                "section": "FS-10",
+                "transition": "TR-020-APPLY-VERIFICATION-ONLY-SECTION-CLOSEOUT",
+                "status": "APPLIED",
+                "record": ".floppy/closeouts/FS-10-closeout.md",
+                "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+                "fs_11_draft_path": ".floppy/templates/Floppy-E-FS-11.draft.md",
+            }
+            manifest["fs_11_work_package"] = {
+                "section": "FS-11",
+                "id": "FS-11",
+                "accepted": False,
+                "active": False,
+                "implementation_authorized": False,
+                "authorization_id": None,
+                "repository_writer": None,
+            }
+        return manifest
+
+    def write_verification_only_project(self, root: Path, *, applied: bool) -> dict:
+        manifest = self.verification_only_manifest(applied=applied)
+        closeout = root / ".floppy/closeouts/FS-10-closeout.md"
+        closeout.parent.mkdir(parents=True, exist_ok=True)
+        closeout.write_text("fixture: FS-10 closeout\n", encoding="utf-8")
+        if applied:
+            draft = root / ".floppy/templates/Floppy-E-FS-11.draft.md"
+            draft.parent.mkdir(parents=True, exist_ok=True)
+            draft.write_text("STATUS: DRAFT_NOT_AUTHORIZED\n", encoding="utf-8")
+        return manifest
+
+    def assert_contains(self, manifest: dict, root: Path, expected: str) -> None:
+        self.assertIn(expected, VALIDATOR.validate_closeout_completeness(manifest, root))
+
+    def test_verification_only_proposal_not_required_tr019_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=False)
+            self.assertEqual([], VALIDATOR.validate_closeout_completeness(manifest, root))
+
+    def test_verification_only_application_not_required_tr020_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            self.assertEqual([], VALIDATOR.validate_closeout_completeness(manifest, root))
+
+    def test_verification_only_complete_or_ordinary_evidence_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            baseline = self.write_verification_only_project(root, applied=True)
+            cases = (
+                ("implementation_state", "COMPLETE", "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_INVALID: FS-10"),
+                ("implementation_checkpoint", "b" * 40, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_EVIDENCE_FORBIDDEN: FS-10"),
+                ("implementation_evidence", {"fabricated": True}, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_EVIDENCE_FORBIDDEN: FS-10"),
+            )
+            for field, value, expected in cases:
+                with self.subTest(field=field):
+                    manifest = copy.deepcopy(baseline)
+                    manifest["fs_10_work_package"][field] = value
+                    self.assert_contains(manifest, root, expected)
+
+    def test_verification_only_implementation_complete_true_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            manifest["fs_10_work_package"]["implementation_complete"] = True
+            self.assert_contains(manifest, root, "CLOSEOUT_VERIFICATION_ONLY_IMPLEMENTATION_COMPLETE_FORBIDDEN: FS-10")
+
+    def test_verification_only_tr008_proposal_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=False)
+            manifest["closeout_proposal"]["transition"] = "TR-008-PROPOSE-SECTION-CLOSEOUT"
+            self.assert_contains(manifest, root, "CLOSEOUT_PROPOSAL_TRANSITION_INVALID: FS-10")
+
+    def test_verification_only_tr009_application_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            manifest["closeout_application"]["transition"] = "TR-009-APPLY-SECTION-CLOSEOUT"
+            self.assert_contains(manifest, root, "CLOSEOUT_APPLICATION_TRANSITION_INVALID: FS-10")
+
+    def test_verification_only_product_scope_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            baseline = self.write_verification_only_project(root, applied=True)
+            for field, value in (
+                ("reusable_product_paths", ["tools/fabricated.py"]),
+                ("reusable_product_commits", ["c" * 40]),
+                ("product_commit", "d" * 40),
+            ):
+                with self.subTest(field=field):
+                    manifest = copy.deepcopy(baseline)
+                    manifest["fs_10_work_package"][field] = value
+                    self.assert_contains(manifest, root, "CLOSEOUT_VERIFICATION_ONLY_PRODUCT_SCOPE_INVALID: FS-10")
+
+    def test_verification_only_validation_performs_no_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            manifest = self.write_verification_only_project(root, applied=True)
+            before_manifest = json.dumps(manifest, ensure_ascii=False, sort_keys=True)
+            before_files = {
+                path.relative_to(root).as_posix(): path.read_bytes()
+                for path in sorted(root.rglob("*")) if path.is_file()
+            }
+            self.assertEqual([], VALIDATOR.validate_closeout_completeness(manifest, root))
+            after_manifest = json.dumps(manifest, ensure_ascii=False, sort_keys=True)
+            after_files = {
+                path.relative_to(root).as_posix(): path.read_bytes()
+                for path in sorted(root.rglob("*")) if path.is_file()
+            }
+            self.assertEqual(before_manifest, after_manifest)
+            self.assertEqual(before_files, after_files)
+
+# END CTRL-02 VERIFICATION-ONLY CLOSEOUT TESTS
+
 if __name__ == "__main__":
     unittest.main()
