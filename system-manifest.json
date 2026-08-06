@@ -17,7 +17,8 @@
     "revision_application": "protocols/05-revision-application.md",
     "source_policy": "protocols/00-source-repository-policy.md",
     "project_orchestrator_registry_template": "project-seed/.floppy/orchestrator-registry.json",
-    "project_orchestrator_handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md"
+    "project_orchestrator_handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md",
+    "project_lifecycle_state_template": "project-seed/.floppy/lifecycle-state.json"
   },
   "architecture": {
     "name": "BCE — Bootable Context Environment",
@@ -56,7 +57,9 @@
   },
   "tooling": {
     "initializer": "tools/initialize_project.py",
-    "validator": "tools/validate_floppy.py"
+    "validator": "tools/validate_floppy.py",
+    "cli": "tools/floppyctl.py",
+    "project_control_state_provisioning": "tools/initialize_project.py"
   },
   "lifecycle_specification": {
     "section": "FS-01",
@@ -94,7 +97,7 @@
   },
   "migration": {
     "from": "0.4.1-dev",
-    "impact": "Newly initialized projects record source version 0.4.2-dev; existing historical records and project-seed bytes remain unchanged."
+    "impact": "Newly initialized projects receive deterministic canonical lifecycle-state, manifest, and orchestrator-registry records. Existing project repositories are not modified automatically."
   },
   "project_orchestrator_registration": {
     "name": "Project Orchestrator Registration and Handoff",
@@ -124,15 +127,15 @@
     "artifacts": {
       "registry_template": {
         "path": "project-seed/.floppy/orchestrator-registry.json",
-        "sha256": "f6e2ba172657144af5d5977e73e34fcf98ea76abe250f30fc7a674aa0ad230c6"
+        "sha256": "0bee01b27cfaee2d0854d17e001ecd49d7eecbcad0e19b3cab597f9e5d729a6d"
       },
       "handoff_template": {
         "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
-        "sha256": "51af866296cb5b730f46b7b6b837ac7f365b0361a7035f825f590aecd031297f"
+        "sha256": "aafe1e0f9c91cc8acc26296506e3bdb44440e63e1c05dd98bd0c17fd417810e8"
       },
       "tests": {
         "path": "tests/test_orchestrator_registry.py",
-        "sha256": "e22d89107b8b535b5f9ac3d447c9b9f2ca2fbaece9ad1b16c69036096c1110a7"
+        "sha256": "40c4ce4c1965c2efe8039ca687ca6ef37a85e4480cfeebb7f6374294e8b3ad43"
       }
     }
   },
@@ -190,6 +193,51 @@
         "path": "schemas/bce/1.0.0/bce-work-authorization.schema.json",
         "$id": "urn:floppy-project-interaction-system:schema:bce-work-authorization:1.0.0",
         "sha256": "8bc4ea16955e4b220b10ac3a155d015c26a6cf05e257a25be0fe2d1c5c6466f1"
+      }
+    }
+  },
+  "project_control_state_provisioning": {
+    "name": "Deterministic Project Control-State Provisioning",
+    "section": "FS-11",
+    "status": "reusable_product",
+    "provisioning_version": 1,
+    "serialization": "UTF-8/LF/canonical-json-v1",
+    "initializer": "tools/initialize_project.py",
+    "cli": "tools/floppyctl.py",
+    "validator": "tools/validate_floppy.py",
+    "lifecycle_state_schema": "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+    "atomic_install": true,
+    "rollback_on_failure": true,
+    "overwrites_existing_control_state": false,
+    "grants_implementation_authority": false,
+    "artifacts": {
+      "lifecycle_state_template": {
+        "path": "project-seed/.floppy/lifecycle-state.json",
+        "sha256": "eecf2ad54702db5cdc2e8412e97f15e57eef7303b5161e5434b399c2873324cc"
+      },
+      "manifest_template": {
+        "path": "project-seed/.floppy/manifest.json",
+        "sha256": "7ebb84664aa86ef99a91f5c5165b8a19d6d1ae4ac0dc252ce2b808813f58ff1a"
+      },
+      "orchestrator_registry_template": {
+        "path": "project-seed/.floppy/orchestrator-registry.json",
+        "sha256": "0bee01b27cfaee2d0854d17e001ecd49d7eecbcad0e19b3cab597f9e5d729a6d"
+      },
+      "initializer": {
+        "path": "tools/initialize_project.py",
+        "sha256": "906fd8daf74789fa68850d5825cb2259c56f2d5759730167edd3b5cf1ee6ffef"
+      },
+      "cli": {
+        "path": "tools/floppyctl.py",
+        "sha256": "a0541569205dcf64809d7f2e0832523f04a1801872a82724f55bfb84cec30d9d"
+      },
+      "validator": {
+        "path": "tools/validate_floppy.py",
+        "sha256": "d4a45669b6d3b0476c82b737ec3d92b011f4936163236f5194a742e1b83fb64e"
+      },
+      "tests": {
+        "path": "tests/test_project_provisioning.py",
+        "sha256": "2b1aea7a7fea389fc342713e71363e9dda9e5f24765d7dc0a401b9c139d27295"
       }
     }
   }

@@ -48,6 +48,7 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "project-seed/.floppy/floppies/Floppy-D-Project-Map.md",
     "project-seed/.floppy/floppies/Floppy-E-Current-Section.md",
     "project-seed/.floppy/handoffs/README.md",
+    "project-seed/.floppy/lifecycle-state.json",
     "project-seed/.floppy/manifest.json",
     "project-seed/.floppy/orchestrator-registry.json",
     "project-seed/.floppy/revisions/README.md",
@@ -212,13 +213,19 @@ def update_archive_record(manifest_path: Path, archive_bytes: bytes) -> dict:
 
 
 class ValidatedBootPackageTests(unittest.TestCase):
+    def test_project_lifecycle_state_is_in_validated_boot_inventory(self) -> None:
+        self.assertIn(
+            "project-seed/.floppy/lifecycle-state.json",
+            CLI.BOOT_PACKAGE_FILE_PATHS,
+        )
+
     def test_explicit_inventory_matches_source_boundary(self) -> None:
         self.assertEqual(CLI.BOOT_PACKAGE_FILE_PATHS, EXPECTED_BOOT_PACKAGE_PATHS)
         self.assertEqual(
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 47)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 48)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")

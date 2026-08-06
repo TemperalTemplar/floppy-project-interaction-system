@@ -29,6 +29,7 @@ SOURCE_REQUIRED = [
     "protocols/03-active-session.md",
     "protocols/04-everyday-closeout.md",
     "protocols/05-revision-application.md",
+    "project-seed/.floppy/lifecycle-state.json",
     "project-seed/.floppy/manifest.json",
     "project-seed/.floppy/roadmap/roadmap.json",
     "project-seed/.floppy/roadmap/roadmap.md",
@@ -1758,10 +1759,22 @@ def validate_authorization_git_integrity(
             if code[1] != " ":
                 tracked.append(path)
         if untracked:
-            errors.append(
-                "GIT_INTEGRITY_UNTRACKED_PATHS: "
-                + ", ".join(sorted(untracked))
-            )
+            rejected_untracked = list(untracked)
+            if pending_candidate:
+                rejected_untracked = [
+                    path
+                    for path in untracked
+                    if (
+                        (normalized := _semantic_repository_path(path))
+                        is None
+                        or normalized not in expected_paths
+                    )
+                ]
+            if rejected_untracked:
+                errors.append(
+                    "GIT_INTEGRITY_UNTRACKED_PATHS: "
+                    + ", ".join(sorted(rejected_untracked))
+                )
         if not pending_candidate:
             if staged:
                 errors.append(
@@ -2027,6 +2040,429 @@ def _validate_ordinary_closeout_completeness(
 
     return errors
 
+
+INITIAL_PROJECT_STATE = {
+    "state_id": "LC-ONBOARDING-REQUIRED",
+    "section": None,
+    "authorization_id": None,
+    "dimensions": {
+        "roadmap": "ONBOARDING_REQUIRED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "PENDING",
+        "closeout": "NOT_PROPOSED",
+        "migration": "NONE",
+        "final_closure": "OPEN",
+    },
+    "active_implementation_sections": [],
+}
+PROJECT_CONTROL_SERIALIZATION = "UTF-8/LF/canonical-json-v1"
+PROJECT_LIFECYCLE_SCHEMA = "schemas/bce/1.0.0/bce-lifecycle-state.schema.json"
+
+
+def _canonical_json_bytes(value: Any) -> bytes:
+    return (
+        json.dumps(
+            value,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def _validate_canonical_json_file(
+    path: Path,
+    value: dict[str, Any],
+    errors: list[str],
+    label: str,
+) -> None:
+    try:
+        actual = path.read_bytes()
+    except OSError as exc:
+        errors.append(f"{label} is unreadable: {exc}")
+        return
+    if actual != _canonical_json_bytes(value):
+        errors.append(f"{label} serialization is not canonical UTF-8/LF JSON")
+
+
+def _validate_initial_state_profile(
+    state: dict[str, Any],
+    errors: list[str],
+    label: str,
+) -> None:
+    for field, expected in INITIAL_PROJECT_STATE.items():
+        if state.get(field) != expected:
+            errors.append(f"{label} has invalid initial {field}")
+    checkpoint = state.get("base_checkpoint")
+    if checkpoint is not None and (
+        not isinstance(checkpoint, str)
+        or re.fullmatch(r"[0-9a-f]{40}", checkpoint) is None
+    ):
+        errors.append(f"{label} base checkpoint is invalid")
+    evidence = state.get("evidence")
+    if not isinstance(evidence, list) or not evidence:
+        errors.append(f"{label} evidence is missing")
+    elif not all(isinstance(item, str) and item.strip() for item in evidence):
+        errors.append(f"{label} evidence is invalid")
+
+
+def _validate_project_control_records(
+    *,
+    root: Path,
+    manifest: dict[str, Any],
+    state: dict[str, Any],
+    registry: dict[str, Any],
+    errors: list[str],
+    template: bool,
+) -> None:
+    control = manifest.get("control_state")
+    if not isinstance(control, dict):
+        errors.append("project manifest control_state record is missing")
+        return
+
+    expected_status = "TEMPLATE" if template else "PROVISIONED"
+    required_control = {
+        "provisioning_version": 1,
+        "status": expected_status,
+        "lifecycle_state": ".floppy/lifecycle-state.json",
+        "lifecycle_state_schema": PROJECT_LIFECYCLE_SCHEMA,
+        "orchestrator_registry": ".floppy/orchestrator-registry.json",
+        "serialization": PROJECT_CONTROL_SERIALIZATION,
+        "implementation_authority": False,
+    }
+    for field, expected in required_control.items():
+        if control.get(field) != expected:
+            errors.append(f"project manifest control_state {field} is invalid")
+
+    records = manifest.get("records")
+    if not isinstance(records, dict):
+        errors.append("project manifest records registry is missing")
+    else:
+        if records.get("lifecycle_state") != ".floppy/lifecycle-state.json":
+            errors.append("project manifest lifecycle-state record path is invalid")
+        if records.get("orchestrator_registry") != ".floppy/orchestrator-registry.json":
+            errors.append("project manifest orchestrator-registry record path is invalid")
+
+    provisioning = registry.get("provisioning")
+    if not isinstance(provisioning, dict):
+        errors.append("project orchestrator registry provisioning record is missing")
+    else:
+        required_provisioning = {
+            "version": 1,
+            "status": expected_status,
+            "serialization": PROJECT_CONTROL_SERIALIZATION,
+            "initialized_by": "tools/initialize_project.py",
+        }
+        for field, expected in required_provisioning.items():
+            if provisioning.get(field) != expected:
+                errors.append(
+                    f"project orchestrator registry provisioning {field} is invalid"
+                )
+
+    checkpoint = registry.get("project_checkpoint")
+    if not isinstance(checkpoint, dict):
+        errors.append("project orchestrator registry checkpoint is missing")
+        return
+    expected_checkpoint_fields = {"repository", "branch", "worktree", "checkpoint"}
+    if set(checkpoint) != expected_checkpoint_fields:
+        errors.append("project orchestrator registry checkpoint fields are invalid")
+
+    agreement = {
+        "repository": control.get("repository"),
+        "branch": control.get("branch"),
+        "worktree": control.get("worktree"),
+        "checkpoint": control.get("checkpoint"),
+    }
+    if checkpoint != agreement:
+        errors.append("project manifest and orchestrator registry checkpoint disagree")
+
+    assignments = registry.get("current_assignments")
+    if not isinstance(assignments, dict):
+        errors.append("project orchestrator registry assignments are missing")
+    else:
+        if assignments.get("repository_writer") is not None:
+            errors.append("newly provisioned project must not assign a repository writer")
+        if assignments.get("writer_authorization_reference") is not None:
+            errors.append(
+                "newly provisioned project must not assign a writer authorization reference"
+            )
+
+    if state.get("base_checkpoint") != control.get("checkpoint"):
+        errors.append("lifecycle-state base checkpoint disagrees with control_state")
+
+    if template:
+        for field in ("repository", "branch", "worktree", "checkpoint"):
+            if control.get(field) is not None:
+                errors.append(f"project seed control_state {field} must be null")
+        if state.get("base_checkpoint") is not None:
+            errors.append("project seed lifecycle-state base checkpoint must be null")
+    else:
+        repository = control.get("repository")
+        worktree = control.get("worktree")
+        branch = control.get("branch")
+        commit = control.get("checkpoint")
+        if not isinstance(repository, str) or not repository.strip():
+            errors.append("provisioned project repository identity is missing")
+        if not isinstance(worktree, str) or not worktree.strip():
+            errors.append("provisioned project worktree identity is missing")
+        else:
+            try:
+                expected_root = Path(
+                    os.environ.get("FLOPPY_EXPECTED_PROJECT_ROOT", str(root))
+                ).expanduser().resolve()
+                recorded_root = Path(worktree).expanduser().resolve()
+                if recorded_root != expected_root:
+                    errors.append("provisioned project worktree identity is stale")
+            except OSError:
+                errors.append("provisioned project worktree identity is invalid")
+        if branch is not None and (
+            not isinstance(branch, str) or not branch.strip()
+        ):
+            errors.append("provisioned project branch identity is invalid")
+        if commit is not None and (
+            not isinstance(commit, str)
+            or re.fullmatch(r"[0-9a-f]{40}", commit) is None
+        ):
+            errors.append("provisioned project checkpoint identity is invalid")
+
+        serialized = "\n".join(
+            json.dumps(value, ensure_ascii=False)
+            for value in (manifest, state, registry)
+        )
+        if re.search(r"\{\{[^{}\n]+\}\}", serialized):
+            errors.append("provisioned project contains unresolved template tokens")
+
+
+def _validate_lifecycle_schema_instance(
+    source_root: Path,
+    state: dict[str, Any],
+    errors: list[str],
+    label: str,
+) -> None:
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        errors.append(f"jsonschema is required for project control-state validation: {exc}")
+        return
+    schema = validate_json(source_root / PROJECT_LIFECYCLE_SCHEMA, errors)
+    if schema is None:
+        return
+    failures = sorted(
+        Draft202012Validator(schema).iter_errors(state),
+        key=lambda item: (
+            tuple(str(part) for part in item.absolute_path),
+            item.message,
+        ),
+    )
+    if failures:
+        first = failures[0]
+        location = ".".join(str(part) for part in first.absolute_path) or "<root>"
+        errors.append(f"{label} violates lifecycle-state schema at {location}: {first.message}")
+
+
+def validate_project_seed_provisioning(
+    root: Path,
+    system_manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    seed_root = root / "project-seed/.floppy"
+    manifest = validate_json(seed_root / "manifest.json", errors)
+    state = validate_json(seed_root / "lifecycle-state.json", errors)
+    registry = validate_json(seed_root / "orchestrator-registry.json", errors)
+    if not all(isinstance(item, dict) for item in (manifest, state, registry)):
+        return
+
+    _validate_canonical_json_file(
+        seed_root / "manifest.json", manifest, errors, "project seed manifest"
+    )
+    _validate_canonical_json_file(
+        seed_root / "lifecycle-state.json",
+        state,
+        errors,
+        "project seed lifecycle-state",
+    )
+    _validate_canonical_json_file(
+        seed_root / "orchestrator-registry.json",
+        registry,
+        errors,
+        "project seed orchestrator registry",
+    )
+    _validate_initial_state_profile(state, errors, "project seed lifecycle-state")
+    _validate_lifecycle_schema_instance(
+        root, state, errors, "project seed lifecycle-state"
+    )
+    _validate_project_control_records(
+        root=root,
+        manifest=manifest,
+        state=state,
+        registry=registry,
+        errors=errors,
+        template=True,
+    )
+
+    registration = system_manifest.get("project_control_state_provisioning")
+    if not isinstance(registration, dict):
+        errors.append("system manifest does not register project control-state provisioning")
+        return
+    expected_registration = {
+        "section": "FS-11",
+        "status": "reusable_product",
+        "provisioning_version": 1,
+        "serialization": PROJECT_CONTROL_SERIALIZATION,
+        "initializer": "tools/initialize_project.py",
+        "cli": "tools/floppyctl.py",
+        "validator": "tools/validate_floppy.py",
+        "lifecycle_state_schema": PROJECT_LIFECYCLE_SCHEMA,
+        "atomic_install": True,
+        "rollback_on_failure": True,
+        "overwrites_existing_control_state": False,
+        "grants_implementation_authority": False,
+    }
+    for field, expected in expected_registration.items():
+        if registration.get(field) != expected:
+            errors.append(
+                f"system manifest project control-state provisioning {field} is invalid"
+            )
+    artifacts = registration.get("artifacts")
+    expected_artifacts = {
+        "lifecycle_state_template": "project-seed/.floppy/lifecycle-state.json",
+        "manifest_template": "project-seed/.floppy/manifest.json",
+        "orchestrator_registry_template":
+            "project-seed/.floppy/orchestrator-registry.json",
+        "initializer": "tools/initialize_project.py",
+        "cli": "tools/floppyctl.py",
+        "validator": "tools/validate_floppy.py",
+        "tests": "tests/test_project_provisioning.py",
+    }
+    if not isinstance(artifacts, dict) or set(artifacts) != set(expected_artifacts):
+        errors.append(
+            "system manifest project control-state provisioning artifacts are incomplete"
+        )
+        return
+    for name, relative in expected_artifacts.items():
+        record = artifacts.get(name)
+        if not isinstance(record, dict) or record.get("path") != relative:
+            errors.append(
+                f"system manifest project control-state artifact path is invalid: {name}"
+            )
+            continue
+        artifact_path = root / relative
+        if not artifact_path.is_file():
+            errors.append(f"project control-state artifact is missing: {relative}")
+        elif record.get("sha256") != sha256(artifact_path):
+            errors.append(
+                f"project control-state artifact digest does not match: {relative}"
+            )
+
+
+def validate_provisioned_project_control_state(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    state = validate_json(root / ".floppy/lifecycle-state.json", errors)
+    registry = validate_json(root / ".floppy/orchestrator-registry.json", errors)
+    if not isinstance(state, dict) or not isinstance(registry, dict):
+        return
+    _validate_canonical_json_file(
+        root / ".floppy/manifest.json", manifest, errors, "project manifest"
+    )
+    _validate_canonical_json_file(
+        root / ".floppy/lifecycle-state.json",
+        state,
+        errors,
+        "project lifecycle-state",
+    )
+    _validate_canonical_json_file(
+        root / ".floppy/orchestrator-registry.json",
+        registry,
+        errors,
+        "project orchestrator registry",
+    )
+    _validate_initial_state_profile(state, errors, "project lifecycle-state")
+    _validate_lifecycle_schema_instance(
+        Path(__file__).resolve().parents[1],
+        state,
+        errors,
+        "project lifecycle-state",
+    )
+    _validate_project_control_records(
+        root=root,
+        manifest=manifest,
+        state=state,
+        registry=registry,
+        errors=errors,
+        template=False,
+    )
+
+
+def validate_self_hosted_control_mode(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    lifecycle_path = root / ".floppy/lifecycle-state.json"
+    registry_path = root / ".floppy/orchestrator-registry.json"
+    lifecycle_exists = lifecycle_path.is_file()
+    registry_exists = registry_path.is_file()
+    if lifecycle_exists != registry_exists:
+        errors.append(
+            "SELF_HOSTED_CONTROL_MODE_PARTIAL: lifecycle-state and orchestrator "
+            "registry must appear together"
+        )
+        return
+    if not lifecycle_exists:
+        fs11 = manifest.get("fs_11_work_package")
+        if isinstance(fs11, dict) and fs11.get("accepted") is True:
+            authorization = manifest.get("active_work_authorization")
+            if not isinstance(authorization, dict):
+                errors.append(
+                    "LEGACY_PRE_INTEGRATION_ACTIVE_AUTHORIZATION_MISSING"
+                )
+                return
+            if authorization.get("section") != "FS-11":
+                errors.append(
+                    "LEGACY_PRE_INTEGRATION_AUTHORIZED_SECTION_INVALID"
+                )
+            authority = manifest.get("authority")
+            authority = authority if isinstance(authority, dict) else {}
+            writer = manifest.get(
+                "repository_writer", authority.get("repository_writer")
+            )
+            reference = manifest.get(
+                "writer_authorization_reference",
+                authority.get("writer_authorization_reference"),
+            )
+            if writer is None or reference != authorization.get("authorization_id"):
+                errors.append("LEGACY_PRE_INTEGRATION_WRITER_BINDING_INVALID")
+        return
+
+    lifecycle = validate_json(lifecycle_path, errors)
+    registry = validate_json(registry_path, errors)
+    if not isinstance(lifecycle, dict) or not isinstance(registry, dict):
+        return
+    if lifecycle.get("state_id") != manifest.get("status"):
+        errors.append("CANONICAL_INTEGRATED_LIFECYCLE_STATE_MISMATCH")
+    assignments = registry.get("current_assignments")
+    assignments = assignments if isinstance(assignments, dict) else {}
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    manifest_writer = manifest.get(
+        "repository_writer", authority.get("repository_writer")
+    )
+    manifest_reference = manifest.get(
+        "writer_authorization_reference",
+        authority.get("writer_authorization_reference"),
+    )
+    if assignments.get("repository_writer") != manifest_writer:
+        errors.append("CANONICAL_INTEGRATED_WRITER_MISMATCH")
+    if assignments.get("writer_authorization_reference") != manifest_reference:
+        errors.append("CANONICAL_INTEGRATED_WRITER_REFERENCE_MISMATCH")
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -2067,11 +2503,13 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_lifecycle_artifacts(root, manifest, errors)
     validate_normative_bce_schemas(root, manifest, errors)
     validate_verification_only_lifecycle_extension(root, manifest, errors)
+    validate_project_seed_provisioning(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():
         control_manifest = validate_json(control_path, errors)
         if control_manifest is not None:
+            validate_self_hosted_control_mode(root, control_manifest, errors)
             errors.extend(
                 validate_authorization_git_integrity(
                     root,
@@ -2117,6 +2555,16 @@ def validate_project(root: Path, errors: list[str]) -> None:
             if not relative or not (root / relative).is_file():
                 errors.append(f"project roadmap path missing or invalid: {key}")
 
+        lifecycle_path = root / ".floppy/lifecycle-state.json"
+        registry_path = root / ".floppy/orchestrator-registry.json"
+        control_declared = isinstance(manifest.get("control_state"), dict)
+        if control_declared or lifecycle_path.exists() or registry_path.exists():
+            if not lifecycle_path.is_file():
+                errors.append("provisioned project lifecycle-state record is missing")
+            if not registry_path.is_file():
+                errors.append("provisioned project orchestrator-registry record is missing")
+            if lifecycle_path.is_file() and registry_path.is_file():
+                validate_provisioned_project_control_state(root, manifest, errors)
         errors.extend(validate_closeout_completeness(manifest, root))
 
     if roadmap:

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import importlib.util
 import json
 import os
 import re
@@ -42,6 +43,7 @@ BOOT_PACKAGE_FILE_PATHS = (
     "project-seed/.floppy/floppies/Floppy-D-Project-Map.md",
     "project-seed/.floppy/floppies/Floppy-E-Current-Section.md",
     "project-seed/.floppy/handoffs/README.md",
+    "project-seed/.floppy/lifecycle-state.json",
     "project-seed/.floppy/manifest.json",
     "project-seed/.floppy/orchestrator-registry.json",
     "project-seed/.floppy/revisions/README.md",
@@ -1041,6 +1043,84 @@ def command_inspect(root: Path, selection: str) -> int:
     return 0
 
 
+
+def _load_initializer_module():
+    path = Path(__file__).with_name("initialize_project.py")
+    spec = importlib.util.spec_from_file_location("floppy_initialize_project", path)
+    if spec is None or spec.loader is None:
+        raise CliError("unable to load deterministic project initializer")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception as exc:
+        raise CliError(f"unable to load deterministic project initializer: {exc}") from exc
+    return module
+
+
+def _parse_initialize_args(args: list[str]) -> dict[str, Any]:
+    values: dict[str, Any] = {
+        "target": None,
+        "project_name": None,
+        "source_repository": "SOURCE-REPOSITORY-NOT-YET-RECORDED",
+        "project_repository": None,
+        "dry_run": False,
+    }
+    index = 0
+    while index < len(args):
+        item = args[index]
+        if item == "--dry-run":
+            if values["dry_run"]:
+                raise CliError("initialize --dry-run may be provided only once")
+            values["dry_run"] = True
+            index += 1
+            continue
+        option_map = {
+            "--target": "target",
+            "--project-name": "project_name",
+            "--source-repository": "source_repository",
+            "--project-repository": "project_repository",
+        }
+        key = option_map.get(item)
+        if key is None:
+            raise CliError(
+                "initialize accepts --target, --project-name, "
+                "--source-repository, --project-repository, and --dry-run"
+            )
+        if index + 1 >= len(args):
+            raise CliError(f"initialize {item} requires a value")
+        if values[key] is not None and key not in {"source_repository"}:
+            raise CliError(f"initialize {item} may be provided only once")
+        values[key] = args[index + 1]
+        index += 2
+
+    if values["target"] is None:
+        raise CliError("initialize requires --target")
+    if values["project_name"] is None:
+        raise CliError("initialize requires --project-name")
+    return values
+
+
+def command_initialize(args: list[str]) -> int:
+    values = _parse_initialize_args(args)
+    module = _load_initializer_module()
+    try:
+        result = module.provision_project(
+            target=Path(values["target"]),
+            project_name=values["project_name"],
+            source_repository=values["source_repository"],
+            project_repository=values["project_repository"],
+            dry_run=values["dry_run"],
+            source_root=Path(__file__).resolve().parents[1],
+        )
+    except module.ProvisioningError as exc:
+        raise CliError(str(exc)) from exc
+    system_version = (
+        Path(__file__).resolve().parents[1] / "VERSION"
+    ).read_text(encoding="utf-8").strip()
+    module.print_result(result, system_version)
+    return 0
+
 def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     root_value: str | None = None
     remaining: list[str] = []
@@ -1059,9 +1139,9 @@ def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
         index += 1
 
     if not remaining:
-        raise CliError("command is required: status, validate, or inspect")
+        raise CliError("command is required: status, validate, inspect, or initialize")
     command = remaining[0]
-    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package"}:
+    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "initialize"}:
         raise CliError(f"unknown command: {command}")
     return _root_path(root_value), command, remaining[1:]
 
@@ -1098,6 +1178,9 @@ def _legacy_main(argv: list[str] | None = None) -> int:
                     "verify-package requires one ZIP and one checksum manifest"
                 )
             return command_verify_package(args[0], args[1])
+
+        if command == "initialize":
+            return command_initialize(args)
 
         mode: str | None = None
         if args:

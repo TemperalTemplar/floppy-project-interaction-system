@@ -9,6 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "project-seed" / ".floppy" / "orchestrator-registry.json"
+LIFECYCLE_PATH = ROOT / "project-seed" / ".floppy" / "lifecycle-state.json"
 HANDOFF_PATH = ROOT / "project-seed" / ".floppy" / "templates" / "orchestrator-handoff.md"
 SEED_MANIFEST_PATH = ROOT / "project-seed" / ".floppy" / "manifest.json"
 SYSTEM_MANIFEST_PATH = ROOT / "system-manifest.json"
@@ -50,6 +51,30 @@ def validate_registry(registry: dict[str, Any]) -> None:
     require(rules["writer_requires_exact_authorization_reference"] is True, "writer reference rule")
     require(rules["status_or_role_grants_write_authority"] is False, "status/role authority rule")
 
+    checkpoint = registry["project_checkpoint"]
+    require(
+        set(checkpoint) == {"repository", "branch", "worktree", "checkpoint"},
+        "checkpoint fields",
+    )
+    for field in ("repository", "branch", "worktree", "checkpoint"):
+        value = checkpoint[field]
+        require(
+            value is None or (isinstance(value, str) and bool(value.strip())),
+            f"invalid checkpoint {field}",
+        )
+
+    provisioning = registry["provisioning"]
+    require(provisioning["version"] == 1, "provisioning version")
+    require(provisioning["status"] == "TEMPLATE", "provisioning status")
+    require(
+        provisioning["serialization"] == "UTF-8/LF/canonical-json-v1",
+        "provisioning serialization",
+    )
+    require(
+        provisioning["initialized_by"] == "tools/initialize_project.py",
+        "provisioning initializer",
+    )
+
     orchestrators = registry["orchestrators"]
     ids = [item["id"] for item in orchestrators]
     require(len(ids) == len(set(ids)), "duplicate orchestrator id")
@@ -81,11 +106,43 @@ class OrchestratorRegistryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.registry = load_json(REGISTRY_PATH)
+        cls.lifecycle = load_json(LIFECYCLE_PATH)
         cls.seed_manifest = load_json(SEED_MANIFEST_PATH)
         cls.system_manifest = load_json(SYSTEM_MANIFEST_PATH)
 
     def test_seed_registry_is_valid(self) -> None:
         validate_registry(self.registry)
+
+    def test_seed_lifecycle_state_is_onboarding_only(self) -> None:
+        self.assertEqual(
+            self.lifecycle["state_id"],
+            "LC-ONBOARDING-REQUIRED",
+        )
+        self.assertIsNone(self.lifecycle["section"])
+        self.assertIsNone(self.lifecycle["authorization_id"])
+        self.assertIsNone(self.lifecycle["base_checkpoint"])
+        self.assertEqual(
+            self.lifecycle["dimensions"]["authority"],
+            "NO_ACTIVE_WORK_AUTHORIZATION",
+        )
+        self.assertEqual(
+            self.lifecycle["active_implementation_sections"],
+            [],
+        )
+
+    def test_seed_control_records_are_canonical_json(self) -> None:
+        for path in (REGISTRY_PATH, LIFECYCLE_PATH, SEED_MANIFEST_PATH):
+            parsed = load_json(path)
+            expected = (
+                json.dumps(
+                    parsed,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                + "\n"
+            ).encode("utf-8")
+            self.assertEqual(path.read_bytes(), expected)
 
     def test_checkpoint_and_reporting_fields_are_present(self) -> None:
         checkpoint = self.registry["project_checkpoint"]
@@ -187,9 +244,18 @@ class OrchestratorRegistryTests(unittest.TestCase):
             artifacts["registry_template"]["sha256"],
             sha256(REGISTRY_PATH),
         )
+        provisioning = self.system_manifest["project_control_state_provisioning"]
+        self.assertEqual(
+            provisioning["artifacts"]["lifecycle_state_template"]["sha256"],
+            sha256(LIFECYCLE_PATH),
+        )
+        self.assertEqual(
+            provisioning["artifacts"]["orchestrator_registry_template"]["sha256"],
+            sha256(REGISTRY_PATH),
+        )
         self.assertEqual(
             artifacts["handoff_template"]["sha256"],
-            sha256(HANDOFF_PATH),
+            sha256_lf_text(HANDOFF_PATH),
         )
         self.assertEqual(
             self.system_manifest["orchestrator"]["sha256"],
