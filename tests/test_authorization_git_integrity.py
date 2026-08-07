@@ -1408,6 +1408,68 @@ class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
             )
 
 
+    def test_bounded_validator_correction_exact_pre_fs12_pc2_scope_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            scope = [
+                "specs/lifecycle-transition-table.json",
+                "tools/validate_floppy.py",
+                "tests/test_lifecycle_specification.py",
+                "tests/test_authorization_git_integrity.py",
+                "system-manifest.json",
+            ]
+            for relative in scope:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"baseline: {relative}\n", encoding="utf-8")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "pre-fs12 correction baseline")
+            for relative in scope:
+                with (root / relative).open("a", encoding="utf-8") as handle:
+                    handle.write("pre-fs12 bounded correction\n")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "pre-fs12 bounded correction")
+            head = require_git(root, "rev-parse", "HEAD")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                [],
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    manifest,
+                    self.bounded_environment(head, scope),
+                ),
+            )
+
+    def test_bounded_validator_correction_transition_table_requires_exact_pre_fs12_scope(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            scope = [
+                "specs/lifecycle-transition-table.json",
+                "tools/validate_floppy.py",
+                "tests/test_lifecycle_specification.py",
+                "system-manifest.json",
+            ]
+            for relative in scope:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"bounded: {relative}\n", encoding="utf-8")
+            require_git(root, "add", "--", *scope)
+            require_git(root, "commit", "-m", "incomplete pre-fs12 correction")
+            head = require_git(root, "rev-parse", "HEAD")
+            manifest = json.loads(
+                (root / ".floppy/manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertIn(
+                "GIT_INTEGRITY_BOUNDED_CORRECTION_SCOPE_FORBIDDEN",
+                VALIDATOR.validate_authorization_git_integrity(
+                    root,
+                    manifest,
+                    self.bounded_environment(head, scope),
+                ),
+            )
+
     def test_bounded_validator_correction_passes_without_active_authority(self) -> None:
         td, root = self.make_repo()
         with td:

@@ -1280,6 +1280,16 @@ GIT_CONTROL_OPERATION_ENV = "FLOPPY_CONTROL_OPERATION"
 GIT_CONTROL_SCOPE_ENV = "FLOPPY_CONTROL_SCOPE"
 GIT_CONTROL_BRANCH_ENV = "FLOPPY_CONTROL_BRANCH"
 
+PRE_FS12_BOUNDED_CONTROL_CORRECTION_PC2_SCOPE = frozenset(
+    {
+        "specs/lifecycle-transition-table.json",
+        "tools/validate_floppy.py",
+        "tests/test_lifecycle_specification.py",
+        "tests/test_authorization_git_integrity.py",
+        "system-manifest.json",
+    }
+)
+
 
 def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
     """Run one direct, read-only Git command without persistent configuration."""
@@ -2179,11 +2189,16 @@ def validate_authorization_git_integrity(
             }
             if len(expected_paths) != len(supplied_scope):
                 errors.append("GIT_INTEGRITY_CONTROL_SCOPE_INVALID")
-            allowed = all(
+            standard_allowed = all(
                 item in {"tools/validate_floppy.py", "system-manifest.json"}
                 or (item.startswith("tests/test_") and item.endswith(".py"))
                 for item in expected_paths
             )
+            pre_fs12_contract_allowed = (
+                expected_paths
+                == PRE_FS12_BOUNDED_CONTROL_CORRECTION_PC2_SCOPE
+            )
+            allowed = standard_allowed or pre_fs12_contract_allowed
             if (
                 not allowed
                 or "tools/validate_floppy.py" not in expected_paths
