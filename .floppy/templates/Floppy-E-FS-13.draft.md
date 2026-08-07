@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_CLOSEOUT_NOT_PROPOSED
+STATUS: CLOSED
 
 # Floppy E — FS-13 Work Package
 
@@ -77,3 +77,33 @@ Final-project closure: OPEN / NOT AUTHORIZED
 Mandatory stop: administrator review of exact C6 and the unchanged complete
 proposal-file SHA-256 is required before any TR-009 closeout application.
 <!-- FS13_C6_CLOSEOUT_PROPOSAL_END -->
+
+<!-- FS13_C7_CLOSEOUT_APPLICATION_BEGIN -->
+## FS-13 final section closeout application
+
+```text
+Operation: CLOSEOUT_APPLICATION_CONTROL
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Post-state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Application base checkpoint: 59325c9a168f918940696c9809b1dfcb302f43f7
+Application base tree: c7d2997cf3f5b698b5dc616ed28199ca3ee67da7
+Accepted proposal commit: 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27
+Accepted proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Accepted proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
+Accepted proposal Git blob: de63a4494f5bcd8b29c1b8da7c18735d50b08c91
+Implementation historical outcome: COMPLETE
+Verification historical outcome: COMPLETE
+Administrator acceptance historical outcome: ACCEPTED
+Closeout: APPLIED
+FS-13 status: CLOSED
+Active authorization: NONE
+Repository writer: NONE
+FS-14: NONEXISTENT / NOT AUTHORIZED
+Final-project closure: OPEN / NOT AUTHORIZED
+Application checkpoint: THIS_COMMIT
+```
+
+FS-13 is closed. No later implementation section has been created or authorized.
+Final-project closure remains a separate administrator-controlled operation.
+<!-- FS13_C7_CLOSEOUT_APPLICATION_END -->

@@ -706,3 +706,26 @@ Final-project closure: OPEN / NOT AUTHORIZED
 The administrator must review exact C6 and the complete proposal-file SHA-256
 before any closeout application authority can exist.
 <!-- FS13_C6_CLOSEOUT_PROPOSAL_END -->
+
+<!-- FS13_C7_CLOSEOUT_APPLICATION_BEGIN -->
+## FS-13 final-section closeout applied
+
+```text
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-13: CLOSED
+Implementation historical outcome: COMPLETE
+Verification historical outcome: COMPLETE
+Administrator acceptance historical outcome: ACCEPTED
+Closeout: APPLIED
+Accepted proposal commit: 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27
+Accepted proposal SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Application base checkpoint: 59325c9a168f918940696c9809b1dfcb302f43f7
+FS-14: NONEXISTENT / NOT AUTHORIZED
+Final-project closure: OPEN / NOT AUTHORIZED
+Application checkpoint: THIS_COMMIT
+```
+
+All planned implementation sections through FS-13 are closed. No FS-14 exists.
+Project-level final closure remains a separate authority boundary.
+<!-- FS13_C7_CLOSEOUT_APPLICATION_END -->

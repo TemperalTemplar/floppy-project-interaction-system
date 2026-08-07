@@ -40,3 +40,27 @@ Final-project closure: OPEN
 
 Prepare and review an exact FS-13 work package in read-only mode. No FS-13
 repository write is authorized by the draft or by FS-12 closeout.
+
+<!-- FS13_TERMINAL_CLOSEOUT_BEGIN -->
+## FS-13 terminal section closeout
+
+```text
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-13: CLOSED
+Implementation historical outcome: COMPLETE
+Verification historical outcome: COMPLETE
+Administrator acceptance historical outcome: ACCEPTED
+Closeout: APPLIED
+C7 application checkpoint: THIS_COMMIT
+Accepted C6 proposal: 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27
+Accepted proposal SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Accepted PRE-C7 correction: 59325c9a168f918940696c9809b1dfcb302f43f7
+Active authorization: NONE
+Repository writer: NONE
+FS-14: NONEXISTENT / NOT AUTHORIZED
+Final-project closure: OPEN / NOT AUTHORIZED
+```
+
+No final-project closure, integration, merge, tag, release, migration, history
+rewrite, force push, or modification of `main` is authorized by FS-13 closeout.
+<!-- FS13_TERMINAL_CLOSEOUT_END -->

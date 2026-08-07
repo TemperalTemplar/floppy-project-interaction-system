@@ -50,3 +50,41 @@ SHA-256 of this proposal.
 
 Application transition `TR-009-APPLY-SECTION-CLOSEOUT` is NOT AUTHORIZED by
 this proposal.
+
+<!-- FS13_CLOSEOUT_APPLICATION_BEGIN -->
+## Final FS-13 closeout application
+
+```text
+Administrator decision: AUTHORIZE FS-13 FINAL-SECTION CLOSEOUT APPLICATION FROM ACCEPTED PRE-C7 CORRECTION CHECKPOINT 59325c9a168f918940696c9809b1dfcb302f43f7 TREE c7d2997cf3f5b698b5dc616ed28199ca3ee67da7, WITH THE ACCEPTED AND UNCHANGED C6 CLOSEOUT PROPOSAL AT COMMIT 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27 TREE e54f0b939f4160f2b18aa455896a3be284f3ad8d, COMPLETE-FILE SHA-256 c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3, CANONICAL PROPOSAL-BLOCK SHA-256 b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89, AND PROPOSAL GIT BLOB de63a4494f5bcd8b29c1b8da7c18735d50b08c91.
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Source state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Resulting global state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-13 status: CLOSED
+FS-13 implementation historical outcome: COMPLETE
+FS-13 verification historical outcome: COMPLETE
+FS-13 administrator acceptance historical outcome: ACCEPTED
+Closeout: APPLIED
+Accepted proposal commit: 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27
+Accepted proposal tree: e54f0b939f4160f2b18aa455896a3be284f3ad8d
+Accepted proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Accepted proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
+Accepted proposal Git blob: de63a4494f5bcd8b29c1b8da7c18735d50b08c91
+Accepted PRE-C7 correction checkpoint: 59325c9a168f918940696c9809b1dfcb302f43f7
+Accepted PRE-C7 correction tree: c7d2997cf3f5b698b5dc616ed28199ca3ee67da7
+Application checkpoint: THIS_COMMIT
+Active authorization: NONE
+Active implementation section: NONE
+Repository writer: NONE
+FS-14: NONEXISTENT / NOT AUTHORIZED
+Final-project closure: OPEN / NOT AUTHORIZED
+```
+
+The accepted C6 proposal preimage remains authoritative by its immutable commit,
+tree, complete-file SHA-256, canonical-block SHA-256, and Git blob. This C7
+application closes FS-13 only. It does not create or authorize FS-14 and does
+not execute final-project closure.
+
+<!-- FS13_CLOSEOUT_APPLICATION_CANONICAL_BEGIN -->
+{"active_implementation_section":null,"active_work_authorization":null,"administrator_acceptance_historical_outcome":"ACCEPTED","administrator_decision":"AUTHORIZE FS-13 FINAL-SECTION CLOSEOUT APPLICATION FROM ACCEPTED PRE-C7 CORRECTION CHECKPOINT 59325c9a168f918940696c9809b1dfcb302f43f7 TREE c7d2997cf3f5b698b5dc616ed28199ca3ee67da7, WITH THE ACCEPTED AND UNCHANGED C6 CLOSEOUT PROPOSAL AT COMMIT 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27 TREE e54f0b939f4160f2b18aa455896a3be284f3ad8d, COMPLETE-FILE SHA-256 c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3, CANONICAL PROPOSAL-BLOCK SHA-256 b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89, AND PROPOSAL GIT BLOB de63a4494f5bcd8b29c1b8da7c18735d50b08c91.","application_base_checkpoint":"59325c9a168f918940696c9809b1dfcb302f43f7","application_base_tree":"c7d2997cf3f5b698b5dc616ed28199ca3ee67da7","application_checkpoint":"THIS_COMMIT","application_status":"APPLIED","application_transition":"TR-009-APPLY-SECTION-CLOSEOUT","approved_proposal_canonical_block_sha256":"b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89","approved_proposal_checkpoint":"539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27","approved_proposal_git_blob":"de63a4494f5bcd8b29c1b8da7c18735d50b08c91","approved_proposal_sha256":"c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3","approved_proposal_tree":"e54f0b939f4160f2b18aa455896a3be284f3ad8d","closeout":"APPLIED","final_project_closure":"OPEN_NOT_AUTHORIZED","format_version":"1.0.0","fs_13_status":"CLOSED","fs_14_authorized":false,"fs_14_created":false,"implementation_historical_outcome":"COMPLETE","repository_writer":null,"section":"FS-13","source_state":"LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED","target_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","verification_historical_outcome":"COMPLETE","writer_authorization_reference":null}
+<!-- FS13_CLOSEOUT_APPLICATION_CANONICAL_END -->
+<!-- FS13_CLOSEOUT_APPLICATION_END -->

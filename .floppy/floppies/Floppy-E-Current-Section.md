@@ -1,45 +1,38 @@
-# Floppy E — FS-13 Current Section
+# Floppy E — Current Section
 
-Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
+STATUS: FS-13 CLOSED — FINAL-PROJECT CLOSURE OPEN / NOT AUTHORIZED
 
-Applied transitions, in order:
-
-1. `TR-002-ACCEPT-WORK-PACKAGE`
-2. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
-3. `TR-004-START-SECTION-IMPLEMENTATION`
-4. `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
-5. `TR-006-RECORD-VERIFICATION-COMPLETE`
-6. `TR-007-ACCEPT-SECTION`
-7. `TR-008-PROPOSE-SECTION-CLOSEOUT`
-
-Administrator proposal authority: `AUTHORIZE FS-13 CLOSEOUT PROPOSAL FROM ACCEPTED CHECKPOINT dc6fe7cd80301aa61730d70df87fcfeda60632b6 TREE e3c1f4b959f6b42faf9212ba2de506e28fea625c; AUTHORIZE ONLY TR-008-PROPOSE-SECTION-CLOSEOUT AND COMMIT C6 TO CREATE THE EXACT FS-13 CLOSEOUT PROPOSAL RECORD .floppy/closeouts/FS-13-closeout.md AND UPDATE ONLY THE REQUIRED CLOSEOUT-PROPOSAL CONTROL STATE; THE PROPOSAL MUST BIND THE ACCEPTED C5 CHECKPOINT AND TREE, VERIFIED C4 CHECKPOINT baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4 TREE f7cb8a02260099742a67e446f660ba263501ac40, P1 COMMIT bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39 TREE 23c592863cf14cea5be48bc69837a54283572bdd, AND THE FS-13 ADMINISTRATOR-ACCEPTED RESULT; RECORD THE COMPLETE PROPOSAL FILE SHA-256 FOR LATER ADMINISTRATOR REVIEW; DO NOT APPLY CLOSEOUT, DO NOT CREATE OR AUTHORIZE FS-14, AND DO NOT AUTHORIZE TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main. STOP AFTER C6 IS PUSHED AND RETURN THE EXACT C6 COMMIT, TREE, AND COMPLETE PROPOSAL FILE SHA-256 FOR SEPARATE ADMINISTRATOR REVIEW.`
+## Lifecycle checkpoint
 
 ```text
-FS-13 implementation: COMPLETE
-FS-13 verification: COMPLETE
-FS-13 administrator acceptance: ACCEPTED
-FS-13 closeout: PROPOSED_NOT_APPLIED
-Accepted C5 checkpoint: dc6fe7cd80301aa61730d70df87fcfeda60632b6
-Accepted C5 tree: e3c1f4b959f6b42faf9212ba2de506e28fea625c
-Verified C4 checkpoint: baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4
-Verified C4 tree: f7cb8a02260099742a67e446f660ba263501ac40
-P1 implementation commit: bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39
-P1 implementation tree: 23c592863cf14cea5be48bc69837a54283572bdd
-Proposal record: .floppy/closeouts/FS-13-closeout.md
-Proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
-Proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
-Proposal checkpoint: THIS_COMMIT
-Application status: NOT_APPLIED
-Application authorization: NONE
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Applied transition: TR-009-APPLY-SECTION-CLOSEOUT
+FS-13: CLOSED
+FS-13 implementation historical outcome: COMPLETE
+FS-13 verification historical outcome: COMPLETE
+FS-13 administrator acceptance historical outcome: ACCEPTED
+FS-13 closeout: APPLIED
+Accepted C6 proposal commit: 539ce5bb9cdd943a5bb6f88a6539ff3b9bd53e27
+Accepted C6 proposal tree: e54f0b939f4160f2b18aa455896a3be284f3ad8d
+Accepted proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Accepted proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
+Accepted proposal Git blob: de63a4494f5bcd8b29c1b8da7c18735d50b08c91
+Accepted PRE-C7 correction checkpoint: 59325c9a168f918940696c9809b1dfcb302f43f7
+Accepted PRE-C7 correction tree: c7d2997cf3f5b698b5dc616ed28199ca3ee67da7
 Active authorization: NONE
+Active implementation section: NONE
 Repository writer: NONE
-FS-14: NOT CREATED / NOT AUTHORIZED
+PROJECT_ORCHESTRATOR: ACTIVE / SOLE ACTIVE ORCHESTRATOR
+FS-14: NONEXISTENT / NOT AUTHORIZED
 Final-project closure: OPEN / NOT AUTHORIZED
+C7 application checkpoint: THIS_COMMIT
 ```
 
-Mandatory stop:
+The global target-state implementation/verification/acceptance dimensions describe
+the post-closeout inactive position. They do not rewrite FS-13's authoritative
+historical outcome, which remains COMPLETE / COMPLETE / ACCEPTED.
 
-Administrator review of the exact committed FS-13 closeout proposal and
-complete-file SHA-256 is required. This proposal is not closeout application.
-TR-009 requires a later explicit administrator directive tied to exact C6 and
-the unchanged proposal SHA-256.
+No FS-14 draft, work package, authorization, activation, or working model exists.
+
+Final-project closure is a distinct project-level authority boundary and requires
+a separate administrator decision.
