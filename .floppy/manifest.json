@@ -122,7 +122,7 @@
     "current_authorized_section": "FS-13",
     "human_authority_required": true,
     "implementation_authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
-    "last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+    "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
     "last_authorized_control_operation": "FS_13_IMPLEMENTATION_V2",
     "prohibited_inference": true,
     "repository_writer": "FS_13_WORKING_MODEL_V2",
@@ -141,7 +141,7 @@
     "pre_writer": "FS_11_PROV_01_WORKING_MODEL",
     "product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b"
   },
-  "authority_last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+  "authority_last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
   "authorization_activation": {
     "authorization_id": "FS_13_IMPLEMENTATION",
     "operation": "ACTIVATION_CONTROL_COMMIT",
@@ -255,11 +255,11 @@
     "active_implementation_section": "FS-13",
     "active_migration_authorization": null,
     "active_work_authorization": "FS_13_IMPLEMENTATION_V2",
-    "additional_product_writes_may_begin": true,
+    "additional_product_writes_may_begin": false,
     "authorization_id": "FS_13_IMPLEMENTATION_V2",
     "current_authorized_section": "FS-13",
-    "current_operation": "STATE_PRESERVING_AUTHORITY_HANDOFF",
-    "decision_required": "No additional administrator authorization is required before amended P1 or C4.",
+    "current_operation": "COMPLETION_VERIFICATION_CONTROL",
+    "decision_required": "ACCEPT FS-13 VERIFIED RESULT or explicitly reject the verified result.",
     "fs_04_active": false,
     "fs_04_administrator_acceptance": "ACCEPTED",
     "fs_04_closeout": "APPLIED",
@@ -360,27 +360,27 @@
     "fs_12_draft_status": "CLOSED",
     "fs_12_may_begin": false,
     "fs_12_status": "CLOSED",
-    "fs_13": "ACTIVE / AUTHORIZED / IMPLEMENTATION IN PROGRESS",
+    "fs_13": "VERIFICATION COMPLETE / ACCEPTANCE PENDING",
     "fs_13_accepted": true,
     "fs_13_active": true,
     "fs_13_authorized": true,
     "fs_13_draft_created": true,
     "fs_13_draft_path": ".floppy/templates/Floppy-E-FS-13.draft.md",
-    "fs_13_draft_status": "IMPLEMENTATION_IN_PROGRESS",
-    "fs_13_may_begin": true,
-    "implementation_may_begin": true,
+    "fs_13_draft_status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
+    "fs_13_may_begin": false,
+    "implementation_may_begin": false,
     "integration_may_begin": false,
     "merge_may_begin": false,
     "migration_may_begin": false,
-    "next_action": "Execute exact three-path FS-13 P1, then C4 completion and verification.",
-    "next_commit_subject": "feat(fs-13): add portable context export and integrity verification",
-    "next_step": "FS-13 implementation continues under replacement authorization FS_13_IMPLEMENTATION_V2.",
+    "next_action": "Await explicit administrator acceptance or rejection of the verified FS-13 result.",
+    "next_commit_subject": "chore(bce): accept FS-13 verified result",
+    "next_step": "No additional implementation is authorized before administrator acceptance.",
     "post_acceptance_bounded_correction_commit": "e0486b3a25721812e5a69b52f655e3bae1402e34",
     "production_changes_may_begin": false,
     "repository_writer": "FS_13_WORKING_MODEL_V2",
     "root_control_reconciliation": "APPLIED",
     "root_control_reconciliation_checkpoint": "THIS_COMMIT",
-    "state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
     "tag_or_release_may_begin": false,
     "writer_authorization_reference": "FS_13_IMPLEMENTATION_V2"
   },
@@ -3951,7 +3951,7 @@
     ],
     "full_repository_suite_boundary": "IMPLEMENTATION_COMPLETION_ONLY",
     "id": "FS-13",
-    "implementation": "IN_PROGRESS",
+    "implementation": "COMPLETE",
     "implementation_authorized": true,
     "implementation_started": true,
     "lifecycle_and_authority_commit_count": 7,
@@ -3974,11 +3974,11 @@
     "sequence": 13,
     "source_version_change": false,
     "source_version_target": "0.4.3-dev",
-    "status": "IMPLEMENTATION_IN_PROGRESS",
+    "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
     "test_inventory_defined": true,
     "tests_deferred_until_section_draft": false,
     "title": "Export and Integrity",
-    "verification": "NOT_STARTED",
+    "verification": "COMPLETE",
     "windows_release_requirement": "The finished Windows release must not require ordinary users to install Python, configure PATH, download loose .py files, or manually execute Python commands.",
     "work_package_accepted": true,
     "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
@@ -4004,16 +4004,80 @@
       }
     ],
     "authorized": true,
-    "implementation_state": "IN_PROGRESS",
-    "implementation_output_applied": false,
-    "mandatory_next_operation": "Execute exact three-path P1 then C4 completion and verification.",
+    "implementation_state": "COMPLETE",
+    "implementation_output_applied": true,
+    "mandatory_next_operation": "Await explicit administrator acceptance or rejection of the verified FS-13 result.",
     "scope_amended_during_active_implementation": true,
     "scope_amendment_checkpoint": "THIS_COMMIT",
     "scope_amendment_added_path": "system-manifest.json",
     "scope_amendment_administrator_decision": "AMEND ACTIVE FS-13 IMPLEMENTATION AT CHECKPOINT ca46998aad6b2eb0a1027647e629628e98baabf6 TREE faef39ddd002a624f2bcedf52d433d929017d540 BY STATE-PRESERVING AUTHORITY HANDOFF FROM AUTHORIZATION FS_13_IMPLEMENTATION AND WRITER FS_13_WORKING_MODEL TO AUTHORIZATION FS_13_IMPLEMENTATION_V2 AND WRITER FS_13_WORKING_MODEL_V2; ADD ONLY system-manifest.json TO THE ACCEPTED REUSABLE-PRODUCT SCOPE, MAKING THE EXACT P1 SCOPE tools/floppyctl.py, tests/test_export_integrity.py, AND system-manifest.json; RETAIN EXACTLY ONE REUSABLE-PRODUCT COMMIT, THE ACCEPTED FS-07/FS-08/FS-13/CLI FOCUSED REGRESSIONS, ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY, SOURCE VERSION 0.4.3-dev, AND ALL OTHER FS-13 TERMS. AUTHORIZE EXACTLY ONE ADDITIONAL STATE-PRESERVING CONTROL COMMIT BEFORE P1 TO RECORD THIS HANDOFF; DO NOT CHANGE THE FS-13 LIFECYCLE STATE DURING THAT COMMIT. CONTINUE TO AUTHORIZE P1, TR-005, TR-006, AND C4 UNDER THE REPLACEMENT AUTHORIZATION. DO NOT AUTHORIZE TR-007, TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.",
     "replacement_authorization_id": "FS_13_IMPLEMENTATION_V2",
     "replacement_repository_writer": "FS_13_WORKING_MODEL_V2",
-    "state_preserving_authority_handoff": true
+    "state_preserving_authority_handoff": true,
+    "implementation_complete": true,
+    "verification_complete": true,
+    "implementation_product_commit": "bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39",
+    "implementation_product_tree": "23c592863cf14cea5be48bc69837a54283572bdd",
+    "activation_tree": "faef39ddd002a624f2bcedf52d433d929017d540",
+    "authority_handoff_commit": "82e3d9efeae152d7acc3efe873062ea99ce4a700",
+    "authority_handoff_tree": "9e31cf5a52673e67b57975792bb587c3a11a284f",
+    "implementation_completion_transition": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+    "verification_completion_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+    "implementation_completion_checkpoint": "THIS_COMMIT",
+    "verification_completion_checkpoint": "THIS_COMMIT",
+    "completion_transition_sequence": [
+      {
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 implementation complete after the exact three-path reusable-product output was committed and validated under the replacement authorization.",
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+        "inputs": [
+          "Exact C2 activation tree faef39ddd002a624f2bcedf52d433d929017d540",
+          "Exact state-preserving handoff commit 82e3d9efeae152d7acc3efe873062ea99ce4a700",
+          "Exact state-preserving handoff tree 9e31cf5a52673e67b57975792bb587c3a11a284f",
+          "Exact P1 reusable-product commit bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39",
+          "Exact P1 reusable-product tree 23c592863cf14cea5be48bc69837a54283572bdd",
+          "Exact reusable-product scope: 3 paths"
+        ],
+        "outputs": [
+          "FS-13 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
+        ],
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "validation_evidence": [
+          "Focused FS-07/FS-08/FS-13/CLI regressions passed",
+          "Complete repository suite: 276 passed, 2 warnings, 132 subtests passed in 294.23s (0:04:54)",
+          "Source and floppyctl validators passed",
+          "Tracked JSON: 63 passed",
+          "P1 exact reusable-product paths: 3",
+          "Registered tools/floppyctl.py digest updated in system-manifest.json"
+        ]
+      },
+      {
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "inputs": [
+          "Portable context export and integrity behavior validated",
+          "Exact three-path product-scope comparison",
+          "Immutable tested P1 tree 23c592863cf14cea5be48bc69837a54283572bdd"
+        ],
+        "outputs": [
+          "FS-13 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "validation_evidence": [
+          "One portable ZIP plus adjacent integrity manifest validated",
+          "Deterministic archive and canonical manifest validated",
+          "Tamper, unsafe path, duplicate, and case-collision rejection validated",
+          "Project .floppy state remains unchanged by export",
+          "Authorization and writer remain active until separate TR-007 acceptance"
+        ]
+      }
+    ]
   },
   "historical_work_authorizations": [
     {
@@ -5995,7 +6059,7 @@
     "onboarding_branch": "control/source-development-bce-onboarding",
     "version": "0.4.1-dev"
   },
-  "status": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+  "status": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
   "writer_authorization_reference": "FS_13_IMPLEMENTATION_V2",
   "fs_13_authority_handoff": {
     "operation": "STATE_PRESERVING_AUTHORITY_HANDOFF",
@@ -6018,7 +6082,7 @@
   },
   "git_integrity_operation": {
     "section": "FS-13",
-    "operation": "STATE_PRESERVING_AUTHORITY_HANDOFF",
+    "operation": "COMPLETION_VERIFICATION_CONTROL",
     "authorization_id": "FS_13_IMPLEMENTATION_V2",
     "repository_writer": "FS_13_WORKING_MODEL_V2",
     "exact_control_paths": [
@@ -6031,6 +6095,58 @@
       ".floppy/templates/Floppy-E-FS-13.draft.md"
     ],
     "implementation_scope_exercised": false,
-    "transition_sequence": []
+    "transition_sequence": [
+      {
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 implementation complete after the exact three-path reusable-product output was committed and validated under the replacement authorization.",
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+        "inputs": [
+          "Exact C2 activation tree faef39ddd002a624f2bcedf52d433d929017d540",
+          "Exact state-preserving handoff commit 82e3d9efeae152d7acc3efe873062ea99ce4a700",
+          "Exact state-preserving handoff tree 9e31cf5a52673e67b57975792bb587c3a11a284f",
+          "Exact P1 reusable-product commit bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39",
+          "Exact P1 reusable-product tree 23c592863cf14cea5be48bc69837a54283572bdd",
+          "Exact reusable-product scope: 3 paths"
+        ],
+        "outputs": [
+          "FS-13 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
+        ],
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "validation_evidence": [
+          "Focused FS-07/FS-08/FS-13/CLI regressions passed",
+          "Complete repository suite: 276 passed, 2 warnings, 132 subtests passed in 294.23s (0:04:54)",
+          "Source and floppyctl validators passed",
+          "Tracked JSON: 63 passed",
+          "P1 exact reusable-product paths: 3",
+          "Registered tools/floppyctl.py digest updated in system-manifest.json"
+        ]
+      },
+      {
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "inputs": [
+          "Portable context export and integrity behavior validated",
+          "Exact three-path product-scope comparison",
+          "Immutable tested P1 tree 23c592863cf14cea5be48bc69837a54283572bdd"
+        ],
+        "outputs": [
+          "FS-13 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "validation_evidence": [
+          "One portable ZIP plus adjacent integrity manifest validated",
+          "Deterministic archive and canonical manifest validated",
+          "Tamper, unsafe path, duplicate, and case-collision rejection validated",
+          "Project .floppy state remains unchanged by export",
+          "Authorization and writer remain active until separate TR-007 acceptance"
+        ]
+      }
+    ]
   }
 }

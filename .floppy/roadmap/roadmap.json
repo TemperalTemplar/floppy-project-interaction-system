@@ -88,7 +88,7 @@
     "pre_writer": "FS_11_PROV_01_WORKING_MODEL",
     "product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b"
   },
-  "authority_last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+  "authority_last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
   "authorization_activation": {
     "authorization_id": "FS_13_IMPLEMENTATION",
     "operation": "ACTIVATION_CONTROL_COMMIT",
@@ -3031,52 +3031,70 @@
     "writer_authorization_reference": null
   },
   "git_integrity_operation": {
+    "section": "FS-13",
+    "operation": "COMPLETION_VERIFICATION_CONTROL",
+    "authorization_id": "FS_13_IMPLEMENTATION_V2",
+    "repository_writer": "FS_13_WORKING_MODEL_V2",
     "exact_control_paths": [
-      ".floppy/README.md",
-      ".floppy/START-HERE.md",
-      ".floppy/closeouts/FS-12-closeout.md",
-      ".floppy/floppies/Floppy-D-Project-Map.md",
       ".floppy/floppies/Floppy-E-Current-Section.md",
       ".floppy/lifecycle-state.json",
       ".floppy/manifest.json",
       ".floppy/orchestrator-registry.json",
       ".floppy/roadmap/roadmap.json",
       ".floppy/roadmap/roadmap.md",
-      ".floppy/templates/Floppy-E-FS-12.draft.md",
       ".floppy/templates/Floppy-E-FS-13.draft.md"
     ],
     "implementation_scope_exercised": false,
-    "operation": "CLOSEOUT_APPLICATION_CONTROL",
-    "section": "FS-12",
     "transition_sequence": [
       {
-        "actor": "Alva Roberts",
-        "decision": "ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
-        "id": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 implementation complete after the exact three-path reusable-product output was committed and validated under the replacement authorization.",
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
         "inputs": [
-          "C6 proposal checkpoint 755c0560b3ed1042618be2c92bb34c137f8f1d16",
-          "Accepted closeout proposal SHA-256 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
-          "Canonical proposal-block SHA-256 c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83",
-          "Exact unchanged canonical FS-12 proposal block",
-          "Verified C6 evidence: 260 preflight and 260 real committed-tree tests"
+          "Exact C2 activation tree faef39ddd002a624f2bcedf52d433d929017d540",
+          "Exact state-preserving handoff commit 82e3d9efeae152d7acc3efe873062ea99ce4a700",
+          "Exact state-preserving handoff tree 9e31cf5a52673e67b57975792bb587c3a11a284f",
+          "Exact P1 reusable-product commit bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39",
+          "Exact P1 reusable-product tree 23c592863cf14cea5be48bc69837a54283572bdd",
+          "Exact reusable-product scope: 3 paths"
         ],
         "outputs": [
-          "FS-12 closeout application record",
-          "FS-12 status CLOSED",
-          "Global lifecycle state LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-          "Inactive FS-13 draft .floppy/templates/Floppy-E-FS-13.draft.md",
-          "No active authorization or repository writer",
-          "Final-project closure remains OPEN"
+          "FS-13 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
         ],
-        "post_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "pre_state": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
         "validation_evidence": [
-          "Exact twelve-path C7 scope",
-          "Accepted proposal complete-file preimage SHA-256 verified before modification",
-          "All required tests and both source validators pass",
-          "Tested tree equals committed tree",
-          "Final worktree and index clean",
-          "No FS-13 acceptance, activation, implementation, final closure, push, merge, release, packaging, migration, or production action"
+          "Focused FS-07/FS-08/FS-13/CLI regressions passed",
+          "Complete repository suite: 276 passed, 2 warnings, 132 subtests passed in 294.23s (0:04:54)",
+          "Source and floppyctl validators passed",
+          "Tracked JSON: 63 passed",
+          "P1 exact reusable-product paths: 3",
+          "Registered tools/floppyctl.py digest updated in system-manifest.json"
+        ]
+      },
+      {
+        "actor": "FS_13_WORKING_MODEL_V2",
+        "decision": "Record FS-13 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "inputs": [
+          "Portable context export and integrity behavior validated",
+          "Exact three-path product-scope comparison",
+          "Immutable tested P1 tree 23c592863cf14cea5be48bc69837a54283572bdd"
+        ],
+        "outputs": [
+          "FS-13 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "validation_evidence": [
+          "One portable ZIP plus adjacent integrity manifest validated",
+          "Deterministic archive and canonical manifest validated",
+          "Tamper, unsafe path, duplicate, and case-collision rejection validated",
+          "Project .floppy state remains unchanged by export",
+          "Authorization and writer remain active until separate TR-007 acceptance"
         ]
       }
     ]
@@ -3819,8 +3837,8 @@
       }
     ]
   },
-  "last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
-  "lifecycle_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+  "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+  "lifecycle_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
   "next_proposed_section": "FS-13",
   "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
   "post_acceptance_bounded_correction": {
@@ -5814,7 +5832,7 @@
       "path": ".floppy/templates/Floppy-E-FS-13.draft.md",
       "repository_writer": "FS_13_WORKING_MODEL_V2",
       "sequence": 13,
-      "status": "IMPLEMENTATION_IN_PROGRESS",
+      "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
       "tests_deferred_until_section_draft": false,
       "title": "Export and Integrity",
       "writer_authorization_reference": "FS_13_IMPLEMENTATION_V2",
@@ -5828,10 +5846,10 @@
         "system-manifest.json"
       ],
       "exact_total_planned_commits": 8,
-      "implementation": "IN_PROGRESS",
+      "implementation": "COMPLETE",
       "maximum_reusable_product_commits": 1,
       "test_inventory_defined": true,
-      "verification": "NOT_STARTED",
+      "verification": "COMPLETE",
       "work_package_accepted": true,
       "work_package_status": "ACCEPTED AS AMENDED PLANNING BASELINE",
       "authorized": true
