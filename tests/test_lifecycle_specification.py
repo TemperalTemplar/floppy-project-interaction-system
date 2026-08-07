@@ -112,6 +112,41 @@ class LifecycleSpecificationTests(unittest.TestCase):
             self.assertTrue(authority["actor"])
             self.assertTrue(authority["decision"])
 
+    def test_post_provisioning_acceptance_dimensions_equal_actual_union(self) -> None:
+        states = {state["id"]: state for state in self.table["states"]}
+        expected = {
+            "TR-002-ACCEPT-WORK-PACKAGE": {"work_package", "closeout"},
+            "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE": {
+                "work_package",
+                "implementation",
+                "verification",
+                "closeout",
+            },
+        }
+        transitions = {
+            transition["id"]: transition
+            for transition in self.table["transitions"]
+        }
+        for transition_id, expected_dimensions in expected.items():
+            with self.subTest(transition=transition_id):
+                transition = transitions[transition_id]
+                target = states[transition["to_state_id"]]
+                actual: set[str] = set()
+                for source_id in transition["from_state_ids"]:
+                    source = states[source_id]
+                    actual.update(
+                        dimension
+                        for dimension in REQUIRED_DIMENSIONS
+                        if source["dimensions"][dimension]
+                        != target["dimensions"][dimension]
+                    )
+                    if source.get("active_implementation_section") != target.get(
+                        "active_implementation_section"
+                    ):
+                        actual.add("active_implementation_section")
+                self.assertEqual(set(transition["changed_dimensions"]), actual)
+                self.assertEqual(actual, expected_dimensions)
+
     def test_global_invariants_are_present(self) -> None:
         invariant_ids = {
             invariant["id"] for invariant in self.table["global_invariants"]

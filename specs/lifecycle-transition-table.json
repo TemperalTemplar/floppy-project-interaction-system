@@ -554,7 +554,8 @@
       ],
       "to_state_id": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
       "changed_dimensions": [
-        "work_package"
+        "work_package",
+        "closeout"
       ],
       "preconditions": [
         "The roadmap identifies the section.",
@@ -1184,7 +1185,8 @@
       "changed_dimensions": [
         "work_package",
         "implementation",
-        "verification"
+        "verification",
+        "closeout"
       ],
       "preconditions": [
         "Exact accepted verification-only work-package conditions are satisfied."
