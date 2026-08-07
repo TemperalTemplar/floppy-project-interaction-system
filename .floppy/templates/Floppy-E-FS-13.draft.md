@@ -46,3 +46,34 @@ Required next operation: Prepare and review the exact FS-13 closeout proposal; d
 No additional implementation is authorized. TR-008, TR-009, final-project
 closure, integration, merge, tag, release, force push, history rewrite, and
 modification of `main` remain unauthorized.
+
+<!-- FS13_C6_CLOSEOUT_PROPOSAL_BEGIN -->
+## FS-13 closeout proposal
+
+```text
+Subject: chore(bce): propose FS-13 closeout
+Operation: CLOSEOUT_PROPOSAL_CONTROL
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Proposal base checkpoint: dc6fe7cd80301aa61730d70df87fcfeda60632b6
+Proposal base tree: e3c1f4b959f6b42faf9212ba2de506e28fea625c
+Verified C4 checkpoint: baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4
+Verified C4 tree: f7cb8a02260099742a67e446f660ba263501ac40
+P1 commit: bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39
+P1 tree: 23c592863cf14cea5be48bc69837a54283572bdd
+Proposal record: .floppy/closeouts/FS-13-closeout.md
+Proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
+Proposal checkpoint: THIS_COMMIT
+Application status: NOT_APPLIED
+Application authorization: NONE
+Active authorization: NONE
+Repository writer: NONE
+FS-14: NOT CREATED / NOT AUTHORIZED
+Final-project closure: OPEN / NOT AUTHORIZED
+```
+
+Mandatory stop: administrator review of exact C6 and the unchanged complete
+proposal-file SHA-256 is required before any TR-009 closeout application.
+<!-- FS13_C6_CLOSEOUT_PROPOSAL_END -->

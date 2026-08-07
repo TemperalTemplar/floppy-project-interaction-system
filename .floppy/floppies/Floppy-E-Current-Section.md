@@ -1,6 +1,6 @@
 # Floppy E — FS-13 Current Section
 
-Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED`
+Lifecycle state: `LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED`
 
 Applied transitions, in order:
 
@@ -10,35 +10,36 @@ Applied transitions, in order:
 4. `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
 5. `TR-006-RECORD-VERIFICATION-COMPLETE`
 6. `TR-007-ACCEPT-SECTION`
+7. `TR-008-PROPOSE-SECTION-CLOSEOUT`
 
-Administrator decision: `ACCEPT FS-13 VERIFIED RESULT AT CHECKPOINT baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4 TREE f7cb8a02260099742a67e446f660ba263501ac40; AUTHORIZE ONLY TR-007-ACCEPT-SECTION AND COMMIT C5 TO RECORD ADMINISTRATOR ACCEPTANCE AND CLEAR FS_13_IMPLEMENTATION_V2 / FS_13_WORKING_MODEL_V2; DO NOT AUTHORIZE TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.`
+Administrator proposal authority: `AUTHORIZE FS-13 CLOSEOUT PROPOSAL FROM ACCEPTED CHECKPOINT dc6fe7cd80301aa61730d70df87fcfeda60632b6 TREE e3c1f4b959f6b42faf9212ba2de506e28fea625c; AUTHORIZE ONLY TR-008-PROPOSE-SECTION-CLOSEOUT AND COMMIT C6 TO CREATE THE EXACT FS-13 CLOSEOUT PROPOSAL RECORD .floppy/closeouts/FS-13-closeout.md AND UPDATE ONLY THE REQUIRED CLOSEOUT-PROPOSAL CONTROL STATE; THE PROPOSAL MUST BIND THE ACCEPTED C5 CHECKPOINT AND TREE, VERIFIED C4 CHECKPOINT baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4 TREE f7cb8a02260099742a67e446f660ba263501ac40, P1 COMMIT bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39 TREE 23c592863cf14cea5be48bc69837a54283572bdd, AND THE FS-13 ADMINISTRATOR-ACCEPTED RESULT; RECORD THE COMPLETE PROPOSAL FILE SHA-256 FOR LATER ADMINISTRATOR REVIEW; DO NOT APPLY CLOSEOUT, DO NOT CREATE OR AUTHORIZE FS-14, AND DO NOT AUTHORIZE TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main. STOP AFTER C6 IS PUSHED AND RETURN THE EXACT C6 COMMIT, TREE, AND COMPLETE PROPOSAL FILE SHA-256 FOR SEPARATE ADMINISTRATOR REVIEW.`
 
 ```text
-FS-13 acceptance baseline: ACCEPTED AS AMENDED PLANNING BASELINE
 FS-13 implementation: COMPLETE
 FS-13 verification: COMPLETE
-FS-13 administrator result acceptance: ACCEPTED
-FS-13 closeout: NOT_PROPOSED
+FS-13 administrator acceptance: ACCEPTED
+FS-13 closeout: PROPOSED_NOT_APPLIED
+Accepted C5 checkpoint: dc6fe7cd80301aa61730d70df87fcfeda60632b6
+Accepted C5 tree: e3c1f4b959f6b42faf9212ba2de506e28fea625c
 Verified C4 checkpoint: baead6a303b7b1efcdd5d5e4f3fba0f9883a7ee4
 Verified C4 tree: f7cb8a02260099742a67e446f660ba263501ac40
-C2 activation tree: faef39ddd002a624f2bcedf52d433d929017d540
-Authority handoff commit: 82e3d9efeae152d7acc3efe873062ea99ce4a700
-Authority handoff tree: 9e31cf5a52673e67b57975792bb587c3a11a284f
 P1 implementation commit: bf11002ca3ba091bb61c2b2ecd31f38a82bb4a39
 P1 implementation tree: 23c592863cf14cea5be48bc69837a54283572bdd
+Proposal record: .floppy/closeouts/FS-13-closeout.md
+Proposal complete-file SHA-256: c18d46e89a95c119d6e4f08b140646681839ad933f75a326756ce6513edb06a3
+Proposal canonical-block SHA-256: b803580a474db80fb6e63ed4cb1649ee9c2e0c82e7edd951f648cfba2a0c3b89
+Proposal checkpoint: THIS_COMMIT
+Application status: NOT_APPLIED
+Application authorization: NONE
 Active authorization: NONE
 Repository writer: NONE
-Writer authorization reference: NONE
-Active implementation section: NONE
-Additional implementation: PROHIBITED
+FS-14: NOT CREATED / NOT AUTHORIZED
 Final-project closure: OPEN / NOT AUTHORIZED
-C5 acceptance checkpoint: THIS_COMMIT
 ```
 
-Acceptance does not imply closeout, final-project closure, integration, merge,
-tag, release, force push, history rewrite, or modification of `main`.
+Mandatory stop:
 
-Required next operation:
-
-Prepare and review the exact FS-13 closeout proposal. Do not apply closeout
-without a later explicit administrator decision.
+Administrator review of the exact committed FS-13 closeout proposal and
+complete-file SHA-256 is required. This proposal is not closeout application.
+TR-009 requires a later explicit administrator directive tied to exact C6 and
+the unchanged proposal SHA-256.
