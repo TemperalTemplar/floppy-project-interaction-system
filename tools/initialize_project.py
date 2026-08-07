@@ -147,7 +147,14 @@ def _safe_seed_files(seed: Path) -> list[Path]:
 def _git_read(target: Path, *arguments: str) -> str | None:
     try:
         completed = subprocess.run(
-            ["git", "-C", str(target), *arguments],
+            [
+                "git",
+                "-c",
+                f"safe.directory={target.as_posix()}",
+                "-C",
+                str(target),
+                *arguments,
+            ],
             text=True,
             encoding="utf-8",
             errors="replace",

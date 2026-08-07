@@ -1351,6 +1351,16 @@ PRE_FS12_BOUNDED_CONTROL_CORRECTION_PC2_SCOPE = frozenset(
     }
 )
 
+PRE_TR021_FINAL_CLOSURE_CORRECTION_SCOPE = frozenset(
+    {
+        "system-manifest.json",
+        "tests/test_final_closure.py",
+        "tests/test_project_provisioning.py",
+        "tools/initialize_project.py",
+        "tools/validate_floppy.py",
+    }
+)
+
 
 def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
     """Run one direct, read-only Git command without persistent configuration."""
@@ -2387,7 +2397,15 @@ def validate_authorization_git_integrity(
                 expected_paths
                 == PRE_FS12_BOUNDED_CONTROL_CORRECTION_PC2_SCOPE
             )
-            allowed = standard_allowed or pre_fs12_contract_allowed
+            pre_tr021_final_closure_correction_allowed = (
+                expected_paths
+                == PRE_TR021_FINAL_CLOSURE_CORRECTION_SCOPE
+            )
+            allowed = (
+                standard_allowed
+                or pre_fs12_contract_allowed
+                or pre_tr021_final_closure_correction_allowed
+            )
             if (
                 not allowed
                 or "tools/validate_floppy.py" not in expected_paths
@@ -3106,13 +3124,15 @@ def _validate_lifecycle_schema_instance(
     state: dict[str, Any],
     errors: list[str],
     label: str,
+    *,
+    schema_path: str = PROJECT_LIFECYCLE_SCHEMA,
 ) -> None:
     try:
         from jsonschema import Draft202012Validator
     except ImportError as exc:
         errors.append(f"jsonschema is required for project control-state validation: {exc}")
         return
-    schema = validate_json(source_root / PROJECT_LIFECYCLE_SCHEMA, errors)
+    schema = validate_json(source_root / schema_path, errors)
     if schema is None:
         return
     failures = sorted(
@@ -3322,11 +3342,15 @@ def validate_self_hosted_control_mode(
         errors,
         "canonical orchestrator registry",
     )
+    runtime_lifecycle_schema = PROJECT_LIFECYCLE_SCHEMA
+    if lifecycle.get("state_id") in FS12_FINAL_CLOSURE_STATE_IDS:
+        runtime_lifecycle_schema = FS12_FINAL_CLOSURE_SCHEMA["path"]
     _validate_lifecycle_schema_instance(
         root,
         lifecycle,
         errors,
         "canonical lifecycle-state",
+        schema_path=runtime_lifecycle_schema,
     )
 
     if lifecycle.get("state_id") != manifest.get("status"):
@@ -3433,6 +3457,14 @@ FS12_FINAL_CLOSURE_SCHEMA = {
     "path": "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
     "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.2.0",
 }
+FS12_FINAL_CLOSURE_STATE_IDS = frozenset(
+    {
+        "LC-PROJECT-CLOSURE-PROPOSED",
+        "LC-PROJECT-FINALLY-CLOSED",
+        "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+        "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+    }
+)
 FS12_FINAL_CLOSURE_PATHS = {
     ".floppy/README.md", ".floppy/START-HERE.md",
     ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
@@ -3497,37 +3529,118 @@ def validate_final_closure_extension(root: Path, manifest: dict[str, Any], error
         else:
             block = text[text.index(begin):text.index(end)+len(end)].encode("utf-8")
             digest = hashlib.sha256(block).hexdigest()
-            proposal = manifest.get("final_closure_proposal")
+            runtime_manifest = validate_json(
+                root / ".floppy/manifest.json",
+                errors,
+            )
+            proposal = (
+                runtime_manifest.get("final_closure_proposal")
+                if isinstance(runtime_manifest, dict)
+                else None
+            )
             if not isinstance(proposal, dict) or proposal.get("proposal_sha256") != digest:
                 errors.append("canonical final-project closure proposal digest mismatch")
 
-def _validate_fs12_final_git_integrity(root: Path, manifest: dict[str, Any], environment: dict[str, str]) -> list[str]:
+def _validate_fs12_final_git_integrity(
+    root: Path,
+    manifest: dict[str, Any],
+    environment: dict[str, str],
+) -> list[str]:
     errors: list[str] = []
     operation = environment.get(GIT_CONTROL_OPERATION_ENV)
     scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
-    revision = scope_commit or "HEAD"
+
+    actual: set[str] = set()
+    commands: list[tuple[str, ...]]
     if scope_commit:
-        result = _git_integrity_run(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", revision, "--")
+        commands = [
+            (
+                "diff-tree",
+                "--root",
+                "--no-commit-id",
+                "--name-only",
+                "-r",
+                scope_commit,
+                "--",
+            )
+        ]
     else:
-        result = _git_integrity_run(root, "diff", "--name-only", "--")
-    actual = {_semantic_repository_path(x) for x in _git_integrity_lines(result) if _semantic_repository_path(x) is not None} if result.returncode == 0 else set()
+        commands = [
+            ("diff", "--name-only", "--"),
+            ("diff", "--cached", "--name-only", "--"),
+            ("ls-files", "--others", "--exclude-standard"),
+        ]
+
+    for command in commands:
+        result = _git_integrity_run(root, *command)
+        if result.returncode != 0:
+            errors.append(
+                "GIT_INTEGRITY_FINAL_CLOSURE_SCOPE_READ_FAILED: "
+                + result.stderr.strip()
+            )
+            continue
+        for item in _git_integrity_lines(result):
+            normalized = _semantic_repository_path(item)
+            if normalized is not None:
+                actual.add(normalized)
+
     if actual != FS12_FINAL_CLOSURE_PATHS:
-        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_PATHS_INVALID: " + ", ".join(sorted(actual)))
-    if manifest.get("active_work_authorization") is not None or manifest.get("active_control_work_authorization") is not None or manifest.get("repository_writer") is not None:
+        errors.append(
+            "GIT_INTEGRITY_FINAL_CLOSURE_PATHS_INVALID: "
+            + ", ".join(sorted(actual))
+        )
+
+    if (
+        manifest.get("active_work_authorization") is not None
+        or manifest.get("active_control_work_authorization") is not None
+        or manifest.get("repository_writer") is not None
+    ):
         errors.append("GIT_INTEGRITY_FINAL_CLOSURE_ACTIVE_AUTHORITY_FORBIDDEN")
+
     supplied = environment.get(GIT_AUTHORIZATION_ENV)
     writer = environment.get(GIT_WRITER_ENV)
     if operation == "FINAL_CLOSURE_PROPOSAL_CONTROL" and supplied:
         errors.append("GIT_INTEGRITY_FINAL_CLOSURE_PROPOSAL_AUTHORITY_FORBIDDEN")
-    if operation == "FINAL_CLOSURE_APPLICATION_CONTROL" and supplied != "FINAL_CLOSURE_APPLICATION":
+    if (
+        operation == "FINAL_CLOSURE_APPLICATION_CONTROL"
+        and supplied != "FINAL_CLOSURE_APPLICATION"
+    ):
         errors.append("GIT_INTEGRITY_FINAL_CLOSURE_APPLICATION_AUTHORITY_MISSING")
     if writer:
         errors.append("GIT_INTEGRITY_FINAL_CLOSURE_WRITER_FORBIDDEN")
+
+    expected_branch = environment.get(GIT_CONTROL_BRANCH_ENV)
+    branch = _git_integrity_run(
+        root,
+        "symbolic-ref",
+        "--quiet",
+        "--short",
+        "HEAD",
+    )
+    if not expected_branch:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_BRANCH_MISSING")
+    elif branch.returncode != 0:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_BRANCH_MISMATCH")
+    elif branch.stdout.strip() != expected_branch:
+        errors.append(
+            "GIT_INTEGRITY_FINAL_CLOSURE_BRANCH_MISMATCH: "
+            f"expected {expected_branch} found {branch.stdout.strip()}"
+        )
+
     expected_head = environment.get(GIT_EXPECTED_HEAD_ENV)
     head = _git_integrity_run(root, "rev-parse", "HEAD")
-    if not expected_head or head.returncode != 0 or head.stdout.strip() != expected_head:
+    if not expected_head:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_EXPECTED_HEAD_MISSING")
+    elif head.returncode != 0:
         errors.append("GIT_INTEGRITY_FINAL_CLOSURE_HEAD_MISMATCH")
+    elif head.stdout.strip() != expected_head:
+        errors.append(
+            "GIT_INTEGRITY_FINAL_CLOSURE_HEAD_MISMATCH: "
+            f"expected {expected_head} found {head.stdout.strip()}"
+        )
+
     return errors
+
 # === FS-12 FINAL-PROJECT CLOSURE VALIDATION END ===
 
 def validate_source(root: Path, errors: list[str]) -> None:
