@@ -88,7 +88,7 @@
     "pre_writer": "FS_11_PROV_01_WORKING_MODEL",
     "product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b"
   },
-  "authority_last_applied_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
+  "authority_last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
   "authorization_activation": {
     "authorization_id": "FS_12_IMPLEMENTATION",
     "exact_control_paths": [
@@ -178,10 +178,10 @@
     "root_control_state_integrates_to_main": false,
     "work_package_acceptance_is_not_implementation_authorization": true
   },
-  "continuation_point": "FS-12 is closed. FS-13 exists only as DRAFT_NOT_AUTHORIZED / inactive and requires exact work-package preparation and acceptance.",
+  "continuation_point": "FS-13 is accepted as a planning baseline but remains inactive and unauthorized. Separate implementation authorization is required.",
   "current_authorized_section": null,
-  "current_section": "FS-12",
-  "current_section_status": "ACCEPTED_CLOSEOUT_PROPOSED",
+  "current_section": "FS-13",
+  "current_section_status": "ACCEPTED_INACTIVE",
   "format_version": 1,
   "fs_01": {
     "accepted_implementation_checkpoint": "d03969aa93debb6b705098483c8b59bb9d37d58f",
@@ -5796,12 +5796,12 @@
       "writer_authorization_reference": null
     },
     {
-      "accepted": false,
+      "accepted": true,
       "activation_authorized": false,
       "active": false,
       "authorization_id": null,
       "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
-      "commit_maximum": 1,
+      "commit_maximum": 7,
       "depends_on": [
         "FS-12"
       ],
@@ -5820,12 +5820,27 @@
       "path": ".floppy/templates/Floppy-E-FS-13.draft.md",
       "repository_writer": null,
       "sequence": 13,
-      "status": "DRAFT_NOT_AUTHORIZED",
-      "tests_deferred_until_section_draft": true,
+      "status": "ACCEPTED_INACTIVE",
+      "tests_deferred_until_section_draft": false,
       "title": "Export and Integrity",
-      "writer_authorization_reference": null
+      "writer_authorization_reference": null,
+      "administrator_acceptance": "PENDING",
+      "branch": "feature/ctrl-02-verification-only-lifecycle",
+      "closeout": "NOT_PROPOSED",
+      "exact_reusable_product_path_count": 2,
+      "exact_reusable_product_paths": [
+        "tools/floppyctl.py",
+        "tests/test_export_integrity.py"
+      ],
+      "exact_total_planned_commits": 7,
+      "implementation": "NOT_STARTED",
+      "maximum_reusable_product_commits": 1,
+      "test_inventory_defined": true,
+      "verification": "NOT_STARTED",
+      "work_package_accepted": true,
+      "work_package_status": "ACCEPTED AS PLANNING BASELINE"
     }
   ],
-  "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+  "status": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
   "writer_authorization_reference": null
 }

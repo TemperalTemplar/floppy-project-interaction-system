@@ -572,3 +572,38 @@ acceptance, activation, implementation, export, final-project closure, push,
 merge, release, packaging, migration, and production action remain separately
 unauthorized.
 <!-- END FS-12 CLOSEOUT APPLICATION -->
+
+<!-- FS13_TR002_ACCEPTANCE_BEGIN -->
+### FS-13 — Accepted planning baseline
+
+```text
+Transition: TR-002-ACCEPT-WORK-PACKAGE
+Acceptance base checkpoint: 718e3c9ee6d0a87f6f700f4cbb50559725c158cc
+Work-package type: STANDARD_IMPLEMENTATION
+Exact reusable-product paths: 2
+Reusable-product paths: tools/floppyctl.py; tests/test_export_integrity.py
+Maximum reusable-product paths: 3
+Exact reusable-product commits: 1
+Exact bounded administrative paths: 11
+Exact planned lifecycle commits: 7
+Focused regression scope: FS-07 / FS-08 / FS-13 / floppyctl
+Complete repository suite: required once at implementation-completion boundary
+Status: ACCEPTED AS PLANNING BASELINE / INACTIVE
+Active authorization: NONE
+Repository writer: NONE
+TR-003: NOT AUTHORIZED
+Implementation: NOT STARTED
+Final-project closure: OPEN
+```
+
+Administrator decision:
+
+`ACCEPT THE 2-PATH FS-13 WORK PACKAGE AT BASE 718e3c9ee6d0a87f6f700f4cbb50559725c158cc WITH REUSABLE-PRODUCT PATHS tools/floppyctl.py AND tests/test_export_integrity.py, EXACTLY ONE REUSABLE-PRODUCT COMMIT, THE PREPARED 11-PATH BOUNDED FS-13 CONTROL-STATE SET, FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION AND ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY; AUTHORIZE ONLY TR-002-ACCEPT-WORK-PACKAGE AND COMMIT C1; DO NOT AUTHORIZE TR-003 OR ANY IMPLEMENTATION YET. RETURN THE EXACT C1 COMMIT SHA AND TREE, VERIFY IT IS PUSHED TO feature/ctrl-02-verification-only-lifecycle, THEN STOP FOR IMPLEMENTATION AUTHORIZATION.`
+
+The accepted planning baseline does not authorize activation, implementation,
+export execution, administrator acceptance, closeout, final-project closure,
+integration, merge, tag, release, or modification of `main`.
+
+Required next operation: explicit administrator implementation authorization
+tied to the exact C1 checkpoint.
+<!-- FS13_TR002_ACCEPTANCE_END -->
