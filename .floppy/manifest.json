@@ -3,7 +3,65 @@
   "active_implementation_authorization": null,
   "active_implementation_section": null,
   "active_migration_authorization": null,
-  "active_work_authorization": null,
+  "active_work_authorization": {
+    "authorization_id": "FS_13_IMPLEMENTATION",
+    "authorization_kind": "section_implementation",
+    "section": "FS-13",
+    "human_authority": {
+      "actor": "Alva Roberts",
+      "decision": "AUTHORIZE FS-13 IMPLEMENTATION FROM ACCEPTED CHECKPOINT 7ee76091cc5b290a14c40b8ec9ffba516cdf105d TREE 0de4edaf4a1e392162360b1cba469f9ad93317c7 ON feature/ctrl-02-verification-only-lifecycle IN D:\\A\\Floppy-CTRL-02 WITH AUTHORIZATION FS_13_IMPLEMENTATION AND REPOSITORY WRITER FS_13_WORKING_MODEL; AUTHORIZE TR-003-AUTHORIZE-SECTION-IMPLEMENTATION, TR-004-START-SECTION-IMPLEMENTATION, THE EXACT ONE-COMMIT REUSABLE-PRODUCT IMPLEMENTATION LIMITED TO tools/floppyctl.py AND tests/test_export_integrity.py, THE ACCEPTED FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION, ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY, TR-005-RECORD-IMPLEMENTATION-COMPLETE, TR-006-RECORD-VERIFICATION-COMPLETE, AND COMMITS C2, P1, AND C4; DO NOT AUTHORIZE TR-007, TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.",
+      "issued_explicitly": true
+    },
+    "repository": "TemperalTemplar/floppy-project-interaction-system",
+    "base_checkpoint": "7ee76091cc5b290a14c40b8ec9ffba516cdf105d",
+    "source_version": "0.4.3-dev",
+    "branch": "feature/ctrl-02-verification-only-lifecycle",
+    "worktree": "D:\\A\\Floppy-CTRL-02",
+    "exact_file_scope": [
+      "tools/floppyctl.py",
+      "tests/test_export_integrity.py"
+    ],
+    "required_validation": [
+      "Verify exact two-path reusable-product scope.",
+      "Run focused FS-07/FS-08/FS-13/CLI regression validation.",
+      "Run one complete repository suite on the committed P1 tree.",
+      "Run source validation and floppyctl source validation.",
+      "Validate all tracked JSON.",
+      "Run git diff --check.",
+      "Verify tested tree equals committed tree.",
+      "Verify no root .floppy administrative path changes in P1."
+    ],
+    "commit_sequence": [
+      {
+        "id": "P1",
+        "message": "feat(fs-13): add portable context export and integrity verification",
+        "path_class": "reusable_product"
+      }
+    ],
+    "push_boundary": {
+      "permitted": false,
+      "branch": "feature/ctrl-02-verification-only-lifecycle",
+      "force_push": false
+    },
+    "forbidden_side_effects": [
+      "root .floppy administrative changes during P1",
+      "TR-007 administrator acceptance",
+      "TR-008 closeout proposal",
+      "TR-009 closeout application",
+      "final-project closure",
+      "integration",
+      "merge",
+      "tag",
+      "release",
+      "force push",
+      "history rewrite",
+      "main modification"
+    ],
+    "administrator_acceptance": "PENDING",
+    "section_closeout": "NOT AUTHORIZED",
+    "integration": "NOT AUTHORIZED",
+    "later_section_authority": "NOT AUTHORIZED"
+  },
   "administrator_acceptance": "PENDING",
   "administrator_acceptance_record": {
     "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
@@ -51,20 +109,20 @@
   },
   "administrator_result_acceptance": "PENDING",
   "authority": {
-    "active_implementation_authorization": null,
-    "active_implementation_section": null,
+    "active_implementation_authorization": "FS_13_IMPLEMENTATION",
+    "active_implementation_section": "FS-13",
     "active_migration_authorization": null,
-    "active_work_authorization": null,
-    "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION",
-    "authorization_id": null,
-    "current_authorized_section": null,
+    "active_work_authorization": "FS_13_IMPLEMENTATION",
+    "authority_state": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+    "authorization_id": "FS_13_IMPLEMENTATION",
+    "current_authorized_section": "FS-13",
     "human_authority_required": true,
-    "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
-    "last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
-    "last_authorized_control_operation": "FS_13_WORK_PACKAGE_ACCEPTANCE",
+    "implementation_authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
+    "last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+    "last_authorized_control_operation": "FS_13_IMPLEMENTATION",
     "prohibited_inference": true,
-    "repository_writer": null,
-    "writer_authorization_reference": null
+    "repository_writer": "FS_13_WORKING_MODEL",
+    "writer_authorization_reference": "FS_13_IMPLEMENTATION"
   },
   "authority_handoff": {
     "administrator_decision": "ACCEPT FS-11 INT-01 DRY-RUN PLAN a10e46f218b952f8fb5baf24807d1b9b7da2ec201314e57880808e032e8b33b6",
@@ -79,9 +137,11 @@
     "pre_writer": "FS_11_PROV_01_WORKING_MODEL",
     "product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b"
   },
-  "authority_last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
+  "authority_last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
   "authorization_activation": {
-    "authorization_id": "FS_12_IMPLEMENTATION",
+    "authorization_id": "FS_13_IMPLEMENTATION",
+    "operation": "ACTIVATION_CONTROL_COMMIT",
+    "implementation_scope_exercised": false,
     "exact_control_paths": [
       ".floppy/floppies/Floppy-E-Current-Section.md",
       ".floppy/lifecycle-state.json",
@@ -89,30 +149,22 @@
       ".floppy/orchestrator-registry.json",
       ".floppy/roadmap/roadmap.json",
       ".floppy/roadmap/roadmap.md",
-      ".floppy/templates/Floppy-E-FS-12.draft.md"
+      ".floppy/templates/Floppy-E-FS-13.draft.md"
     ],
-    "implementation_scope_exercised": false,
-    "operation": "ACTIVATION_CONTROL_COMMIT",
     "transition_sequence": [
       {
         "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
-        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
-        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
       },
       {
         "id": "TR-004-START-SECTION-IMPLEMENTATION",
-        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
-        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
       }
-    ],
-    "work_package_amendment": {
-      "added_path": "tests/test_tooling.py",
-      "all_other_accepted_terms_retained": true,
-      "amended_reusable_product_path_count": 12,
-      "previous_reusable_product_path_count": 11
-    }
+    ]
   },
-  "authorization_id": null,
+  "authorization_id": "FS_13_IMPLEMENTATION",
   "bce_instance": {
     "control_state_is_reusable_source_product": false,
     "control_state_root": ".floppy",
@@ -195,15 +247,15 @@
   },
   "continuation_point": {
     "active_control_work_authorization": null,
-    "active_implementation_authorization": null,
-    "active_implementation_section": null,
+    "active_implementation_authorization": "FS_13_IMPLEMENTATION",
+    "active_implementation_section": "FS-13",
     "active_migration_authorization": null,
-    "active_work_authorization": null,
-    "additional_product_writes_may_begin": false,
-    "authorization_id": null,
-    "current_authorized_section": null,
-    "current_operation": "WORK_PACKAGE_ACCEPTANCE_CONTROL",
-    "decision_required": "Separate administrator authorization is required to authorize and start FS-13 implementation.",
+    "active_work_authorization": "FS_13_IMPLEMENTATION",
+    "additional_product_writes_may_begin": true,
+    "authorization_id": "FS_13_IMPLEMENTATION",
+    "current_authorized_section": "FS-13",
+    "current_operation": "ACTIVATION_CONTROL_COMMIT",
+    "decision_required": "No additional administrator authorization is required before P1 or C4.",
     "fs_04_active": false,
     "fs_04_administrator_acceptance": "ACCEPTED",
     "fs_04_closeout": "APPLIED",
@@ -304,29 +356,29 @@
     "fs_12_draft_status": "CLOSED",
     "fs_12_may_begin": false,
     "fs_12_status": "CLOSED",
-    "fs_13": "ACCEPTED PLANNING BASELINE / INACTIVE",
+    "fs_13": "ACTIVE / AUTHORIZED / IMPLEMENTATION IN PROGRESS",
     "fs_13_accepted": true,
-    "fs_13_active": false,
-    "fs_13_authorized": false,
+    "fs_13_active": true,
+    "fs_13_authorized": true,
     "fs_13_draft_created": true,
     "fs_13_draft_path": ".floppy/templates/Floppy-E-FS-13.draft.md",
-    "fs_13_draft_status": "ACCEPTED_PLANNING_BASELINE",
-    "fs_13_may_begin": false,
-    "implementation_may_begin": false,
+    "fs_13_draft_status": "IMPLEMENTATION_IN_PROGRESS",
+    "fs_13_may_begin": true,
+    "implementation_may_begin": true,
     "integration_may_begin": false,
     "merge_may_begin": false,
     "migration_may_begin": false,
-    "next_action": "Await explicit FS-13 implementation authorization.",
-    "next_commit_subject": null,
-    "next_step": "FS-13 is accepted as a planning baseline but remains inactive and unauthorized.",
+    "next_action": "Execute exact two-path FS-13 P1, then C4 completion and verification.",
+    "next_commit_subject": "feat(fs-13): add portable context export and integrity verification",
+    "next_step": "FS-13 implementation is active under FS_13_IMPLEMENTATION.",
     "post_acceptance_bounded_correction_commit": "e0486b3a25721812e5a69b52f655e3bae1402e34",
     "production_changes_may_begin": false,
-    "repository_writer": null,
+    "repository_writer": "FS_13_WORKING_MODEL",
     "root_control_reconciliation": "APPLIED",
     "root_control_reconciliation_checkpoint": "THIS_COMMIT",
-    "state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+    "state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
     "tag_or_release_may_begin": false,
-    "writer_authorization_reference": null
+    "writer_authorization_reference": "FS_13_IMPLEMENTATION"
   },
   "control_work": {
     "accepted_work_package_checkpoint": "THIS_COMMIT",
@@ -3843,8 +3895,8 @@
     "acceptance_checkpoint": "THIS_COMMIT",
     "acceptance_transition": "TR-002-ACCEPT-WORK-PACKAGE",
     "accepted": true,
-    "activation_authorized": false,
-    "active": false,
+    "activation_authorized": true,
+    "active": true,
     "administrator_acceptance": "PENDING",
     "administrator_decision": "ACCEPT THE 2-PATH FS-13 WORK PACKAGE AT BASE 718e3c9ee6d0a87f6f700f4cbb50559725c158cc WITH REUSABLE-PRODUCT PATHS tools/floppyctl.py AND tests/test_export_integrity.py, EXACTLY ONE REUSABLE-PRODUCT COMMIT, THE PREPARED 11-PATH BOUNDED FS-13 CONTROL-STATE SET, FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION AND ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY; AUTHORIZE ONLY TR-002-ACCEPT-WORK-PACKAGE AND COMMIT C1; DO NOT AUTHORIZE TR-003 OR ANY IMPLEMENTATION YET. RETURN THE EXACT C1 COMMIT SHA AND TREE, VERIFY IT IS PUSHED TO feature/ctrl-02-verification-only-lifecycle, THEN STOP FOR IMPLEMENTATION AUTHORIZATION.",
     "administrative_paths": [
@@ -3860,7 +3912,7 @@
       ".floppy/roadmap/roadmap.md",
       ".floppy/templates/Floppy-E-FS-13.draft.md"
     ],
-    "authorization_id": null,
+    "authorization_id": "FS_13_IMPLEMENTATION",
     "branch": "feature/ctrl-02-verification-only-lifecycle",
     "closeout": "NOT_PROPOSED",
     "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
@@ -3895,9 +3947,9 @@
     ],
     "full_repository_suite_boundary": "IMPLEMENTATION_COMPLETION_ONLY",
     "id": "FS-13",
-    "implementation": "NOT_STARTED",
-    "implementation_authorized": false,
-    "implementation_started": false,
+    "implementation": "IN_PROGRESS",
+    "implementation_authorized": true,
+    "implementation_started": true,
     "lifecycle_and_authority_commit_count": 6,
     "maximum_administrative_paths": 11,
     "maximum_reusable_product_commits": 1,
@@ -3906,7 +3958,7 @@
     "objective": "Export and verify one portable ZIP containing the accepted context and one integrity manifest.",
     "ordinary_user_python_requirement": false,
     "path": ".floppy/templates/Floppy-E-FS-13.draft.md",
-    "repository_writer": null,
+    "repository_writer": "FS_13_WORKING_MODEL",
     "reusable_product_commit_count": 1,
     "reusable_product_paths": [
       "tools/floppyctl.py",
@@ -3917,7 +3969,7 @@
     "sequence": 13,
     "source_version_change": false,
     "source_version_target": "0.4.3-dev",
-    "status": "ACCEPTED_INACTIVE",
+    "status": "IMPLEMENTATION_IN_PROGRESS",
     "test_inventory_defined": true,
     "tests_deferred_until_section_draft": false,
     "title": "Export and Integrity",
@@ -3928,49 +3980,28 @@
     "work_package_status": "ACCEPTED AS PLANNING BASELINE",
     "work_package_type": "STANDARD_IMPLEMENTATION",
     "worktree": "D:\\A\\Floppy-CTRL-02",
-    "writer_authorization_reference": null
-  },
-  "git_integrity_operation": {
-    "exact_control_paths": [
-      ".floppy/floppies/Floppy-E-Current-Section.md",
-      ".floppy/lifecycle-state.json",
-      ".floppy/manifest.json",
-      ".floppy/roadmap/roadmap.json",
-      ".floppy/roadmap/roadmap.md",
-      ".floppy/templates/Floppy-E-FS-13.draft.md"
-    ],
-    "implementation_scope_exercised": false,
-    "operation": "WORK_PACKAGE_ACCEPTANCE_CONTROL",
-    "section": "FS-13",
-    "transition_sequence": [
+    "writer_authorization_reference": "FS_13_IMPLEMENTATION",
+    "activation_administrator_decision": "AUTHORIZE FS-13 IMPLEMENTATION FROM ACCEPTED CHECKPOINT 7ee76091cc5b290a14c40b8ec9ffba516cdf105d TREE 0de4edaf4a1e392162360b1cba469f9ad93317c7 ON feature/ctrl-02-verification-only-lifecycle IN D:\\A\\Floppy-CTRL-02 WITH AUTHORIZATION FS_13_IMPLEMENTATION AND REPOSITORY WRITER FS_13_WORKING_MODEL; AUTHORIZE TR-003-AUTHORIZE-SECTION-IMPLEMENTATION, TR-004-START-SECTION-IMPLEMENTATION, THE EXACT ONE-COMMIT REUSABLE-PRODUCT IMPLEMENTATION LIMITED TO tools/floppyctl.py AND tests/test_export_integrity.py, THE ACCEPTED FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION, ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY, TR-005-RECORD-IMPLEMENTATION-COMPLETE, TR-006-RECORD-VERIFICATION-COMPLETE, AND COMMITS C2, P1, AND C4; DO NOT AUTHORIZE TR-007, TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.",
+    "activation_base_checkpoint": "7ee76091cc5b290a14c40b8ec9ffba516cdf105d",
+    "activation_checkpoint": "THIS_COMMIT",
+    "activation_intermediate_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+    "activation_final_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "activation_transition_sequence": [
       {
-        "actor": "Alva Roberts",
-        "decision": "ACCEPT THE 2-PATH FS-13 WORK PACKAGE AT BASE 718e3c9ee6d0a87f6f700f4cbb50559725c158cc WITH REUSABLE-PRODUCT PATHS tools/floppyctl.py AND tests/test_export_integrity.py, EXACTLY ONE REUSABLE-PRODUCT COMMIT, THE PREPARED 11-PATH BOUNDED FS-13 CONTROL-STATE SET, FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION AND ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY; AUTHORIZE ONLY TR-002-ACCEPT-WORK-PACKAGE AND COMMIT C1; DO NOT AUTHORIZE TR-003 OR ANY IMPLEMENTATION YET. RETURN THE EXACT C1 COMMIT SHA AND TREE, VERIFY IT IS PUSHED TO feature/ctrl-02-verification-only-lifecycle, THEN STOP FOR IMPLEMENTATION AUTHORIZATION.",
-        "id": "TR-002-ACCEPT-WORK-PACKAGE",
-        "inputs": [
-          "Verified starting checkpoint 718e3c9ee6d0a87f6f700f4cbb50559725c158cc",
-          "Verified starting tree 2b055063941ede40e0392f025cca8a6e0250ca64",
-          "FS-12 CLOSED",
-          "Prepared exact two-path FS-13 work package",
-          "Prepared bounded eleven-path FS-13 administrative set"
-        ],
-        "outputs": [
-          "FS-13 work package accepted as planning baseline",
-          "Lifecycle state LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-          "No active implementation authorization",
-          "No repository writer"
-        ],
-        "post_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-        "pre_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
-        "validation_evidence": [
-          "Exact two reusable-product paths",
-          "Exactly one reusable-product commit",
-          "TR-003 not authorized",
-          "Implementation not started",
-          "Final-project closure remains OPEN"
-        ]
+        "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+      },
+      {
+        "id": "TR-004-START-SECTION-IMPLEMENTATION",
+        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
       }
-    ]
+    ],
+    "authorized": true,
+    "implementation_state": "IN_PROGRESS",
+    "implementation_output_applied": false,
+    "mandatory_next_operation": "Execute exact two-path P1 then C4 completion and verification."
   },
   "historical_work_authorizations": [
     {
@@ -5768,7 +5799,7 @@
     "handoffs": ".floppy/handoffs/README.md",
     "revisions": ".floppy/revisions/README.md"
   },
-  "repository_writer": null,
+  "repository_writer": "FS_13_WORKING_MODEL",
   "required_read_order": [
     ".floppy/START-HERE.md",
     ".floppy/floppies/Floppy-A-HITL.md",
@@ -5952,6 +5983,6 @@
     "onboarding_branch": "control/source-development-bce-onboarding",
     "version": "0.4.1-dev"
   },
-  "status": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-  "writer_authorization_reference": null
+  "status": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+  "writer_authorization_reference": "FS_13_IMPLEMENTATION"
 }

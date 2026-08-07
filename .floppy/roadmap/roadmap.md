@@ -607,3 +607,18 @@ integration, merge, tag, release, or modification of `main`.
 Required next operation: explicit administrator implementation authorization
 tied to the exact C1 checkpoint.
 <!-- FS13_TR002_ACCEPTANCE_END -->
+
+<!-- FS13_C2_ACTIVATION_BEGIN -->
+## FS-13 activation
+
+```text
+Transition 1: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION
+Transition 2: TR-004-START-SECTION-IMPLEMENTATION
+Authorization: FS_13_IMPLEMENTATION
+Repository writer: FS_13_WORKING_MODEL
+Base checkpoint: 7ee76091cc5b290a14c40b8ec9ffba516cdf105d
+State: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Product paths: tools/floppyctl.py; tests/test_export_integrity.py
+Final-project closure: OPEN
+```
+<!-- FS13_C2_ACTIVATION_END -->
