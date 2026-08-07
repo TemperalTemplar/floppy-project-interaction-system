@@ -11,14 +11,20 @@ VALIDATOR=load_validator()
 def git(root,*args):
  p=subprocess.run(["git","-c",f"safe.directory={root.as_posix()}","-C",str(root),*args],text=True,capture_output=True); assert p.returncode==0,p.stdout+p.stderr; return p.stdout.strip()
 def canonical(v): return (json.dumps(v,sort_keys=True,separators=(",",":"))+"\n").encode()
+def write_control_fixture(root,state,migration,source_integrated=False):
+ dims={"roadmap":"ACCEPTED","work_package":"NOT_ACCEPTED","authority":"NO_ACTIVE_WORK_AUTHORIZATION","implementation":"NOT_STARTED","verification":"COMPLETE" if migration!="NONE" else "NOT_STARTED","acceptance":"PENDING","closeout":"APPLIED","migration":migration,"final_closure":"OPEN"}
+ manifest={"status":state,"active_work_authorization":None,"active_control_work_authorization":None,"repository_writer":None,"writer_authorization_reference":None,"authority":{"authority_state":"NO_ACTIVE_WORK_AUTHORIZATION"}}
+ registry={"current_assignments":{"current_section_working_model":None,"repository_writer":None,"writer_authorization_reference":None},"rules":{"maximum_repository_writers":1,"writer_requires_exact_authorization_reference":True,"status_or_role_grants_write_authority":False},"orchestrators":[{"id":"PROJECT_ORCHESTRATOR","status":"ACTIVE"}]}
+ if source_integrated:
+  manifest["continuation_point"]={"active_work_authorization":None,"repository_writer":None,"writer_authorization_reference":None}
+  registry["provisioning"]={"version":1,"status":"CANONICAL_INTEGRATED","serialization":"UTF-8/LF/canonical-json-v1","initialized_by":"tests/test_final_closure.py"}
+ files={".floppy/lifecycle-state.json":canonical({"state_id":state,"section":None,"authorization_id":None,"base_checkpoint":"0"*40,"dimensions":dims,"active_implementation_sections":[],"evidence":["fixture"]}),".floppy/manifest.json":json.dumps(manifest,indent=2).encode()+b"\n",".floppy/orchestrator-registry.json":canonical(registry),".floppy/roadmap/roadmap.json":json.dumps({"lifecycle_state":state,"sections":[{"id":"FS-%02d"%i,"status":"CLOSED"} for i in range(1,14)]},indent=2).encode()+b"\n"}
+ for p in [".floppy/README.md",".floppy/START-HERE.md",".floppy/floppies/Floppy-D-Project-Map.md",".floppy/floppies/Floppy-E-Current-Section.md",".floppy/roadmap/roadmap.md"]: files[p]=b"fixture\n"
+ for p,b in files.items(): q=root/p; q.parent.mkdir(parents=True,exist_ok=True); q.write_bytes(b)
 class Fixture:
  def __init__(self,state="LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",migration="NONE"):
   self.t=tempfile.TemporaryDirectory(); self.root=Path(self.t.name)/"repo"; self.root.mkdir(); self.branch="fixture"; self._write(state,migration); git(self.root,"init","-b",self.branch); git(self.root,"config","user.email","fs12@example.invalid"); git(self.root,"config","user.name","FS12 Tests"); git(self.root,"add","."); git(self.root,"commit","-m","fixture"); self.refresh()
- def _write(self,state,migration):
-  dims={"roadmap":"ACCEPTED","work_package":"NOT_ACCEPTED","authority":"NO_ACTIVE_WORK_AUTHORIZATION","implementation":"NOT_STARTED","verification":"COMPLETE" if migration!="NONE" else "NOT_STARTED","acceptance":"PENDING","closeout":"APPLIED","migration":migration,"final_closure":"OPEN"}
-  files={".floppy/lifecycle-state.json":canonical({"state_id":state,"section":None,"authorization_id":None,"base_checkpoint":"0"*40,"dimensions":dims,"active_implementation_sections":[],"evidence":["fixture"]}),".floppy/manifest.json":json.dumps({"status":state,"active_work_authorization":None,"active_control_work_authorization":None,"repository_writer":None,"writer_authorization_reference":None,"authority":{"authority_state":"NO_ACTIVE_WORK_AUTHORIZATION"}},indent=2).encode()+b"\n",".floppy/orchestrator-registry.json":canonical({"current_assignments":{"current_section_working_model":None,"repository_writer":None,"writer_authorization_reference":None},"rules":{"maximum_repository_writers":1,"writer_requires_exact_authorization_reference":True,"status_or_role_grants_write_authority":False},"orchestrators":[{"id":"PROJECT_ORCHESTRATOR","status":"ACTIVE"}]}),".floppy/roadmap/roadmap.json":json.dumps({"lifecycle_state":state,"sections":[{"id":"FS-%02d"%i,"status":"CLOSED"} for i in range(1,14)]},indent=2).encode()+b"\n"}
-  for p in [".floppy/README.md",".floppy/START-HERE.md",".floppy/floppies/Floppy-D-Project-Map.md",".floppy/floppies/Floppy-E-Current-Section.md",".floppy/roadmap/roadmap.md"]: files[p]=b"fixture\n"
-  for p,b in files.items(): q=self.root/p; q.parent.mkdir(parents=True,exist_ok=True); q.write_bytes(b)
+ def _write(self,state,migration): write_control_fixture(self.root,state,migration)
  def refresh(self): self.head=git(self.root,"rev-parse","HEAD")
  def plan(self,action="propose",**kw): return CLI._fs12_final_closure_operation(self.root,mode="dry-run",action=action,expected_branch=self.branch,expected_head=self.head,evidence=kw.pop("evidence",["FS-13 closeout"]),**kw)
  def apply(self,plan,action="propose",**kw): return CLI._fs12_final_closure_operation(self.root,mode="apply",action=action,expected_branch=self.branch,expected_head=self.head,evidence=kw.pop("evidence",["FS-13 closeout"]),plan_sha256=plan["plan_sha256"],**kw)
@@ -69,8 +75,15 @@ class FinalClosureTests(unittest.TestCase):
  def test_boot_package_contains_schema_120(self): self.assertIn("schemas/bce/1.2.0/bce-lifecycle-state.schema.json",CLI.BOOT_PACKAGE_FILE_PATHS)
 class SourceFixture:
  def __init__(self):
-  self.t=tempfile.TemporaryDirectory(); self.root=Path(self.t.name)/"repo"; self.branch="feature/ctrl-02-verification-only-lifecycle"
-  shutil.copytree(ROOT,self.root,ignore=shutil.ignore_patterns(".git","__pycache__","*.pyc","*.pyo"))
+  self.t=tempfile.TemporaryDirectory(); self.root=Path(self.t.name)/"repo"; self.branch="fixture/final-closure-source"
+  def ignore(directory,names):
+   ignored={name for name in names if name in {".git","__pycache__"} or name.endswith((".pyc",".pyo"))}
+   if Path(directory).resolve()==ROOT.resolve(): ignored.add(".floppy")
+   return ignored
+  shutil.copytree(ROOT,self.root,ignore=ignore)
+  self.copied_root_floppy_absent=not (self.root/".floppy").exists(); assert self.copied_root_floppy_absent
+  assert (self.root/"project-seed/.floppy/manifest.json").is_file()
+  write_control_fixture(self.root,"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","NONE",source_integrated=True)
   git(self.root,"init","-b",self.branch); git(self.root,"config","user.email","fs12-source@example.invalid"); git(self.root,"config","user.name","FS12 Source Tests"); git(self.root,"config","core.autocrlf","false"); git(self.root,"add","-A"); git(self.root,"commit","-m","source fixture baseline"); git(self.root,"branch","main")
   self.head=git(self.root,"rev-parse","HEAD"); self.main=git(self.root,"rev-parse","main")
  def close(self): self.t.cleanup()
@@ -101,6 +114,8 @@ class FinalClosureSourceValidationTests(unittest.TestCase):
  def tearDown(self): self.s.close()
  def assertPasses(self,result): self.assertEqual(result.returncode,0,result.stdout+result.stderr)
  def assertFails(self,result): self.assertNotEqual(result.returncode,0,result.stdout+result.stderr)
+ def test_source_fixture_is_clean_main_self_contained(self):
+  self.assertFalse((ROOT/".floppy").exists()); self.assertTrue(self.s.copied_root_floppy_absent); self.assertTrue((self.s.root/".floppy/manifest.json").is_file()); self.assertTrue((self.s.root/"project-seed/.floppy/manifest.json").is_file()); self.assertEqual(self.s.branch,"fixture/final-closure-source"); self.assertNotEqual(self.s.branch,"feature/ctrl-02-verification-only-lifecycle"); self.s.apply_proposal(); self.assertPasses(self.s.validate_source()); self.assertFalse((ROOT/".floppy").exists())
  def test_source_validation_accepts_pending_tr021_no_migration_candidate(self):
   self.s.apply_proposal(); result=self.s.validate_source(); self.assertPasses(result); life=json.loads((self.s.root/".floppy/lifecycle-state.json").read_text()); self.assertEqual(life["state_id"],"LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION"); self.assertEqual(life["dimensions"]["migration"],"NONE")
  def test_source_validation_rejects_pending_tr021_without_final_closure_operation(self):

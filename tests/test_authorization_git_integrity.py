@@ -331,14 +331,22 @@ class AuthorizationGitIntegrityTests(unittest.TestCase):
     def test_cli_preserves_validator_result_diagnostics_and_exit_status(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / "source"
-            shutil.copytree(
-                ROOT,
-                root,
-                ignore=shutil.ignore_patterns(
-                    ".git",
-                    "__pycache__",
-                    "*.pyc",
-                ),
+
+            def clean_source_ignore(directory: str, names: list[str]) -> set[str]:
+                ignored = {
+                    name
+                    for name in names
+                    if name in {".git", "__pycache__"}
+                    or name.endswith((".pyc", ".pyo"))
+                }
+                if Path(directory).resolve() == ROOT.resolve():
+                    ignored.add(".floppy")
+                return ignored
+
+            shutil.copytree(ROOT, root, ignore=clean_source_ignore)
+            self.assertFalse((root / ".floppy").exists())
+            self.assertTrue(
+                (root / "project-seed/.floppy/manifest.json").is_file()
             )
             require_git(root, "init")
             require_git(root, "config", "user.name", "FS-06 Test")
@@ -346,28 +354,8 @@ class AuthorizationGitIntegrityTests(unittest.TestCase):
             require_git(root, "checkout", "-b", BRANCH)
 
             manifest_path = root / ".floppy/manifest.json"
-            manifest = json.loads(
-                manifest_path.read_text(encoding="utf-8")
-            )
-            synthetic = self.manifest()
-            manifest["active_work_authorization"] = synthetic[
-                "active_work_authorization"
-            ]
-            continuation = manifest.get("continuation_point")
-            if not isinstance(continuation, dict):
-                continuation = {}
-                manifest["continuation_point"] = continuation
-            continuation.update(synthetic["continuation_point"])
-            manifest["fs_06_work_package"] = synthetic[
-                "fs_06_work_package"
-            ]
-            # This fixture overlays an FS-06 authorization onto a copy of the
-            # current source tree. The current tree may itself be at any later
-            # control operation (for example closeout proposal/application).
-            # Remove that unrelated operation marker so Git-integrity
-            # classification is derived from the synthetic active
-            # authorization and its parent, not from current project history.
-            manifest.pop("git_integrity_operation", None)
+            manifest_path.parent.mkdir(parents=True, exist_ok=True)
+            manifest = self.manifest()
             manifest_path.write_text(
                 json.dumps(manifest, indent=4, ensure_ascii=False) + "\n",
                 encoding="utf-8",

@@ -301,7 +301,7 @@
       },
       "tests": {
         "path": "tests/test_final_closure.py",
-        "sha256": "7dbe80162ed8cf478baa08fc77fc191ae76a31ad3ea08fbaef79d87e840f2277"
+        "sha256": "b79fa001f09b0e30971d8f3d1e351720d36e910c7db80ed2ff33be6a7f297bce"
       }
     }
   }

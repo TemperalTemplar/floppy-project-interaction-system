@@ -354,11 +354,12 @@ class FloppyCtlTests(unittest.TestCase):
     def test_validate_preserves_source_validator_result_and_diagnostics(
         self,
     ) -> None:
+        self.assertFalse((ROOT / ".floppy").exists())
         watched = [
             ROOT / "VERSION",
             ROOT / "system-manifest.json",
-            ROOT / ".floppy" / "manifest.json",
-            ROOT / ".floppy" / "roadmap" / "roadmap.json",
+            ROOT / "project-seed" / ".floppy" / "manifest.json",
+            ROOT / "project-seed" / ".floppy" / "roadmap" / "roadmap.json",
             VALIDATOR,
             CLI,
         ]
@@ -378,6 +379,7 @@ class FloppyCtlTests(unittest.TestCase):
             before,
             {path: digest(path) for path in watched},
         )
+        self.assertFalse((ROOT / ".floppy").exists())
 
     def test_validate_preserves_failure_result_and_diagnostics(self) -> None:
         with tempfile.TemporaryDirectory() as td:
