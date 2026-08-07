@@ -1,4 +1,4 @@
-STATUS: VERIFICATION_COMPLETE_ACCEPTANCE_PENDING
+STATUS: ACCEPTED_CLOSEOUT_NOT_PROPOSED
 
 # Floppy E — FS-12 Accepted Work Package
 
@@ -108,7 +108,7 @@ Active: NO
 Implementation authorized: NO
 Implementation: COMPLETE
 Verification: COMPLETE
-Administrator result acceptance: PENDING
+Administrator result acceptance: ACCEPTED
 Closeout: NOT_PROPOSED
 Active work authorization: FS_12_IMPLEMENTATION
 Active implementation section: NONE
@@ -174,4 +174,24 @@ Closeout: NOT AUTHORIZED
 FS-13 draft: NOT CREATED
 Required next decision: ACCEPT FS-12 VERIFIED RESULT
 Completion checkpoint: THIS_COMMIT
+```
+
+## Administrator acceptance
+
+```text
+Administrator decision: ACCEPT FS-12 VERIFIED RESULT
+Transition: TR-007-ACCEPT-SECTION
+Pre-state: LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Verified C4 checkpoint: dfcaec6710cef39a6e81ff2fc8bff63d6102be1e
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Closeout: NOT_PROPOSED
+FS-13 draft: NOT CREATED
+Acceptance checkpoint: THIS_COMMIT
+Required next operation: Prepare and review the exact FS-12 closeout proposal; do not apply closeout.
 ```

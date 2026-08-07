@@ -503,3 +503,23 @@ FS-13: INACTIVE / NOT AUTHORIZED
 Required next decision: ACCEPT FS-12 VERIFIED RESULT
 ```
 <!-- FS12_C4_COMPLETION_END -->
+
+<!-- FS12_C5_ACCEPTANCE_BEGIN -->
+## FS-12 administrator acceptance
+
+```text
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Administrator decision: ACCEPT FS-12 VERIFIED RESULT
+Transition: TR-007-ACCEPT-SECTION
+Verified C4 checkpoint: dfcaec6710cef39a6e81ff2fc8bff63d6102be1e
+FS-12 implementation: COMPLETE
+FS-12 verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+Closeout: NOT_PROPOSED
+FS-13: INACTIVE / NOT AUTHORIZED
+Required next operation: Prepare and review the exact FS-12 closeout proposal; do not apply closeout.
+```
+<!-- FS12_C5_ACCEPTANCE_END -->
