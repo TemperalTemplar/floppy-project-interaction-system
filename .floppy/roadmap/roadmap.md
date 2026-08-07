@@ -622,3 +622,23 @@ Product paths: tools/floppyctl.py; tests/test_export_integrity.py
 Final-project closure: OPEN
 ```
 <!-- FS13_C2_ACTIVATION_END -->
+
+<!-- FS13_AUTHORITY_HANDOFF_BEGIN -->
+## FS-13 state-preserving authority handoff
+
+```text
+Operation: STATE_PRESERVING_AUTHORITY_HANDOFF
+Lifecycle state before: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Lifecycle state after: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Prior authorization: FS_13_IMPLEMENTATION
+Replacement authorization: FS_13_IMPLEMENTATION_V2
+Prior writer: FS_13_WORKING_MODEL
+Replacement writer: FS_13_WORKING_MODEL_V2
+Base checkpoint: ca46998aad6b2eb0a1027647e629628e98baabf6
+Added reusable-product path: system-manifest.json
+Exact P1 reusable-product paths: 3
+Exact P1 reusable-product commits: 1
+TR-007/TR-008/TR-009: NOT AUTHORIZED
+Final-project closure: OPEN
+```
+<!-- FS13_AUTHORITY_HANDOFF_END -->

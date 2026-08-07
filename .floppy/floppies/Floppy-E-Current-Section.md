@@ -2,32 +2,36 @@
 
 Lifecycle state: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
-Applied transitions, in order:
+Applied lifecycle transitions, in order:
 
 1. `TR-002-ACCEPT-WORK-PACKAGE`
 2. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 3. `TR-004-START-SECTION-IMPLEMENTATION`
 
-Administrator decision controlling C2 through C4: `AUTHORIZE FS-13 IMPLEMENTATION FROM ACCEPTED CHECKPOINT 7ee76091cc5b290a14c40b8ec9ffba516cdf105d TREE 0de4edaf4a1e392162360b1cba469f9ad93317c7 ON feature/ctrl-02-verification-only-lifecycle IN D:\A\Floppy-CTRL-02 WITH AUTHORIZATION FS_13_IMPLEMENTATION AND REPOSITORY WRITER FS_13_WORKING_MODEL; AUTHORIZE TR-003-AUTHORIZE-SECTION-IMPLEMENTATION, TR-004-START-SECTION-IMPLEMENTATION, THE EXACT ONE-COMMIT REUSABLE-PRODUCT IMPLEMENTATION LIMITED TO tools/floppyctl.py AND tests/test_export_integrity.py, THE ACCEPTED FOCUSED FS-07/FS-08/FS-13/CLI REGRESSION VALIDATION, ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY, TR-005-RECORD-IMPLEMENTATION-COMPLETE, TR-006-RECORD-VERIFICATION-COMPLETE, AND COMMITS C2, P1, AND C4; DO NOT AUTHORIZE TR-007, TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.`
+State-preserving control operation:
+`STATE_PRESERVING_AUTHORITY_HANDOFF`
+
+Administrator amendment: `AMEND ACTIVE FS-13 IMPLEMENTATION AT CHECKPOINT ca46998aad6b2eb0a1027647e629628e98baabf6 TREE faef39ddd002a624f2bcedf52d433d929017d540 BY STATE-PRESERVING AUTHORITY HANDOFF FROM AUTHORIZATION FS_13_IMPLEMENTATION AND WRITER FS_13_WORKING_MODEL TO AUTHORIZATION FS_13_IMPLEMENTATION_V2 AND WRITER FS_13_WORKING_MODEL_V2; ADD ONLY system-manifest.json TO THE ACCEPTED REUSABLE-PRODUCT SCOPE, MAKING THE EXACT P1 SCOPE tools/floppyctl.py, tests/test_export_integrity.py, AND system-manifest.json; RETAIN EXACTLY ONE REUSABLE-PRODUCT COMMIT, THE ACCEPTED FS-07/FS-08/FS-13/CLI FOCUSED REGRESSIONS, ONE COMPLETE REPOSITORY SUITE AT THE IMPLEMENTATION-COMPLETION BOUNDARY, SOURCE VERSION 0.4.3-dev, AND ALL OTHER FS-13 TERMS. AUTHORIZE EXACTLY ONE ADDITIONAL STATE-PRESERVING CONTROL COMMIT BEFORE P1 TO RECORD THIS HANDOFF; DO NOT CHANGE THE FS-13 LIFECYCLE STATE DURING THAT COMMIT. CONTINUE TO AUTHORIZE P1, TR-005, TR-006, AND C4 UNDER THE REPLACEMENT AUTHORIZATION. DO NOT AUTHORIZE TR-007, TR-008, TR-009, FINAL-PROJECT CLOSURE, INTEGRATION, MERGE, TAG, RELEASE, FORCE PUSH, HISTORY REWRITE, OR ANY MODIFICATION OF main.`
 
 ```text
-FS-13 acceptance baseline: ACCEPTED AS PLANNING BASELINE
-FS-13 activation: ACTIVE
+FS-13 acceptance baseline: ACCEPTED AS AMENDED PLANNING BASELINE
 FS-13 implementation: IN_PROGRESS
 FS-13 verification: NOT_STARTED
 FS-13 administrator result acceptance: PENDING
 FS-13 closeout: NOT_PROPOSED
-Authorization: FS_13_IMPLEMENTATION
-Repository writer: FS_13_WORKING_MODEL
-Writer authorization reference: FS_13_IMPLEMENTATION
-Active implementation section: FS-13
-Exact reusable-product paths: 2
+Prior authorization: FS_13_IMPLEMENTATION
+Replacement authorization: FS_13_IMPLEMENTATION_V2
+Prior repository writer: FS_13_WORKING_MODEL
+Replacement repository writer: FS_13_WORKING_MODEL_V2
+Handoff base checkpoint: ca46998aad6b2eb0a1027647e629628e98baabf6
+Exact reusable-product paths: 3
 Implementation output applied: NO
+Lifecycle state changed by handoff: NO
 Final-project closure: OPEN
-Activation checkpoint: THIS_COMMIT
 ```
 
-The exact P1 product scope is `tools/floppyctl.py` and
-`tests/test_export_integrity.py`. TR-007, TR-008, TR-009, final-project closure,
-integration, merge, tag, release, force push, history rewrite, and `main`
-modification remain unauthorized.
+The exact P1 product scope is `tools/floppyctl.py`,
+`tests/test_export_integrity.py`, and `system-manifest.json`.
+No other reusable-product path or additional reusable-product commit is authorized.
+TR-007, TR-008, TR-009, final-project closure, integration, merge, tag, release,
+force push, history rewrite, and `main` modification remain unauthorized.
