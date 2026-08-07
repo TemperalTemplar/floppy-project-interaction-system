@@ -1680,11 +1680,48 @@ def _git_integrity_closeout_path(
     return f".floppy/closeouts/{section}-closeout.md"
 
 
+def _git_integrity_final_roadmap_section(
+    root: Path,
+    section: str,
+) -> bool | None:
+    # The ordered roadmap, not arithmetic on section numbers, determines
+    # whether section closeout has a real later-section draft.
+    roadmap_path = root / ".floppy/roadmap/roadmap.json"
+    try:
+        roadmap = json.loads(roadmap_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None
+    if not isinstance(roadmap, dict):
+        return None
+    sections = roadmap.get("sections")
+    if not isinstance(sections, list) or not sections:
+        return None
+
+    section_ids: list[str] = []
+    for item in sections:
+        if not isinstance(item, dict):
+            return None
+        identifier = item.get("id")
+        if (
+            not isinstance(identifier, str)
+            or re.fullmatch(r"FS-[0-9]{2}", identifier) is None
+        ):
+            return None
+        section_ids.append(identifier)
+
+    if len(section_ids) != len(set(section_ids)):
+        return None
+    if section not in section_ids:
+        return None
+    return section_ids[-1] == section
+
+
 def _git_integrity_control_paths(
     operation: str,
     manifest: dict[str, Any],
     parent_manifest: dict[str, Any] | None,
     section: str,
+    root: Path | None = None,
 ) -> set[str] | None:
     draft = _git_integrity_draft_path(manifest, parent_manifest, section)
     if draft is None:
@@ -1722,6 +1759,27 @@ def _git_integrity_control_paths(
             ),
         }
     if operation == "CLOSEOUT_APPLICATION_CONTROL":
+        if root is None:
+            return None
+        final_section = _git_integrity_final_roadmap_section(root, section)
+        if final_section is None:
+            return None
+
+        application_paths = common | {
+            ".floppy/START-HERE.md",
+            ".floppy/README.md",
+            ".floppy/floppies/Floppy-D-Project-Map.md",
+            ".floppy/lifecycle-state.json",
+            ".floppy/orchestrator-registry.json",
+            _git_integrity_closeout_path(
+                manifest,
+                parent_manifest,
+                section,
+            ),
+        }
+        if final_section:
+            return application_paths
+
         try:
             next_section = f"FS-{int(section[3:]) + 1:02d}"
         except ValueError:
@@ -1733,19 +1791,7 @@ def _git_integrity_control_paths(
         )
         if next_draft is None:
             return None
-        return common | {
-            ".floppy/START-HERE.md",
-            ".floppy/README.md",
-            ".floppy/floppies/Floppy-D-Project-Map.md",
-            ".floppy/lifecycle-state.json",
-            ".floppy/orchestrator-registry.json",
-            _git_integrity_closeout_path(
-                manifest,
-                parent_manifest,
-                section,
-            ),
-            next_draft,
-        }
+        return application_paths | {next_draft}
     return None
 
 
@@ -2374,6 +2420,7 @@ def validate_authorization_git_integrity(
                 manifest,
                 parent_manifest,
                 section,
+                root,
             )
             if derived is None:
                 errors.append("GIT_INTEGRITY_ACTIVATION_CONTROL_PATHS_INVALID")
@@ -2402,6 +2449,7 @@ def validate_authorization_git_integrity(
                 manifest,
                 parent_manifest,
                 section,
+                root,
             )
             if derived is None:
                 errors.append("GIT_INTEGRITY_CONTROL_PATHS_INVALID")
