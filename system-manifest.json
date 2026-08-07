@@ -225,7 +225,7 @@
       },
       "initializer": {
         "path": "tools/initialize_project.py",
-        "sha256": "906fd8daf74789fa68850d5825cb2259c56f2d5759730167edd3b5cf1ee6ffef"
+        "sha256": "4ee7d72b6c694e0c2ecd22a9d3a4c21a03aa60fb9daedfccc432bb7993d8beb3"
       },
       "cli": {
         "path": "tools/floppyctl.py",
@@ -233,11 +233,11 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "94e2431de9b94d792a0cd75ec98652df2ff42f3f6a745749110ae53f04917db1"
+        "sha256": "cf6e303b2cb003ade08d7b79c6910a310a62e2cc3ccdf32402eb1fb9d027c14d"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
-        "sha256": "2b1aea7a7fea389fc342713e71363e9dda9e5f24765d7dc0a401b9c139d27295"
+        "sha256": "14bd40ff335ce9fe3cb17609d0d2ff16ef653164c552840b4e77c79f350fd1db"
       }
     }
   },
@@ -293,7 +293,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "94e2431de9b94d792a0cd75ec98652df2ff42f3f6a745749110ae53f04917db1"
+        "sha256": "cf6e303b2cb003ade08d7b79c6910a310a62e2cc3ccdf32402eb1fb9d027c14d"
       },
       "cli": {
         "path": "tools/floppyctl.py",
@@ -301,7 +301,7 @@
       },
       "tests": {
         "path": "tests/test_final_closure.py",
-        "sha256": "32207d4c4458fe9768860f6603009c839c25ef47b8fa69cf0dac025962f3e75a"
+        "sha256": "7dbe80162ed8cf478baa08fc77fc191ae76a31ad3ea08fbaef79d87e840f2277"
       }
     }
   }

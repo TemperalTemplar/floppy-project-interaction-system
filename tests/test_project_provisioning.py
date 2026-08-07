@@ -48,7 +48,7 @@ def tree_digest(root: Path) -> str:
 
 def git(root: Path, *args: str) -> str:
     result = subprocess.run(
-        ["git", "-C", str(root), *args],
+        ["git", "-c", f"safe.directory={root.as_posix()}", "-C", str(root), *args],
         text=True,
         encoding="utf-8",
         errors="replace",
