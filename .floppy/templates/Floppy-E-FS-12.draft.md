@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_CLOSEOUT_PROPOSED
+STATUS: CLOSED
 
 # Floppy E — FS-12 Accepted Work Package
 
@@ -220,3 +220,34 @@ FS-13: INACTIVE / NOT AUTHORIZED
 
 Commit 7 is prohibited until the administrator explicitly accepts the exact
 Commit 6 proposal record and unchanged SHA-256 digest.
+
+
+<!-- BEGIN FS-12 CLOSEOUT APPLICATION -->
+## Final closeout application
+
+```text
+Administrator decision: ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+Subject: chore(bce): apply FS-12 closeout
+Operation: CLOSEOUT_APPLICATION_CONTROL
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Post-state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Proposal commit: 755c0560b3ed1042618be2c92bb34c137f8f1d16
+Proposal SHA-256: d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+FS-12 status: CLOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+Active authorization: NONE
+Repository writer: NONE
+FS-13 draft: .floppy/templates/Floppy-E-FS-13.draft.md
+FS-13 draft status: DRAFT_NOT_AUTHORIZED
+Final-project closure: OPEN
+Application checkpoint: THIS_COMMIT
+```
+
+The accepted proposal bytes remain immutable. This application creates only the
+inactive FS-13 draft and does not accept, activate, authorize, or implement
+FS-13 or execute final-project closure.
+<!-- END FS-12 CLOSEOUT APPLICATION -->

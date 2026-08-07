@@ -544,3 +544,31 @@ FS-13: INACTIVE / NOT AUTHORIZED
 The administrator must accept the exact committed C6 proposal and SHA-256
 before TR-009 may apply FS-12 closeout.
 <!-- FS12_C6_CLOSEOUT_PROPOSAL_END -->
+
+
+<!-- BEGIN FS-12 CLOSEOUT APPLICATION -->
+## FS-12 closeout applied — FS-13 inactive
+
+```text
+Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-12 status: CLOSED
+FS-12 implementation: COMPLETE
+FS-12 verification: COMPLETE
+FS-12 administrator acceptance: ACCEPTED
+FS-12 closeout: APPLIED
+FS-12 proposal commit: 755c0560b3ed1042618be2c92bb34c137f8f1d16
+FS-12 proposal SHA-256: d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+FS-13 draft: .floppy/templates/Floppy-E-FS-13.draft.md
+FS-13 status: DRAFT_NOT_AUTHORIZED / INACTIVE
+FS-13 accepted: NO
+FS-13 authorized: NO
+Active authorization: NONE
+Repository writer: NONE
+Final-project closure: OPEN
+```
+
+The next lawful activity is read-only FS-13 work-package preparation. FS-13
+acceptance, activation, implementation, export, final-project closure, push,
+merge, release, packaging, migration, and production action remain separately
+unauthorized.
+<!-- END FS-12 CLOSEOUT APPLICATION -->

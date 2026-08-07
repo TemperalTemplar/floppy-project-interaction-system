@@ -51,3 +51,43 @@ project.
 Closeout application requires a separate explicit administrator decision tied
 to the exact C6 proposal commit and unchanged SHA-256 digest of this complete
 proposal file.
+
+
+<!-- FS12_CLOSEOUT_APPLICATION_BEGIN -->
+## Final closeout application
+
+```text
+Administrator decision: ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Source state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Resulting global state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+FS-12 status: CLOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+Proposal commit: 755c0560b3ed1042618be2c92bb34c137f8f1d16
+Proposal SHA-256: d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+Canonical proposal-block SHA-256: c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83
+Application checkpoint: THIS_COMMIT
+Active authorization: NONE
+Repository writer: NONE
+Writer authorization reference: NONE
+FS-13 draft: .floppy/templates/Floppy-E-FS-13.draft.md
+FS-13 draft status: DRAFT_NOT_AUTHORIZED
+FS-13 accepted: NO
+FS-13 active: NO
+FS-13 authorized: NO
+Final-project closure executed: NO
+```
+
+The accepted proposal file preimage and canonical proposal block remain
+unchanged. This application closes FS-12 and creates only the inactive FS-13
+draft. It does not accept, activate, authorize, or implement FS-13; execute
+final-project closure; or push, merge, integrate, package, release, migrate, or
+perform production action.
+
+<!-- FS12_CLOSEOUT_APPLICATION_CANONICAL_BEGIN -->
+{"active_implementation_section":null,"active_work_authorization":null,"administrator_decision":"ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728","application_checkpoint":"THIS_COMMIT","application_status":"APPLIED","application_transition":"TR-009-APPLY-SECTION-CLOSEOUT","approved_proposal_checkpoint":"755c0560b3ed1042618be2c92bb34c137f8f1d16","approved_proposal_sha256":"d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728","authorization_id":null,"closeout":"APPLIED","closeout_applied":true,"format_version":"1.0.0","fs_12_status":"CLOSED","fs_13":"NOT AUTHORIZED","fs_13_draft":".floppy/templates/Floppy-E-FS-13.draft.md","fs_13_draft_status":"DRAFT_NOT_AUTHORIZED","repository_writer":null,"resulting_lifecycle_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","section":"FS-12","source_state":"LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED","target_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","writer_authorization_reference":null}
+<!-- FS12_CLOSEOUT_APPLICATION_CANONICAL_END -->
+<!-- FS12_CLOSEOUT_APPLICATION_END -->

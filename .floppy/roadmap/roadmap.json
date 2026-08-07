@@ -29,6 +29,50 @@
   },
   "active_implementation_section": null,
   "active_work_authorization": null,
+  "administrator_acceptance_record": {
+    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+    "administrator_decision": "ACCEPT FS-12 VERIFIED RESULT",
+    "authority_cleared": true,
+    "checkpoint": "THIS_COMMIT",
+    "closeout": "NOT_PROPOSED",
+    "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "operation": "ADMINISTRATOR_ACCEPTANCE_CONTROL",
+    "repository_writer_cleared": true,
+    "required_next_operation": "Prepare and review the exact FS-12 closeout proposal; do not apply closeout.",
+    "section": "FS-12",
+    "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+    "transition": "TR-007-ACCEPT-SECTION",
+    "transition_record": {
+      "actor": "Alva Roberts",
+      "decision": "ACCEPT FS-12 VERIFIED RESULT",
+      "id": "TR-007-ACCEPT-SECTION",
+      "inputs": [
+        "Verified FS-12 completion checkpoint dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
+        "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+        "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
+        "Complete real committed-tree suite: 260 passed across 14 modules",
+        "Source and floppyctl validators: PASSED",
+        "Tracked JSON: 63 passed"
+      ],
+      "outputs": [
+        "FS-12 administrator acceptance record",
+        "No active implementation authorization",
+        "No repository writer",
+        "Lifecycle state LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED"
+      ],
+      "post_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
+      "pre_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+      "validation_evidence": [
+        "FS-12 implementation COMPLETE",
+        "FS-12 verification COMPLETE",
+        "C4 worktree clean",
+        "No unresolved deviation blocks acceptance",
+        "Closeout remains not proposed",
+        "FS-13 remains inactive and not authorized"
+      ]
+    },
+    "verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e"
+  },
   "administrator_result_acceptance": "PENDING",
   "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
   "authority_handoff": {
@@ -47,8 +91,6 @@
   "authority_last_applied_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
   "authorization_activation": {
     "authorization_id": "FS_12_IMPLEMENTATION",
-    "operation": "ACTIVATION_CONTROL_COMMIT",
-    "implementation_scope_exercised": false,
     "exact_control_paths": [
       ".floppy/floppies/Floppy-E-Current-Section.md",
       ".floppy/lifecycle-state.json",
@@ -58,35 +100,57 @@
       ".floppy/roadmap/roadmap.md",
       ".floppy/templates/Floppy-E-FS-12.draft.md"
     ],
+    "implementation_scope_exercised": false,
+    "operation": "ACTIVATION_CONTROL_COMMIT",
     "transition_sequence": [
       {
         "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
       },
       {
         "id": "TR-004-START-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
-        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
       }
     ],
     "work_package_amendment": {
-      "previous_reusable_product_path_count": 11,
-      "amended_reusable_product_path_count": 12,
       "added_path": "tests/test_tooling.py",
-      "all_other_accepted_terms_retained": true
+      "all_other_accepted_terms_retained": true,
+      "amended_reusable_product_path_count": 12,
+      "previous_reusable_product_path_count": 11
     }
   },
-  "closeout_application": null,
+  "closeout_application": {
+    "active_implementation_section": null,
+    "administrator_decision": "ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+    "application_commit_checkpoint": "THIS_COMMIT",
+    "approved_proposal_checkpoint": "755c0560b3ed1042618be2c92bb34c137f8f1d16",
+    "approved_proposal_sha256": "d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+    "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+    "current_authorized_section": null,
+    "fs_13": "NOT AUTHORIZED",
+    "fs_13_draft_path": ".floppy/templates/Floppy-E-FS-13.draft.md",
+    "fs_13_draft_status": "DRAFT_NOT_AUTHORIZED",
+    "record": ".floppy/closeouts/FS-12-closeout.md",
+    "repository_writer": null,
+    "resulting_lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+    "section": "FS-12",
+    "status": "APPLIED",
+    "transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+    "writer_authorization_reference": null
+  },
   "closeout_proposal": {
     "administrator_acceptance": "ACCEPTED",
-    "application_authorized": false,
+    "application_authorized": true,
     "application_requires_exact_proposal_commit_verification": true,
     "application_requires_separate_administrator_directive": true,
-    "application_status": "NOT_APPLIED",
+    "application_status": "APPLIED",
     "application_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+    "canonical_proposal_block_sha256": "c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83",
     "fs_13": "NOT AUTHORIZED",
-    "fs_13_draft": "ABSENT",
+    "fs_13_draft": ".floppy/templates/Floppy-E-FS-13.draft.md",
+    "fs_13_draft_status": "DRAFT_NOT_AUTHORIZED",
     "implementation_state": "COMPLETE",
     "integration": "NOT AUTHORIZED",
     "merge": "NOT AUTHORIZED",
@@ -94,13 +158,12 @@
     "production_changes": "NOT AUTHORIZED",
     "proposal_base_checkpoint": "a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95",
     "proposal_base_tree": "f8bd7ae64fe22ac82bd5373274f96cc1b3a3360a",
-    "proposal_commit_checkpoint": "THIS_COMMIT",
+    "proposal_commit_checkpoint": "755c0560b3ed1042618be2c92bb34c137f8f1d16",
     "proposal_record_sha256": "d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
-    "canonical_proposal_block_sha256": "c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83",
     "record": ".floppy/closeouts/FS-12-closeout.md",
     "release": "NOT AUTHORIZED",
     "section": "FS-12",
-    "status": "PROPOSED_NOT_APPLIED",
+    "status": "APPROVED_AND_APPLIED",
     "transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
     "verification_state": "COMPLETE",
     "work_package_type": "STANDARD_IMPLEMENTATION"
@@ -115,7 +178,7 @@
     "root_control_state_integrates_to_main": false,
     "work_package_acceptance_is_not_implementation_authorization": true
   },
-  "continuation_point": "FS-12 closeout is proposed but not applied. Await exact administrator acceptance of the C6 proposal record and digest.",
+  "continuation_point": "FS-12 is closed. FS-13 exists only as DRAFT_NOT_AUTHORIZED / inactive and requires exact work-package preparation and acceptance.",
   "current_authorized_section": null,
   "current_section": "FS-12",
   "current_section_status": "ACCEPTED_CLOSEOUT_PROPOSED",
@@ -2020,7 +2083,7 @@
     "writer_authorization_reference": null
   },
   "fs_10_corrective_routing": {
-    "accepted_option": "OPTION 3 \u2014 SEPARATE REUSABLE PROVISIONING FROM ONE-TIME SELF-HOSTED RECONCILIATION",
+    "accepted_option": "OPTION 3 — SEPARATE REUSABLE PROVISIONING FROM ONE-TIME SELF-HOSTED RECONCILIATION",
     "authorization_reference": "AUTHORIZED_FOR_ONE_BOUNDED_ADMINISTRATIVE_ROADMAP_REVISION",
     "base_branch": "feature/fs-09-controlled-lifecycle-writes",
     "base_head": "935556a0d3a7629c0dfcb89930d840a5179f610c",
@@ -2762,48 +2825,264 @@
     "work_package_type": "STANDARD_IMPLEMENTATION",
     "writer_authorization_reference": "FS_11_INT_01_SELF_HOSTED_RECONCILIATION"
   },
-  "git_integrity_operation": {
-    "operation": "CLOSEOUT_PROPOSAL_CONTROL",
-    "section": "FS-12",
-    "implementation_scope_exercised": false,
-    "exact_control_paths": [
+  "fs_12_work_package": {
+    "acceptance_base_checkpoint": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
+    "acceptance_checkpoint": "THIS_COMMIT",
+    "acceptance_transition": "TR-002-ACCEPT-WORK-PACKAGE",
+    "accepted": true,
+    "accepted_pre_fs12_correction": {
+      "evidence_archive_sha256": "459252d21bc1166c8c75a5185d3f8de116f64d297f5927703d6f33ab58e7b52d",
+      "head": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
+      "result": "ACCEPTED"
+    },
+    "activation_authorized": false,
+    "activation_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
+    "activation_checkpoint": "THIS_COMMIT",
+    "activation_transition_sequence": [
+      {
+        "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+      },
+      {
+        "id": "TR-004-START-SECTION-IMPLEMENTATION",
+        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+      }
+    ],
+    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+    "active": false,
+    "administrative_paths": [
+      ".floppy/README.md",
+      ".floppy/START-HERE.md",
       ".floppy/closeouts/FS-12-closeout.md",
+      ".floppy/floppies/Floppy-D-Project-Map.md",
       ".floppy/floppies/Floppy-E-Current-Section.md",
       ".floppy/lifecycle-state.json",
       ".floppy/manifest.json",
+      ".floppy/orchestrator-registry.json",
       ".floppy/roadmap/roadmap.json",
       ".floppy/roadmap/roadmap.md",
-      ".floppy/templates/Floppy-E-FS-12.draft.md"
+      ".floppy/templates/Floppy-E-FS-12.draft.md",
+      ".floppy/templates/Floppy-E-FS-13.draft.md"
     ],
-    "transition_sequence": [
+    "administrator_acceptance": "ACCEPTED",
+    "administrator_acceptance_checkpoint": "THIS_COMMIT",
+    "administrator_acceptance_decision": "ACCEPT FS-12 VERIFIED RESULT",
+    "administrator_acceptance_transition": "TR-007-ACCEPT-SECTION",
+    "administrator_acceptance_verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
+    "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
+    "authorization_id": null,
+    "authorized": false,
+    "binding_report": {
+      "first_revised_report_sha256": "5f3ae7a84a2783180ddd2d52b9631b1d400fd715c79f6eea67bcb38c9c356d6b",
+      "original_report_sha256": "a1089eaaa011221f8b100f016c656740f603c2f06781ccd00a684e50064f4d1d",
+      "path": "FS12-Work-Package-Preparation-Report-Final-Revised.md",
+      "sha256": "9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365"
+    },
+    "branch": "feature/ctrl-02-verification-only-lifecycle",
+    "canonical_closeout_proposal_block_sha256": "c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83",
+    "closeout": "PROPOSED",
+    "closeout_applied": false,
+    "closeout_proposal_base_checkpoint": "a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95",
+    "closeout_proposal_checkpoint": "THIS_COMMIT",
+    "closeout_proposal_sha256": "d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+    "closeout_proposal_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
+    "closeout_record": ".floppy/closeouts/FS-12-closeout.md",
+    "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
+    "commit_maximum": 7,
+    "completion_transition_sequence": [
       {
-        "id": "TR-008-PROPOSE-SECTION-CLOSEOUT",
-        "pre_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-        "post_state": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
-        "actor": "AUTHORIZED_CLOSEOUT_PREPARER",
-        "decision": "Propose the exact accepted and verified FS-12 result for separate administrator closeout review.",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
         "inputs": [
-          "Administrator-acceptance checkpoint a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95",
-          "Administrator-acceptance evidence SHA-256 090be3091aa51139ad03309643c678c6c96d6611a7842d94a84b6e5811de84e0",
-          "Verified implementation and verification checkpoint dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
+          "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
           "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
-          "Administrator decision ACCEPT FS-12 VERIFIED RESULT",
-          "Binding work-package report SHA-256 9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365"
+          "Exact amended reusable-product scope: 12 paths",
+          "Source-version target: 0.4.3-dev",
+          "Lifecycle-state schema target: 1.2.0"
         ],
         "outputs": [
-          "FS-12 closeout proposal record .floppy/closeouts/FS-12-closeout.md",
-          "Lifecycle state LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
-          "Closeout proposal status PROPOSED_NOT_APPLIED",
-          "No active authorization or repository writer",
-          "No FS-13 draft"
+          "FS-12 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
         ],
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
         "validation_evidence": [
-          "C5 complete preflight suite: 260 passed across 14 modules",
-          "C5 complete real committed-tree suite: 260 passed across 14 modules",
-          "C5 source and floppyctl validators: PASSED",
-          "C5 tracked JSON: 63 passed",
-          "C5 tested tree equals committed tree",
-          "C5 final worktree clean"
+          "C3 focused final-closure tests: 14 passed",
+          "C3 complete repository suite: 260 passed across 14 modules",
+          "C3 source validator: PASSED",
+          "C3 floppyctl source validator: PASSED",
+          "C3 tracked JSON parse: 63 passed",
+          "C3 tested tree equals committed tree: YES",
+          "C3 exact reusable-product paths: 12"
+        ]
+      },
+      {
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "inputs": [
+          "Required FS-12 final-closure behavior and rollback tests",
+          "Exact 12-path product-scope comparison",
+          "Immutable tested C3 tree 2a2b86294d47263da9b21e048e44856d7be63c2b"
+        ],
+        "outputs": [
+          "FS-12 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "validation_evidence": [
+          "Distinct no-migration and migration-applied routes validated",
+          "No-migration route preserves migration NONE",
+          "Migration-applied route preserves APPLIED_VERIFICATION_COMPLETE",
+          "Proposal and application remain separate controlled operations",
+          "Tampered proposal and cross-route application are rejected",
+          "Injected partial write is rolled back across all exact runtime records",
+          "Canonical lifecycle-state, manifest, roadmap, and registry agree",
+          "Authorization and writer remain active until separate administrator acceptance"
+        ]
+      }
+    ],
+    "conditional_administrative_paths": 0,
+    "conditional_reusable_product_paths": 0,
+    "dependency_change": false,
+    "depends_on": [
+      "FS-11"
+    ],
+    "draft_base_checkpoint": "97e544b67c0b3a7954cb37eb9baacc30e571f3a4",
+    "draft_checkpoint": "THIS_COMMIT",
+    "draft_created_by_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+    "exact_paths_deferred_until_section_draft": false,
+    "exact_reusable_product_path_count": 12,
+    "exact_total_planned_commits": 7,
+    "exact_unique_administrative_path_count": 12,
+    "explicit_exclusions": [
+      "No separate closure engine or duplicate transition implementation."
+    ],
+    "id": "FS-12",
+    "implementation": "COMPLETE",
+    "implementation_authorized": false,
+    "implementation_complete": true,
+    "implementation_output_applied": true,
+    "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "implementation_started": true,
+    "implementation_state": "COMPLETE",
+    "lifecycle_and_authority_commit_count": 6,
+    "lifecycle_state_schema_target": "1.2.0",
+    "mandatory_next_operation": "Administrator review of the exact committed FS-12 closeout proposal record and digest.",
+    "maximum_administrative_paths": 12,
+    "maximum_reusable_product_commits": 1,
+    "maximum_reusable_product_paths": 12,
+    "new_authorization_kind": false,
+    "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
+    "ordinary_user_python_requirement": false,
+    "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
+    "phase_count": 7,
+    "planned_transition_sequence": [
+      "Commit 1: TR-002-ACCEPT-WORK-PACKAGE",
+      "Commit 2: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION then TR-004-START-SECTION-IMPLEMENTATION",
+      "Commit 3: reusable-product implementation; no lifecycle transition",
+      "Commit 4: TR-005-RECORD-IMPLEMENTATION-COMPLETE then TR-006-RECORD-VERIFICATION-COMPLETE",
+      "Commit 5: TR-007-ACCEPT-SECTION",
+      "Commit 6: TR-008-PROPOSE-SECTION-CLOSEOUT",
+      "Commit 7: TR-009-APPLY-SECTION-CLOSEOUT"
+    ],
+    "repository_writer": null,
+    "reusable_product_commit_count": 1,
+    "reusable_product_paths": [
+      "README.md",
+      "VERSION",
+      "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+      "specs/lifecycle-state-model.md",
+      "specs/lifecycle-transition-table.json",
+      "system-manifest.json",
+      "tests/test_final_closure.py",
+      "tests/test_lifecycle_specification.py",
+      "tests/test_tooling.py",
+      "tests/test_validated_boot_package.py",
+      "tools/floppyctl.py",
+      "tools/validate_floppy.py"
+    ],
+    "root_control_implementation_commit_count": 0,
+    "root_control_implementation_paths": [],
+    "schema_version_change": true,
+    "section": "FS-12",
+    "section_closeout": "PROPOSED",
+    "sequence": 12,
+    "source_version_change": true,
+    "source_version_target": "0.4.3-dev",
+    "status": "ACCEPTED_CLOSEOUT_PROPOSED",
+    "tests_deferred_until_section_draft": false,
+    "title": "Final-Project Closure",
+    "verification": "COMPLETE",
+    "verification_complete": true,
+    "work_package_accepted": true,
+    "work_package_amended": true,
+    "work_package_amendment": {
+      "added_path": "tests/test_tooling.py",
+      "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
+      "all_other_accepted_terms_retained": true,
+      "amended_reusable_product_path_count": 12,
+      "amendment_checkpoint": "THIS_COMMIT",
+      "previous_reusable_product_path_count": 11,
+      "source_version_target_retained": "0.4.3-dev"
+    },
+    "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
+    "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+    "worktree": "D:\\A\\Floppy-CTRL-02",
+    "writer_authorization_reference": null
+  },
+  "git_integrity_operation": {
+    "exact_control_paths": [
+      ".floppy/README.md",
+      ".floppy/START-HERE.md",
+      ".floppy/closeouts/FS-12-closeout.md",
+      ".floppy/floppies/Floppy-D-Project-Map.md",
+      ".floppy/floppies/Floppy-E-Current-Section.md",
+      ".floppy/lifecycle-state.json",
+      ".floppy/manifest.json",
+      ".floppy/orchestrator-registry.json",
+      ".floppy/roadmap/roadmap.json",
+      ".floppy/roadmap/roadmap.md",
+      ".floppy/templates/Floppy-E-FS-12.draft.md",
+      ".floppy/templates/Floppy-E-FS-13.draft.md"
+    ],
+    "implementation_scope_exercised": false,
+    "operation": "CLOSEOUT_APPLICATION_CONTROL",
+    "section": "FS-12",
+    "transition_sequence": [
+      {
+        "actor": "Alva Roberts",
+        "decision": "ACCEPT FS-12 CLOSEOUT PROPOSAL 755c0560b3ed1042618be2c92bb34c137f8f1d16 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+        "id": "TR-009-APPLY-SECTION-CLOSEOUT",
+        "inputs": [
+          "C6 proposal checkpoint 755c0560b3ed1042618be2c92bb34c137f8f1d16",
+          "Accepted closeout proposal SHA-256 d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+          "Canonical proposal-block SHA-256 c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83",
+          "Exact unchanged canonical FS-12 proposal block",
+          "Verified C6 evidence: 260 preflight and 260 real committed-tree tests"
+        ],
+        "outputs": [
+          "FS-12 closeout application record",
+          "FS-12 status CLOSED",
+          "Global lifecycle state LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+          "Inactive FS-13 draft .floppy/templates/Floppy-E-FS-13.draft.md",
+          "No active authorization or repository writer",
+          "Final-project closure remains OPEN"
+        ],
+        "post_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "pre_state": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
+        "validation_evidence": [
+          "Exact twelve-path C7 scope",
+          "Accepted proposal complete-file preimage SHA-256 verified before modification",
+          "All required tests and both source validators pass",
+          "Tested tree equals committed tree",
+          "Final worktree and index clean",
+          "No FS-13 acceptance, activation, implementation, final closure, push, merge, release, packaging, migration, or production action"
         ]
       }
     ]
@@ -3476,21 +3755,24 @@
     }
   ],
   "implementation_verification_completion": {
-    "section": "FS-12",
-    "operation": "COMPLETION_VERIFICATION_CONTROL",
-    "authorization_id": "FS_12_IMPLEMENTATION",
-    "repository_writer": "FS_12_WORKING_MODEL",
-    "authorization_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
     "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
-    "reusable_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "additional_implementation": "PROHIBITED",
+    "administrator_acceptance": "PENDING",
+    "authorization_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
+    "authorization_id": "FS_12_IMPLEMENTATION",
+    "checkpoint": "THIS_COMMIT",
     "exact_reusable_product_path_count": 12,
+    "operation": "COMPLETION_VERIFICATION_CONTROL",
+    "repository_writer": "FS_12_WORKING_MODEL",
+    "required_next_decision": "ACCEPT FS-12 VERIFIED RESULT",
+    "reusable_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "section": "FS-12",
+    "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
     "transition_sequence": [
       {
-        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
-        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
-        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
         "actor": "FS_12_WORKING_MODEL",
         "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
         "inputs": [
           "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
           "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
@@ -3502,6 +3784,8 @@
           "FS-12 implementation completion record",
           "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
         ],
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
         "validation_evidence": [
           "C3 focused final-closure tests: 14 passed",
           "C3 complete repository suite: 260 passed across 14 modules",
@@ -3513,11 +3797,9 @@
         ]
       },
       {
-        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
-        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
-        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
         "actor": "FS_12_WORKING_MODEL",
         "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
         "inputs": [
           "Required FS-12 final-closure behavior and rollback tests",
           "Exact 12-path product-scope comparison",
@@ -3528,6 +3810,8 @@
           "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
           "Mandatory administrator acceptance or rejection checkpoint"
         ],
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
         "validation_evidence": [
           "Distinct no-migration and migration-applied routes validated",
           "No-migration route preserves migration NONE",
@@ -3539,17 +3823,12 @@
           "Authorization and writer remain active until separate administrator acceptance"
         ]
       }
-    ],
-    "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
-    "checkpoint": "THIS_COMMIT",
-    "administrator_acceptance": "PENDING",
-    "additional_implementation": "PROHIBITED",
-    "required_next_decision": "ACCEPT FS-12 VERIFIED RESULT"
+    ]
   },
   "last_applied_transition": "TR-007-ACCEPT-SECTION",
-  "lifecycle_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-  "next_proposed_section": "FS-12",
-  "next_proposed_section_status": "ACCEPTED_PLANNING_BASELINE",
+  "lifecycle_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+  "next_proposed_section": "FS-13",
+  "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
   "post_acceptance_bounded_correction": {
     "commit": "e0486b3a25721812e5a69b52f655e3bae1402e34",
     "direct_parent": "50f10a129d34a4eae78c184d41523ba973caad93",
@@ -3567,7 +3846,7 @@
     "subject": "fix(bce): permit bounded corrections after authority clearance",
     "tested_tree_equals_committed_tree": true
   },
-  "project_name": "Floppy Project Interaction System \u00e2\u20ac\u201d BCE Control Layer",
+  "project_name": "Floppy Project Interaction System â€” BCE Control Layer",
   "remaining_roadmap_correction": {
     "active_work_authorization": null,
     "base_checkpoint": "a9bae496b7835ebd05ce4d06008ffe0aed25ef7a",
@@ -5306,64 +5585,32 @@
       "writer_authorization_reference": "FS_11_INT_01_SELF_HOSTED_RECONCILIATION"
     },
     {
+      "acceptance_base_checkpoint": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
+      "acceptance_checkpoint": "THIS_COMMIT",
+      "acceptance_transition": "TR-002-ACCEPT-WORK-PACKAGE",
       "accepted": true,
+      "accepted_pre_fs12_correction": {
+        "evidence_archive_sha256": "459252d21bc1166c8c75a5185d3f8de116f64d297f5927703d6f33ab58e7b52d",
+        "head": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
+        "result": "ACCEPTED"
+      },
       "activation_authorized": false,
+      "activation_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
+      "activation_checkpoint": "THIS_COMMIT",
+      "activation_transition_sequence": [
+        {
+          "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
+          "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
+          "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+        },
+        {
+          "id": "TR-004-START-SECTION-IMPLEMENTATION",
+          "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+          "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+        }
+      ],
+      "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
       "active": false,
-      "authorization_id": null,
-      "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
-      "commit_maximum": 7,
-      "depends_on": [
-        "FS-11"
-      ],
-      "draft_base_checkpoint": "97e544b67c0b3a7954cb37eb9baacc30e571f3a4",
-      "draft_checkpoint": "THIS_COMMIT",
-      "draft_created_by_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
-      "exact_paths_deferred_until_section_draft": false,
-      "explicit_exclusions": [
-        "No separate closure engine or duplicate transition implementation."
-      ],
-      "id": "FS-12",
-      "implementation_authorized": false,
-      "implementation_started": true,
-      "maximum_reusable_product_paths": 12,
-      "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
-      "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
-      "repository_writer": null,
-      "sequence": 12,
-      "status": "ACCEPTED_CLOSEOUT_PROPOSED",
-      "tests_deferred_until_section_draft": false,
-      "title": "Final-Project Closure",
-      "writer_authorization_reference": null,
-      "section": "FS-12",
-      "work_package_accepted": true,
-      "work_package_status": "ACCEPTED AS PLANNING BASELINE",
-      "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
-      "implementation": "COMPLETE",
-      "verification": "COMPLETE",
-      "administrator_acceptance": "ACCEPTED",
-      "closeout": "PROPOSED",
-      "exact_reusable_product_path_count": 12,
-      "conditional_reusable_product_paths": 0,
-      "reusable_product_paths": [
-        "README.md",
-        "VERSION",
-        "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
-        "specs/lifecycle-state-model.md",
-        "specs/lifecycle-transition-table.json",
-        "system-manifest.json",
-        "tests/test_final_closure.py",
-        "tests/test_lifecycle_specification.py",
-        "tests/test_tooling.py",
-        "tests/test_validated_boot_package.py",
-        "tools/floppyctl.py",
-        "tools/validate_floppy.py"
-      ],
-      "maximum_reusable_product_commits": 1,
-      "reusable_product_commit_count": 1,
-      "exact_total_planned_commits": 7,
-      "exact_unique_administrative_path_count": 12,
-      "maximum_administrative_paths": 12,
-      "conditional_administrative_paths": 0,
       "administrative_paths": [
         ".floppy/README.md",
         ".floppy/START-HERE.md",
@@ -5378,68 +5625,34 @@
         ".floppy/templates/Floppy-E-FS-12.draft.md",
         ".floppy/templates/Floppy-E-FS-13.draft.md"
       ],
-      "root_control_implementation_paths": [],
-      "root_control_implementation_commit_count": 0,
-      "lifecycle_and_authority_commit_count": 6,
-      "phase_count": 7,
-      "source_version_change": true,
-      "source_version_target": "0.4.3-dev",
-      "schema_version_change": true,
-      "lifecycle_state_schema_target": "1.2.0",
-      "dependency_change": false,
-      "new_authorization_kind": false,
-      "ordinary_user_python_requirement": false,
-      "binding_report": {
-        "path": "FS12-Work-Package-Preparation-Report-Final-Revised.md",
-        "sha256": "9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365",
-        "original_report_sha256": "a1089eaaa011221f8b100f016c656740f603c2f06781ccd00a684e50064f4d1d",
-        "first_revised_report_sha256": "5f3ae7a84a2783180ddd2d52b9631b1d400fd715c79f6eea67bcb38c9c356d6b"
-      },
-      "accepted_pre_fs12_correction": {
-        "result": "ACCEPTED",
-        "head": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
-        "evidence_archive_sha256": "459252d21bc1166c8c75a5185d3f8de116f64d297f5927703d6f33ab58e7b52d"
-      },
+      "administrator_acceptance": "ACCEPTED",
+      "administrator_acceptance_checkpoint": "THIS_COMMIT",
+      "administrator_acceptance_decision": "ACCEPT FS-12 VERIFIED RESULT",
+      "administrator_acceptance_transition": "TR-007-ACCEPT-SECTION",
+      "administrator_acceptance_verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
       "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
-      "acceptance_transition": "TR-002-ACCEPT-WORK-PACKAGE",
-      "acceptance_base_checkpoint": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
-      "acceptance_checkpoint": "THIS_COMMIT",
-      "planned_transition_sequence": [
-        "Commit 1: TR-002-ACCEPT-WORK-PACKAGE",
-        "Commit 2: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION then TR-004-START-SECTION-IMPLEMENTATION",
-        "Commit 3: reusable-product implementation; no lifecycle transition",
-        "Commit 4: TR-005-RECORD-IMPLEMENTATION-COMPLETE then TR-006-RECORD-VERIFICATION-COMPLETE",
-        "Commit 5: TR-007-ACCEPT-SECTION",
-        "Commit 6: TR-008-PROPOSE-SECTION-CLOSEOUT",
-        "Commit 7: TR-009-APPLY-SECTION-CLOSEOUT"
-      ],
-      "mandatory_next_operation": "Prepare and review the exact FS-12 closeout proposal; do not apply closeout.",
-      "branch": "feature/ctrl-02-verification-only-lifecycle",
-      "worktree": "D:\\A\\Floppy-CTRL-02",
-      "work_package_amended": true,
-      "work_package_amendment": {
-        "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
-        "previous_reusable_product_path_count": 11,
-        "amended_reusable_product_path_count": 12,
-        "added_path": "tests/test_tooling.py",
-        "source_version_target_retained": "0.4.3-dev",
-        "all_other_accepted_terms_retained": true,
-        "amendment_checkpoint": "THIS_COMMIT"
-      },
+      "authorization_id": null,
       "authorized": false,
-      "implementation_state": "COMPLETE",
-      "implementation_complete": true,
-      "verification_complete": true,
-      "implementation_output_applied": true,
-      "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
-      "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+      "binding_report": {
+        "first_revised_report_sha256": "5f3ae7a84a2783180ddd2d52b9631b1d400fd715c79f6eea67bcb38c9c356d6b",
+        "original_report_sha256": "a1089eaaa011221f8b100f016c656740f603c2f06781ccd00a684e50064f4d1d",
+        "path": "FS12-Work-Package-Preparation-Report-Final-Revised.md",
+        "sha256": "9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365"
+      },
+      "branch": "feature/ctrl-02-verification-only-lifecycle",
+      "closeout": "APPLIED",
+      "closeout_application_checkpoint": "THIS_COMMIT",
+      "closeout_application_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+      "closeout_applied": true,
+      "closeout_proposal_checkpoint": "755c0560b3ed1042618be2c92bb34c137f8f1d16",
+      "closeout_proposal_sha256": "d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
+      "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
+      "commit_maximum": 7,
       "completion_transition_sequence": [
         {
-          "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
-          "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
-          "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
           "actor": "FS_12_WORKING_MODEL",
           "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
+          "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
           "inputs": [
             "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
             "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
@@ -5451,6 +5664,8 @@
             "FS-12 implementation completion record",
             "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
           ],
+          "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+          "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
           "validation_evidence": [
             "C3 focused final-closure tests: 14 passed",
             "C3 complete repository suite: 260 passed across 14 modules",
@@ -5462,11 +5677,9 @@
           ]
         },
         {
-          "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
-          "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
-          "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
           "actor": "FS_12_WORKING_MODEL",
           "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+          "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
           "inputs": [
             "Required FS-12 final-closure behavior and rollback tests",
             "Exact 12-path product-scope comparison",
@@ -5477,6 +5690,8 @@
             "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
             "Mandatory administrator acceptance or rejection checkpoint"
           ],
+          "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
           "validation_evidence": [
             "Distinct no-migration and migration-applied routes validated",
             "No-migration route preserves migration NONE",
@@ -5489,34 +5704,110 @@
           ]
         }
       ],
-      "activation_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
-      "activation_checkpoint": "THIS_COMMIT",
-      "activation_transition_sequence": [
-        {
-          "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
-          "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-          "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
-        },
-        {
-          "id": "TR-004-START-SECTION-IMPLEMENTATION",
-          "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
-          "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
-        }
+      "conditional_administrative_paths": 0,
+      "conditional_reusable_product_paths": 0,
+      "dependency_change": false,
+      "depends_on": [
+        "FS-11"
       ],
-      "administrator_acceptance_decision": "ACCEPT FS-12 VERIFIED RESULT",
-      "administrator_acceptance_transition": "TR-007-ACCEPT-SECTION",
-      "administrator_acceptance_verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
-      "administrator_acceptance_checkpoint": "THIS_COMMIT"
+      "draft_base_checkpoint": "97e544b67c0b3a7954cb37eb9baacc30e571f3a4",
+      "draft_checkpoint": "THIS_COMMIT",
+      "draft_created_by_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+      "exact_paths_deferred_until_section_draft": false,
+      "exact_reusable_product_path_count": 12,
+      "exact_total_planned_commits": 7,
+      "exact_unique_administrative_path_count": 12,
+      "explicit_exclusions": [
+        "No separate closure engine or duplicate transition implementation."
+      ],
+      "fs_13_draft_path": ".floppy/templates/Floppy-E-FS-13.draft.md",
+      "fs_13_draft_status": "DRAFT_NOT_AUTHORIZED",
+      "id": "FS-12",
+      "implementation": "COMPLETE",
+      "implementation_authorized": false,
+      "implementation_complete": true,
+      "implementation_output_applied": true,
+      "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+      "implementation_started": true,
+      "implementation_state": "COMPLETE",
+      "lifecycle_and_authority_commit_count": 6,
+      "lifecycle_state_schema_target": "1.2.0",
+      "mandatory_next_operation": "Prepare and review the exact FS-12 closeout proposal; do not apply closeout.",
+      "maximum_administrative_paths": 12,
+      "maximum_reusable_product_commits": 1,
+      "maximum_reusable_product_paths": 12,
+      "new_authorization_kind": false,
+      "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
+      "ordinary_user_python_requirement": false,
+      "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
+      "phase_count": 7,
+      "planned_transition_sequence": [
+        "Commit 1: TR-002-ACCEPT-WORK-PACKAGE",
+        "Commit 2: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION then TR-004-START-SECTION-IMPLEMENTATION",
+        "Commit 3: reusable-product implementation; no lifecycle transition",
+        "Commit 4: TR-005-RECORD-IMPLEMENTATION-COMPLETE then TR-006-RECORD-VERIFICATION-COMPLETE",
+        "Commit 5: TR-007-ACCEPT-SECTION",
+        "Commit 6: TR-008-PROPOSE-SECTION-CLOSEOUT",
+        "Commit 7: TR-009-APPLY-SECTION-CLOSEOUT"
+      ],
+      "repository_writer": null,
+      "reusable_product_commit_count": 1,
+      "reusable_product_paths": [
+        "README.md",
+        "VERSION",
+        "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+        "specs/lifecycle-state-model.md",
+        "specs/lifecycle-transition-table.json",
+        "system-manifest.json",
+        "tests/test_final_closure.py",
+        "tests/test_lifecycle_specification.py",
+        "tests/test_tooling.py",
+        "tests/test_validated_boot_package.py",
+        "tools/floppyctl.py",
+        "tools/validate_floppy.py"
+      ],
+      "root_control_implementation_commit_count": 0,
+      "root_control_implementation_paths": [],
+      "schema_version_change": true,
+      "section": "FS-12",
+      "section_closeout": "APPLIED",
+      "sequence": 12,
+      "source_version_change": true,
+      "source_version_target": "0.4.3-dev",
+      "status": "CLOSED",
+      "tests_deferred_until_section_draft": false,
+      "title": "Final-Project Closure",
+      "verification": "COMPLETE",
+      "verification_complete": true,
+      "work_package_accepted": true,
+      "work_package_amended": true,
+      "work_package_amendment": {
+        "added_path": "tests/test_tooling.py",
+        "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
+        "all_other_accepted_terms_retained": true,
+        "amended_reusable_product_path_count": 12,
+        "amendment_checkpoint": "THIS_COMMIT",
+        "previous_reusable_product_path_count": 11,
+        "source_version_target_retained": "0.4.3-dev"
+      },
+      "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
+      "work_package_status": "ACCEPTED AS PLANNING BASELINE",
+      "worktree": "D:\\A\\Floppy-CTRL-02",
+      "writer_authorization_reference": null
     },
     {
       "accepted": false,
       "activation_authorized": false,
       "active": false,
+      "authorization_id": null,
       "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
       "commit_maximum": 1,
       "depends_on": [
         "FS-12"
       ],
+      "draft_base_checkpoint": "755c0560b3ed1042618be2c92bb34c137f8f1d16",
+      "draft_checkpoint": "THIS_COMMIT",
+      "draft_created_by_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
       "exact_paths_deferred_until_section_draft": true,
       "explicit_exclusions": [
         "Reuse FS-08 packaging. No history compaction, archival service, synchronization, hosting, signing, or multiple export formats."
@@ -5526,268 +5817,15 @@
       "implementation_started": false,
       "maximum_reusable_product_paths": 3,
       "objective": "Export and verify one portable ZIP containing the accepted context and one integrity manifest.",
+      "path": ".floppy/templates/Floppy-E-FS-13.draft.md",
       "repository_writer": null,
       "sequence": 13,
-      "status": "PLANNED_NOT_AUTHORIZED",
+      "status": "DRAFT_NOT_AUTHORIZED",
       "tests_deferred_until_section_draft": true,
-      "title": "Export and Integrity"
+      "title": "Export and Integrity",
+      "writer_authorization_reference": null
     }
   ],
-  "status": "LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED",
-  "writer_authorization_reference": null,
-  "fs_12_work_package": {
-    "accepted": true,
-    "activation_authorized": false,
-    "active": false,
-    "authorization_id": null,
-    "closeout_rule": "COMMON_REMAINING_SECTION_CLOSEOUT_RULE",
-    "commit_maximum": 7,
-    "depends_on": [
-      "FS-11"
-    ],
-    "draft_base_checkpoint": "97e544b67c0b3a7954cb37eb9baacc30e571f3a4",
-    "draft_checkpoint": "THIS_COMMIT",
-    "draft_created_by_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
-    "exact_paths_deferred_until_section_draft": false,
-    "explicit_exclusions": [
-      "No separate closure engine or duplicate transition implementation."
-    ],
-    "id": "FS-12",
-    "implementation_authorized": false,
-    "implementation_started": true,
-    "maximum_reusable_product_paths": 12,
-    "objective": "Add final-project closure as one validated operation using the existing validator, CLI, and controlled-write implementation.",
-    "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
-    "repository_writer": null,
-    "sequence": 12,
-    "status": "ACCEPTED_CLOSEOUT_PROPOSED",
-    "tests_deferred_until_section_draft": false,
-    "title": "Final-Project Closure",
-    "writer_authorization_reference": null,
-    "section": "FS-12",
-    "work_package_accepted": true,
-    "work_package_status": "ACCEPTED AS PLANNING BASELINE",
-    "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
-    "implementation": "COMPLETE",
-    "verification": "COMPLETE",
-    "administrator_acceptance": "ACCEPTED",
-    "closeout": "PROPOSED",
-    "exact_reusable_product_path_count": 12,
-    "conditional_reusable_product_paths": 0,
-    "reusable_product_paths": [
-      "README.md",
-      "VERSION",
-      "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
-      "specs/lifecycle-state-model.md",
-      "specs/lifecycle-transition-table.json",
-      "system-manifest.json",
-      "tests/test_final_closure.py",
-      "tests/test_lifecycle_specification.py",
-      "tests/test_tooling.py",
-      "tests/test_validated_boot_package.py",
-      "tools/floppyctl.py",
-      "tools/validate_floppy.py"
-    ],
-    "maximum_reusable_product_commits": 1,
-    "reusable_product_commit_count": 1,
-    "exact_total_planned_commits": 7,
-    "exact_unique_administrative_path_count": 12,
-    "maximum_administrative_paths": 12,
-    "conditional_administrative_paths": 0,
-    "administrative_paths": [
-      ".floppy/README.md",
-      ".floppy/START-HERE.md",
-      ".floppy/closeouts/FS-12-closeout.md",
-      ".floppy/floppies/Floppy-D-Project-Map.md",
-      ".floppy/floppies/Floppy-E-Current-Section.md",
-      ".floppy/lifecycle-state.json",
-      ".floppy/manifest.json",
-      ".floppy/orchestrator-registry.json",
-      ".floppy/roadmap/roadmap.json",
-      ".floppy/roadmap/roadmap.md",
-      ".floppy/templates/Floppy-E-FS-12.draft.md",
-      ".floppy/templates/Floppy-E-FS-13.draft.md"
-    ],
-    "root_control_implementation_paths": [],
-    "root_control_implementation_commit_count": 0,
-    "lifecycle_and_authority_commit_count": 6,
-    "phase_count": 7,
-    "source_version_change": true,
-    "source_version_target": "0.4.3-dev",
-    "schema_version_change": true,
-    "lifecycle_state_schema_target": "1.2.0",
-    "dependency_change": false,
-    "new_authorization_kind": false,
-    "ordinary_user_python_requirement": false,
-    "binding_report": {
-      "path": "FS12-Work-Package-Preparation-Report-Final-Revised.md",
-      "sha256": "9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365",
-      "original_report_sha256": "a1089eaaa011221f8b100f016c656740f603c2f06781ccd00a684e50064f4d1d",
-      "first_revised_report_sha256": "5f3ae7a84a2783180ddd2d52b9631b1d400fd715c79f6eea67bcb38c9c356d6b"
-    },
-    "accepted_pre_fs12_correction": {
-      "result": "ACCEPTED",
-      "head": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
-      "evidence_archive_sha256": "459252d21bc1166c8c75a5185d3f8de116f64d297f5927703d6f33ab58e7b52d"
-    },
-    "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
-    "acceptance_transition": "TR-002-ACCEPT-WORK-PACKAGE",
-    "acceptance_base_checkpoint": "a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6",
-    "acceptance_checkpoint": "THIS_COMMIT",
-    "planned_transition_sequence": [
-      "Commit 1: TR-002-ACCEPT-WORK-PACKAGE",
-      "Commit 2: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION then TR-004-START-SECTION-IMPLEMENTATION",
-      "Commit 3: reusable-product implementation; no lifecycle transition",
-      "Commit 4: TR-005-RECORD-IMPLEMENTATION-COMPLETE then TR-006-RECORD-VERIFICATION-COMPLETE",
-      "Commit 5: TR-007-ACCEPT-SECTION",
-      "Commit 6: TR-008-PROPOSE-SECTION-CLOSEOUT",
-      "Commit 7: TR-009-APPLY-SECTION-CLOSEOUT"
-    ],
-    "mandatory_next_operation": "Administrator review of the exact committed FS-12 closeout proposal record and digest.",
-    "branch": "feature/ctrl-02-verification-only-lifecycle",
-    "worktree": "D:\\A\\Floppy-CTRL-02",
-    "work_package_amended": true,
-    "work_package_amendment": {
-      "administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
-      "previous_reusable_product_path_count": 11,
-      "amended_reusable_product_path_count": 12,
-      "added_path": "tests/test_tooling.py",
-      "source_version_target_retained": "0.4.3-dev",
-      "all_other_accepted_terms_retained": true,
-      "amendment_checkpoint": "THIS_COMMIT"
-    },
-    "authorized": false,
-    "activation_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
-    "activation_checkpoint": "THIS_COMMIT",
-    "activation_transition_sequence": [
-      {
-        "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
-      },
-      {
-        "id": "TR-004-START-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
-        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
-      }
-    ],
-    "implementation_state": "COMPLETE",
-    "implementation_complete": true,
-    "verification_complete": true,
-    "implementation_output_applied": true,
-    "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
-    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
-    "completion_transition_sequence": [
-      {
-        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
-        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
-        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
-        "actor": "FS_12_WORKING_MODEL",
-        "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
-        "inputs": [
-          "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
-          "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
-          "Exact amended reusable-product scope: 12 paths",
-          "Source-version target: 0.4.3-dev",
-          "Lifecycle-state schema target: 1.2.0"
-        ],
-        "outputs": [
-          "FS-12 implementation completion record",
-          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
-        ],
-        "validation_evidence": [
-          "C3 focused final-closure tests: 14 passed",
-          "C3 complete repository suite: 260 passed across 14 modules",
-          "C3 source validator: PASSED",
-          "C3 floppyctl source validator: PASSED",
-          "C3 tracked JSON parse: 63 passed",
-          "C3 tested tree equals committed tree: YES",
-          "C3 exact reusable-product paths: 12"
-        ]
-      },
-      {
-        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
-        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
-        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-        "actor": "FS_12_WORKING_MODEL",
-        "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
-        "inputs": [
-          "Required FS-12 final-closure behavior and rollback tests",
-          "Exact 12-path product-scope comparison",
-          "Immutable tested C3 tree 2a2b86294d47263da9b21e048e44856d7be63c2b"
-        ],
-        "outputs": [
-          "FS-12 verification completion record",
-          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-          "Mandatory administrator acceptance or rejection checkpoint"
-        ],
-        "validation_evidence": [
-          "Distinct no-migration and migration-applied routes validated",
-          "No-migration route preserves migration NONE",
-          "Migration-applied route preserves APPLIED_VERIFICATION_COMPLETE",
-          "Proposal and application remain separate controlled operations",
-          "Tampered proposal and cross-route application are rejected",
-          "Injected partial write is rolled back across all exact runtime records",
-          "Canonical lifecycle-state, manifest, roadmap, and registry agree",
-          "Authorization and writer remain active until separate administrator acceptance"
-        ]
-      }
-    ],
-    "administrator_acceptance_decision": "ACCEPT FS-12 VERIFIED RESULT",
-    "administrator_acceptance_transition": "TR-007-ACCEPT-SECTION",
-    "administrator_acceptance_verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
-    "administrator_acceptance_checkpoint": "THIS_COMMIT",
-    "section_closeout": "PROPOSED",
-    "closeout_applied": false,
-    "closeout_proposal_base_checkpoint": "a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95",
-    "closeout_proposal_checkpoint": "THIS_COMMIT",
-    "closeout_proposal_transition": "TR-008-PROPOSE-SECTION-CLOSEOUT",
-    "closeout_record": ".floppy/closeouts/FS-12-closeout.md",
-    "closeout_proposal_sha256": "d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728",
-    "canonical_closeout_proposal_block_sha256": "c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83"
-  },
-  "administrator_acceptance_record": {
-    "section": "FS-12",
-    "operation": "ADMINISTRATOR_ACCEPTANCE_CONTROL",
-    "administrator_decision": "ACCEPT FS-12 VERIFIED RESULT",
-    "verified_checkpoint": "dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
-    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
-    "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
-    "transition": "TR-007-ACCEPT-SECTION",
-    "transition_record": {
-      "id": "TR-007-ACCEPT-SECTION",
-      "pre_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-      "post_state": "LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED",
-      "actor": "Alva Roberts",
-      "decision": "ACCEPT FS-12 VERIFIED RESULT",
-      "inputs": [
-        "Verified FS-12 completion checkpoint dfcaec6710cef39a6e81ff2fc8bff63d6102be1e",
-        "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
-        "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
-        "Complete real committed-tree suite: 260 passed across 14 modules",
-        "Source and floppyctl validators: PASSED",
-        "Tracked JSON: 63 passed"
-      ],
-      "outputs": [
-        "FS-12 administrator acceptance record",
-        "No active implementation authorization",
-        "No repository writer",
-        "Lifecycle state LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED"
-      ],
-      "validation_evidence": [
-        "FS-12 implementation COMPLETE",
-        "FS-12 verification COMPLETE",
-        "C4 worktree clean",
-        "No unresolved deviation blocks acceptance",
-        "Closeout remains not proposed",
-        "FS-13 remains inactive and not authorized"
-      ]
-    },
-    "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
-    "checkpoint": "THIS_COMMIT",
-    "authority_cleared": true,
-    "repository_writer_cleared": true,
-    "closeout": "NOT_PROPOSED",
-    "required_next_operation": "Prepare and review the exact FS-12 closeout proposal; do not apply closeout."
-  }
+  "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+  "writer_authorization_reference": null
 }
