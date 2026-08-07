@@ -729,3 +729,12 @@ Application checkpoint: THIS_COMMIT
 All planned implementation sections through FS-13 are closed. No FS-14 exists.
 Project-level final closure remains a separate authority boundary.
 <!-- FS13_C7_CLOSEOUT_APPLICATION_END -->
+
+## Final-project closure
+
+```text
+Transition: TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
+Migration: NONE
+Operation: PROPOSE
+```

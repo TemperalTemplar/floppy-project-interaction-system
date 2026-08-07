@@ -36,3 +36,12 @@ No FS-14 draft, work package, authorization, activation, or working model exists
 
 Final-project closure is a distinct project-level authority boundary and requires
 a separate administrator decision.
+
+## Final-project closure
+
+```text
+Transition: TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
+Migration: NONE
+Operation: PROPOSE
+```

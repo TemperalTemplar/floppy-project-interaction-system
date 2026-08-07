@@ -75,7 +75,7 @@
     "current_authorized_section": null,
     "human_authority_required": true,
     "implementation_authority": "NO_ACTIVE_WORK_AUTHORIZATION",
-    "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+    "last_applied_transition": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
     "last_authorized_control_operation": null,
     "prohibited_inference": true,
     "repository_writer": null,
@@ -6067,7 +6067,7 @@
     "onboarding_branch": "control/source-development-bce-onboarding",
     "version": "0.4.1-dev"
   },
-  "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+  "status": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
   "writer_authorization_reference": null,
   "fs_13_authority_handoff": {
     "operation": "STATE_PRESERVING_AUTHORITY_HANDOFF",
@@ -6147,5 +6147,21 @@
         ]
       }
     ]
+  },
+  "final_closure_proposal": {
+    "record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    "transition": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
+    "target_state": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+    "migration": "NONE",
+    "proposal_base_checkpoint": "5fe36b3f0c19f968649384c4a469ecdf361757f4",
+    "proposal_commit": "THIS_COMMIT",
+    "proposal_sha256": "c2389dc4f3b8e7f5560c1bdcba88d6744520eb7a62920ad9dee676d26b27b952",
+    "evidence_inventory": [
+      "296-pass complete repository suite accepted",
+      "FS-13 terminal closeout complete",
+      "PRE-TR021 two-commit validation correction accepted at 5fe36b3f0c19f968649384c4a469ecdf361757f4",
+      "source validators and tracked-JSON validation accepted"
+    ],
+    "status": "PROPOSED"
   }
 }

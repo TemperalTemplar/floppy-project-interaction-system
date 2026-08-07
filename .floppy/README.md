@@ -61,3 +61,12 @@ Final-project closure: OPEN / NOT AUTHORIZED
 No final-project closure, integration, merge, tag, release, migration, history
 rewrite, force push, or modification of `main` is authorized by FS-13 closeout.
 <!-- FS13_TERMINAL_CLOSEOUT_END -->
+
+## Final-project closure
+
+```text
+Transition: TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
+Migration: NONE
+Operation: PROPOSE
+```
