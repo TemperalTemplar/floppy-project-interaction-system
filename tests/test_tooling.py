@@ -40,8 +40,8 @@ class ToolingTests(unittest.TestCase):
             manifest = json.loads((project / ".floppy/manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["project_name"], "Sample Project")
             self.assertEqual(manifest["system"]["source_repository"], "owner/floppy-source")
-            self.assertEqual(manifest["system"]["version"], "0.4.2-dev")
-            self.assertIn("0.4.2-dev", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["system"]["version"], "0.4.3-dev")
+            self.assertIn("0.4.3-dev", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
             validation = self.run_cmd(str(VALIDATE), str(project), "--mode", "project")
             self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
 

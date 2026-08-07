@@ -62,6 +62,7 @@ BOOT_PACKAGE_FILE_PATHS = (
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
@@ -1866,10 +1867,244 @@ def _fs09_cli(arguments: list[str]) -> int:
         return _error(str(exc))
 
 
+
+# === FS-12 VALIDATED FINAL-PROJECT CLOSURE BEGIN ===
+_FS12_FINAL_RECORD = ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md"
+_FS12_FINAL_PATHS = (
+    ".floppy/README.md",
+    ".floppy/START-HERE.md",
+    _FS12_FINAL_RECORD,
+    ".floppy/floppies/Floppy-D-Project-Map.md",
+    ".floppy/floppies/Floppy-E-Current-Section.md",
+    ".floppy/lifecycle-state.json",
+    ".floppy/manifest.json",
+    ".floppy/orchestrator-registry.json",
+    ".floppy/roadmap/roadmap.json",
+    ".floppy/roadmap/roadmap.md",
+)
+_FS12_PROPOSAL_BEGIN = "<!-- FINAL_PROJECT_CLOSURE_PROPOSAL_BEGIN -->"
+_FS12_PROPOSAL_END = "<!-- FINAL_PROJECT_CLOSURE_PROPOSAL_END -->"
+_FS12_APPLICATION_BEGIN = "<!-- FINAL_PROJECT_CLOSURE_APPLICATION_BEGIN -->"
+_FS12_APPLICATION_END = "<!-- FINAL_PROJECT_CLOSURE_APPLICATION_END -->"
+_FS12_TEST_HOOK = None
+
+
+def _fs12_canonical(value: Any) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def _fs12_digest(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _fs12_git(root: Path, *args: str) -> str:
+    result = subprocess.run(["git", "-c", f"safe.directory={root.as_posix()}", "-C", str(root), *args], text=True, encoding="utf-8", errors="replace", stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode != 0:
+        raise CliError(result.stderr.strip() or result.stdout.strip() or "Git command failed")
+    return result.stdout.strip()
+
+
+def _fs12_final_route(state_id: str, action: str) -> tuple[str, str, str]:
+    routes = {
+        ("propose", "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"): ("TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION", "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", "NONE"),
+        ("propose", "LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE"): ("TR-014-PROPOSE-FINAL-CLOSURE", "LC-PROJECT-CLOSURE-PROPOSED", "APPLIED_VERIFICATION_COMPLETE"),
+        ("apply", "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION"): ("TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION", "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION", "NONE"),
+        ("apply", "LC-PROJECT-CLOSURE-PROPOSED"): ("TR-015-APPLY-FINAL-CLOSURE", "LC-PROJECT-FINALLY-CLOSED", "APPLIED_VERIFICATION_COMPLETE"),
+    }
+    try:
+        return routes[(action, state_id)]
+    except KeyError as exc:
+        raise CliError(f"final-closure {action} is not legal from {state_id}") from exc
+
+
+def _fs12_assert_final_ready(root: Path, manifest: dict[str, Any], registry: dict[str, Any], roadmap: dict[str, Any]) -> None:
+    if manifest.get("active_work_authorization") is not None or manifest.get("active_control_work_authorization") is not None:
+        raise CliError("final closure requires no active authorization")
+    if manifest.get("repository_writer") is not None or manifest.get("writer_authorization_reference") is not None:
+        raise CliError("final closure requires no repository writer")
+    assignments = registry.get("current_assignments")
+    if not isinstance(assignments, dict) or any(assignments.get(k) is not None for k in ("current_section_working_model", "repository_writer", "writer_authorization_reference")):
+        raise CliError("final closure requires a cleared canonical orchestrator registry")
+    sections = roadmap.get("sections")
+    if not isinstance(sections, list) or not sections:
+        raise CliError("final closure requires a non-empty canonical roadmap section inventory")
+    open_sections = [str(x.get("id")) for x in sections if isinstance(x, dict) and x.get("status") != "CLOSED"]
+    if open_sections:
+        raise CliError("final closure is blocked by open required sections: " + ", ".join(open_sections))
+
+
+def _fs12_proposal_bytes(record_bytes: bytes) -> tuple[bytes, str]:
+    text = record_bytes.decode("utf-8")
+    start = text.find(_FS12_PROPOSAL_BEGIN)
+    end = text.find(_FS12_PROPOSAL_END)
+    if start < 0 or end < 0 or end <= start:
+        raise CliError("canonical final-closure proposal block is missing")
+    end += len(_FS12_PROPOSAL_END)
+    block = text[start:end].encode("utf-8")
+    return block, _fs12_digest(block)
+
+
+def _fs12_prepare_final_closure(root: Path, *, action: str, expected_branch: str, expected_head: str, evidence: list[str], proposal_sha256: str | None, authorization_reference: str | None) -> dict[str, Any]:
+    root = root.expanduser().resolve()
+    if _fs12_git(root, "branch", "--show-current") != expected_branch:
+        raise CliError("final-closure branch mismatch")
+    if _fs12_git(root, "rev-parse", "HEAD") != expected_head:
+        raise CliError("final-closure HEAD mismatch")
+    if _fs12_git(root, "status", "--porcelain=v1", "--untracked-files=all"):
+        raise CliError("final-closure target repository must be clean")
+    if action not in {"propose", "apply"}:
+        raise CliError("final-closure action must be propose or apply")
+    if action == "propose" and authorization_reference is not None:
+        raise CliError("final-closure proposal does not accept application authority")
+    if action == "apply" and authorization_reference != "FINAL_CLOSURE_APPLICATION":
+        raise CliError("final-closure application requires FINAL_CLOSURE_APPLICATION authority")
+    lifecycle = _read_json(root / ".floppy/lifecycle-state.json", "canonical lifecycle state")
+    manifest = _read_json(root / ".floppy/manifest.json", "canonical manifest")
+    registry = _read_json(root / ".floppy/orchestrator-registry.json", "canonical orchestrator registry")
+    roadmap = _read_json(root / ".floppy/roadmap/roadmap.json", "canonical roadmap")
+    _fs12_assert_final_ready(root, manifest, registry, roadmap)
+    transition, target_state, migration = _fs12_final_route(str(lifecycle.get("state_id")), action)
+    dims = dict(lifecycle.get("dimensions") or {})
+    if dims.get("migration") != migration:
+        raise CliError("canonical migration disposition does not match final-closure route")
+    candidates: dict[str, bytes] = {}
+    record_path = root / _FS12_FINAL_RECORD
+    if action == "propose":
+        if record_path.exists():
+            raise CliError("final-closure proposal record already exists")
+        inventory = sorted(set(x.strip() for x in evidence if isinstance(x, str) and x.strip()))
+        if not inventory:
+            raise CliError("final-closure proposal requires final evidence inventory")
+        proposal = {"source_state_id": lifecycle["state_id"], "proposal_transition_id": transition, "target_proposal_state_id": target_state, "migration_disposition": migration, "final_evidence_inventory": inventory, "proposal_base_checkpoint": expected_head, "proposal_commit": "THIS_COMMIT", "canonical_proposal_sha256": "EXTERNAL_FIELD", "exact_proposed_path_set": list(_FS12_FINAL_PATHS)}
+        proposal_json = _fs12_canonical(proposal).decode("utf-8").rstrip("\n")
+        record = f"# Final Project Closure\n\n{_FS12_PROPOSAL_BEGIN}\n```json\n{proposal_json}\n```\n{_FS12_PROPOSAL_END}\n"
+        block_digest = _fs12_digest(record[record.index(_FS12_PROPOSAL_BEGIN):record.index(_FS12_PROPOSAL_END)+len(_FS12_PROPOSAL_END)].encode("utf-8"))
+        record += f"\nCanonical proposal SHA-256: `{block_digest}`\n"
+        candidates[_FS12_FINAL_RECORD] = record.encode("utf-8")
+        proposal_meta = {"record": _FS12_FINAL_RECORD, "transition": transition, "target_state": target_state, "migration": migration, "proposal_base_checkpoint": expected_head, "proposal_commit": "THIS_COMMIT", "proposal_sha256": block_digest, "evidence_inventory": inventory, "status": "PROPOSED"}
+        manifest["final_closure_proposal"] = proposal_meta
+        registry["final_closure_proposal"] = proposal_meta
+        roadmap["final_closure"] = proposal_meta
+    else:
+        if not record_path.is_file():
+            raise CliError("reviewed final-closure proposal record is missing")
+        record_bytes = record_path.read_bytes()
+        block, actual_digest = _fs12_proposal_bytes(record_bytes)
+        metadata = manifest.get("final_closure_proposal")
+        if not isinstance(metadata, dict) or metadata.get("proposal_sha256") != actual_digest:
+            raise CliError("canonical proposal metadata or SHA-256 is inconsistent")
+        if proposal_sha256 != actual_digest:
+            raise CliError("application proposal SHA-256 does not match reviewed proposal")
+        if metadata.get("target_state") != lifecycle.get("state_id") or metadata.get("migration") != migration:
+            raise CliError("cross-route or stale final-closure application is prohibited")
+        if _FS12_APPLICATION_BEGIN in record_bytes.decode("utf-8"):
+            raise CliError("final-closure application already exists")
+        proposal_commit = _fs12_git(root, "log", "-1", "--format=%H", "--", _FS12_FINAL_RECORD)
+        application = {"application_transition_id": transition, "source_proposal_state_id": lifecycle["state_id"], "target_final_state_id": target_state, "migration_disposition": migration, "proposal_commit": proposal_commit, "proposal_sha256": actual_digest, "reviewed_final_checkpoint": expected_head, "authorization_reference": authorization_reference}
+        appendix = f"\n{_FS12_APPLICATION_BEGIN}\n```json\n{_fs12_canonical(application).decode('utf-8').rstrip()}\n```\n{_FS12_APPLICATION_END}\n"
+        candidates[_FS12_FINAL_RECORD] = record_bytes + appendix.encode("utf-8")
+        manifest["final_closure_application"] = {**application, "record": _FS12_FINAL_RECORD, "status": "APPLIED"}
+        registry["final_closure_application"] = manifest["final_closure_application"]
+        roadmap["final_closure"] = manifest["final_closure_application"]
+    dims["acceptance"] = "ACCEPTED"
+    dims["final_closure"] = "PROPOSED" if action == "propose" else "FINALLY_CLOSED"
+    lifecycle.update({"state_id": target_state, "section": None, "authorization_id": None, "base_checkpoint": expected_head, "dimensions": dims, "active_implementation_sections": []})
+    lifecycle["evidence"] = list(lifecycle.get("evidence") or []) + [f"APPLIED_TRANSITION:{transition}", f"FINAL_CLOSURE_CHECKPOINT:{expected_head}"]
+    manifest["status"] = target_state
+    manifest.setdefault("authority", {}).update({"last_applied_transition": transition, "authority_state": "NO_ACTIVE_WORK_AUTHORIZATION", "active_work_authorization": None, "active_implementation_authorization": None, "active_migration_authorization": None, "active_implementation_section": None, "current_authorized_section": None, "authorization_id": None, "repository_writer": None, "writer_authorization_reference": None})
+    manifest["active_work_authorization"] = None; manifest["active_control_work_authorization"] = None; manifest["repository_writer"] = None; manifest["writer_authorization_reference"] = None
+    roadmap["lifecycle_state"] = target_state; roadmap["last_applied_transition"] = transition; roadmap["current_authorized_section"] = None; roadmap["active_implementation_section"] = None
+    registry.setdefault("current_assignments", {}).update({"current_section_working_model": None, "repository_writer": None, "writer_authorization_reference": None})
+    candidates[".floppy/lifecycle-state.json"] = _fs12_canonical(lifecycle)
+    candidates[".floppy/manifest.json"] = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    candidates[".floppy/orchestrator-registry.json"] = _fs12_canonical(registry)
+    candidates[".floppy/roadmap/roadmap.json"] = (json.dumps(roadmap, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    human = f"\n\n## Final-project closure\n\n```text\nTransition: {transition}\nState: {target_state}\nMigration: {migration}\nOperation: {action.upper()}\n```\n"
+    for relative in (".floppy/README.md", ".floppy/START-HERE.md", ".floppy/floppies/Floppy-D-Project-Map.md", ".floppy/floppies/Floppy-E-Current-Section.md", ".floppy/roadmap/roadmap.md"):
+        candidates[relative] = (root / relative).read_bytes().rstrip() + human.encode("utf-8")
+    if set(candidates) != set(_FS12_FINAL_PATHS):
+        raise CliError("internal final-closure candidate path inventory mismatch")
+    hashes = {path: _fs12_digest(data) for path, data in sorted(candidates.items())}
+    plan_core = {"action": action, "transition": transition, "source_state": lifecycle.get("state_id") if False else ("reviewed-proposal" if action == "apply" else proposal.get("source_state_id")), "target_state": target_state, "migration_disposition": migration, "expected_branch": expected_branch, "expected_head": expected_head, "exact_paths": list(_FS12_FINAL_PATHS), "candidate_sha256": hashes, "proposal_sha256": manifest.get("final_closure_proposal", {}).get("proposal_sha256"), "authorization_reference": authorization_reference}
+    return {"root": root, "candidates": candidates, "plan_core": plan_core, "plan_sha256": _fs12_digest(_fs12_canonical(plan_core))}
+
+
+def _fs12_apply_candidates(prepared: dict[str, Any]) -> None:
+    root: Path = prepared["root"]
+    candidates: dict[str, bytes] = prepared["candidates"]
+    originals: dict[str, bytes | None] = {p: ((root / p).read_bytes() if (root / p).exists() else None) for p in candidates}
+    staged: dict[str, Path] = {}
+    replaced: list[str] = []
+    try:
+        for relative, data in candidates.items():
+            target = root / relative; target.parent.mkdir(parents=True, exist_ok=True)
+            stage = target.with_name(target.name + ".fs12-stage")
+            if stage.exists(): stage.unlink()
+            stage.write_bytes(data)
+            if _fs12_digest(stage.read_bytes()) != _fs12_digest(data): raise CliError(f"staged final-closure digest mismatch: {relative}")
+            staged[relative] = stage
+        hook = globals().get("_FS12_TEST_HOOK")
+        if callable(hook): hook("before_replace", {"root": root, "candidates": candidates})
+        for relative in _FS12_FINAL_PATHS:
+            os.replace(staged[relative], root / relative); replaced.append(relative)
+            if callable(hook): hook("after_replace", {"path": relative, "count": len(replaced)})
+        for relative, data in candidates.items():
+            if (root / relative).read_bytes() != data: raise CliError(f"final-closure write verification failed: {relative}")
+    except Exception as exc:
+        restoration: list[str] = []
+        for relative in reversed(replaced):
+            target = root / relative; original = originals[relative]
+            try:
+                if original is None:
+                    if target.exists(): target.unlink()
+                else:
+                    restore = target.with_name(target.name + ".fs12-restore")
+                    if restore.exists(): restore.unlink()
+                    restore.write_bytes(original); os.replace(restore, target)
+            except Exception as restore_exc:
+                restoration.append(f"{relative}: {restore_exc}")
+        if restoration: raise CliError("HIGH-SEVERITY: final-closure rollback failed: " + "; ".join(restoration)) from exc
+        if isinstance(exc, CliError): raise
+        raise CliError(f"final-closure apply failed; original bytes restored: {exc}") from exc
+    finally:
+        for path in staged.values():
+            try:
+                if path.exists(): path.unlink()
+            except OSError: pass
+
+
+def _fs12_final_closure_operation(root: Path, *, mode: str, action: str, expected_branch: str, expected_head: str, evidence: list[str] | None = None, plan_sha256: str | None = None, proposal_sha256: str | None = None, authorization_reference: str | None = None) -> dict[str, Any]:
+    prepared = _fs12_prepare_final_closure(root, action=action, expected_branch=expected_branch, expected_head=expected_head, evidence=list(evidence or []), proposal_sha256=proposal_sha256, authorization_reference=authorization_reference)
+    result = dict(prepared["plan_core"]); result["plan_sha256"] = prepared["plan_sha256"]
+    if mode == "dry-run":
+        if plan_sha256 is not None: raise CliError("--plan-sha256 is not accepted during dry-run")
+        result.update({"operation_mode": "DRY_RUN", "applied": False}); return result
+    if mode != "apply": raise CliError("final-closure mode must be dry-run or apply")
+    if plan_sha256 != prepared["plan_sha256"]: raise CliError("apply requires the exact current dry-run plan SHA-256")
+    _fs12_apply_candidates(prepared); result.update({"operation_mode": "APPLY", "applied": True}); return result
+
+
+def _fs12_final_closure_cli(arguments: list[str]) -> int:
+    import argparse
+    parser = argparse.ArgumentParser(prog="floppyctl")
+    parser.add_argument("--root", required=True)
+    sub = parser.add_subparsers(dest="command", required=True)
+    final = sub.add_parser("final-closure")
+    final.add_argument("--mode", required=True, choices=("dry-run", "apply")); final.add_argument("--action", required=True, choices=("propose", "apply")); final.add_argument("--expected-branch", required=True); final.add_argument("--expected-head", required=True); final.add_argument("--evidence", action="append", default=[]); final.add_argument("--proposal-sha256"); final.add_argument("--authorization-reference"); final.add_argument("--plan-sha256")
+    try:
+        ns = parser.parse_args(arguments)
+        value = _fs12_final_closure_operation(Path(ns.root), mode=ns.mode, action=ns.action, expected_branch=ns.expected_branch, expected_head=ns.expected_head, evidence=ns.evidence, proposal_sha256=ns.proposal_sha256, authorization_reference=ns.authorization_reference, plan_sha256=ns.plan_sha256)
+        print(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))); return 0
+    except SystemExit as exc: return int(exc.code)
+    except CliError as exc: return _error(str(exc))
+# === FS-12 VALIDATED FINAL-PROJECT CLOSURE END ===
+
 def main(argv: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
     if "lifecycle-write" in arguments:
         return _fs09_cli(arguments)
+    if "final-closure" in arguments:
+        return _fs12_final_closure_cli(arguments)
     signature = _fs09_inspect.signature(_legacy_main)
     if len(signature.parameters) == 0:
         if argv is None:

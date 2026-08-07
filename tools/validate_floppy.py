@@ -2032,6 +2032,8 @@ def validate_authorization_git_integrity(
     """Validate authorization, writer, operation class, and exact Git scope."""
 
     environment = os.environ if environ is None else environ
+    if environment.get(GIT_CONTROL_OPERATION_ENV) in FS12_FINAL_OPERATIONS:
+        return _validate_fs12_final_git_integrity(root, manifest, environment)
     candidate_evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
     runtime_requested = any(
         environment.get(name)
@@ -3376,6 +3378,110 @@ def validate_self_hosted_control_mode(
         errors.append("CANONICAL_INTEGRATED_BOOTSTRAP_MARKER_REMAINS")
 
 
+
+
+# === FS-12 FINAL-PROJECT CLOSURE VALIDATION BEGIN ===
+FS12_FINAL_CLOSURE_SCHEMA = {
+    "path": "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+    "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.2.0",
+}
+FS12_FINAL_CLOSURE_PATHS = {
+    ".floppy/README.md", ".floppy/START-HERE.md",
+    ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    ".floppy/floppies/Floppy-D-Project-Map.md",
+    ".floppy/floppies/Floppy-E-Current-Section.md",
+    ".floppy/lifecycle-state.json", ".floppy/manifest.json",
+    ".floppy/orchestrator-registry.json",
+    ".floppy/roadmap/roadmap.json", ".floppy/roadmap/roadmap.md",
+}
+FS12_FINAL_OPERATIONS = {"FINAL_CLOSURE_PROPOSAL_CONTROL", "FINAL_CLOSURE_APPLICATION_CONTROL"}
+
+def _fs12_actual_transition_delta(source: dict[str, Any], target: dict[str, Any]) -> set[str]:
+    changed = {name for name in REQUIRED_DIMENSIONS if source["dimensions"][name] != target["dimensions"][name]}
+    if source.get("active_implementation_section") != target.get("active_implementation_section"):
+        changed.add("active_implementation_section")
+    return changed
+
+def validate_final_closure_extension(root: Path, manifest: dict[str, Any], errors: list[str]) -> None:
+    schema_path = root / FS12_FINAL_CLOSURE_SCHEMA["path"]
+    schema = validate_json(schema_path, errors)
+    if schema is None: return
+    if schema.get("$id") != FS12_FINAL_CLOSURE_SCHEMA["$id"] or schema.get("schema_version") != "1.2.0" or schema.get("normative_section") != "FS-12" or schema.get("status") != "normative" or schema.get("production_enforcement") is not False:
+        errors.append("FS-12 final-closure lifecycle schema metadata is invalid")
+    try:
+        from jsonschema import Draft202012Validator
+        Draft202012Validator.check_schema(schema)
+    except Exception as exc:
+        errors.append(f"FS-12 final-closure lifecycle schema is invalid: {exc}")
+    registry = manifest.get("final_project_closure")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register FS-12 final-project closure")
+    else:
+        record = registry.get("artifacts", {}).get("lifecycle_state_schema") if isinstance(registry.get("artifacts"), dict) else None
+        if not isinstance(record, dict) or record.get("path") != FS12_FINAL_CLOSURE_SCHEMA["path"] or record.get("$id") != FS12_FINAL_CLOSURE_SCHEMA["$id"] or record.get("sha256") != sha256(schema_path):
+            errors.append("system manifest FS-12 lifecycle schema registration is invalid")
+        if registry.get("exact_runtime_paths") != sorted(FS12_FINAL_CLOSURE_PATHS):
+            errors.append("system manifest FS-12 final-closure path set is invalid")
+    table = validate_json(root / "specs/lifecycle-transition-table.json", errors)
+    if table is not None:
+        states = {item.get("id"): item for item in table.get("states", []) if isinstance(item, dict)}
+        transitions = {item.get("id"): item for item in table.get("transitions", []) if isinstance(item, dict)}
+        expected = {
+            "TR-014-PROPOSE-FINAL-CLOSURE": ("LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE", "LC-PROJECT-CLOSURE-PROPOSED", {"acceptance", "final_closure"}),
+            "TR-015-APPLY-FINAL-CLOSURE": ("LC-PROJECT-CLOSURE-PROPOSED", "LC-PROJECT-FINALLY-CLOSED", {"final_closure"}),
+            "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION": ("LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE", "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", {"acceptance", "final_closure"}),
+            "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION": ("LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION", {"final_closure"}),
+        }
+        for identifier, (source_id, target_id, dimensions) in expected.items():
+            transition = transitions.get(identifier); source = states.get(source_id); target = states.get(target_id)
+            if not all(isinstance(x, dict) for x in (transition, source, target)):
+                errors.append(f"FS-12 final-closure route is missing: {identifier}"); continue
+            if transition.get("from_state_ids") != [source_id] or transition.get("to_state_id") != target_id or set(transition.get("changed_dimensions", [])) != dimensions or _fs12_actual_transition_delta(source, target) != dimensions:
+                errors.append(f"FS-12 final-closure route is inconsistent: {identifier}")
+        if states.get("LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", {}).get("dimensions", {}).get("migration") != "NONE" or states.get("LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION", {}).get("dimensions", {}).get("migration") != "NONE":
+            errors.append("FS-12 no-migration final states must preserve migration NONE")
+    record_path = root / ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md"
+    if record_path.exists():
+        text = record_path.read_text(encoding="utf-8")
+        begin = "<!-- FINAL_PROJECT_CLOSURE_PROPOSAL_BEGIN -->"; end = "<!-- FINAL_PROJECT_CLOSURE_PROPOSAL_END -->"
+        if begin not in text or end not in text:
+            errors.append("canonical final-project closure proposal block is missing")
+        else:
+            block = text[text.index(begin):text.index(end)+len(end)].encode("utf-8")
+            digest = hashlib.sha256(block).hexdigest()
+            proposal = manifest.get("final_closure_proposal")
+            if not isinstance(proposal, dict) or proposal.get("proposal_sha256") != digest:
+                errors.append("canonical final-project closure proposal digest mismatch")
+
+def _validate_fs12_final_git_integrity(root: Path, manifest: dict[str, Any], environment: dict[str, str]) -> list[str]:
+    errors: list[str] = []
+    operation = environment.get(GIT_CONTROL_OPERATION_ENV)
+    scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
+    revision = scope_commit or "HEAD"
+    if scope_commit:
+        result = _git_integrity_run(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", revision, "--")
+    else:
+        result = _git_integrity_run(root, "diff", "--name-only", "--")
+    actual = {_semantic_repository_path(x) for x in _git_integrity_lines(result) if _semantic_repository_path(x) is not None} if result.returncode == 0 else set()
+    if actual != FS12_FINAL_CLOSURE_PATHS:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_PATHS_INVALID: " + ", ".join(sorted(actual)))
+    if manifest.get("active_work_authorization") is not None or manifest.get("active_control_work_authorization") is not None or manifest.get("repository_writer") is not None:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_ACTIVE_AUTHORITY_FORBIDDEN")
+    supplied = environment.get(GIT_AUTHORIZATION_ENV)
+    writer = environment.get(GIT_WRITER_ENV)
+    if operation == "FINAL_CLOSURE_PROPOSAL_CONTROL" and supplied:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_PROPOSAL_AUTHORITY_FORBIDDEN")
+    if operation == "FINAL_CLOSURE_APPLICATION_CONTROL" and supplied != "FINAL_CLOSURE_APPLICATION":
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_APPLICATION_AUTHORITY_MISSING")
+    if writer:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_WRITER_FORBIDDEN")
+    expected_head = environment.get(GIT_EXPECTED_HEAD_ENV)
+    head = _git_integrity_run(root, "rev-parse", "HEAD")
+    if not expected_head or head.returncode != 0 or head.stdout.strip() != expected_head:
+        errors.append("GIT_INTEGRITY_FINAL_CLOSURE_HEAD_MISMATCH")
+    return errors
+# === FS-12 FINAL-PROJECT CLOSURE VALIDATION END ===
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -3417,6 +3523,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_normative_bce_schemas(root, manifest, errors)
     validate_verification_only_lifecycle_extension(root, manifest, errors)
     validate_project_seed_provisioning(root, manifest, errors)
+    validate_final_closure_extension(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():

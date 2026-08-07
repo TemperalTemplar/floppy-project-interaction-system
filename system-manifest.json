@@ -1,6 +1,6 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.4.2-dev",
+  "system_version": "0.4.3-dev",
   "status": "development-source",
   "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
@@ -72,11 +72,11 @@
     "artifacts": {
       "state_model": {
         "path": "specs/lifecycle-state-model.md",
-        "sha256": "0a65cca4e1eca1edaea7fe215a933eedf373aa56a66f328606238d6784a73180"
+        "sha256": "3234f6f81328e9812cb3d280a6762d0c8b002e4fde05d6a4acaff8a01d933436"
       },
       "transition_table": {
         "path": "specs/lifecycle-transition-table.json",
-        "sha256": "7ce6070ebfeedf271d22b3abfa897f7a7639cc9830728269519c12b295922ea8"
+        "sha256": "ad82d45f1f8ba54e7e1af309e4b87b5822eef884993fef57e33f7f376e81f8d7"
       },
       "draft_lifecycle_state_schema": {
         "path": "schemas/drafts/bce-lifecycle-state.schema.json",
@@ -96,8 +96,8 @@
     }
   },
   "migration": {
-    "from": "0.4.1-dev",
-    "impact": "Newly initialized projects receive deterministic canonical lifecycle-state, manifest, and orchestrator-registry records. Existing project repositories are not modified automatically."
+    "from": "0.4.2-dev",
+    "impact": "Adds validated final-project closure proposal/application support with distinct no-migration and migration-applied terminal routes."
   },
   "project_orchestrator_registration": {
     "name": "Project Orchestrator Registration and Handoff",
@@ -229,15 +229,79 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "a0541569205dcf64809d7f2e0832523f04a1801872a82724f55bfb84cec30d9d"
+        "sha256": "0f8af2e389f2d445ffab00e17dfb38cde6f6c588a06b0530f6ce79fa1a253e8e"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "42dd996ed481bd61a2ebc2e7fd0b03536bfa8b1338a910356830c8e72e2f2afd"
+        "sha256": "bc50b0f59c1aa718a5c9b00414f4b290fd5f49124ffc3d9d831258a5540cf554"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
         "sha256": "2b1aea7a7fea389fc342713e71363e9dda9e5f24765d7dc0a401b9c139d27295"
+      }
+    }
+  },
+  "final_project_closure": {
+    "name": "Validated Final-Project Closure",
+    "section": "FS-12",
+    "status": "reusable_product",
+    "source_version": "0.4.3-dev",
+    "schema_version": "1.2.0",
+    "proposal_application_separate": true,
+    "canonical_record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    "exact_runtime_paths": [
+      ".floppy/README.md",
+      ".floppy/START-HERE.md",
+      ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+      ".floppy/floppies/Floppy-D-Project-Map.md",
+      ".floppy/floppies/Floppy-E-Current-Section.md",
+      ".floppy/lifecycle-state.json",
+      ".floppy/manifest.json",
+      ".floppy/orchestrator-registry.json",
+      ".floppy/roadmap/roadmap.json",
+      ".floppy/roadmap/roadmap.md"
+    ],
+    "routes": {
+      "migration_applied": {
+        "proposal": "TR-014-PROPOSE-FINAL-CLOSURE",
+        "application": "TR-015-APPLY-FINAL-CLOSURE",
+        "proposal_state": "LC-PROJECT-CLOSURE-PROPOSED",
+        "final_state": "LC-PROJECT-FINALLY-CLOSED",
+        "migration": "APPLIED_VERIFICATION_COMPLETE"
+      },
+      "no_migration": {
+        "proposal": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
+        "application": "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION",
+        "proposal_state": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+        "final_state": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+        "migration": "NONE"
+      }
+    },
+    "artifacts": {
+      "lifecycle_state_schema": {
+        "path": "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-lifecycle-state:1.2.0",
+        "sha256": "94014bc4ba99100b0b7b4d38f76155ed1ec018726c715b83f26cfaf1e7c6c14a"
+      },
+      "transition_table": {
+        "path": "specs/lifecycle-transition-table.json",
+        "sha256": "ad82d45f1f8ba54e7e1af309e4b87b5822eef884993fef57e33f7f376e81f8d7"
+      },
+      "state_model": {
+        "path": "specs/lifecycle-state-model.md",
+        "sha256": "3234f6f81328e9812cb3d280a6762d0c8b002e4fde05d6a4acaff8a01d933436"
+      },
+      "validator": {
+        "path": "tools/validate_floppy.py",
+        "sha256": "bc50b0f59c1aa718a5c9b00414f4b290fd5f49124ffc3d9d831258a5540cf554"
+      },
+      "cli": {
+        "path": "tools/floppyctl.py",
+        "sha256": "0f8af2e389f2d445ffab00e17dfb38cde6f6c588a06b0530f6ce79fa1a253e8e"
+      },
+      "tests": {
+        "path": "tests/test_final_closure.py",
+        "sha256": "32207d4c4458fe9768860f6603009c839c25ef47b8fa69cf0dac025962f3e75a"
       }
     }
   }

@@ -285,3 +285,14 @@ It adds transitions TR-016 through TR-020. TR-020 returns the current operationa
 ### INV-010-CLOSED-SECTION-OUTCOME-PRESERVED
 
 Applying closeout changes the current operational lifecycle position but must not rewrite the closed section's accepted implementation disposition, verification result, acceptance result, or no-product-change result.
+
+## FS-12 final-project closure route extension
+
+Final-project closure is a separate project lifecycle operation performed only after every required section is closed. It is not FS-12 section closeout. FS-12 adds executable proposal/application support while preserving two truthful terminal routes:
+
+| Route | Proposal | Application | Migration disposition |
+|---|---|---|---|
+| Migration applied | `TR-014-PROPOSE-FINAL-CLOSURE` to `LC-PROJECT-CLOSURE-PROPOSED` | `TR-015-APPLY-FINAL-CLOSURE` to `LC-PROJECT-FINALLY-CLOSED` | `APPLIED_VERIFICATION_COMPLETE` |
+| No migration required | `TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION` to `LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION` | `TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION` to `LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION` | `NONE` |
+
+Proposal and application are separate commits. Application must prove the canonical proposal block and SHA-256 are unchanged. Cross-route application, active authority, partial writes, and mutation of historical section or migration evidence are prohibited.

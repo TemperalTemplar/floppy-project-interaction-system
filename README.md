@@ -1,6 +1,6 @@
 # Floppy Project Interaction System
 
-**Status:** development source, version `0.4.2-dev`
+**Status:** development source, version `0.4.3-dev`
 
 The Floppy Project Interaction System is a reusable Human-in-the-Loop project-control layer for AI-assisted development. This repository is the **source of the system**, not the active record for every project that uses it.
 
@@ -214,3 +214,7 @@ Add `--dry-run` to print the exact path plan without writing. The direct
 verification, but finished Windows distributions must expose this operation
 through the packaged application or executable rather than requiring ordinary
 users to run a loose Python file.
+
+## Validated final-project closure
+
+Version `0.4.3-dev` adds one bounded final-project closure capability to the existing validator and `floppyctl`. It preserves distinct no-migration and migration-applied routes, requires separate proposal and application operations, validates the canonical proposal digest before application, and rejects active authority, partial path sets, cross-route application, and history deletion. Final closure remains unavailable until every required section is closed.
