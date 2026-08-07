@@ -914,6 +914,459 @@ def command_verify_package(
     return 0
 
 
+
+# === FS-13 PORTABLE CONTEXT EXPORT BEGIN ===
+CONTEXT_EXPORT_FORMAT = "floppy-context-export"
+CONTEXT_EXPORT_FORMAT_VERSION = 1
+CONTEXT_EXPORT_REQUIRED_PATHS = {
+    ".floppy/manifest.json",
+    ".floppy/lifecycle-state.json",
+}
+
+def _context_export_filename(context_commit: str) -> str:
+    if not re.fullmatch(r"[0-9a-f]{40}", context_commit):
+        raise CliError("context commit must be a lowercase 40-character Git SHA")
+    return f"floppy-context-{context_commit}-export.zip"
+
+def _context_integrity_filename(context_commit: str) -> str:
+    return _context_export_filename(context_commit)[:-4] + ".integrity.json"
+
+def _git_nul_paths(root: Path, *arguments: str) -> list[str]:
+    result = subprocess.run(
+        ["git", "-c", f"safe.directory={root.as_posix()}", "-C", str(root), *arguments],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        diagnostic = result.stderr.decode("utf-8", "replace").strip()
+        raise CliError("Git read failed" + (f": {diagnostic}" if diagnostic else ""))
+    try:
+        values = result.stdout.decode("utf-8").split("\0")
+    except UnicodeDecodeError as exc:
+        raise CliError("Git path inventory is not UTF-8") from exc
+    return [value for value in values if value]
+
+def _context_identity(
+    manifest_bytes: bytes,
+    lifecycle_bytes: bytes,
+) -> tuple[dict[str, Any], dict[str, Any], str]:
+    try:
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        lifecycle = json.loads(lifecycle_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise CliError("exported canonical identity records are invalid") from exc
+    if not isinstance(manifest, dict) or not isinstance(lifecycle, dict):
+        raise CliError("exported canonical identity records must be JSON objects")
+    name = manifest.get("project_name")
+    if not isinstance(name, str) or not name:
+        raise CliError("project manifest project_name is missing")
+    control = manifest.get("control_state")
+    control = control if isinstance(control, dict) else {}
+    system = manifest.get("system")
+    system = system if isinstance(system, dict) else {}
+    project_repository = control.get("repository")
+    source_repository = system.get("source_repository")
+    source_version = system.get("version")
+    for label, value in (
+        ("project repository", project_repository),
+        ("source repository", source_repository),
+        ("source system version", source_version),
+    ):
+        if value is not None and not isinstance(value, str):
+            raise CliError(f"project manifest {label} is invalid")
+    state_id = lifecycle.get("state_id")
+    if not isinstance(state_id, str) or not state_id:
+        raise CliError("lifecycle state identifier is missing")
+    return (
+        {"name": name, "repository": project_repository},
+        {"repository": source_repository, "system_version": source_version},
+        state_id,
+    )
+
+def _assert_exportable_project(root: Path) -> dict[str, Any]:
+    manifest = _read_json(root / MANIFEST_PATH, "control manifest")
+    bce = manifest.get("bce_instance")
+    policy = manifest.get("clean_source_integration_policy")
+    if (
+        isinstance(bce, dict)
+        and bce.get("self_hosted_control_state") is True
+        and isinstance(policy, dict)
+        and policy.get("include_root_control_state_in_cross_project_bce_exports") is False
+    ):
+        raise CliError("source-development root control state is not exportable")
+    return manifest
+
+def _context_entries(
+    root: Path,
+) -> tuple[str, list[dict[str, Any]], dict[str, Any], dict[str, Any], str]:
+    _assert_exportable_project(root)
+    context_commit = _current_product_commit(root)
+    context_root = root / ".floppy"
+    if not context_root.is_dir():
+        raise CliError("project control-state directory is missing: .floppy")
+    scanned = scan_package_content(root, context_root)
+    actual_files = sorted(
+        entry["path"] for entry in scanned if entry["type"] == "file"
+    )
+    tracked = sorted(
+        _normalized_repository_path(path)
+        for path in _git_nul_paths(root, "ls-files", "-z", "--", ".floppy")
+    )
+    if not tracked:
+        raise CliError("no tracked .floppy context files were found")
+    if any(not path.startswith(".floppy/") for path in tracked):
+        raise CliError("tracked context inventory escaped .floppy")
+    if actual_files != tracked:
+        unexpected = sorted(set(actual_files) - set(tracked))
+        missing = sorted(set(tracked) - set(actual_files))
+        if unexpected:
+            raise CliError(f"untracked or ignored context content: {unexpected[0]}")
+        raise CliError(f"tracked context file is missing: {missing[0]}")
+    missing_required = sorted(CONTEXT_EXPORT_REQUIRED_PATHS - set(tracked))
+    if missing_required:
+        raise CliError(f"required context file is missing: {missing_required[0]}")
+    entries: list[dict[str, Any]] = []
+    data_by_path: dict[str, bytes] = {}
+    for path in tracked:
+        candidate = root.joinpath(*PurePosixPath(path).parts)
+        _assert_no_unsafe_component(root, candidate)
+        try:
+            metadata = candidate.lstat()
+        except OSError as exc:
+            raise CliError(f"context file is unreadable: {path}") from exc
+        if candidate.is_symlink() or _is_reparse_stat(metadata):
+            raise CliError(f"unsafe context link or reparse point: {path}")
+        if not stat.S_ISREG(metadata.st_mode):
+            raise CliError(f"context path is not a regular file: {path}")
+        data = candidate.read_bytes()
+        data_by_path[path] = data
+        entries.append(
+            {
+                "path": path,
+                "size": len(data),
+                "sha256": _sha256_bytes(data),
+                "_data": data,
+            }
+        )
+    project, source, lifecycle_state = _context_identity(
+        data_by_path[".floppy/manifest.json"],
+        data_by_path[".floppy/lifecycle-state.json"],
+    )
+    if _current_product_commit(root) != context_commit:
+        raise CliError("repository checkpoint changed while export was prepared")
+    return context_commit, entries, project, source, lifecycle_state
+
+def _context_manifest_bytes(
+    *,
+    context_commit: str,
+    archive_filename: str,
+    archive_bytes: bytes,
+    entries: list[dict[str, Any]],
+    project: dict[str, Any],
+    source: dict[str, Any],
+    lifecycle_state: str,
+) -> bytes:
+    payload = {
+        "archive": {
+            "filename": archive_filename,
+            "sha256": _sha256_bytes(archive_bytes),
+            "size": len(archive_bytes),
+        },
+        "context_commit": context_commit,
+        "entries": [
+            {
+                "path": entry["path"],
+                "sha256": entry["sha256"],
+                "size": entry["size"],
+            }
+            for entry in entries
+        ],
+        "format": CONTEXT_EXPORT_FORMAT,
+        "format_version": CONTEXT_EXPORT_FORMAT_VERSION,
+        "lifecycle_state": lifecycle_state,
+        "project": project,
+        "source": source,
+    }
+    return (
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+
+def build_context_export(root: Path, destination: Path) -> dict[str, Any]:
+    destination = destination.expanduser().resolve()
+    if not destination.is_dir():
+        raise CliError(f"artifact destination is not a directory: {destination}")
+    (
+        context_commit,
+        entries,
+        project,
+        source,
+        lifecycle_state,
+    ) = _context_entries(root)
+    archive_filename = _context_export_filename(context_commit)
+    manifest_filename = _context_integrity_filename(context_commit)
+    archive_bytes = _deterministic_zip_bytes(entries)
+    manifest_bytes = _context_manifest_bytes(
+        context_commit=context_commit,
+        archive_filename=archive_filename,
+        archive_bytes=archive_bytes,
+        entries=entries,
+        project=project,
+        source=source,
+        lifecycle_state=lifecycle_state,
+    )
+    archive_path = destination / archive_filename
+    manifest_path = destination / manifest_filename
+    archive_preexisting = archive_path.exists()
+    archive_state = _write_or_reuse_exact(archive_path, archive_bytes)
+    try:
+        manifest_state = _write_or_reuse_exact(manifest_path, manifest_bytes)
+    except Exception:
+        if not archive_preexisting:
+            try:
+                archive_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+        raise
+    return {
+        "archive": {
+            "filename": archive_filename,
+            "path": str(archive_path),
+            "sha256": _sha256_bytes(archive_bytes),
+            "size": len(archive_bytes),
+            "state": archive_state,
+        },
+        "context_commit": context_commit,
+        "entries": len(entries),
+        "lifecycle_state": lifecycle_state,
+        "manifest": {
+            "filename": manifest_filename,
+            "path": str(manifest_path),
+            "sha256": _sha256_bytes(manifest_bytes),
+            "size": len(manifest_bytes),
+            "state": manifest_state,
+        },
+        "project": project,
+        "source": source,
+    }
+
+def _read_context_integrity(path: Path) -> dict[str, Any]:
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise CliError(f"integrity manifest is unreadable: {path}") from exc
+    try:
+        value = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise CliError("integrity manifest contains invalid UTF-8 JSON") from exc
+    if not isinstance(value, dict):
+        raise CliError("integrity manifest must contain a JSON object")
+    canonical = (
+        json.dumps(
+            value,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+    if raw != canonical:
+        raise CliError("integrity manifest serialization is not deterministic")
+    required = {
+        "archive",
+        "context_commit",
+        "entries",
+        "format",
+        "format_version",
+        "lifecycle_state",
+        "project",
+        "source",
+    }
+    if set(value) != required:
+        raise CliError("integrity manifest fields are invalid")
+    if value.get("format") != CONTEXT_EXPORT_FORMAT:
+        raise CliError("integrity manifest format is invalid")
+    if value.get("format_version") != CONTEXT_EXPORT_FORMAT_VERSION:
+        raise CliError("integrity manifest version is invalid")
+    return value
+
+def verify_context_export(
+    archive_path: Path,
+    manifest_path: Path,
+) -> dict[str, Any]:
+    archive_path = archive_path.expanduser().resolve()
+    manifest_path = manifest_path.expanduser().resolve()
+    if archive_path.parent != manifest_path.parent:
+        raise CliError("archive and integrity manifest are not adjacent")
+    if not archive_path.is_file():
+        raise CliError(f"archive is missing: {archive_path}")
+    if not manifest_path.is_file():
+        raise CliError(f"integrity manifest is missing: {manifest_path}")
+    manifest = _read_context_integrity(manifest_path)
+    commit = manifest.get("context_commit")
+    if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise CliError("integrity manifest context commit is invalid")
+    if archive_path.name != _context_export_filename(commit):
+        raise CliError("archive filename does not match context identity")
+    if manifest_path.name != _context_integrity_filename(commit):
+        raise CliError("integrity manifest filename does not match context identity")
+    archive_record = manifest.get("archive")
+    if (
+        not isinstance(archive_record, dict)
+        or set(archive_record) != {"filename", "sha256", "size"}
+    ):
+        raise CliError("integrity archive record is invalid")
+    if archive_record.get("filename") != archive_path.name:
+        raise CliError("integrity archive filename mismatch")
+    try:
+        archive_bytes = archive_path.read_bytes()
+    except OSError as exc:
+        raise CliError(f"archive is unreadable: {archive_path}") from exc
+    if archive_record.get("size") != len(archive_bytes):
+        raise CliError("archive size mismatch")
+    if archive_record.get("sha256") != _sha256_bytes(archive_bytes):
+        raise CliError("archive SHA-256 mismatch")
+    items = manifest.get("entries")
+    if not isinstance(items, list) or not items:
+        raise CliError("integrity entry inventory is invalid")
+    expected: dict[str, dict[str, Any]] = {}
+    folded: dict[str, str] = {}
+    last: str | None = None
+    for item in items:
+        if not isinstance(item, dict) or set(item) != {"path", "sha256", "size"}:
+            raise CliError("integrity entry is invalid")
+        path = _validated_archive_path(item.get("path"))
+        if not path.startswith(".floppy/"):
+            raise CliError(f"integrity entry escapes .floppy: {path}")
+        if last is not None and path <= last:
+            raise CliError("integrity entry ordering is invalid")
+        last = path
+        if path in expected:
+            raise CliError(f"duplicate integrity entry: {path}")
+        collision = folded.get(path.casefold())
+        if collision is not None and collision != path:
+            raise CliError(
+                f"integrity entry case collision: {collision}, {path}"
+            )
+        folded[path.casefold()] = path
+        size = item.get("size")
+        digest = item.get("sha256")
+        if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+            raise CliError(f"integrity entry size is invalid: {path}")
+        if not isinstance(digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", digest
+        ):
+            raise CliError(f"integrity entry SHA-256 is invalid: {path}")
+        expected[path] = item
+    missing_required = sorted(CONTEXT_EXPORT_REQUIRED_PATHS - set(expected))
+    if missing_required:
+        raise CliError(
+            f"required context member is missing: {missing_required[0]}"
+        )
+    data_by_path: dict[str, bytes] = {}
+    with zipfile.ZipFile(io.BytesIO(archive_bytes), "r") as archive:
+        if archive.comment != b"":
+            raise CliError("archive comment is not deterministic")
+        actual: dict[str, zipfile.ZipInfo] = {}
+        folded_actual: dict[str, str] = {}
+        for info in archive.infolist():
+            path = _validated_archive_path(info.filename)
+            if path.endswith("/") or info.is_dir():
+                raise CliError(f"archive contains a directory entry: {path}")
+            if not path.startswith(".floppy/"):
+                raise CliError(f"archive entry escapes .floppy: {path}")
+            if path in actual:
+                raise CliError(f"duplicate archive entry: {path}")
+            collision = folded_actual.get(path.casefold())
+            if collision is not None and collision != path:
+                raise CliError(
+                    f"archive entry case collision: {collision}, {path}"
+                )
+            folded_actual[path.casefold()] = path
+            actual[path] = info
+            if info.date_time != BOOT_PACKAGE_FIXED_TIMESTAMP:
+                raise CliError(f"archive timestamp mismatch: {path}")
+            if info.compress_type != zipfile.ZIP_STORED:
+                raise CliError(f"archive compression mismatch: {path}")
+            if info.create_system != 3:
+                raise CliError(f"archive platform metadata mismatch: {path}")
+            if info.external_attr != BOOT_PACKAGE_EXTERNAL_ATTR:
+                raise CliError(f"archive permission metadata mismatch: {path}")
+            if info.comment != b"" or info.extra != b"":
+                raise CliError(f"archive variable metadata present: {path}")
+            if info.flag_bits != 0:
+                raise CliError(f"archive flag metadata mismatch: {path}")
+        missing = sorted(set(expected) - set(actual))
+        extra = sorted(set(actual) - set(expected))
+        if missing:
+            raise CliError(f"archive member is missing: {missing[0]}")
+        if extra:
+            raise CliError(f"archive member is unexpected: {extra[0]}")
+        if list(actual) != list(expected):
+            raise CliError("archive entry ordering is invalid")
+        for path, record in expected.items():
+            info = actual[path]
+            data = archive.read(info)
+            if info.file_size != record["size"] or len(data) != record["size"]:
+                raise CliError(f"archive member size mismatch: {path}")
+            if _sha256_bytes(data) != record["sha256"]:
+                raise CliError(f"archive member SHA-256 mismatch: {path}")
+            data_by_path[path] = data
+    project, source, lifecycle_state = _context_identity(
+        data_by_path[".floppy/manifest.json"],
+        data_by_path[".floppy/lifecycle-state.json"],
+    )
+    if manifest.get("project") != project:
+        raise CliError("integrity project identity mismatch")
+    if manifest.get("source") != source:
+        raise CliError("integrity source identity mismatch")
+    if manifest.get("lifecycle_state") != lifecycle_state:
+        raise CliError("integrity lifecycle-state mismatch")
+    return {
+        "archive": str(archive_path),
+        "context_commit": commit,
+        "entries": len(expected),
+        "lifecycle_state": lifecycle_state,
+        "manifest": str(manifest_path),
+        "project": project,
+        "source": source,
+        "verified": True,
+    }
+
+def command_export(root: Path, destination: str) -> int:
+    payload = build_context_export(root, Path(destination))
+    print(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    )
+    return 0
+
+def command_verify_export(
+    archive_path: str,
+    manifest_path: str,
+) -> int:
+    payload = verify_context_export(Path(archive_path), Path(manifest_path))
+    print(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    )
+    return 0
+# === FS-13 PORTABLE CONTEXT EXPORT END ===
+
 def _registered_records(root: Path, manifest: dict[str, Any]) -> dict[str, Path]:
     records = manifest.get("records")
     if not isinstance(records, dict):
@@ -1142,7 +1595,7 @@ def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     if not remaining:
         raise CliError("command is required: status, validate, inspect, or initialize")
     command = remaining[0]
-    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "initialize"}:
+    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "export", "verify-export", "initialize"}:
         raise CliError(f"unknown command: {command}")
     return _root_path(root_value), command, remaining[1:]
 
@@ -1179,6 +1632,16 @@ def _legacy_main(argv: list[str] | None = None) -> int:
                     "verify-package requires one ZIP and one checksum manifest"
                 )
             return command_verify_package(args[0], args[1])
+
+        if command == "export":
+            if len(args) != 1:
+                raise CliError("export requires exactly one destination directory")
+            return command_export(root, args[0])
+
+        if command == "verify-export":
+            if len(args) != 2:
+                raise CliError("verify-export requires one ZIP and one integrity manifest")
+            return command_verify_export(args[0], args[1])
 
         if command == "initialize":
             return command_initialize(args)

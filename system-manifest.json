@@ -229,7 +229,7 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "0f8af2e389f2d445ffab00e17dfb38cde6f6c588a06b0530f6ce79fa1a253e8e"
+        "sha256": "8af21e169b5514e5e3ab2c23183795659d29500cc7b98db9923fec2fec0c4a55"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
