@@ -84,7 +84,7 @@
     "current_authorized_section": "FS-12",
     "human_authority_required": true,
     "implementation_authority": "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION",
-    "last_applied_transition": "TR-004-START-SECTION-IMPLEMENTATION",
+    "last_applied_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
     "last_authorized_control_operation": "FS_12_IMPLEMENTATION",
     "prohibited_inference": true,
     "repository_writer": "FS_12_WORKING_MODEL",
@@ -222,11 +222,11 @@
     "active_implementation_section": "FS-12",
     "active_migration_authorization": null,
     "active_work_authorization": "FS_12_IMPLEMENTATION",
-    "additional_product_writes_may_begin": true,
+    "additional_product_writes_may_begin": false,
     "authorization_id": "FS_12_IMPLEMENTATION",
     "current_authorized_section": "FS-12",
-    "current_operation": "ACTIVATION_CONTROL_COMMIT",
-    "decision_required": "No additional administrator authorization decision is required before C3 or C4.",
+    "current_operation": "COMPLETION_VERIFICATION_CONTROL",
+    "decision_required": "ACCEPT FS-12 VERIFIED RESULT or explicitly reject the verified result.",
     "fs_04_active": false,
     "fs_04_administrator_acceptance": "ACCEPTED",
     "fs_04_closeout": "APPLIED",
@@ -315,30 +315,30 @@
     "fs_11_product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b",
     "fs_11_status": "CLOSED",
     "fs_11_verification": "COMPLETE",
-    "fs_12": "ACTIVE / AUTHORIZED / IMPLEMENTATION IN PROGRESS",
+    "fs_12": "VERIFICATION COMPLETE / ACCEPTANCE PENDING",
     "fs_12_accepted": true,
     "fs_12_active": true,
     "fs_12_authorized": true,
     "fs_12_draft_created": true,
     "fs_12_draft_path": ".floppy/templates/Floppy-E-FS-12.draft.md",
-    "fs_12_draft_status": "IMPLEMENTATION_IN_PROGRESS",
-    "fs_12_may_begin": true,
-    "implementation_may_begin": true,
+    "fs_12_draft_status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
+    "fs_12_may_begin": false,
+    "implementation_may_begin": false,
     "integration_may_begin": false,
     "merge_may_begin": false,
     "migration_may_begin": false,
-    "next_action": "Execute C3 exact 12-path reusable-product implementation, then C4 completion and verification.",
-    "next_commit_subject": "feat(fs-12): add validated final-project closure",
-    "next_step": "FS-12 implementation is active under FS_12_IMPLEMENTATION.",
+    "next_action": "Await explicit administrator acceptance or rejection of the verified FS-12 result.",
+    "next_commit_subject": "chore(bce): record FS-12 administrator acceptance",
+    "next_step": "No additional implementation is authorized before administrator acceptance.",
     "post_acceptance_bounded_correction_commit": "e0486b3a25721812e5a69b52f655e3bae1402e34",
     "production_changes_may_begin": false,
     "repository_writer": "FS_12_WORKING_MODEL",
     "root_control_reconciliation": "APPLIED",
     "root_control_reconciliation_checkpoint": "THIS_COMMIT",
-    "state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+    "state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
     "tag_or_release_may_begin": false,
     "writer_authorization_reference": "FS_12_IMPLEMENTATION",
-    "fs_12_status": "IMPLEMENTATION_IN_PROGRESS",
+    "fs_12_status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
     "fs_13": "INACTIVE / NOT AUTHORIZED"
   },
   "control_work": {
@@ -3656,15 +3656,15 @@
     "repository_writer": "FS_12_WORKING_MODEL",
     "section": "FS-12",
     "sequence": 12,
-    "status": "IMPLEMENTATION_IN_PROGRESS",
+    "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
     "tests_deferred_until_section_draft": false,
     "title": "Final-Project Closure",
     "writer_authorization_reference": "FS_12_IMPLEMENTATION",
     "work_package_accepted": true,
     "work_package_status": "ACCEPTED AS PLANNING BASELINE",
     "work_package_draft_status": "ACCEPTED_PLANNING_BASELINE",
-    "implementation": "IN_PROGRESS",
-    "verification": "NOT_STARTED",
+    "implementation": "COMPLETE",
+    "verification": "COMPLETE",
     "administrator_acceptance": "PENDING",
     "closeout": "NOT_PROPOSED",
     "exact_reusable_product_path_count": 12,
@@ -3738,7 +3738,7 @@
       "Commit 6: TR-008-PROPOSE-SECTION-CLOSEOUT",
       "Commit 7: TR-009-APPLY-SECTION-CLOSEOUT"
     ],
-    "mandatory_next_operation": "Execute C3 exact 12-path reusable-product implementation under FS_12_IMPLEMENTATION, then C4 completion and verification.",
+    "mandatory_next_operation": "Await explicit administrator acceptance or rejection of the verified FS-12 result.",
     "worktree": "D:\\A\\Floppy-CTRL-02",
     "work_package_amended": true,
     "work_package_amendment": {
@@ -3750,7 +3750,7 @@
       "all_other_accepted_terms_retained": true,
       "amendment_checkpoint": "THIS_COMMIT"
     },
-    "implementation_state": "IN_PROGRESS",
+    "implementation_state": "COMPLETE",
     "activation_administrator_decision": "AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION",
     "activation_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
     "activation_checkpoint": "THIS_COMMIT",
@@ -3768,10 +3768,74 @@
     ],
     "activation_intermediate_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
     "activation_final_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
-    "implementation_output_applied": false
+    "implementation_output_applied": true,
+    "implementation_complete": true,
+    "verification_complete": true,
+    "implementation_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+    "implementation_completion_transition": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+    "verification_completion_transition": "TR-006-RECORD-VERIFICATION-COMPLETE",
+    "implementation_completion_checkpoint": "THIS_COMMIT",
+    "verification_completion_checkpoint": "THIS_COMMIT",
+    "completion_transition_sequence": [
+      {
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
+        "inputs": [
+          "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+          "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
+          "Exact amended reusable-product scope: 12 paths",
+          "Source-version target: 0.4.3-dev",
+          "Lifecycle-state schema target: 1.2.0"
+        ],
+        "outputs": [
+          "FS-12 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
+        ],
+        "validation_evidence": [
+          "C3 focused final-closure tests: 14 passed",
+          "C3 complete repository suite: 260 passed across 14 modules",
+          "C3 source validator: PASSED",
+          "C3 floppyctl source validator: PASSED",
+          "C3 tracked JSON parse: 63 passed",
+          "C3 tested tree equals committed tree: YES",
+          "C3 exact reusable-product paths: 12"
+        ]
+      },
+      {
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "inputs": [
+          "Required FS-12 final-closure behavior and rollback tests",
+          "Exact 12-path product-scope comparison",
+          "Immutable tested C3 tree 2a2b86294d47263da9b21e048e44856d7be63c2b"
+        ],
+        "outputs": [
+          "FS-12 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "validation_evidence": [
+          "Distinct no-migration and migration-applied routes validated",
+          "No-migration route preserves migration NONE",
+          "Migration-applied route preserves APPLIED_VERIFICATION_COMPLETE",
+          "Proposal and application remain separate controlled operations",
+          "Tampered proposal and cross-route application are rejected",
+          "Injected partial write is rolled back across all exact runtime records",
+          "Canonical lifecycle-state, manifest, roadmap, and registry agree",
+          "Authorization and writer remain active until separate administrator acceptance"
+        ]
+      }
+    ]
   },
   "git_integrity_operation": {
-    "operation": "ACTIVATION_CONTROL_COMMIT",
+    "operation": "COMPLETION_VERIFICATION_CONTROL",
     "section": "FS-12",
     "implementation_scope_exercised": false,
     "exact_control_paths": [
@@ -3785,14 +3849,58 @@
     ],
     "transition_sequence": [
       {
-        "id": "TR-003-AUTHORIZE-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
-        "post_state": "LC-SECTION-AUTHORIZED-NOT-STARTED"
+        "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
+        "inputs": [
+          "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+          "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
+          "Exact amended reusable-product scope: 12 paths",
+          "Source-version target: 0.4.3-dev",
+          "Lifecycle-state schema target: 1.2.0"
+        ],
+        "outputs": [
+          "FS-12 implementation completion record",
+          "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
+        ],
+        "validation_evidence": [
+          "C3 focused final-closure tests: 14 passed",
+          "C3 complete repository suite: 260 passed across 14 modules",
+          "C3 source validator: PASSED",
+          "C3 floppyctl source validator: PASSED",
+          "C3 tracked JSON parse: 63 passed",
+          "C3 tested tree equals committed tree: YES",
+          "C3 exact reusable-product paths: 12"
+        ]
       },
       {
-        "id": "TR-004-START-SECTION-IMPLEMENTATION",
-        "pre_state": "LC-SECTION-AUTHORIZED-NOT-STARTED",
-        "post_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS"
+        "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
+        "inputs": [
+          "Required FS-12 final-closure behavior and rollback tests",
+          "Exact 12-path product-scope comparison",
+          "Immutable tested C3 tree 2a2b86294d47263da9b21e048e44856d7be63c2b"
+        ],
+        "outputs": [
+          "FS-12 verification completion record",
+          "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+          "Mandatory administrator acceptance or rejection checkpoint"
+        ],
+        "validation_evidence": [
+          "Distinct no-migration and migration-applied routes validated",
+          "No-migration route preserves migration NONE",
+          "Migration-applied route preserves APPLIED_VERIFICATION_COMPLETE",
+          "Proposal and application remain separate controlled operations",
+          "Tampered proposal and cross-route application are rejected",
+          "Injected partial write is rolled back across all exact runtime records",
+          "Canonical lifecycle-state, manifest, roadmap, and registry agree",
+          "Authorization and writer remain active until separate administrator acceptance"
+        ]
       }
     ]
   },
@@ -5440,71 +5548,75 @@
     }
   ],
   "implementation_verification_completion": {
-    "acceptance_checkpoint": "THIS_COMMIT",
-    "acceptance_transition": "TR-007-ACCEPT-SECTION",
-    "additional_implementation": "PROHIBITED",
-    "administrator_acceptance": "ACCEPTED",
-    "administrator_decision": "ACCEPT FS-11 VERIFIED RESULT",
-    "authority_handoff_commit": "d0df2cf85011e068bc13d74ae9db9aedc5a376ae",
-    "base_checkpoint": "1f3d8b382ca29531c60213b9b4dd12ce66e5b836",
-    "checkpoint": "THIS_COMMIT",
+    "section": "FS-12",
     "operation": "COMPLETION_VERIFICATION_CONTROL",
-    "reusable_product_commit": "b4e9ffb520545a312d596aaf3aca53be7c2fd67b",
-    "root_control_reconciliation_commit": "1f3d8b382ca29531c60213b9b4dd12ce66e5b836",
-    "section": "FS-11",
-    "status": "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+    "authorization_id": "FS_12_IMPLEMENTATION",
+    "repository_writer": "FS_12_WORKING_MODEL",
+    "authorization_base_checkpoint": "ee917295a0c14134b6375d520a9968a646f8d032",
+    "activation_tree": "446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+    "reusable_product_tree": "2a2b86294d47263da9b21e048e44856d7be63c2b",
+    "exact_reusable_product_path_count": 12,
     "transition_sequence": [
       {
-        "actor": "FS_11_INT_01_WORKING_MODEL",
-        "decision": "Record FS-11 implementation complete after the reusable-product and exact root-control outputs were committed and validated.",
         "id": "TR-005-RECORD-IMPLEMENTATION-COMPLETE",
+        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 implementation complete after the exact amended 12-path reusable-product output was committed and validated.",
         "inputs": [
-          "Reusable-product commit b4e9ffb520545a312d596aaf3aca53be7c2fd67b",
-          "Authority-handoff commit d0df2cf85011e068bc13d74ae9db9aedc5a376ae",
-          "Root-control reconciliation commit 1f3d8b382ca29531c60213b9b4dd12ce66e5b836",
-          "Exact reusable-product scope report: 14 paths",
-          "Exact root-control reconciliation scope report: 10 paths"
+          "Exact C2 activation tree 446a3eab19ee4a1b809e2acf83e7dbc21fecc826",
+          "Exact C3 reusable-product tree 2a2b86294d47263da9b21e048e44856d7be63c2b",
+          "Exact amended reusable-product scope: 12 paths",
+          "Source-version target: 0.4.3-dev",
+          "Lifecycle-state schema target: 1.2.0"
         ],
         "outputs": [
-          "FS-11 implementation completion record",
+          "FS-12 implementation completion record",
           "Intermediate lifecycle state LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING"
         ],
-        "post_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
-        "pre_state": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
         "validation_evidence": [
-          "Commit 3 complete repository suite: 210 passed",
-          "Remaining-control correction suite: 235 passed",
-          "Commit 4 complete repository suite: 235 passed",
-          "Commit 5 repository tests: 235 passed across 13 modules",
-          "Commit 5 source validators before and after commit: PASSED",
-          "Commit 5 tested tree equals committed tree: YES",
-          "Commit 5 final worktree: CLEAN"
+          "C3 focused final-closure tests: 14 passed",
+          "C3 complete repository suite: 260 passed across 14 modules",
+          "C3 source validator: PASSED",
+          "C3 floppyctl source validator: PASSED",
+          "C3 tracked JSON parse: 63 passed",
+          "C3 tested tree equals committed tree: YES",
+          "C3 exact reusable-product paths: 12"
         ]
       },
       {
-        "actor": "FS_11_INT_01_WORKING_MODEL",
-        "decision": "Record FS-11 verification complete and place the verified result in administrator-acceptance pending state.",
         "id": "TR-006-RECORD-VERIFICATION-COMPLETE",
+        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
+        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
+        "actor": "FS_12_WORKING_MODEL",
+        "decision": "Record FS-12 verification complete and place the verified result at the mandatory administrator-acceptance checkpoint.",
         "inputs": [
-          "Required test outputs for PROV-01 and INT-01",
-          "Exact scope comparisons for the 14-path product commit, 7-path authority handoff, and 10-path reconciliation",
-          "Immutable implementation checkpoint 1f3d8b382ca29531c60213b9b4dd12ce66e5b836"
+          "Required FS-12 final-closure behavior and rollback tests",
+          "Exact 12-path product-scope comparison",
+          "Immutable tested C3 tree 2a2b86294d47263da9b21e048e44856d7be63c2b"
         ],
         "outputs": [
-          "FS-11 verification completion record",
+          "FS-12 verification completion record",
           "Final lifecycle state LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
           "Mandatory administrator acceptance or rejection checkpoint"
         ],
-        "post_state": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
-        "pre_state": "LC-IMPLEMENTATION-COMPLETE-VERIFICATION-PENDING",
         "validation_evidence": [
-          "All accepted FS-11 product and control outputs are committed",
-          "Canonical lifecycle-state and orchestrator-registry agree with the manifest",
-          "Authorization and writer remain bound to INT-01",
-          "All required source, CLI, JSON, Git-scope, diff, and clean-worktree checks passed"
+          "Distinct no-migration and migration-applied routes validated",
+          "No-migration route preserves migration NONE",
+          "Migration-applied route preserves APPLIED_VERIFICATION_COMPLETE",
+          "Proposal and application remain separate controlled operations",
+          "Tampered proposal and cross-route application are rejected",
+          "Injected partial write is rolled back across all exact runtime records",
+          "Canonical lifecycle-state, manifest, roadmap, and registry agree",
+          "Authorization and writer remain active until separate administrator acceptance"
         ]
       }
-    ]
+    ],
+    "status": "VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
+    "checkpoint": "THIS_COMMIT",
+    "administrator_acceptance": "PENDING",
+    "additional_implementation": "PROHIBITED",
+    "required_next_decision": "ACCEPT FS-12 VERIFIED RESULT"
   },
   "last_applied_transition": "TR-002-ACCEPT-WORK-PACKAGE",
   "lifecycle_state": "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
@@ -5756,6 +5868,6 @@
     "onboarding_branch": "control/source-development-bce-onboarding",
     "version": "0.4.1-dev"
   },
-  "status": "LC-SECTION-IMPLEMENTATION-IN-PROGRESS",
+  "status": "LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING",
   "writer_authorization_reference": "FS_12_IMPLEMENTATION"
 }

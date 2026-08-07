@@ -1,20 +1,22 @@
 # Floppy E — FS-12 Current Section
 
-Lifecycle state: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
+Lifecycle state: `LC-VERIFICATION-COMPLETE-ACCEPTANCE-PENDING`
 
 Applied transitions, in order:
 
 1. `TR-002-ACCEPT-WORK-PACKAGE`
 2. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
 3. `TR-004-START-SECTION-IMPLEMENTATION`
+4. `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
+5. `TR-006-RECORD-VERIFICATION-COMPLETE`
 
-Administrator decision: `AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION`
+Administrator decision controlling C2 through C4: `AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION`
 
 ```text
-FS-12 acceptance: ACCEPTED AS AMENDED PLANNING BASELINE
+FS-12 acceptance baseline: ACCEPTED AS AMENDED PLANNING BASELINE
 FS-12 activation: ACTIVE
-FS-12 implementation: IN_PROGRESS
-FS-12 verification: NOT_STARTED
+FS-12 implementation: COMPLETE
+FS-12 verification: COMPLETE
 FS-12 administrator result acceptance: PENDING
 FS-12 closeout: NOT_PROPOSED
 Authorization: FS_12_IMPLEMENTATION
@@ -22,12 +24,19 @@ Authorization kind: section_implementation
 Repository writer: FS_12_WORKING_MODEL
 Writer authorization reference: FS_12_IMPLEMENTATION
 Active implementation section: FS-12
-Exact authorized reusable-product paths: 12
-Added path: tests/test_tooling.py
-Source-version target: 0.4.3-dev
-Implementation output applied: NO
+Exact reusable-product paths: 12
+Added scope-amendment path: tests/test_tooling.py
+Source version: 0.4.3-dev
+Lifecycle-state schema: 1.2.0
+C2 activation tree: 446a3eab19ee4a1b809e2acf83e7dbc21fecc826
+C3 implementation tree: 2a2b86294d47263da9b21e048e44856d7be63c2b
+C4 completion checkpoint: THIS_COMMIT
+Additional implementation: PROHIBITED
 FS-13: INACTIVE / NOT AUTHORIZED
-Activation checkpoint: THIS_COMMIT
 ```
 
-The accepted FS-12 planning baseline is amended only by adding `tests/test_tooling.py`, raising the exact reusable-product count from 11 to 12. The source target `0.4.3-dev`, administrative ceiling, seven-commit sequence, and every other accepted term remain unchanged. The same explicit administrator decision covers C2, C3, and C4.
+The verified FS-12 result now requires an explicit administrator decision. Completion does not imply acceptance, clear authority, begin closeout, create FS-13, or execute final-project closure.
+
+Required next decision:
+
+`ACCEPT FS-12 VERIFIED RESULT`
