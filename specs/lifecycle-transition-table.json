@@ -499,6 +499,40 @@
         "final_closure": "OPEN"
       },
       "active_implementation_section": null
+    },
+    {
+      "id": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+      "title": "Final project closure proposed with no migration required",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "ACCEPTED",
+        "closeout": "APPLIED",
+        "migration": "NONE",
+        "final_closure": "PROPOSED"
+      },
+      "active_implementation_section": null,
+      "description": "Final closure is proposed while preserving the authoritative no-migration disposition."
+    },
+    {
+      "id": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+      "title": "Project finally closed with no migration required",
+      "dimensions": {
+        "roadmap": "ACCEPTED",
+        "work_package": "NOT_ACCEPTED",
+        "authority": "NO_ACTIVE_WORK_AUTHORIZATION",
+        "implementation": "NOT_STARTED",
+        "verification": "NOT_STARTED",
+        "acceptance": "ACCEPTED",
+        "closeout": "APPLIED",
+        "migration": "NONE",
+        "final_closure": "FINALLY_CLOSED"
+      },
+      "active_implementation_section": null,
+      "description": "The administrator applied final closure while preserving migration NONE and immutable section history."
     }
   ],
   "transitions": [
@@ -1088,7 +1122,6 @@
       "id": "TR-014-PROPOSE-FINAL-CLOSURE",
       "title": "Propose final project closure",
       "from_state_ids": [
-        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
         "LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE"
       ],
       "to_state_id": "LC-PROJECT-CLOSURE-PROPOSED",
@@ -1098,7 +1131,7 @@
       ],
       "preconditions": [
         "All required roadmap sections are accepted and closed.",
-        "Required migrations are applied and verified or explicitly not required.",
+        "Migration is applied and verification complete.",
         "No active implementation or migration authority exists.",
         "Final closure evidence is complete."
       ],
@@ -1108,7 +1141,7 @@
       },
       "required_inputs": [
         "section closeout records",
-        "migration disposition",
+        "applied migration verification disposition",
         "final evidence inventory"
       ],
       "required_outputs": [
@@ -1127,7 +1160,8 @@
         "Do not apply a migration unless the transition explicitly authorizes migration.",
         "Do not mark administrator acceptance, closeout, or final closure unless that exact transition is being recorded.",
         "Final closure proposal must not be marked applied.",
-        "Final closure proposal must not delete history."
+        "Final closure proposal must not delete history.",
+        "Do not accept a no-migration source state on this route."
       ]
     },
     {
@@ -1330,6 +1364,93 @@
       ],
       "forbidden_side_effects": [
         "No reusable-product write, next-section authorization, migration, integration, release, or production action."
+      ]
+    },
+    {
+      "id": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
+      "title": "Propose final project closure with no migration required",
+      "from_state_ids": [
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE"
+      ],
+      "to_state_id": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+      "changed_dimensions": [
+        "acceptance",
+        "final_closure"
+      ],
+      "preconditions": [
+        "All required roadmap sections are accepted and closed.",
+        "Migration is explicitly not required and canonical migration remains NONE.",
+        "No active implementation or migration authority exists.",
+        "Final closure evidence is complete."
+      ],
+      "required_human_authority": {
+        "actor": "authorized_closeout_preparer",
+        "decision": "final_closure_no_migration_proposal"
+      },
+      "required_inputs": [
+        "section closeout records",
+        "no-migration disposition",
+        "final evidence inventory"
+      ],
+      "required_outputs": [
+        "proposed no-migration final closure record"
+      ],
+      "stop_conditions": [
+        "Any open required section.",
+        "Any active authority.",
+        "Migration is not NONE.",
+        "Missing final evidence."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not rewrite migration NONE.",
+        "Do not mark final closure applied.",
+        "Do not delete or compact history."
+      ]
+    },
+    {
+      "id": "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION",
+      "title": "Apply final project closure with no migration required",
+      "from_state_ids": [
+        "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION"
+      ],
+      "to_state_id": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+      "changed_dimensions": [
+        "final_closure"
+      ],
+      "preconditions": [
+        "The no-migration proposal is complete and unchanged.",
+        "The administrator reviewed all final evidence.",
+        "No active authority exists."
+      ],
+      "required_human_authority": {
+        "actor": "administrator",
+        "decision": "explicit_no_migration_final_closure_application"
+      },
+      "required_inputs": [
+        "unchanged no-migration proposal",
+        "final evidence inventory",
+        "final checkpoint"
+      ],
+      "required_outputs": [
+        "applied no-migration final closure record",
+        "finally closed no-migration state"
+      ],
+      "stop_conditions": [
+        "Proposal changed after review.",
+        "Active authority exists.",
+        "Migration route changed.",
+        "Missing final evidence."
+      ],
+      "forbidden_side_effects": [
+        "Do not infer any unlisted transition.",
+        "Do not modify files outside the exact human-authorized scope.",
+        "Do not activate a later section.",
+        "Do not rewrite migration NONE.",
+        "Do not create implementation authority.",
+        "Do not delete or compact history."
       ]
     }
   ],

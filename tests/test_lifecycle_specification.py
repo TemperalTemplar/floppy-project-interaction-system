@@ -81,7 +81,7 @@ class LifecycleSpecificationTests(unittest.TestCase):
 
     def test_state_identifiers_are_unique(self) -> None:
         state_ids = [state["id"] for state in self.table["states"]]
-        self.assertEqual(len(state_ids), 20)
+        self.assertEqual(len(state_ids), 22)
         self.assertEqual(len(state_ids), len(set(state_ids)))
 
         for state in self.table["states"]:
@@ -91,7 +91,7 @@ class LifecycleSpecificationTests(unittest.TestCase):
         state_ids = {state["id"] for state in self.table["states"]}
         transition_ids = [transition["id"] for transition in self.table["transitions"]]
 
-        self.assertEqual(len(transition_ids), 20)
+        self.assertEqual(len(transition_ids), 22)
         self.assertEqual(len(transition_ids), len(set(transition_ids)))
 
         for transition in self.table["transitions"]:
@@ -146,6 +146,27 @@ class LifecycleSpecificationTests(unittest.TestCase):
                         actual.add("active_implementation_section")
                 self.assertEqual(set(transition["changed_dimensions"]), actual)
                 self.assertEqual(actual, expected_dimensions)
+
+    def test_final_closure_routes_preserve_migration_and_exact_deltas(self) -> None:
+        states = {state["id"]: state for state in self.table["states"]}
+        transitions = {item["id"]: item for item in self.table["transitions"]}
+        expected = {
+            "TR-014-PROPOSE-FINAL-CLOSURE": ("LC-MIGRATION-APPLIED-VERIFICATION-COMPLETE", "LC-PROJECT-CLOSURE-PROPOSED", {"acceptance", "final_closure"}, "APPLIED_VERIFICATION_COMPLETE"),
+            "TR-015-APPLY-FINAL-CLOSURE": ("LC-PROJECT-CLOSURE-PROPOSED", "LC-PROJECT-FINALLY-CLOSED", {"final_closure"}, "APPLIED_VERIFICATION_COMPLETE"),
+            "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION": ("LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE", "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", {"acceptance", "final_closure"}, "NONE"),
+            "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION": ("LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION", "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION", {"final_closure"}, "NONE"),
+        }
+        for identifier, (source_id, target_id, changed, migration) in expected.items():
+            with self.subTest(identifier=identifier):
+                transition = transitions[identifier]
+                self.assertEqual(transition["from_state_ids"], [source_id])
+                self.assertEqual(transition["to_state_id"], target_id)
+                actual = {name for name in REQUIRED_DIMENSIONS if states[source_id]["dimensions"][name] != states[target_id]["dimensions"][name]}
+                if states[source_id].get("active_implementation_section") != states[target_id].get("active_implementation_section"):
+                    actual.add("active_implementation_section")
+                self.assertEqual(set(transition["changed_dimensions"]), changed)
+                self.assertEqual(actual, changed)
+                self.assertEqual(states[target_id]["dimensions"]["migration"], migration)
 
     def test_global_invariants_are_present(self) -> None:
         invariant_ids = {
