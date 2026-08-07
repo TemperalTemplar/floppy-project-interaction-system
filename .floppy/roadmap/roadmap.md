@@ -433,3 +433,35 @@ FS-11 status: CLOSED
 FS-12 draft: .floppy/templates/Floppy-E-FS-12.draft.md
 FS-12 status: DRAFT_NOT_AUTHORIZED / INACTIVE
 ```
+
+
+<!-- FS12_TR002_ACCEPTANCE_BEGIN -->
+## FS-12 accepted work package
+
+```text
+Lifecycle state: LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
+Transition: TR-002-ACCEPT-WORK-PACKAGE
+Administrator decision: ACCEPT THE REVISED 11-PATH FS-12 WORK PACKAGE
+Work-package type: STANDARD_IMPLEMENTATION
+Accepted: YES
+Active: NO
+Authorized: NO
+Implementation: NOT_STARTED
+Verification: NOT_STARTED
+Administrator result acceptance: PENDING
+Closeout: NOT_PROPOSED
+Exact reusable-product paths: 11
+Exact administrative paths: 12
+Exact planned commits: 7
+Exact phases: 7
+Source-version target: 0.4.3-dev
+Lifecycle-state schema target: 1.2.0
+Repository writer: NONE
+Binding report SHA-256: 9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365
+Acceptance base checkpoint: a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6
+Acceptance checkpoint: THIS_COMMIT
+```
+
+The next repository action requires the separate administrator decision
+`AUTHORIZE AND START FS-12 IMPLEMENTATION`.
+<!-- FS12_TR002_ACCEPTANCE_END -->

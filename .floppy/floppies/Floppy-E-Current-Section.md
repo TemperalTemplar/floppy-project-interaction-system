@@ -1,43 +1,38 @@
-# Floppy E — Current Section
+# Floppy E — FS-12 Current Section
 
-STATUS: FS-11 CLOSED — FS-12 DRAFT_NOT_AUTHORIZED
+Lifecycle state: `LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
 
-## Lifecycle checkpoint
+Applied transition: `TR-002-ACCEPT-WORK-PACKAGE`
 
-```text
-Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
-Applied transition: TR-009-APPLY-SECTION-CLOSEOUT
-FS-11: CLOSED
-Implementation: COMPLETE
-Verification: COMPLETE
-Administrator acceptance: ACCEPTED
-Closeout: APPLIED
-Proposal commit: 97e544b67c0b3a7954cb37eb9baacc30e571f3a4
-Proposal SHA-256: 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
-Administrator decision: ACCEPT FS-11 CLOSEOUT PROPOSAL 97e544b67c0b3a7954cb37eb9baacc30e571f3a4 3a2fcb0341254b177b1742f5a6916dc2e0fdbf02bc1df96441d854802c1151bc
-```
+Administrator decision: `ACCEPT THE REVISED 11-PATH FS-12 WORK PACKAGE`
 
-## Authority
+Binding report SHA-256: `9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365`
+
+Accepted correction checkpoint: `a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6`
 
 ```text
+Work-package type: STANDARD_IMPLEMENTATION
+Exact reusable-product paths: 11
+Exact administrative paths: 12
+Exact planned commits: 7
+Exact phases: 7
+Source-version target: 0.4.3-dev
+Lifecycle-state schema target: 1.2.0
+FS-12 acceptance: ACCEPTED AS PLANNING BASELINE
+FS-12 activation: NOT_STARTED / INACTIVE
+FS-12 implementation: NOT_STARTED
+FS-12 verification: NOT_STARTED
+FS-12 administrator result acceptance: PENDING
+FS-12 closeout: NOT_PROPOSED
 Active work authorization: NONE
-Active implementation authorization: NONE
-Active migration authorization: NONE
-Active implementation section: NONE
-Current authorized section: NONE
+Active control-work authorization: NONE
 Repository writer: NONE
 Writer authorization reference: NONE
+Active implementation section: NONE
+FS-13: NOT CREATED / NOT AUTHORIZED
+Acceptance checkpoint: THIS_COMMIT
 ```
 
-## Next section
-
-```text
-Section: FS-12 — Final-Project Closure
-Draft: .floppy/templates/Floppy-E-FS-12.draft.md
-Draft status: DRAFT_NOT_AUTHORIZED
-Accepted: NO
-Active: NO
-Authorized: NO
-```
-
-The FS-12 draft is a planning artifact only. It does not grant authority.
+Work-package acceptance is not implementation authorization. The next repository
+action requires the separate administrator decision
+`AUTHORIZE AND START FS-12 IMPLEMENTATION`.
