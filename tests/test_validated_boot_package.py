@@ -15,6 +15,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 CLI_PATH = ROOT / "tools" / "floppyctl.py"
+VALIDATOR_PATH = ROOT / "tools" / "validate_floppy.py"
 
 
 def load_cli():
@@ -27,6 +28,21 @@ def load_cli():
 
 
 CLI = load_cli()
+
+
+def load_validator():
+    spec = importlib.util.spec_from_file_location(
+        "validate_floppy_pre_tr021_followup",
+        VALIDATOR_PATH,
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError("unable to load tools/validate_floppy.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+VALIDATOR = load_validator()
 
 EXPECTED_BOOT_PACKAGE_PATHS = (
     "ABOUT.md",
@@ -100,7 +116,14 @@ def git(root: Path, *args: str) -> str:
         environment["GIT_AUTHOR_DATE"] = "2000-01-01T00:00:00+00:00"
         environment["GIT_COMMITTER_DATE"] = "2000-01-01T00:00:00+00:00"
     completed = subprocess.run(
-        ["git", "-C", str(root), *args],
+        [
+            "git",
+            "-c",
+            f"safe.directory={root.as_posix()}",
+            "-C",
+            str(root),
+            *args,
+        ],
         text=True,
         encoding="utf-8",
         errors="replace",
@@ -545,6 +568,148 @@ class ValidatedBootPackageTests(unittest.TestCase):
                     {"path": "nested/beta.txt", "type": "file"},
                 ],
             )
+
+class HistoricalOperationEvidenceTests(unittest.TestCase):
+    BRANCH_PREFIX = "pre-tr021-historical-evidence"
+
+    @staticmethod
+    def operation_evidence(operation: str) -> dict:
+        return {
+            "operation": operation,
+            "section": "FS-13",
+            "implementation_scope_exercised": False,
+            "exact_control_paths": [".floppy/manifest.json"],
+            "transition_sequence": [],
+        }
+
+    def make_integrity_repo(
+        self,
+        evidence: dict | None,
+    ) -> tuple[tempfile.TemporaryDirectory[str], Path, dict, str]:
+        td = tempfile.TemporaryDirectory()
+        root = Path(td.name) / "repo"
+        root.mkdir()
+        git(root, "init")
+        git(root, "config", "user.email", "pre-tr021@example.invalid")
+        git(root, "config", "user.name", "PRE-TR021 Tests")
+        branch = git(root, "branch", "--show-current")
+        manifest = {
+            "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+            "active_work_authorization": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+            "continuation_point": {
+                "active_work_authorization": None,
+                "repository_writer": None,
+                "writer_authorization_reference": None,
+            },
+            "authority": {
+                "active_implementation_section": None,
+                "repository_writer": None,
+                "writer_authorization_reference": None,
+            },
+            "fs_13_work_package": {
+                "id": "FS-13",
+                "section": "FS-13",
+                "path": ".floppy/templates/Floppy-E-FS-13.draft.md",
+                "branch": branch,
+            },
+        }
+        if evidence is not None:
+            manifest["git_integrity_operation"] = evidence
+        manifest_path = root / ".floppy" / "manifest.json"
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        write_manifest(manifest_path, manifest)
+        git(root, "add", "--", ".")
+        git(root, "commit", "-m", "baseline")
+        return td, root, manifest, branch
+
+    def validate(
+        self,
+        root: Path,
+        manifest: dict,
+        environment: dict[str, str] | None = None,
+    ) -> list[str]:
+        return VALIDATOR.validate_authorization_git_integrity(
+            root,
+            manifest,
+            {} if environment is None else environment,
+        )
+
+    def test_historical_unchanged_operation_evidence_does_not_replay(self) -> None:
+        evidence = self.operation_evidence("CLOSEOUT_PROPOSAL_CONTROL")
+        td, root, manifest, _ = self.make_integrity_repo(evidence)
+        with td:
+            (root / "unrelated-product.txt").write_text(
+                "unrelated product change\n",
+                encoding="utf-8",
+            )
+            self.assertEqual([], self.validate(root, manifest))
+
+    def test_new_operation_evidence_is_still_validated(self) -> None:
+        td, root, manifest, _ = self.make_integrity_repo(None)
+        with td:
+            candidate = json.loads(json.dumps(manifest))
+            candidate["git_integrity_operation"] = self.operation_evidence(
+                "CLOSEOUT_PROPOSAL_CONTROL"
+            )
+            write_manifest(root / ".floppy" / "manifest.json", candidate)
+            errors = self.validate(root, candidate)
+            self.assertIn("GIT_INTEGRITY_EXPECTED_HEAD_MISSING", errors)
+
+    def test_changed_operation_evidence_is_still_validated(self) -> None:
+        original = self.operation_evidence("CLOSEOUT_PROPOSAL_CONTROL")
+        td, root, manifest, _ = self.make_integrity_repo(original)
+        with td:
+            candidate = json.loads(json.dumps(manifest))
+            candidate["git_integrity_operation"] = self.operation_evidence(
+                "CLOSEOUT_APPLICATION_CONTROL"
+            )
+            write_manifest(root / ".floppy" / "manifest.json", candidate)
+            errors = self.validate(root, candidate)
+            self.assertIn("GIT_INTEGRITY_EXPECTED_HEAD_MISSING", errors)
+
+    def test_explicit_control_operation_overrides_historical_evidence(self) -> None:
+        evidence = self.operation_evidence("CLOSEOUT_PROPOSAL_CONTROL")
+        td, root, manifest, branch = self.make_integrity_repo(evidence)
+        with td:
+            head = git(root, "rev-parse", "HEAD")
+            errors = self.validate(
+                root,
+                manifest,
+                {
+                    "FLOPPY_CONTROL_OPERATION": "CLOSEOUT_APPLICATION_CONTROL",
+                    "FLOPPY_CONTROL_BRANCH": branch,
+                    "FLOPPY_EXPECTED_HEAD": head,
+                },
+            )
+            self.assertIn("GIT_INTEGRITY_CONTROL_OPERATION_MISMATCH", errors)
+
+    def test_explicit_operation_missing_required_head_still_fails(self) -> None:
+        evidence = self.operation_evidence("CLOSEOUT_PROPOSAL_CONTROL")
+        td, root, manifest, branch = self.make_integrity_repo(evidence)
+        with td:
+            errors = self.validate(
+                root,
+                manifest,
+                {
+                    "FLOPPY_CONTROL_OPERATION": "CLOSEOUT_APPLICATION_CONTROL",
+                    "FLOPPY_CONTROL_BRANCH": branch,
+                },
+            )
+            self.assertIn("GIT_INTEGRITY_EXPECTED_HEAD_MISSING", errors)
+
+    def test_git_trust_is_process_local_only(self) -> None:
+        import inspect
+
+        helper_source = inspect.getsource(git)
+        self.assertIn(
+            'f"safe.directory={root.as_posix()}"',
+            helper_source,
+        )
+        self.assertNotIn("--global", helper_source)
+        self.assertNotIn("safe.directory=*", helper_source)
+
 
 
 if __name__ == "__main__":
