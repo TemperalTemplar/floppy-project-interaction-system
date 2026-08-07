@@ -2,13 +2,13 @@
 
 ```text
 Development roadmap: ACCEPTED — ADMINISTRATIVELY REVISED
-Lifecycle state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+Lifecycle state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
 Control mode: CANONICAL_INTEGRATED
 Authority: NO_ACTIVE_WORK_AUTHORIZATION
 Active implementation section: NONE
 Current authorized section: NONE
 FS-01 through FS-11: CLOSED
-FS-12: DRAFT_NOT_AUTHORIZED / INACTIVE
+FS-12: IMPLEMENTATION COMPLETE / VERIFICATION COMPLETE / ADMINISTRATOR ACCEPTANCE ACCEPTED / CLOSEOUT PROPOSED_NOT_APPLIED
 FS-13: PLANNED_NOT_AUTHORIZED / INACTIVE
 Active authorization: NONE
 Repository writer: NONE
@@ -523,3 +523,24 @@ FS-13: INACTIVE / NOT AUTHORIZED
 Required next operation: Prepare and review the exact FS-12 closeout proposal; do not apply closeout.
 ```
 <!-- FS12_C5_ACCEPTANCE_END -->
+
+
+<!-- FS12_C6_CLOSEOUT_PROPOSAL_BEGIN -->
+## FS-12 closeout proposal — proposed, not applied
+
+```text
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Proposal base checkpoint: a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95
+Proposal base tree: f8bd7ae64fe22ac82bd5373274f96cc1b3a3360a
+Proposal record: .floppy/closeouts/FS-12-closeout.md
+Proposal complete-file SHA-256: d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+Canonical block SHA-256: c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83
+Proposal checkpoint: THIS_COMMIT
+Application status: NOT_APPLIED
+FS-13 draft: NOT CREATED
+FS-13: INACTIVE / NOT AUTHORIZED
+```
+
+The administrator must accept the exact committed C6 proposal and SHA-256
+before TR-009 may apply FS-12 closeout.
+<!-- FS12_C6_CLOSEOUT_PROPOSAL_END -->

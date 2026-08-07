@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_CLOSEOUT_NOT_PROPOSED
+STATUS: ACCEPTED_CLOSEOUT_PROPOSED
 
 # Floppy E — FS-12 Accepted Work Package
 
@@ -109,11 +109,11 @@ Implementation authorized: NO
 Implementation: COMPLETE
 Verification: COMPLETE
 Administrator result acceptance: ACCEPTED
-Closeout: NOT_PROPOSED
-Active work authorization: FS_12_IMPLEMENTATION
+Closeout: PROPOSED_NOT_APPLIED
+Active work authorization: NONE
 Active implementation section: NONE
-Repository writer: FS_12_WORKING_MODEL
-Writer authorization reference: FS_12_IMPLEMENTATION
+Repository writer: NONE
+Writer authorization reference: NONE
 FS-13: NOT CREATED / NOT AUTHORIZED
 ```
 
@@ -195,3 +195,28 @@ FS-13 draft: NOT CREATED
 Acceptance checkpoint: THIS_COMMIT
 Required next operation: Prepare and review the exact FS-12 closeout proposal; do not apply closeout.
 ```
+
+
+## Commit 6 — closeout proposal
+
+```text
+Subject: chore(bce): propose FS-12 closeout
+Operation: CLOSEOUT_PROPOSAL_CONTROL
+Transition: TR-008-PROPOSE-SECTION-CLOSEOUT
+Pre-state: LC-SECTION-ACCEPTED-CLOSEOUT-NOT-PROPOSED
+Post-state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Proposal base checkpoint: a3a9d9cc9b4b8125c02c7354a0694c0631bf7a95
+Proposal base tree: f8bd7ae64fe22ac82bd5373274f96cc1b3a3360a
+Proposal record: .floppy/closeouts/FS-12-closeout.md
+Proposal complete-file SHA-256: d9f10182c2ff3be7f17144df2b759256c320f91f903644a15c84449266285728
+Canonical block SHA-256: c17191ef087372f1dbd6dabb2a2f8f5382a9c68bccac635e0286768abbca8f83
+Proposal checkpoint: THIS_COMMIT
+Closeout application: NOT_APPLIED
+Active authorization: NONE
+Repository writer: NONE
+FS-13 draft: NOT CREATED
+FS-13: INACTIVE / NOT AUTHORIZED
+```
+
+Commit 7 is prohibited until the administrator explicitly accepts the exact
+Commit 6 proposal record and unchanged SHA-256 digest.
