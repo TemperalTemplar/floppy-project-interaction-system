@@ -429,6 +429,197 @@ class AuthorizationGitIntegrityTests(unittest.TestCase):
             )
 
 
+class WorkPackageAcceptanceGitIntegrityTests(unittest.TestCase):
+    SECTION = "FS-12"
+    BRANCH = "feature/fs-12-acceptance-integrity-fixture"
+    CONTROL_PATHS = [
+        ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/lifecycle-state.json",
+        ".floppy/manifest.json",
+        ".floppy/roadmap/roadmap.json",
+        ".floppy/roadmap/roadmap.md",
+        ".floppy/templates/Floppy-E-FS-12.draft.md",
+    ]
+
+    def write_json(self, path: Path, value: dict) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(value, indent=4, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
+    def parent_manifest(self) -> dict:
+        return {
+            "status": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+            "active_work_authorization": None,
+            "repository_writer": None,
+            "writer_authorization_reference": None,
+            "continuation_point": {
+                "active_work_authorization": None,
+                "repository_writer": None,
+                "writer_authorization_reference": None,
+            },
+            "authority": {
+                "last_applied_transition": "TR-009-APPLY-SECTION-CLOSEOUT",
+                "active_implementation_section": None,
+                "repository_writer": None,
+                "writer_authorization_reference": None,
+            },
+            "fs_12_work_package": {
+                "id": self.SECTION,
+                "section": self.SECTION,
+                "path": ".floppy/templates/Floppy-E-FS-12.draft.md",
+                "accepted": False,
+                "active": False,
+                "implementation_authorized": False,
+                "branch": self.BRANCH,
+            },
+        }
+
+    def candidate_manifest(self, *, verification_only: bool = False) -> dict:
+        manifest = self.parent_manifest()
+        transition = (
+            "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE"
+            if verification_only
+            else "TR-002-ACCEPT-WORK-PACKAGE"
+        )
+        post_state = (
+            "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING"
+            if verification_only
+            else "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK"
+        )
+        manifest["status"] = post_state
+        manifest["authority"]["last_applied_transition"] = transition
+        manifest["fs_12_work_package"]["accepted"] = True
+        manifest["git_integrity_operation"] = {
+            "operation": "WORK_PACKAGE_ACCEPTANCE_CONTROL",
+            "section": self.SECTION,
+            "implementation_scope_exercised": False,
+            "exact_control_paths": list(self.CONTROL_PATHS),
+            "transition_sequence": [
+                {
+                    "id": transition,
+                    "pre_state": "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+                    "post_state": post_state,
+                    "actor": "administrator",
+                    "decision": "explicit_work_package_acceptance",
+                    "inputs": ["reviewed work package"],
+                    "outputs": ["accepted planning baseline"],
+                    "validation_evidence": ["exact path proof"],
+                }
+            ],
+        }
+        return manifest
+
+    def make_repo(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
+        td = tempfile.TemporaryDirectory()
+        root = Path(td.name)
+        require_git(root, "init")
+        require_git(root, "config", "user.name", "FS-12 Test")
+        require_git(root, "config", "user.email", "fs12@example.invalid")
+        require_git(root, "checkout", "-b", self.BRANCH)
+        all_paths = set(self.CONTROL_PATHS) | {
+            ".floppy/orchestrator-registry.json",
+        }
+        for relative in sorted(all_paths):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if relative.endswith(".json"):
+                self.write_json(path, {"baseline": relative})
+            else:
+                path.write_text(f"baseline: {relative}\n", encoding="utf-8")
+        self.write_json(root / ".floppy/manifest.json", self.parent_manifest())
+        require_git(root, "add", "--", ".")
+        require_git(root, "commit", "-m", "closed section baseline")
+        return td, root
+
+    def commit_acceptance(
+        self,
+        root: Path,
+        *,
+        verification_only: bool = False,
+        paths: list[str] | None = None,
+    ) -> tuple[str, dict]:
+        manifest = self.candidate_manifest(verification_only=verification_only)
+        selected = list(self.CONTROL_PATHS if paths is None else paths)
+        for relative in selected:
+            path = root / relative
+            if relative == ".floppy/manifest.json":
+                self.write_json(path, manifest)
+            else:
+                with path.open("a", encoding="utf-8") as handle:
+                    handle.write("work-package acceptance change\n")
+        require_git(root, "add", "--", *selected)
+        require_git(root, "commit", "-m", "accept work package")
+        return require_git(root, "rev-parse", "HEAD"), manifest
+
+    def environment(self, head: str) -> dict[str, str]:
+        return {
+            "FLOPPY_EXPECTED_HEAD": head,
+            "FLOPPY_SCOPE_COMMIT": head,
+            "FLOPPY_CONTROL_OPERATION": "WORK_PACKAGE_ACCEPTANCE_CONTROL",
+            "FLOPPY_CONTROL_BRANCH": self.BRANCH,
+        }
+
+    def validate(self, root: Path, manifest: dict, head: str) -> list[str]:
+        return VALIDATOR.validate_authorization_git_integrity(
+            root, manifest, self.environment(head)
+        )
+
+    def test_standard_work_package_acceptance_exact_canonical_scope_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            head, manifest = self.commit_acceptance(root)
+            self.assertEqual([], self.validate(root, manifest, head))
+
+    def test_verification_only_acceptance_exact_canonical_scope_passes(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            head, manifest = self.commit_acceptance(root, verification_only=True)
+            self.assertEqual([], self.validate(root, manifest, head))
+
+    def test_acceptance_missing_canonical_lifecycle_state_fails(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            paths = [
+                item
+                for item in self.CONTROL_PATHS
+                if item != ".floppy/lifecycle-state.json"
+            ]
+            head, manifest = self.commit_acceptance(root, paths=paths)
+            self.assertIn(
+                "GIT_INTEGRITY_REQUIRED_PATHS_MISSING: "
+                ".floppy/lifecycle-state.json",
+                self.validate(root, manifest, head),
+            )
+
+    def test_acceptance_cannot_fall_back_when_canonical_registry_missing(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            require_git(root, "rm", "--", ".floppy/orchestrator-registry.json")
+            require_git(root, "commit", "-m", "remove canonical registry")
+            head, manifest = self.commit_acceptance(root)
+            self.assertIn(
+                "GIT_INTEGRITY_CANONICAL_CONTROL_RECORDS_REQUIRED",
+                self.validate(root, manifest, head),
+            )
+
+    def test_acceptance_extra_legacy_projection_fails(self) -> None:
+        td, root = self.make_repo()
+        with td:
+            extra = ".floppy/floppies/Floppy-D-Project-Map.md"
+            path = root / extra
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("legacy projection change\n", encoding="utf-8")
+            head, manifest = self.commit_acceptance(
+                root, paths=[*self.CONTROL_PATHS, extra]
+            )
+            self.assertIn(
+                f"GIT_INTEGRITY_UNAUTHORIZED_PATHS: {extra}",
+                self.validate(root, manifest, head),
+            )
+
+
 class ActivationAndImplementationGitIntegrityTests(unittest.TestCase):
     SECTION = "FS-11"
     AUTHORIZATION = "FS_11_PROV_01_IMPLEMENTATION"
@@ -452,7 +643,9 @@ class ActivationAndImplementationGitIntegrityTests(unittest.TestCase):
     ]
     CONTROL_PATHS = [
         ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/lifecycle-state.json",
         ".floppy/manifest.json",
+        ".floppy/orchestrator-registry.json",
         ".floppy/roadmap/roadmap.json",
         ".floppy/roadmap/roadmap.md",
         ".floppy/templates/Floppy-E-FS-11.draft.md",

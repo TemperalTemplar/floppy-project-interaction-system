@@ -139,6 +139,13 @@ REQUIRED_TRANSITION_FIELDS = {
     "forbidden_side_effects",
 }
 
+POST_PROVISIONING_EXACT_DIMENSION_TRANSITIONS = frozenset(
+    {
+        "TR-002-ACCEPT-WORK-PACKAGE",
+        "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+    }
+)
+
 MANDATORY_PROHIBITED_IMPLICATIONS = {
     "PI-001": "Roadmap acceptance does not imply section authorization.",
     "PI-002": "Work-package acceptance does not imply section authorization.",
@@ -334,6 +341,13 @@ def validate_transition_table(path: Path, errors: list[str]) -> None:
 
     states = table.get("states")
     state_ids = validate_unique_ids(states, "lifecycle states", errors)
+    state_records = {
+        state.get("id"): state
+        for state in states
+        if isinstance(states, list)
+        and isinstance(state, dict)
+        and isinstance(state.get("id"), str)
+    }
 
     if isinstance(states, list):
         for state in states:
@@ -400,6 +414,53 @@ def validate_transition_table(path: Path, errors: list[str]) -> None:
                         f"transition {transition_id} has unknown changed dimensions: "
                         f"{', '.join(sorted(unknown_dimensions))}"
                     )
+                elif transition_id in POST_PROVISIONING_EXACT_DIMENSION_TRANSITIONS:
+                    target = state_records.get(to_state_id)
+                    sources = [state_records.get(item) for item in from_state_ids]
+                    if not isinstance(target, dict) or any(
+                        not isinstance(item, dict) for item in sources
+                    ):
+                        errors.append(
+                            f"transition {transition_id} exact changed dimensions "
+                            "cannot be resolved"
+                        )
+                    else:
+                        actual_changed_dimensions: set[str] = set()
+                        target_dimensions = target.get("dimensions")
+                        if not isinstance(target_dimensions, dict):
+                            errors.append(
+                                f"transition {transition_id} exact target dimensions "
+                                "are invalid"
+                            )
+                        else:
+                            for source in sources:
+                                source_dimensions = source.get("dimensions")
+                                if not isinstance(source_dimensions, dict):
+                                    errors.append(
+                                        f"transition {transition_id} exact source "
+                                        "dimensions are invalid"
+                                    )
+                                    continue
+                                actual_changed_dimensions.update(
+                                    dimension
+                                    for dimension in REQUIRED_DIMENSIONS
+                                    if source_dimensions.get(dimension)
+                                    != target_dimensions.get(dimension)
+                                )
+                                if source.get("active_implementation_section") != (
+                                    target.get("active_implementation_section")
+                                ):
+                                    actual_changed_dimensions.add(
+                                        "active_implementation_section"
+                                    )
+                            if set(changed_dimensions) != actual_changed_dimensions:
+                                errors.append(
+                                    "LIFECYCLE_CHANGED_DIMENSIONS_MISMATCH: "
+                                    f"{transition_id} declared "
+                                    f"{', '.join(sorted(set(changed_dimensions)))} "
+                                    "actual "
+                                    f"{', '.join(sorted(actual_changed_dimensions))}"
+                                )
 
             authority = transition.get("required_human_authority")
             if not isinstance(authority, dict):
@@ -1404,7 +1465,9 @@ def _git_integrity_activation_paths(
         return None
     return {
         ".floppy/floppies/Floppy-E-Current-Section.md",
+        ".floppy/lifecycle-state.json",
         ".floppy/manifest.json",
+        ".floppy/orchestrator-registry.json",
         ".floppy/roadmap/roadmap.json",
         ".floppy/roadmap/roadmap.md",
         draft_path,
@@ -1468,6 +1531,29 @@ def _git_integrity_activation_evidence_valid(
 
 GIT_OPERATION_EVIDENCE_KEY = "git_integrity_operation"
 
+_GIT_WORK_PACKAGE_ACCEPTANCE_TRANSITIONS = {
+    (
+        "TR-002-ACCEPT-WORK-PACKAGE",
+        "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+        "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+    ),
+    (
+        "TR-002-ACCEPT-WORK-PACKAGE",
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK",
+    ),
+    (
+        "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+        "LC-ROADMAP-ACCEPTED-NO-ACTIVE-WORK",
+        "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+    ),
+    (
+        "TR-016-ACCEPT-VERIFICATION-ONLY-WORK-PACKAGE",
+        "LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE",
+        "LC-VERIFICATION-ONLY-WORK-PACKAGE-ACCEPTED-PENDING",
+    ),
+}
+
 _GIT_CONTROL_TRANSITIONS = {
     "ACTIVATION_CONTROL_COMMIT": [
         (
@@ -1522,6 +1608,7 @@ _GIT_STATE_PRESERVING_OPERATIONS = {
 }
 
 _GIT_NO_AUTHORITY_OPERATIONS = {
+    "WORK_PACKAGE_ACCEPTANCE_CONTROL",
     "CLOSEOUT_PROPOSAL_CONTROL",
     "CLOSEOUT_APPLICATION_CONTROL",
 }
@@ -1609,8 +1696,13 @@ def _git_integrity_control_paths(
         ".floppy/roadmap/roadmap.md",
         draft,
     }
+    if operation == "WORK_PACKAGE_ACCEPTANCE_CONTROL":
+        return common | {".floppy/lifecycle-state.json"}
     if operation == "ACTIVATION_CONTROL_COMMIT":
-        return common
+        return common | {
+            ".floppy/lifecycle-state.json",
+            ".floppy/orchestrator-registry.json",
+        }
     if operation in {
         "STATE_PRESERVING_AUTHORITY_HANDOFF",
         "COMPLETION_VERIFICATION_CONTROL",
@@ -1717,12 +1809,61 @@ def _git_integrity_transition_evidence_valid(
     parent_manifest: dict[str, Any] | None,
     errors: list[str],
 ) -> None:
+    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+    if operation == "WORK_PACKAGE_ACCEPTANCE_CONTROL":
+        if not isinstance(evidence, dict):
+            errors.append("GIT_INTEGRITY_CONTROL_EVIDENCE_MISSING")
+            return
+        transitions = evidence.get("transition_sequence")
+        if not isinstance(transitions, list) or len(transitions) != 1:
+            errors.append("GIT_INTEGRITY_TRANSITION_SEQUENCE_INVALID")
+            return
+        item = transitions[0]
+        if not isinstance(item, dict):
+            errors.append("GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: index 0")
+            return
+        actual = (
+            item.get("id"),
+            item.get("pre_state"),
+            item.get("post_state"),
+        )
+        if actual not in _GIT_WORK_PACKAGE_ACCEPTANCE_TRANSITIONS:
+            errors.append("GIT_INTEGRITY_TRANSITION_SEQUENCE_INVALID: index 0")
+        for field in ("actor", "decision"):
+            value = item.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(
+                    "GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: "
+                    f"index 0 field {field}"
+                )
+        for field in ("inputs", "outputs", "validation_evidence"):
+            value = item.get(field)
+            if not isinstance(value, (list, dict)) or not value:
+                errors.append(
+                    "GIT_INTEGRITY_TRANSITION_EVIDENCE_INVALID: "
+                    f"index 0 field {field}"
+                )
+        parent_status = (
+            parent_manifest.get("status")
+            if isinstance(parent_manifest, dict)
+            else None
+        )
+        if parent_status != item.get("pre_state"):
+            errors.append(
+                "GIT_INTEGRITY_TRANSITION_PARENT_STATE_MISMATCH: "
+                f"expected {item.get('pre_state')} found {parent_status}"
+            )
+        if manifest.get("status") != item.get("post_state"):
+            errors.append(
+                "GIT_INTEGRITY_TRANSITION_CANDIDATE_STATE_MISMATCH: "
+                f"expected {item.get('post_state')} found {manifest.get('status')}"
+            )
+        return
     expected = _GIT_CONTROL_TRANSITIONS.get(operation)
     if expected is None:
         return
     if operation == "ACTIVATION_CONTROL_COMMIT":
         return
-    evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
     if not isinstance(evidence, dict):
         errors.append("GIT_INTEGRITY_CONTROL_EVIDENCE_MISSING")
         return
@@ -2243,6 +2384,7 @@ def validate_authorization_git_integrity(
                 + ", ".join(sorted(actual_paths & implementation_paths))
             )
     elif operation in {
+        "WORK_PACKAGE_ACCEPTANCE_CONTROL",
         "STATE_PRESERVING_AUTHORITY_HANDOFF",
         "COMPLETION_VERIFICATION_CONTROL",
         "ADMINISTRATOR_ACCEPTANCE_CONTROL",
@@ -2351,11 +2493,25 @@ def validate_authorization_git_integrity(
             _git_integrity_clearance_valid(manifest, section, errors)
     elif operation in _GIT_NO_AUTHORITY_OPERATIONS:
         if active is not None or parent_active is not None:
-            errors.append("GIT_INTEGRITY_CLOSEOUT_AUTHORIZATION_PRESENT")
+            errors.append("GIT_INTEGRITY_CONTROL_AUTHORIZATION_PRESENT")
         writer, reference = _git_integrity_manifest_writer(manifest)
         parent_writer, parent_reference = _git_integrity_manifest_writer(parent_manifest)
-        if any(value is not None for value in (writer, reference, parent_writer, parent_reference)):
-            errors.append("GIT_INTEGRITY_CLOSEOUT_WRITER_PRESENT")
+        if any(
+            value is not None
+            for value in (writer, reference, parent_writer, parent_reference)
+        ):
+            errors.append("GIT_INTEGRITY_CONTROL_WRITER_PRESENT")
+
+    if operation in {
+        "WORK_PACKAGE_ACCEPTANCE_CONTROL",
+        "ACTIVATION_CONTROL_COMMIT",
+    }:
+        canonical = (
+            root / ".floppy/lifecycle-state.json",
+            root / ".floppy/orchestrator-registry.json",
+        )
+        if not all(path.is_file() for path in canonical):
+            errors.append("GIT_INTEGRITY_CANONICAL_CONTROL_RECORDS_REQUIRED")
 
     status_result = _git_integrity_run(
         root,

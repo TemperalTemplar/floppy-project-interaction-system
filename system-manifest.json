@@ -76,7 +76,7 @@
       },
       "transition_table": {
         "path": "specs/lifecycle-transition-table.json",
-        "sha256": "075d4e66acea9801a4cb29ac7a591cae277c26103bd6b3df64195f567c06ec2a"
+        "sha256": "7ce6070ebfeedf271d22b3abfa897f7a7639cc9830728269519c12b295922ea8"
       },
       "draft_lifecycle_state_schema": {
         "path": "schemas/drafts/bce-lifecycle-state.schema.json",
@@ -233,7 +233,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "db89a636855b732f295bb66bc7de7cbb0f45035759c1f83dda3071edb8a81ba8"
+        "sha256": "42dd996ed481bd61a2ebc2e7fd0b03536bfa8b1338a910356830c8e72e2f2afd"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
