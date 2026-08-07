@@ -2091,7 +2091,7 @@ def validate_authorization_git_integrity(
     if environment.get(GIT_CONTROL_OPERATION_ENV) in FS12_FINAL_OPERATIONS:
         return _validate_fs12_final_git_integrity(root, manifest, environment)
     candidate_evidence = manifest.get(GIT_OPERATION_EVIDENCE_KEY)
-    runtime_requested = any(
+    environment_requested = any(
         environment.get(name)
         for name in (
             GIT_AUTHORIZATION_ENV,
@@ -2102,7 +2102,8 @@ def validate_authorization_git_integrity(
             GIT_CONTROL_SCOPE_ENV,
             GIT_CONTROL_BRANCH_ENV,
         )
-    ) or isinstance(candidate_evidence, dict)
+    )
+    runtime_requested = environment_requested
 
     errors: list[str] = []
     scope_commit = environment.get(GIT_SCOPE_COMMIT_ENV)
@@ -2181,6 +2182,18 @@ def validate_authorization_git_integrity(
         _git_integrity_manifest_at(root, parent_revision)
         if parent_revision is not None
         else None
+    )
+    parent_evidence = (
+        parent_manifest.get(GIT_OPERATION_EVIDENCE_KEY)
+        if isinstance(parent_manifest, dict)
+        else None
+    )
+    stored_operation_evidence_changed = (
+        isinstance(candidate_evidence, dict)
+        and candidate_evidence != parent_evidence
+    )
+    runtime_requested = (
+        runtime_requested or stored_operation_evidence_changed
     )
     parent_active = (
         parent_manifest.get("active_work_authorization")
