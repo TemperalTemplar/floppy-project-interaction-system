@@ -1217,10 +1217,21 @@ class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             if relative == ".floppy/manifest.json":
                 self.write_json(path, manifest)
+            elif relative == ".floppy/roadmap/roadmap.json":
+                self.write_json(
+                    path,
+                    {
+                        "changed": relative,
+                        "subject": subject,
+                        "sections": [
+                            {"id": self.SECTION},
+                            {"id": self.NEXT_SECTION},
+                        ],
+                    },
+                )
             elif relative in {
                 ".floppy/lifecycle-state.json",
                 ".floppy/orchestrator-registry.json",
-                ".floppy/roadmap/roadmap.json",
             }:
                 self.write_json(path, {"changed": relative, "subject": subject})
             else:
@@ -1538,6 +1549,91 @@ class RemainingControlCommitGitIntegrityTests(unittest.TestCase):
             manifest = self.application_manifest()
             head = self.apply_commit(root, manifest, self.APPLICATION_PATHS, "application")
             self.assertEqual([], self.validate(root, manifest, head, None, None))
+
+    def _terminal_scope_manifest(self, section: str) -> dict:
+        return {
+            f"fs_{section[3:]}_work_package": {
+                "id": section,
+                "section": section,
+                "path": f".floppy/templates/Floppy-E-{section}.draft.md",
+            },
+            "closeout_proposal": {
+                "section": section,
+                "record": f".floppy/closeouts/{section}-closeout.md",
+            },
+        }
+
+    def _write_terminal_scope_roadmap(
+        self,
+        root: Path,
+        section_ids: list[str],
+    ) -> None:
+        self.write_json(
+            root / ".floppy/roadmap/roadmap.json",
+            {"sections": [{"id": item} for item in section_ids]},
+        )
+
+    def test_non_final_closeout_application_still_requires_next_draft(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._write_terminal_scope_roadmap(
+                root,
+                ["FS-11", "FS-12", "FS-13"],
+            )
+            section = "FS-12"
+            manifest = self._terminal_scope_manifest(section)
+            actual = VALIDATOR._git_integrity_control_paths(
+                "CLOSEOUT_APPLICATION_CONTROL",
+                manifest,
+                manifest,
+                section,
+                root,
+            )
+            self.assertIsNotNone(actual)
+            assert actual is not None
+            self.assertIn(
+                ".floppy/templates/Floppy-E-FS-13.draft.md",
+                actual,
+            )
+            self.assertNotIn(
+                ".floppy/templates/Floppy-E-FS-14.draft.md",
+                actual,
+            )
+
+    def test_final_roadmap_section_closeout_omits_nonexistent_next_draft(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._write_terminal_scope_roadmap(
+                root,
+                ["FS-11", "FS-12", "FS-13"],
+            )
+            section = "FS-13"
+            manifest = self._terminal_scope_manifest(section)
+            actual = VALIDATOR._git_integrity_control_paths(
+                "CLOSEOUT_APPLICATION_CONTROL",
+                manifest,
+                manifest,
+                section,
+                root,
+            )
+            expected = {
+                ".floppy/START-HERE.md",
+                ".floppy/README.md",
+                ".floppy/closeouts/FS-13-closeout.md",
+                ".floppy/floppies/Floppy-D-Project-Map.md",
+                ".floppy/floppies/Floppy-E-Current-Section.md",
+                ".floppy/lifecycle-state.json",
+                ".floppy/manifest.json",
+                ".floppy/orchestrator-registry.json",
+                ".floppy/roadmap/roadmap.json",
+                ".floppy/roadmap/roadmap.md",
+                ".floppy/templates/Floppy-E-FS-13.draft.md",
+            }
+            self.assertEqual(expected, actual)
+            self.assertNotIn(
+                ".floppy/templates/Floppy-E-FS-14.draft.md",
+                actual,
+            )
 
     def test_closeout_control_rejects_extra_path(self) -> None:
         td, root = self.make_repo()
