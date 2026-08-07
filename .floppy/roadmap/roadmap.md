@@ -441,7 +441,7 @@ FS-12 status: DRAFT_NOT_AUTHORIZED / INACTIVE
 ```text
 Lifecycle state: LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
 Transition: TR-002-ACCEPT-WORK-PACKAGE
-Administrator decision: ACCEPT THE REVISED 11-PATH FS-12 WORK PACKAGE
+Administrator decision: AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION
 Work-package type: STANDARD_IMPLEMENTATION
 Accepted: YES
 Active: NO
@@ -450,7 +450,7 @@ Implementation: NOT_STARTED
 Verification: NOT_STARTED
 Administrator result acceptance: PENDING
 Closeout: NOT_PROPOSED
-Exact reusable-product paths: 11
+Exact reusable-product paths: 12
 Exact administrative paths: 12
 Exact planned commits: 7
 Exact phases: 7
@@ -465,3 +465,19 @@ Acceptance checkpoint: THIS_COMMIT
 The next repository action requires the separate administrator decision
 `AUTHORIZE AND START FS-12 IMPLEMENTATION`.
 <!-- FS12_TR002_ACCEPTANCE_END -->
+
+<!-- FS12_C2_ACTIVATION_BEGIN -->
+## FS-12 amended and authorized implementation
+
+```text
+Lifecycle state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+FS-12: ACTIVE / AUTHORIZED / IMPLEMENTATION IN PROGRESS
+Accepted reusable-product scope: 12 exact paths
+Added path: tests/test_tooling.py
+Source-version target retained: 0.4.3-dev
+All other accepted terms retained: YES
+Authorization: FS_12_IMPLEMENTATION
+Repository writer: FS_12_WORKING_MODEL
+FS-13: INACTIVE / NOT AUTHORIZED
+```
+<!-- FS12_C2_ACTIVATION_END -->

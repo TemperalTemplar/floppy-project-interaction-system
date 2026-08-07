@@ -1,4 +1,4 @@
-STATUS: ACCEPTED_PLANNING_BASELINE
+STATUS: IMPLEMENTATION_IN_PROGRESS
 
 # Floppy E — FS-12 Accepted Work Package
 
@@ -9,7 +9,7 @@ STATUS: ACCEPTED_PLANNING_BASELINE
 ## Acceptance
 
 ```text
-Administrator decision: ACCEPT THE REVISED 11-PATH FS-12 WORK PACKAGE
+Administrator decision: AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION
 Transition: TR-002-ACCEPT-WORK-PACKAGE
 Pre-state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
 Post-state: LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK
@@ -35,14 +35,15 @@ specs/lifecycle-transition-table.json
 system-manifest.json
 tests/test_final_closure.py
 tests/test_lifecycle_specification.py
+tests/test_tooling.py
 tests/test_validated_boot_package.py
 tools/floppyctl.py
 tools/validate_floppy.py
 ```
 
 ```text
-Exact reusable-product paths: 11
-Exact maximum reusable-product paths: 11
+Exact reusable-product paths: 12
+Exact maximum reusable-product paths: 12
 Conditional reusable-product paths: 0
 Exact reusable-product commits: 1
 ```
@@ -105,14 +106,14 @@ Source-version target: 0.4.3-dev
 Accepted: YES
 Active: NO
 Implementation authorized: NO
-Implementation: NOT_STARTED
+Implementation: IN_PROGRESS
 Verification: NOT_STARTED
 Administrator result acceptance: PENDING
 Closeout: NOT_PROPOSED
-Active work authorization: NONE
+Active work authorization: FS_12_IMPLEMENTATION
 Active implementation section: NONE
-Repository writer: NONE
-Writer authorization reference: NONE
+Repository writer: FS_12_WORKING_MODEL
+Writer authorization reference: FS_12_IMPLEMENTATION
 FS-13: NOT CREATED / NOT AUTHORIZED
 ```
 
@@ -128,3 +129,25 @@ Ordinary-user Python requirement: NO
 
 The next repository action requires the separate administrator decision
 `AUTHORIZE AND START FS-12 IMPLEMENTATION`.
+
+## Accepted scope amendment and implementation start
+
+```text
+Administrator decision: AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION
+Previous exact reusable-product paths: 11
+Amended exact reusable-product paths: 12
+Added path: tests/test_tooling.py
+Source-version target retained: 0.4.3-dev
+All other accepted terms retained: YES
+Authorization: FS_12_IMPLEMENTATION
+Authorization kind: section_implementation
+Base checkpoint: ee917295a0c14134b6375d520a9968a646f8d032
+Transition 1: TR-003-AUTHORIZE-SECTION-IMPLEMENTATION
+Intermediate state: LC-SECTION-AUTHORIZED-NOT-STARTED
+Transition 2: TR-004-START-SECTION-IMPLEMENTATION
+Final state: LC-SECTION-IMPLEMENTATION-IN-PROGRESS
+Repository writer: FS_12_WORKING_MODEL
+Writer authorization reference: FS_12_IMPLEMENTATION
+Activation checkpoint: THIS_COMMIT
+C3 and C4 authorization: COVERED BY THE SAME ADMINISTRATOR DECISION
+```

@@ -1,38 +1,33 @@
 # Floppy E — FS-12 Current Section
 
-Lifecycle state: `LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+Lifecycle state: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
 
-Applied transition: `TR-002-ACCEPT-WORK-PACKAGE`
+Applied transitions, in order:
 
-Administrator decision: `ACCEPT THE REVISED 11-PATH FS-12 WORK PACKAGE`
+1. `TR-002-ACCEPT-WORK-PACKAGE`
+2. `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
+3. `TR-004-START-SECTION-IMPLEMENTATION`
 
-Binding report SHA-256: `9350f5b143a2a785373060de7c862f180805f15e83be4827559def3b62775365`
-
-Accepted correction checkpoint: `a3b8500bd71e07df7e5777ea512b5fb81c0ae7d6`
+Administrator decision: `AMEND THE ACCEPTED FS-12 WORK PACKAGE TO 12 REUSABLE-PRODUCT PATHS BY ADDING tests/test_tooling.py, RETAIN THE 0.4.3-dev TARGET AND ALL OTHER ACCEPTED TERMS, AND CONTINUE AUTHORIZE AND START FS-12 IMPLEMENTATION`
 
 ```text
-Work-package type: STANDARD_IMPLEMENTATION
-Exact reusable-product paths: 11
-Exact administrative paths: 12
-Exact planned commits: 7
-Exact phases: 7
-Source-version target: 0.4.3-dev
-Lifecycle-state schema target: 1.2.0
-FS-12 acceptance: ACCEPTED AS PLANNING BASELINE
-FS-12 activation: NOT_STARTED / INACTIVE
-FS-12 implementation: NOT_STARTED
+FS-12 acceptance: ACCEPTED AS AMENDED PLANNING BASELINE
+FS-12 activation: ACTIVE
+FS-12 implementation: IN_PROGRESS
 FS-12 verification: NOT_STARTED
 FS-12 administrator result acceptance: PENDING
 FS-12 closeout: NOT_PROPOSED
-Active work authorization: NONE
-Active control-work authorization: NONE
-Repository writer: NONE
-Writer authorization reference: NONE
-Active implementation section: NONE
-FS-13: NOT CREATED / NOT AUTHORIZED
-Acceptance checkpoint: THIS_COMMIT
+Authorization: FS_12_IMPLEMENTATION
+Authorization kind: section_implementation
+Repository writer: FS_12_WORKING_MODEL
+Writer authorization reference: FS_12_IMPLEMENTATION
+Active implementation section: FS-12
+Exact authorized reusable-product paths: 12
+Added path: tests/test_tooling.py
+Source-version target: 0.4.3-dev
+Implementation output applied: NO
+FS-13: INACTIVE / NOT AUTHORIZED
+Activation checkpoint: THIS_COMMIT
 ```
 
-Work-package acceptance is not implementation authorization. The next repository
-action requires the separate administrator decision
-`AUTHORIZE AND START FS-12 IMPLEMENTATION`.
+The accepted FS-12 planning baseline is amended only by adding `tests/test_tooling.py`, raising the exact reusable-product count from 11 to 12. The source target `0.4.3-dev`, administrative ceiling, seven-commit sequence, and every other accepted term remain unchanged. The same explicit administrator decision covers C2, C3, and C4.
