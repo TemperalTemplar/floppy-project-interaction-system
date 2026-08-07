@@ -70,3 +70,12 @@ State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
 Migration: NONE
 Operation: PROPOSE
 ```
+
+## Final-project closure
+
+```text
+Transition: TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION
+Migration: NONE
+Operation: APPLY
+```

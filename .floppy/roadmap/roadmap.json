@@ -3869,8 +3869,8 @@
       }
     ]
   },
-  "last_applied_transition": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
-  "lifecycle_state": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+  "last_applied_transition": "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION",
+  "lifecycle_state": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
   "next_proposed_section": "FS-13",
   "next_proposed_section_status": "DRAFT_NOT_AUTHORIZED",
   "post_acceptance_bounded_correction": {
@@ -5918,19 +5918,15 @@
     "checkpoint": "THIS_COMMIT"
   },
   "final_closure": {
-    "record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
-    "transition": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
-    "target_state": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
-    "migration": "NONE",
-    "proposal_base_checkpoint": "5fe36b3f0c19f968649384c4a469ecdf361757f4",
-    "proposal_commit": "THIS_COMMIT",
+    "application_transition_id": "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION",
+    "source_proposal_state_id": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+    "target_final_state_id": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+    "migration_disposition": "NONE",
+    "proposal_commit": "e84b8473b706f1185a1e51d1914a32f0c92fe13a",
     "proposal_sha256": "c2389dc4f3b8e7f5560c1bdcba88d6744520eb7a62920ad9dee676d26b27b952",
-    "evidence_inventory": [
-      "296-pass complete repository suite accepted",
-      "FS-13 terminal closeout complete",
-      "PRE-TR021 two-commit validation correction accepted at 5fe36b3f0c19f968649384c4a469ecdf361757f4",
-      "source validators and tracked-JSON validation accepted"
-    ],
-    "status": "PROPOSED"
+    "reviewed_final_checkpoint": "e84b8473b706f1185a1e51d1914a32f0c92fe13a",
+    "authorization_reference": "FINAL_CLOSURE_APPLICATION",
+    "record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    "status": "APPLIED"
   }
 }

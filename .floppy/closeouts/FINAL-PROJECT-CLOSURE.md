@@ -7,3 +7,9 @@
 <!-- FINAL_PROJECT_CLOSURE_PROPOSAL_END -->
 
 Canonical proposal SHA-256: `c2389dc4f3b8e7f5560c1bdcba88d6744520eb7a62920ad9dee676d26b27b952`
+
+<!-- FINAL_PROJECT_CLOSURE_APPLICATION_BEGIN -->
+```json
+{"application_transition_id":"TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION","authorization_reference":"FINAL_CLOSURE_APPLICATION","migration_disposition":"NONE","proposal_commit":"e84b8473b706f1185a1e51d1914a32f0c92fe13a","proposal_sha256":"c2389dc4f3b8e7f5560c1bdcba88d6744520eb7a62920ad9dee676d26b27b952","reviewed_final_checkpoint":"e84b8473b706f1185a1e51d1914a32f0c92fe13a","source_proposal_state_id":"LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION","target_final_state_id":"LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION"}
+```
+<!-- FINAL_PROJECT_CLOSURE_APPLICATION_END -->
