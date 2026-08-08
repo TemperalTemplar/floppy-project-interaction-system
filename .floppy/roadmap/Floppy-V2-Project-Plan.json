@@ -1,0 +1,104 @@
+{
+  "artifact": "floppy-v2-project-plan",
+  "format_version": 1,
+  "plan_version": "2.0",
+  "plan_status": "ACCEPTED",
+  "administrator_acceptance": {
+    "actor": "Alva Roberts",
+    "date": "2026-08-08",
+    "decision": "Follow the supplied V2 project plan, place it in the V2 development control state, and make it happen.",
+    "implementation_authority_granted": false
+  },
+  "implementation_authority": "NONE",
+  "repository": "TemperalTemplar/floppy-project-interaction-system",
+  "published_v1_release": "v1.0.0",
+  "development_base": {
+    "branch": "main",
+    "checkpoint": "c8b40bb248336990da9112dd1b6b20de154572c5"
+  },
+  "development_branch": "feature/v2-continuity-onboarding",
+  "intended_local_worktree": "D:\\A\\Floppy-V2",
+  "target_release": "v2.0.0",
+  "governing_principle": "Context loss is not authority to reconstruct accepted work.",
+  "authoritative_markdown": ".floppy/roadmap/Floppy-V2-Project-Plan.md",
+  "authoritative_markdown_sha256": "f59a485c553e7885956c8cd7b9c6f50c3a6a5215df69d1dace1506f4073c1e26",
+  "roadmap_change_control": {
+    "bounded_work_package_count": 5,
+    "additional_package_implicit": false,
+    "additional_work_requires_administrator_plan_revision": true
+  },
+  "work_packages": [
+    {
+      "id": "V2-01",
+      "title": "V2 Architecture and Compatibility Contract",
+      "status": "DRAFT_NOT_AUTHORIZED",
+      "dependency": null,
+      "objective": "Define the exact legal relationship between v1 and v2 before implementation begins.",
+      "acceptance_boundaries": [
+        "No implementation ambiguity remains for V2-02 through V2-05.",
+        "No silent v1 state conversion is required.",
+        "No accepted v1 disposition is rewritten.",
+        "All proposed new state has an explicit owner and lifecycle role.",
+        "Exact version/schema compatibility rules are reviewable."
+      ]
+    },
+    {
+      "id": "V2-02",
+      "title": "User Onboarding and Provider-Independent Adoption",
+      "status": "PLANNED_NOT_AUTHORIZED",
+      "dependency": ["V2-01"],
+      "objective": "Make Floppy usable by a person who has never seen the system before and make that entry path independent of any single AI provider.",
+      "acceptance_boundaries": [
+        "All maintained provider guides use the same canonical Floppy semantics.",
+        "Provider-specific access instructions do not create provider-specific authority rules.",
+        "Class A/B/C workflows are documented.",
+        "Existing-project preservation is explicit.",
+        "Onboarding never silently authorizes implementation."
+      ]
+    },
+    {
+      "id": "V2-03",
+      "title": "Accepted-State Continuity Protection",
+      "status": "PLANNED_NOT_AUTHORIZED",
+      "dependency": ["V2-01"],
+      "objective": "Prevent context loss, model replacement, or re-onboarding from silently destroying or reconstructing accepted state.",
+      "acceptance_boundaries": [
+        "A fresh model can read protected accepted state.",
+        "Protected accepted state cannot be replaced without the lawful revision pathway."
+      ]
+    },
+    {
+      "id": "V2-04",
+      "title": "Continuity Overseer and Orchestrator Succession",
+      "status": "PLANNED_NOT_AUTHORIZED",
+      "dependency": ["V2-01", "V2-03"],
+      "objective": "Add project-level continuity across project-orchestrator lifetimes.",
+      "acceptance_boundaries": [
+        "Bounded orchestrator handoff succeeds without project restart.",
+        "Accepted work is not recreated.",
+        "Authority does not change merely because the orchestrator changes."
+      ]
+    },
+    {
+      "id": "V2-05",
+      "title": "Official Project Plan, Integration, Compatibility Validation, and V2 Release",
+      "status": "PLANNED_NOT_AUTHORIZED",
+      "dependency": ["V2-02", "V2-03", "V2-04"],
+      "objective": "Complete the design-to-execution handoff capability, integrate all v2 additions, prove compatibility, and publish v2.0.0.",
+      "acceptance_boundaries": [
+        "New-user end-to-end proof passes.",
+        "Existing-project proof passes.",
+        "Existing-v1-project compatibility/adoption proof passes.",
+        "Orchestrator-continuity proof passes.",
+        "Provider-independence proof passes.",
+        "v2.0.0 is released only from exact accepted final main."
+      ]
+    }
+  ],
+  "authority_state": {
+    "active_work_authorization": null,
+    "active_implementation_section": null,
+    "repository_writer": null,
+    "v2_implementation_authority": "NONE"
+  }
+}
