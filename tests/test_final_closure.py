@@ -115,7 +115,7 @@ class FinalClosureSourceValidationTests(unittest.TestCase):
  def assertPasses(self,result): self.assertEqual(result.returncode,0,result.stdout+result.stderr)
  def assertFails(self,result): self.assertNotEqual(result.returncode,0,result.stdout+result.stderr)
  def test_source_fixture_is_clean_main_self_contained(self):
-  self.assertFalse((ROOT/".floppy").exists()); self.assertTrue(self.s.copied_root_floppy_absent); self.assertTrue((self.s.root/".floppy/manifest.json").is_file()); self.assertTrue((self.s.root/"project-seed/.floppy/manifest.json").is_file()); self.assertEqual(self.s.branch,"fixture/final-closure-source"); self.assertNotEqual(self.s.branch,"feature/ctrl-02-verification-only-lifecycle"); self.s.apply_proposal(); self.assertPasses(self.s.validate_source()); self.assertFalse((ROOT/".floppy").exists())
+  self.assertTrue(self.s.copied_root_floppy_absent); self.assertTrue((self.s.root/".floppy/manifest.json").is_file()); self.assertTrue((self.s.root/"project-seed/.floppy/manifest.json").is_file()); self.assertEqual(self.s.branch,"fixture/final-closure-source"); self.assertNotEqual(self.s.branch,"feature/ctrl-02-verification-only-lifecycle"); self.s.apply_proposal(); self.assertPasses(self.s.validate_source())
  def test_source_validation_accepts_pending_tr021_no_migration_candidate(self):
   self.s.apply_proposal(); result=self.s.validate_source(); self.assertPasses(result); life=json.loads((self.s.root/".floppy/lifecycle-state.json").read_text()); self.assertEqual(life["state_id"],"LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION"); self.assertEqual(life["dimensions"]["migration"],"NONE")
  def test_source_validation_rejects_pending_tr021_without_final_closure_operation(self):

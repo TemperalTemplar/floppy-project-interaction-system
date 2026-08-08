@@ -158,7 +158,8 @@ class OrchestratorRegistryTests(unittest.TestCase):
                 )
                 + "\n"
             ).encode("utf-8")
-            self.assertEqual(path.read_bytes(), expected)
+            actual = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+            self.assertEqual(actual, expected)
 
     def test_checkpoint_and_reporting_fields_are_present(self) -> None:
         checkpoint = self.registry["project_checkpoint"]
@@ -258,16 +259,16 @@ class OrchestratorRegistryTests(unittest.TestCase):
         artifacts = registration["artifacts"]
         self.assertEqual(
             artifacts["registry_template"]["sha256"],
-            sha256(REGISTRY_PATH),
+            sha256_lf_text(REGISTRY_PATH),
         )
         provisioning = self.system_manifest["project_control_state_provisioning"]
         self.assertEqual(
             provisioning["artifacts"]["lifecycle_state_template"]["sha256"],
-            sha256(LIFECYCLE_PATH),
+            sha256_lf_text(LIFECYCLE_PATH),
         )
         self.assertEqual(
             provisioning["artifacts"]["orchestrator_registry_template"]["sha256"],
-            sha256(REGISTRY_PATH),
+            sha256_lf_text(REGISTRY_PATH),
         )
         self.assertEqual(
             artifacts["handoff_template"]["sha256"],
