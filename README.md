@@ -6,6 +6,49 @@ The Floppy Project Interaction System is a reusable Human-in-the-Loop project-co
 
 A project adopts the system by copying the project seed into that project's own repository. From that point forward, the project owns its Floppies, roadmap, revisions, handoffs, and evidence. Normal project sessions must not write project data back to this source repository.
 
+## New to Floppy? Start here
+
+You do **not** need to understand Floppies A-E, BCE lifecycle states, work packages, or Floppy's internal governance before trying it.
+
+Open a new ChatGPT conversation, paste the prompt below, and then describe your project naturally when ChatGPT asks. The model should determine whether you have only an idea, an existing repository that needs to adopt Floppy, or an existing project that already contains `.floppy/` state.
+
+```text
+I want to use the Floppy Project Interaction System to manage this project.
+
+Canonical Floppy source:
+https://github.com/TemperalTemplar/floppy-project-interaction-system
+
+Use stable release/tag:
+v1.0.0
+
+Begin by reading `BOOTSTRAP.md` and `system-manifest.json` from the Floppy source repository. Treat that repository as the canonical read-only Floppy system.
+
+I am a new Floppy user. Do not assume I understand Floppy, BCE, lifecycle states, Floppies A-E, work packages, or its internal governance terminology.
+
+First ask me to describe the project I want to build or continue. Let me explain it naturally.
+
+Then determine whether:
+- I only have an idea and no project repository yet;
+- I have an existing project or repository that has not adopted Floppy; or
+- my project already contains a `.floppy` control environment.
+
+If I provide a repository and you can access it, inspect the existing project before asking questions the repository can already answer.
+
+If Floppy has not yet been initialized for the project, guide me through the required repository and `.floppy` initialization without beginning implementation.
+
+When formal onboarding is required, load the canonical Floppy 1E onboarding controller and use it to establish the project outcome, verified starting state, requirements and constraints, assumptions and unknowns, bounded roadmap, acceptance criteria, deferred or excluded work, and first proposed work section.
+
+Ask questions in ordinary language. Explain Floppy concepts only when I need them to make a decision. Recommend routine technical choices instead of making me design every implementation detail.
+
+Do not treat my desire to build something as authorization to modify the project. Do not begin implementation during onboarding. Preserve existing valid work if this is an established project.
+
+When onboarding is complete, explain what Floppy learned, what roadmap it created, what the first proposed work section is, what requires my approval, and exactly what I should do next.
+
+From that point forward, use the Floppy Project Interaction System as the governing project-control and continuity system for this project.
+```
+
+For the complete first-time setup, the three supported starting conditions, initialization commands, and the shorter prompt for future conversations, read [`docs/User-Guide.md`](docs/User-Guide.md). The canonical model-facing role instructions remain in [`BOOTSTRAP.md`](BOOTSTRAP.md).
+
 ## About the system
 
 Read [`ABOUT.md`](ABOUT.md) for the conceptual overview: why the system was created, the problem it solves, how the AI and repositories interact, the definition of a **BCE — Bootable Context Environment**, and how the method is applied to projects.
@@ -14,7 +57,7 @@ Read [`ABOUT.md`](ABOUT.md) for the conceptual overview: why the system was crea
 
 - **Source repository:** defines the method, canonical controllers, templates, bootstrap instructions, and initialization tooling.
 - **Floppy 1E onboarding controller:** helps the user and model define the project outcome, inspect the starting state, build an evidence-driven section roadmap, and prepare the first inactive work package. It never authorizes implementation.
-- **Floppy Z coordinator:** reads the canonical source plus a project's accepted Floppies and tells Alva exactly what to send to the active project model. It does not perform project writes by default.
+- **Floppy Z coordinator:** reads the canonical source plus a project's accepted Floppies and tells the administrator exactly what to send to the active project model. It does not perform project writes by default.
 - **Project repository:** contains the project code plus its own `.floppy/` control directory and roadmap records.
 - **New conversation:** reads a small manifest first, then loads only the controls and project records required for the current lifecycle state.
 - **Closeout:** creates a small revision packet, accepted-section record, and inactive next-section draft; it does not regenerate every Floppy.
@@ -53,7 +96,7 @@ onboarding/README.md
 
 ### Floppy Z
 
-Floppy Z is the project-model orchestrator. It reads accepted project state, determines which project model is responsible, and produces the exact instruction Alva should give that model.
+Floppy Z is the project-model orchestrator. It reads accepted project state, determines which project model is responsible, and produces the exact instruction the administrator should give that model.
 
 Canonical files:
 
@@ -118,9 +161,9 @@ Roadmap acceptance does not authorize implementation. The first section begins o
 
 ## Start a coordinator conversation
 
-Use the coordinator instruction in `BOOTSTRAP.md`. The coordinator loads `orchestrator/Floppy_Z.md` from this source repository, treats this repository as read-only, reads the adopting project's manifest and Floppies, and tells Alva exactly what to send to the active project model.
+Use the coordinator instruction in `BOOTSTRAP.md`. The coordinator loads `orchestrator/Floppy_Z.md` from this source repository, treats this repository as read-only, reads the adopting project's manifest and Floppies, and tells the administrator exactly what to send to the active project model.
 
-The coordinator does not modify either repository unless Alva gives a separate, explicit, named execution override.
+The coordinator does not modify either repository unless the administrator gives a separate, explicit, named execution override.
 
 ## Start a direct project-model conversation
 
