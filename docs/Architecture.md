@@ -104,3 +104,28 @@ and registered digest. It does not:
 
 Git remains evidence and traceability. It does not replace the explicit human
 decision required by a transition.
+
+## V2 compatibility composition
+
+V2-01 adds an explicit `2.0.0` compatibility/profile family over the accepted
+V1 contract set. V1 lifecycle schemas `1.0.0`, `1.1.0`, and `1.2.0` remain
+immutable and are selected by exact profile combination rather than numeric
+"latest version" inference.
+
+Canonical V2-01 artifacts:
+
+```text
+specs/v2-architecture-compatibility.md
+specs/v2-compatibility-profile.json
+schemas/bce/2.0.0/bce-compatibility-profile.schema.json
+```
+
+V2 tooling may recognize supported V1 projects without migrating them. Durable
+V2-only state requires explicit adoption when the applicable profile says so.
+Unknown or ambiguous profile combinations stop safely.
+
+Provider capability classes A, B, and C describe technical access only; none
+grants Floppy authority or repository-writer status.
+
+V2-01 defines future Continuity Overseer and Official Project Plan authority
+boundaries but does not implement either capability.

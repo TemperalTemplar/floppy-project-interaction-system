@@ -26,6 +26,19 @@ class ToolingTests(unittest.TestCase):
         result = self.run_cmd(str(VALIDATE), str(ROOT), "--mode", "source")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_v2_development_source_identity(self) -> None:
+        version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        manifest = json.loads(
+            (ROOT / "system-manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(version, "2.0.0-dev")
+        self.assertEqual(manifest["system_version"], "2.0.0-dev")
+        self.assertEqual(manifest["status"], "development")
+        self.assertEqual(
+            manifest["v2_compatibility_profile"]["profile_version"],
+            "2.0.0",
+        )
+
     def test_initialize_and_validate_project(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             project = Path(td) / "sample-project"
@@ -40,8 +53,8 @@ class ToolingTests(unittest.TestCase):
             manifest = json.loads((project / ".floppy/manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["project_name"], "Sample Project")
             self.assertEqual(manifest["system"]["source_repository"], "owner/floppy-source")
-            self.assertEqual(manifest["system"]["version"], "0.4.3-dev")
-            self.assertIn("0.4.3-dev", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["system"]["version"], "2.0.0-dev")
+            self.assertIn("2.0.0-dev", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
             validation = self.run_cmd(str(VALIDATE), str(project), "--mode", "project")
             self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
 

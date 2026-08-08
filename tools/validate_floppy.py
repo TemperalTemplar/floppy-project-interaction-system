@@ -41,6 +41,9 @@ SOURCE_REQUIRED = [
     "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+    "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+    "specs/v2-architecture-compatibility.md",
+    "specs/v2-compatibility-profile.json",
     "tools/initialize_project.py",
 ]
 
@@ -2976,11 +2979,19 @@ def _validate_canonical_json_file(
     label: str,
 ) -> None:
     try:
-        actual = path.read_bytes()
-    except OSError as exc:
+        # Git may materialize tracked text as CRLF on Windows. Canonical Floppy
+        # JSON is defined over UTF-8 text with LF logical line endings, so
+        # normalize checkout line endings before comparing canonical bytes.
+        # This mirrors sha256(), which already preserves one registered digest
+        # across supported checkout line-ending conventions.
+        actual_text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
         errors.append(f"{label} is unreadable: {exc}")
         return
-    if actual != _canonical_json_bytes(value):
+    normalized = (
+        actual_text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    )
+    if normalized != _canonical_json_bytes(value):
         errors.append(f"{label} serialization is not canonical UTF-8/LF JSON")
 
 
@@ -3656,6 +3667,472 @@ def _validate_fs12_final_git_integrity(
 
 # === FS-12 FINAL-PROJECT CLOSURE VALIDATION END ===
 
+# === V2-01 COMPATIBILITY PROFILE BEGIN ===
+
+V2_COMPATIBILITY_PROFILE_ARTIFACTS = {
+    "architecture_spec": {
+        "path": "specs/v2-architecture-compatibility.md",
+    },
+    "compatibility_profile": {
+        "path": "specs/v2-compatibility-profile.json",
+    },
+    "compatibility_profile_schema": {
+        "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+        "$id": (
+            "urn:floppy-project-interaction-system:"
+            "schema:bce-compatibility-profile:2.0.0"
+        ),
+    },
+}
+
+V2_COMPATIBILITY_SELECTOR_FIELDS = (
+    "source_lineage",
+    "lifecycle_schema",
+    "verification_only_extension",
+    "final_closure_extension",
+    "compatibility_profile",
+)
+
+V2_ACCEPTED_STATE_PRECEDENCE = (
+    "COMMITTED_ACCEPTED_REPOSITORY_STATE",
+    "HISTORICAL_ACCEPTED_RECORDS",
+    "CURRENT_OPERATIONAL_STATE",
+    "DRAFTS",
+    "EXPLICIT_ADMINISTRATOR_EVIDENCE",
+    "LIVE_REPOSITORY_EVIDENCE",
+    "CONVERSATION_MEMORY",
+)
+
+
+def resolve_v2_compatibility_profile(
+    profile: dict[str, Any],
+    observed: dict[str, Any],
+) -> dict[str, Any]:
+    """Resolve one exact V2 compatibility combination without version guessing."""
+
+    if not isinstance(profile, dict) or not isinstance(observed, dict):
+        return {"status": "STOP", "reason": "UNSUPPORTED_PROFILE", "candidates": []}
+
+    if observed.get("unknown_records") not in (None, []):
+        return {"status": "STOP", "reason": "UNSUPPORTED_PROFILE", "candidates": []}
+
+    combinations = profile.get("compatibility_combinations")
+    if not isinstance(combinations, list):
+        return {"status": "STOP", "reason": "UNSUPPORTED_PROFILE", "candidates": []}
+
+    supplied = {
+        field: observed[field]
+        for field in V2_COMPATIBILITY_SELECTOR_FIELDS
+        if field in observed
+    }
+    matches: list[dict[str, Any]] = []
+    for combination in combinations:
+        if not isinstance(combination, dict):
+            continue
+        selector = combination.get("selector")
+        if not isinstance(selector, dict):
+            continue
+        if all(selector.get(field) == value for field, value in supplied.items()):
+            matches.append(combination)
+
+    candidates = sorted(
+        item.get("combination_id")
+        for item in matches
+        if isinstance(item.get("combination_id"), str)
+    )
+    missing = [
+        field for field in V2_COMPATIBILITY_SELECTOR_FIELDS if field not in observed
+    ]
+    if missing:
+        return {
+            "status": "STOP",
+            "reason": "AMBIGUOUS_PROFILE",
+            "missing_selector_fields": missing,
+            "candidates": candidates,
+        }
+    if not matches:
+        return {"status": "STOP", "reason": "UNSUPPORTED_PROFILE", "candidates": []}
+    if len(matches) != 1:
+        return {"status": "STOP", "reason": "AMBIGUOUS_PROFILE", "candidates": candidates}
+
+    selected = matches[0]
+    return {
+        "status": "RESOLVED",
+        "reason": None,
+        "combination_id": selected["combination_id"],
+        "disposition": selected["disposition"],
+        "automatic_migration": False,
+        "historical_state_preserved": True,
+    }
+
+
+def validate_v2_compatibility_profile(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    """Validate the V2-01 compatibility composition layer."""
+
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        errors.append(
+            f"jsonschema is required for V2-01 compatibility validation: {exc}"
+        )
+        return
+
+    registry = manifest.get("v2_compatibility_profile")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register V2 compatibility profile")
+        return
+
+    expected_metadata = {
+        "owner": "V2-01",
+        "status": "reusable_product",
+        "profile_version": "2.0.0",
+        "source_identity": "2.0.0-dev",
+        "strategy": "explicit_v2_compatibility_profile_family",
+        "numeric_latest_schema_inference": False,
+        "automatic_migration": False,
+        "validator": "tools/validate_floppy.py",
+    }
+    for field, expected in expected_metadata.items():
+        if registry.get(field) != expected:
+            errors.append(f"system manifest V2 compatibility {field} is invalid")
+
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, dict):
+        errors.append("system manifest V2 compatibility artifacts are invalid")
+        return
+    if set(artifacts) != set(V2_COMPATIBILITY_PROFILE_ARTIFACTS):
+        errors.append("system manifest V2 compatibility artifact registry is incomplete")
+        return
+
+    for name, expected in V2_COMPATIBILITY_PROFILE_ARTIFACTS.items():
+        record = artifacts.get(name)
+        if not isinstance(record, dict):
+            errors.append(
+                f"system manifest V2 compatibility artifact is invalid: {name}"
+            )
+            continue
+        relative = expected["path"]
+        if record.get("path") != relative:
+            errors.append(f"system manifest V2 compatibility path is invalid: {name}")
+            continue
+        path = root / relative
+        if not path.is_file():
+            errors.append(f"V2 compatibility artifact is missing: {relative}")
+            continue
+        if record.get("sha256") != sha256(path):
+            errors.append(f"V2 compatibility artifact digest does not match: {relative}")
+        expected_id = expected.get("$id")
+        if expected_id is not None and record.get("$id") != expected_id:
+            errors.append(f"system manifest V2 compatibility $id is invalid: {name}")
+
+    schema_path = root / V2_COMPATIBILITY_PROFILE_ARTIFACTS[
+        "compatibility_profile_schema"
+    ]["path"]
+    profile_path = root / V2_COMPATIBILITY_PROFILE_ARTIFACTS[
+        "compatibility_profile"
+    ]["path"]
+    schema = validate_json(schema_path, errors)
+    profile = validate_json(profile_path, errors)
+    if schema is None or profile is None:
+        return
+
+    expected_id = V2_COMPATIBILITY_PROFILE_ARTIFACTS[
+        "compatibility_profile_schema"
+    ]["$id"]
+    if schema.get("$schema") != DRAFT_2020_12:
+        errors.append("V2 compatibility schema does not declare Draft 2020-12")
+    if schema.get("$id") != expected_id:
+        errors.append("V2 compatibility schema $id is invalid")
+    if schema.get("status") != "normative":
+        errors.append("V2 compatibility schema status is invalid")
+    if schema.get("schema_version") != "2.0.0":
+        errors.append("V2 compatibility schema version is invalid")
+    if schema.get("normative_work_package") != "V2-01":
+        errors.append("V2 compatibility schema work-package owner is invalid")
+    if schema.get("production_enforcement") is not False:
+        errors.append("V2 compatibility schema production_enforcement must be false")
+
+    try:
+        Draft202012Validator.check_schema(schema)
+    except Exception as exc:
+        errors.append(f"invalid V2 compatibility Draft 2020-12 schema: {exc}")
+        return
+
+    failures = sorted(
+        Draft202012Validator(schema).iter_errors(profile),
+        key=lambda item: (
+            tuple(str(part) for part in item.absolute_path),
+            item.message,
+        ),
+    )
+    if failures:
+        first = failures[0]
+        location = ".".join(str(part) for part in first.absolute_path) or "<root>"
+        errors.append(
+            f"V2 compatibility profile fails schema at {location}: {first.message}"
+        )
+        return
+
+    if profile.get("numeric_latest_schema_inference") is not False:
+        errors.append("V2 compatibility profile permits numeric latest-schema inference")
+    if profile.get("automatic_migration") is not False:
+        errors.append("V2 compatibility profile permits automatic migration")
+    if profile.get("context_loss_rule") != (
+        "Context loss is not authority to reconstruct accepted work."
+    ):
+        errors.append("V2 compatibility context-loss rule is invalid")
+    if tuple(profile.get("selector_fields", ())) != V2_COMPATIBILITY_SELECTOR_FIELDS:
+        errors.append("V2 compatibility selector fields are invalid")
+    if tuple(profile.get("accepted_state_precedence", ())) != (
+        V2_ACCEPTED_STATE_PRECEDENCE
+    ):
+        errors.append("V2 accepted-state precedence is invalid")
+
+    combinations = profile.get("compatibility_combinations", [])
+    selectors: set[str] = set()
+    identifiers: set[str] = set()
+    for combination in combinations:
+        identifier = combination.get("combination_id")
+        selector = combination.get("selector")
+        if not isinstance(identifier, str) or not isinstance(selector, dict):
+            errors.append("V2 compatibility combination is invalid")
+            continue
+        encoded = json.dumps(
+            selector,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        if identifier in identifiers:
+            errors.append(f"duplicate V2 compatibility combination id: {identifier}")
+        if encoded in selectors:
+            errors.append(f"duplicate V2 compatibility selector: {identifier}")
+        identifiers.add(identifier)
+        selectors.add(encoded)
+        if combination.get("automatic_migration") is not False:
+            errors.append(f"V2 combination permits automatic migration: {identifier}")
+        if combination.get("historical_state_preserved") is not True:
+            errors.append(
+                f"V2 combination does not preserve historical state: {identifier}"
+            )
+
+    required = {
+        "V1_BASE_1_0",
+        "V1_VERIFICATION_ONLY_1_1",
+        "V1_FINAL_CLOSURE_1_2",
+        "V2_PROFILE_OVER_V1_1_0",
+        "V2_PROFILE_OVER_V1_1_1",
+        "V2_PROFILE_OVER_V1_1_2",
+    }
+    if identifiers != required:
+        errors.append("V2 compatibility combination set is incomplete or unknown")
+
+    providers = profile.get("provider_capability_classes")
+    if not isinstance(providers, dict) or set(providers) != {
+        "CLASS_A",
+        "CLASS_B",
+        "CLASS_C",
+    }:
+        errors.append("V2 provider capability classes are incomplete")
+    else:
+        for name, record in providers.items():
+            if record.get("grants_floppy_authority") is not False:
+                errors.append(f"{name} incorrectly grants Floppy authority")
+            if record.get("grants_repository_writer") is not False:
+                errors.append(f"{name} incorrectly grants repository-writer status")
+
+    future = profile.get("future_record_families")
+    if not isinstance(future, dict):
+        errors.append("V2 future record-family boundaries are missing")
+    else:
+        for name in ("continuity_overseer", "official_project_plan"):
+            record = future.get(name)
+            if not isinstance(record, dict):
+                errors.append(f"V2 future record-family boundary is missing: {name}")
+                continue
+            if record.get("implemented") is not False:
+                errors.append(f"V2-01 incorrectly implements future capability: {name}")
+            if record.get("authority_by_existence") is not False:
+                errors.append(f"future capability grants authority by existence: {name}")
+            if record.get("repository_writer_by_role") is not False:
+                errors.append(f"future capability grants writer status by role: {name}")
+
+    v1 = profile.get("v1_contracts")
+    if not isinstance(v1, dict):
+        errors.append("V2 compatibility V1 preservation contract is missing")
+    else:
+        if v1.get("schemas_immutable") is not True:
+            errors.append("V2 compatibility does not preserve V1 schemas")
+        if v1.get("v1_release_immutable") is not True:
+            errors.append("V2 compatibility does not preserve v1.0.0 release")
+        if v1.get("silent_migration_forbidden") is not True:
+            errors.append("V2 compatibility permits silent migration")
+        if v1.get("numeric_supersession_forbidden") is not True:
+            errors.append("V2 compatibility permits numeric supersession")
+        if v1.get("supported_lifecycle_schemas") != [
+            "1.0.0",
+            "1.1.0",
+            "1.2.0",
+        ]:
+            errors.append("V2 compatibility V1 lifecycle profile set is invalid")
+
+
+def _is_v2_development_control_manifest(manifest: dict[str, Any]) -> bool:
+    return (
+        manifest.get("format_version") == 2
+        and manifest.get("project_name")
+        == "Floppy Project Interaction System v2 Development"
+        and isinstance(manifest.get("v2_work_packages"), dict)
+    )
+
+
+def validate_v2_development_control_mode(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    """Validate V2 source-development control without falsifying an FS identifier."""
+
+    lifecycle_path = root / ".floppy/lifecycle-state.json"
+    registry_path = root / ".floppy/orchestrator-registry.json"
+    lifecycle = validate_json(lifecycle_path, errors)
+    registry = validate_json(registry_path, errors)
+    if not isinstance(lifecycle, dict) or not isinstance(registry, dict):
+        return
+
+    _validate_canonical_json_file(
+        root / ".floppy/manifest.json",
+        manifest,
+        errors,
+        "V2 development manifest",
+    )
+    _validate_canonical_json_file(
+        lifecycle_path,
+        lifecycle,
+        errors,
+        "V2 development lifecycle-state",
+    )
+    _validate_canonical_json_file(
+        registry_path,
+        registry,
+        errors,
+        "V2 development orchestrator registry",
+    )
+
+    control = manifest.get("control_state")
+    control = control if isinstance(control, dict) else {}
+    schema_path = control.get(
+        "lifecycle_state_schema",
+        "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
+    )
+    if schema_path != "schemas/bce/1.0.0/bce-lifecycle-state.schema.json":
+        errors.append("V2 development control must preserve frozen V1 lifecycle schema")
+    else:
+        _validate_lifecycle_schema_instance(
+            root,
+            lifecycle,
+            errors,
+            "V2 development lifecycle-state",
+            schema_path=schema_path,
+        )
+
+    roadmap = manifest.get("roadmap")
+    roadmap = roadmap if isinstance(roadmap, dict) else {}
+    current = roadmap.get("current_work_package")
+    if not isinstance(current, str) or re.fullmatch(r"V2-[0-9]{2}", current) is None:
+        errors.append("V2 development current work-package identity is invalid")
+
+    packages = manifest.get("v2_work_packages")
+    if not isinstance(packages, dict) or set(packages) != {
+        "V2-01",
+        "V2-02",
+        "V2-03",
+        "V2-04",
+        "V2-05",
+    }:
+        errors.append("V2 development work-package set is invalid")
+    else:
+        for later in ("V2-02", "V2-03", "V2-04", "V2-05"):
+            if packages.get(later) != "PLANNED_NOT_AUTHORIZED":
+                errors.append(
+                    f"{later} must remain inactive/not authorized during V2-01"
+                )
+
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    active = authority.get("active_implementation_authorization")
+    writer = authority.get("repository_writer")
+    reference = authority.get("writer_authorization_reference")
+
+    assignments = registry.get("current_assignments")
+    assignments = assignments if isinstance(assignments, dict) else {}
+
+    if active is None:
+        if lifecycle.get("authorization_id") is not None:
+            errors.append("V2 development lifecycle retains cleared authorization")
+        if lifecycle.get("section") is not None:
+            errors.append("V2 development lifecycle must not falsify a V2 id as FS section")
+        if lifecycle.get("active_implementation_sections") != []:
+            errors.append("V2 development active FS section list must be empty")
+        dimensions = lifecycle.get("dimensions")
+        dimensions = dimensions if isinstance(dimensions, dict) else {}
+        if dimensions.get("authority") != "NO_ACTIVE_WORK_AUTHORIZATION":
+            errors.append("V2 development cleared authority dimension is invalid")
+        if any(value is not None for value in (writer, reference)):
+            errors.append("V2 development writer clearance is incomplete")
+        if assignments.get("repository_writer") is not None:
+            errors.append("V2 development registry writer clearance is incomplete")
+        if assignments.get("writer_authorization_reference") is not None:
+            errors.append(
+                "V2 development registry writer reference clearance is incomplete"
+            )
+        if assignments.get("current_section_working_model") is not None:
+            errors.append("V2 development working-model clearance is incomplete")
+    else:
+        if not isinstance(active, str) or not active:
+            errors.append("V2 development active authorization is invalid")
+        if authority.get("active_work_authorization") != active:
+            errors.append("V2 development active work authorization mismatch")
+        if authority.get("implementation_authority") != active:
+            errors.append("V2 development implementation authority mismatch")
+        if reference != active:
+            errors.append("V2 development writer authorization reference mismatch")
+        if not isinstance(writer, str) or not writer:
+            errors.append("V2 development repository writer is missing")
+        if lifecycle.get("authorization_id") != active:
+            errors.append("V2 development lifecycle authorization mismatch")
+        if lifecycle.get("section") is not None:
+            errors.append("V2 development lifecycle must not falsify a V2 id as FS section")
+        if lifecycle.get("active_implementation_sections") != []:
+            errors.append("V2 development active FS section list must be empty")
+        dimensions = lifecycle.get("dimensions")
+        dimensions = dimensions if isinstance(dimensions, dict) else {}
+        if dimensions.get("authority") != (
+            "EXACT_SECTION_IMPLEMENTATION_AUTHORIZATION"
+        ):
+            errors.append("V2 development active authority dimension is invalid")
+        if assignments.get("repository_writer") != writer:
+            errors.append("V2 development registry writer mismatch")
+        if assignments.get("writer_authorization_reference") != active:
+            errors.append("V2 development registry writer reference mismatch")
+        if assignments.get("current_section_working_model") != writer:
+            errors.append("V2 development working-model mismatch")
+
+    rules = registry.get("rules")
+    rules = rules if isinstance(rules, dict) else {}
+    if rules.get("maximum_repository_writers") != 1:
+        errors.append("V2 development writer limit is invalid")
+    if rules.get("writer_requires_exact_authorization_reference") is not True:
+        errors.append("V2 development writer-reference rule is invalid")
+    if rules.get("status_or_role_grants_write_authority") is not False:
+        errors.append("V2 development role-authority rule is invalid")
+
+# === V2-01 COMPATIBILITY PROFILE END ===
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -3698,18 +4175,26 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_verification_only_lifecycle_extension(root, manifest, errors)
     validate_project_seed_provisioning(root, manifest, errors)
     validate_final_closure_extension(root, manifest, errors)
+    validate_v2_compatibility_profile(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():
         control_manifest = validate_json(control_path, errors)
         if control_manifest is not None:
-            validate_self_hosted_control_mode(root, control_manifest, errors)
-            errors.extend(
-                validate_authorization_git_integrity(
+            if _is_v2_development_control_manifest(control_manifest):
+                validate_v2_development_control_mode(
                     root,
                     control_manifest,
+                    errors,
                 )
-            )
+            else:
+                validate_self_hosted_control_mode(root, control_manifest, errors)
+                errors.extend(
+                    validate_authorization_git_integrity(
+                        root,
+                        control_manifest,
+                    )
+                )
 
 
 def validate_project(root: Path, errors: list[str]) -> None:

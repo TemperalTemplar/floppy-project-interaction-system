@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-compatibility-profile:2.0.0",
+  "title": "Floppy V2 Compatibility Profile",
+  "description": "V2-01 normative compatibility composition contract.",
+  "status": "normative",
+  "schema_version": "2.0.0",
+  "normative_work_package": "V2-01",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "profile_version",
+    "strategy",
+    "source_identity",
+    "numeric_latest_schema_inference",
+    "automatic_migration",
+    "context_loss_rule",
+    "selector_fields",
+    "compatibility_combinations",
+    "adoption_dispositions",
+    "adoption_policy",
+    "accepted_state_precedence",
+    "accepted_state_semantics",
+    "provider_capability_classes",
+    "future_record_families",
+    "v1_contracts"
+  ],
+  "properties": {
+    "format": {
+      "const": "floppy-v2-compatibility-profile"
+    },
+    "profile_version": {
+      "const": "2.0.0"
+    },
+    "strategy": {
+      "const": "EXPLICIT_V2_COMPATIBILITY_PROFILE_FAMILY"
+    },
+    "source_identity": {
+      "const": "2.0.0-dev"
+    },
+    "numeric_latest_schema_inference": {
+      "const": false
+    },
+    "automatic_migration": {
+      "const": false
+    },
+    "context_loss_rule": {
+      "const": "Context loss is not authority to reconstruct accepted work."
+    },
+    "selector_fields": {
+      "type": "array",
+      "const": [
+        "source_lineage",
+        "lifecycle_schema",
+        "verification_only_extension",
+        "final_closure_extension",
+        "compatibility_profile"
+      ]
+    },
+    "compatibility_combinations": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$ref": "#/$defs/combination"
+      }
+    },
+    "adoption_dispositions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "CONTINUE_V1",
+        "V2_ADOPTION_OPTIONAL",
+        "V2_ADOPTION_REQUIRED",
+        "V2_ADOPTION_DEFERRED",
+        "UNSUPPORTED_INCOMPATIBLE"
+      ],
+      "properties": {
+        "CONTINUE_V1": {
+          "$ref": "#/$defs/disposition"
+        },
+        "V2_ADOPTION_OPTIONAL": {
+          "$ref": "#/$defs/disposition"
+        },
+        "V2_ADOPTION_REQUIRED": {
+          "$ref": "#/$defs/disposition"
+        },
+        "V2_ADOPTION_DEFERRED": {
+          "$ref": "#/$defs/disposition"
+        },
+        "UNSUPPORTED_INCOMPATIBLE": {
+          "$ref": "#/$defs/disposition"
+        }
+      }
+    },
+    "adoption_policy": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "condition",
+          "disposition",
+          "rule"
+        ],
+        "properties": {
+          "condition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disposition": {
+            "enum": [
+              "CONTINUE_V1",
+              "V2_ADOPTION_OPTIONAL",
+              "V2_ADOPTION_REQUIRED",
+              "V2_ADOPTION_DEFERRED",
+              "UNSUPPORTED_INCOMPATIBLE"
+            ]
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "accepted_state_precedence": {
+      "type": "array",
+      "const": [
+        "COMMITTED_ACCEPTED_REPOSITORY_STATE",
+        "HISTORICAL_ACCEPTED_RECORDS",
+        "CURRENT_OPERATIONAL_STATE",
+        "DRAFTS",
+        "EXPLICIT_ADMINISTRATOR_EVIDENCE",
+        "LIVE_REPOSITORY_EVIDENCE",
+        "CONVERSATION_MEMORY"
+      ]
+    },
+    "accepted_state_semantics": {
+      "type": "object",
+      "minProperties": 7,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "provider_capability_classes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "CLASS_A",
+        "CLASS_B",
+        "CLASS_C"
+      ],
+      "properties": {
+        "CLASS_A": {
+          "$ref": "#/$defs/provider_class"
+        },
+        "CLASS_B": {
+          "$ref": "#/$defs/provider_class"
+        },
+        "CLASS_C": {
+          "$ref": "#/$defs/provider_class"
+        }
+      }
+    },
+    "future_record_families": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "continuity_overseer",
+        "official_project_plan"
+      ],
+      "properties": {
+        "continuity_overseer": {
+          "$ref": "#/$defs/future_family"
+        },
+        "official_project_plan": {
+          "$ref": "#/$defs/future_family"
+        }
+      }
+    },
+    "v1_contracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemas_immutable",
+        "v1_release_immutable",
+        "silent_migration_forbidden",
+        "numeric_supersession_forbidden",
+        "supported_lifecycle_schemas"
+      ],
+      "properties": {
+        "schemas_immutable": {
+          "const": true
+        },
+        "v1_release_immutable": {
+          "const": true
+        },
+        "silent_migration_forbidden": {
+          "const": true
+        },
+        "numeric_supersession_forbidden": {
+          "const": true
+        },
+        "supported_lifecycle_schemas": {
+          "type": "array",
+          "const": [
+            "1.0.0",
+            "1.1.0",
+            "1.2.0"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_lineage",
+        "lifecycle_schema",
+        "verification_only_extension",
+        "final_closure_extension",
+        "compatibility_profile"
+      ],
+      "properties": {
+        "source_lineage": {
+          "enum": [
+            "v1.0.0",
+            "v2.0.0"
+          ]
+        },
+        "lifecycle_schema": {
+          "enum": [
+            "1.0.0",
+            "1.1.0",
+            "1.2.0"
+          ]
+        },
+        "verification_only_extension": {
+          "type": "boolean"
+        },
+        "final_closure_extension": {
+          "type": "boolean"
+        },
+        "compatibility_profile": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "2.0.0"
+          ]
+        }
+      }
+    },
+    "combination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "combination_id",
+        "selector",
+        "disposition",
+        "automatic_migration",
+        "historical_state_preserved",
+        "description"
+      ],
+      "properties": {
+        "combination_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selector": {
+          "$ref": "#/$defs/selector"
+        },
+        "disposition": {
+          "enum": [
+            "CONTINUE_V1",
+            "V2_ADOPTION_OPTIONAL",
+            "V2_ADOPTION_REQUIRED",
+            "V2_ADOPTION_DEFERRED",
+            "UNSUPPORTED_INCOMPATIBLE"
+          ]
+        },
+        "automatic_migration": {
+          "const": false
+        },
+        "historical_state_preserved": {
+          "const": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meaning",
+        "stop",
+        "automatic_migration",
+        "durable_v2_state_permitted"
+      ],
+      "properties": {
+        "meaning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stop": {
+          "type": "boolean"
+        },
+        "automatic_migration": {
+          "const": false
+        },
+        "durable_v2_state_permitted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "provider_class": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "repository_read",
+        "repository_write",
+        "command_execution",
+        "artifact_transfer",
+        "grants_floppy_authority",
+        "grants_repository_writer"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository_read": {
+          "type": "boolean"
+        },
+        "repository_write": {
+          "type": "boolean"
+        },
+        "command_execution": {
+          "type": "boolean"
+        },
+        "artifact_transfer": {
+          "type": "boolean"
+        },
+        "grants_floppy_authority": {
+          "const": false
+        },
+        "grants_repository_writer": {
+          "const": false
+        }
+      }
+    },
+    "future_family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_work_package",
+        "implemented",
+        "authority_by_existence",
+        "repository_writer_by_role",
+        "semantics"
+      ],
+      "properties": {
+        "owner_work_package": {
+          "enum": [
+            "V2-04",
+            "V2-05"
+          ]
+        },
+        "implemented": {
+          "const": false
+        },
+        "authority_by_existence": {
+          "const": false
+        },
+        "repository_writer_by_role": {
+          "const": false
+        },
+        "semantics": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

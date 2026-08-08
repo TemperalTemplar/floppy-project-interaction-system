@@ -84,12 +84,15 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
     "schemas/floppy-fields.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
+    "specs/v2-architecture-compatibility.md",
+    "specs/v2-compatibility-profile.json",
     "system-manifest.json",
     "tools/floppyctl.py",
     "tools/initialize_project.py",
@@ -249,7 +252,7 @@ class ValidatedBootPackageTests(unittest.TestCase):
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 49)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 52)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")

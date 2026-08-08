@@ -1,7 +1,7 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "1.0.0",
-  "status": "stable-release",
+  "system_version": "2.0.0-dev",
+  "status": "development",
   "license": "Apache-2.0",
   "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
@@ -230,11 +230,11 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "8af21e169b5514e5e3ab2c23183795659d29500cc7b98db9923fec2fec0c4a55"
+        "sha256": "364cad52f1ac3875f62cde011eec63a73a02d48ce399f79c14289fa6c9914e66"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "d58fbf7daa9c189ed2599b9d07c798465ce3c7f260263f9190b407c07ee75649"
+        "sha256": "80f7286a2db9fa15d17ebfa834dda0ccb1de9c5ff9986ecc4d4368aae88c39c0"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
@@ -294,15 +294,40 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "d58fbf7daa9c189ed2599b9d07c798465ce3c7f260263f9190b407c07ee75649"
+        "sha256": "80f7286a2db9fa15d17ebfa834dda0ccb1de9c5ff9986ecc4d4368aae88c39c0"
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "0f8af2e389f2d445ffab00e17dfb38cde6f6c588a06b0530f6ce79fa1a253e8e"
+        "sha256": "364cad52f1ac3875f62cde011eec63a73a02d48ce399f79c14289fa6c9914e66"
       },
       "tests": {
         "path": "tests/test_final_closure.py",
         "sha256": "b79fa001f09b0e30971d8f3d1e351720d36e910c7db80ed2ff33be6a7f297bce"
+      }
+    }
+  },
+  "v2_compatibility_profile": {
+    "owner": "V2-01",
+    "status": "reusable_product",
+    "profile_version": "2.0.0",
+    "source_identity": "2.0.0-dev",
+    "strategy": "explicit_v2_compatibility_profile_family",
+    "numeric_latest_schema_inference": false,
+    "automatic_migration": false,
+    "validator": "tools/validate_floppy.py",
+    "artifacts": {
+      "architecture_spec": {
+        "path": "specs/v2-architecture-compatibility.md",
+        "sha256": "6af91bb81d1a40a83a1ba38f082eeb3049a7a6ae51152752753b02308674b3ea"
+      },
+      "compatibility_profile": {
+        "path": "specs/v2-compatibility-profile.json",
+        "sha256": "29b9fb85ab4cb057ab30f93a379e2a374e9d855ce44cb3df9c0546c8d3731369"
+      },
+      "compatibility_profile_schema": {
+        "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-compatibility-profile:2.0.0",
+        "sha256": "b6b7aeac97289c225a2c4884a6c01dbace94295ec7c636efde9ce0b6eca9bbac"
       }
     }
   }
