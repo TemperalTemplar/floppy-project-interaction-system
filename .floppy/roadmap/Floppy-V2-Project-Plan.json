@@ -31,9 +31,15 @@
     {
       "id": "V2-01",
       "title": "V2 Architecture and Compatibility Contract",
-      "status": "DRAFT_NOT_AUTHORIZED",
+      "status": "ACCEPTED_PLANNING_BASELINE",
       "dependency": null,
       "objective": "Define the exact legal relationship between v1 and v2 before implementation begins.",
+      "acceptance_record": ".floppy/work-packages/V2-01.md",
+      "administrator_decision": "ACCEPT V2-01 WORK-PACKAGE PROPOSAL AS THE PLANNING BASELINE.",
+      "accepted_on": "2026-08-08",
+      "proposal_base_checkpoint": "5e11aa7719ffc6befd338740b2c1dc70cc185473",
+      "implementation_authority": "NONE",
+      "repository_writer": null,
       "acceptance_boundaries": [
         "No implementation ambiguity remains for V2-02 through V2-05.",
         "No silent v1 state conversion is required.",
