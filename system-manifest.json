@@ -1,7 +1,8 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "0.4.3-dev",
-  "status": "development-source",
+  "system_version": "1.0.0",
+  "status": "stable-release",
+  "license": "Apache-2.0",
   "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
     "about": "ABOUT.md",
@@ -245,7 +246,7 @@
     "name": "Validated Final-Project Closure",
     "section": "FS-12",
     "status": "reusable_product",
-    "source_version": "0.4.3-dev",
+    "source_version": "1.0.0",
     "schema_version": "1.2.0",
     "proposal_application_separate": true,
     "canonical_record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
