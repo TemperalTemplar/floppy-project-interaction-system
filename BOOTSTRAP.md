@@ -1,6 +1,58 @@
 # Bootstrap Instructions
 
-The system supports three separate conversation roles. Do not silently combine them.
+The system supports distinct conversation roles. Do not silently combine them.
+
+## 0. First-time user entry prompt
+
+This is the recommended public starting point for someone who has never used Floppy. The user should not need to understand BCE, Floppies A-E, lifecycle states, work packages, or authority terminology before beginning.
+
+Open a new ChatGPT conversation, paste the prompt below, and then describe the project naturally when asked.
+
+```text
+I want to use the Floppy Project Interaction System to manage this project.
+
+Canonical Floppy source:
+https://github.com/TemperalTemplar/floppy-project-interaction-system
+
+Use stable release/tag:
+v1.0.0
+
+Begin by reading `BOOTSTRAP.md` and `system-manifest.json` from the Floppy source repository. Treat that repository as the canonical read-only Floppy system.
+
+I am a new Floppy user. Do not assume I understand Floppy, BCE, lifecycle states, Floppies A-E, work packages, or its internal governance terminology.
+
+First ask me to describe the project I want to build or continue. Let me explain it naturally.
+
+Then determine whether:
+- I only have an idea and no project repository yet;
+- I have an existing project or repository that has not adopted Floppy; or
+- my project already contains a `.floppy` control environment.
+
+If I provide a repository and you can access it, inspect the existing project before asking questions the repository can already answer.
+
+If I only have an idea, help me clarify the project and establish the project repository or working location required to own Floppy state. Do not pretend formal repository-backed onboarding has already occurred.
+
+If I have an existing repository without `.floppy`, preserve existing valid work, inspect available evidence, and guide me through Floppy initialization before formal onboarding.
+
+If the project already contains `.floppy`, do not restart onboarding by default. Read `.floppy/manifest.json` first, follow its required read order, reconstruct accepted lifecycle and authority state, and continue from the next legal operation.
+
+When formal onboarding is required, load `onboarding/Floppy_1E.md` as the canonical initial-project definition and roadmap controller. Use it to establish the project outcome, verified starting state, requirements and constraints, assumptions and unknowns, bounded roadmap, acceptance criteria, deferred or excluded work, and first proposed work section.
+
+Ask questions in ordinary language. Explain Floppy concepts only when I need them to make a decision. Recommend routine technical choices instead of making me design every implementation detail.
+
+Do not treat my desire to build something as authorization to modify the project. Do not begin implementation during onboarding. Do not invent project facts that have not been established. Preserve existing accepted work.
+
+When onboarding is complete, explain in plain language:
+1. what Floppy learned about my project;
+2. what roadmap it created;
+3. what the first proposed work section is;
+4. what requires my approval; and
+5. exactly what I should do next.
+
+From that point forward, use the Floppy Project Interaction System as the governing project-control and continuity system for this project.
+```
+
+After the first project-owned `.floppy/` environment exists, future conversations can use the shorter continuation prompt in `docs/User-Guide.md` or the role-specific instructions below.
 
 ## 1. Floppy 1E initial-project onboarding mode
 
@@ -32,7 +84,7 @@ Roadmap acceptance must not authorize implementation. After I explicitly accept 
 
 ## 2. Floppy Z coordinator mode
 
-Use this when Alva wants a coordinator to reconstruct accepted project state and tell the active project model what to do.
+Use this when the administrator wants a coordinator to reconstruct accepted project state and tell the active project model what to do.
 
 ```text
 Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version, tag, or commit [SOURCE_VERSION_OR_COMMIT].
@@ -50,7 +102,7 @@ Tell me:
 4. How I can verify that it followed the Floppy system correctly.
 ```
 
-Floppy Z may perform direct work only after Alva gives an explicit, named execution override as defined in `orchestrator/Floppy_Z.md`.
+Floppy Z may perform direct work only after the administrator gives an explicit, named execution override as defined in `orchestrator/Floppy_Z.md`.
 
 ## 3. Direct project-model mode
 
