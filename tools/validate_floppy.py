@@ -18,6 +18,12 @@ SOURCE_REQUIRED = [
     "README.md",
     "ABOUT.md",
     "BOOTSTRAP.md",
+    "docs/getting-started/ChatGPT.md",
+    "docs/getting-started/DeepSeek.md",
+    "docs/getting-started/Gemini.md",
+    "docs/getting-started/Grok.md",
+    "docs/getting-started/Other-AI.md",
+    "docs/getting-started/README.md",
     "system-manifest.json",
     "orchestrator/Floppy_Z.md",
     "orchestrator/README.md",
@@ -4211,6 +4217,163 @@ def validate_v2_development_control_mode(
 
 # === V2-01 COMPATIBILITY PROFILE END ===
 
+# === V2-02 PROVIDER-INDEPENDENT USER ONBOARDING BEGIN ===
+V2_USER_ONBOARDING_CAPABILITY_FIELDS = (
+    "repository_read",
+    "repository_write",
+    "command_execution",
+    "artifact_transfer",
+)
+V2_USER_ONBOARDING_PROVIDER_GUIDES = {
+    "ChatGPT": "docs/getting-started/ChatGPT.md",
+    "Gemini": "docs/getting-started/Gemini.md",
+    "Grok": "docs/getting-started/Grok.md",
+    "DeepSeek": "docs/getting-started/DeepSeek.md",
+    "Other-AI": "docs/getting-started/Other-AI.md",
+}
+
+
+def classify_v2_session_capabilities(capabilities: dict[str, Any]) -> dict[str, Any]:
+    """Classify repository interaction from actual session capabilities, never brand."""
+    expected = set(V2_USER_ONBOARDING_CAPABILITY_FIELDS)
+    if not isinstance(capabilities, dict) or set(capabilities) != expected:
+        return {
+            "status": "STOP",
+            "reason": "INVALID_CAPABILITY_VECTOR",
+            "grants_floppy_authority": False,
+            "grants_repository_writer": False,
+        }
+    if any(type(capabilities[name]) is not bool for name in V2_USER_ONBOARDING_CAPABILITY_FIELDS):
+        return {
+            "status": "STOP",
+            "reason": "INVALID_CAPABILITY_VECTOR",
+            "grants_floppy_authority": False,
+            "grants_repository_writer": False,
+        }
+    if capabilities["repository_write"] and not capabilities["repository_read"]:
+        return {
+            "status": "STOP",
+            "reason": "CONTRADICTORY_CAPABILITY_VECTOR",
+            "capabilities": dict(capabilities),
+            "grants_floppy_authority": False,
+            "grants_repository_writer": False,
+        }
+    if capabilities["repository_write"]:
+        workflow = "CLASS_A"
+    elif capabilities["repository_read"]:
+        workflow = "CLASS_B"
+    else:
+        workflow = "CLASS_C"
+    return {
+        "status": "RESOLVED",
+        "workflow_class": workflow,
+        "capabilities": dict(capabilities),
+        "grants_floppy_authority": False,
+        "grants_repository_writer": False,
+    }
+
+
+def validate_v2_user_onboarding(root: Path, manifest: dict[str, Any], errors: list[str]) -> None:
+    registry = manifest.get("user_onboarding")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register V2-02 user onboarding")
+        return
+    if registry.get("owner") != "V2-02" or registry.get("status") != "reusable_product":
+        errors.append("V2-02 user onboarding ownership/status is invalid")
+    if manifest.get("entrypoints", {}).get("user_onboarding") != "docs/getting-started/README.md":
+        errors.append("V2-02 canonical user-onboarding entrypoint is invalid")
+    if registry.get("canonical_starter") != "docs/getting-started/README.md":
+        errors.append("V2-02 canonical universal starter path is invalid")
+    if registry.get("provider_guides") != V2_USER_ONBOARDING_PROVIDER_GUIDES:
+        errors.append("V2-02 maintained provider-guide set is invalid")
+    if registry.get("capability_fields") != list(V2_USER_ONBOARDING_CAPABILITY_FIELDS):
+        errors.append("V2-02 capability vector fields are invalid")
+    if registry.get("provider_brand_selects_class") is not False:
+        errors.append("V2-02 provider brand must not select workflow class")
+    if registry.get("capability_grants_authority") is not False:
+        errors.append("V2-02 transport capability must not grant authority")
+
+    routes = registry.get("routes")
+    if not isinstance(routes, dict) or set(routes) != {"A", "B", "C"}:
+        errors.append("V2-02 Route A/B/C registry is invalid")
+    else:
+        if routes.get("A", {}).get("kind") != "IDEA_ONLY":
+            errors.append("V2-02 Route A semantics are invalid")
+        if routes.get("B", {}).get("kind") != "EXISTING_NON_FLOPPY_PROJECT" or routes.get("B", {}).get("preserve_existing_project") is not True:
+            errors.append("V2-02 Route B preservation semantics are invalid")
+        if routes.get("C", {}).get("kind") != "EXISTING_FLOPPY_PROJECT" or routes.get("C", {}).get("first_read") != ".floppy/manifest.json" or routes.get("C", {}).get("restart_on_context_loss") is not False:
+            errors.append("V2-02 Route C continuation semantics are invalid")
+
+    separation = registry.get("onboarding_separation")
+    if not isinstance(separation, dict):
+        errors.append("V2-02 onboarding separation record is missing")
+    else:
+        if separation.get("user_onboarding") != "TRANSPORT_AND_ROUTE_SELECTION" or separation.get("project_onboarding") != "onboarding/Floppy_1E.md":
+            errors.append("V2-02 user/project onboarding separation is invalid")
+        if separation.get("user_onboarding_grants_implementation_authority") is not False or separation.get("project_onboarding_grants_implementation_authority") is not False:
+            errors.append("V2-02 onboarding incorrectly grants implementation authority")
+
+    paired = registry.get("paired_bootstrap_handoff")
+    if not isinstance(paired, dict):
+        errors.append("V2-02 paired bootstrap handoff record is missing")
+    else:
+        required_true = ("issue_prompts_together", "separate_conversations", "same_accepted_project_origin")
+        if any(paired.get(name) is not True for name in required_true):
+            errors.append("V2-02 paired bootstrap issuance/linkage contract is invalid")
+        required_false = ("creates_implementation_authority", "creates_repository_writer", "automatic_prompt_generation_runtime")
+        if any(paired.get(name) is not False for name in required_false):
+            errors.append("V2-02 paired bootstrap authority/runtime boundary is invalid")
+        if paired.get("runtime_owner") != "V2-04":
+            errors.append("V2-02 paired bootstrap runtime ownership is invalid")
+        minimum = paired.get("shared_origin_minimum")
+        if not isinstance(minimum, list) or len(minimum) < 10:
+            errors.append("V2-02 paired bootstrap shared-origin minimum is incomplete")
+
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, dict) or not artifacts:
+        errors.append("V2-02 user-onboarding artifact registry is invalid")
+    else:
+        for name, record in artifacts.items():
+            if not isinstance(record, dict):
+                errors.append(f"V2-02 user-onboarding artifact is invalid: {name}")
+                continue
+            relative = record.get("path")
+            if not isinstance(relative, str) or not relative:
+                errors.append(f"V2-02 user-onboarding artifact path is invalid: {name}")
+                continue
+            path = root / relative
+            if not path.is_file():
+                errors.append(f"V2-02 user-onboarding artifact is missing: {relative}")
+            elif record.get("sha256") != sha256(path):
+                errors.append(f"V2-02 user-onboarding artifact digest does not match: {relative}")
+
+    guide_paths = ["docs/getting-started/README.md", *V2_USER_ONBOARDING_PROVIDER_GUIDES.values()]
+    marker = "FLOPPY_CANONICAL_UNIVERSAL_STARTER_PROMPT_BEGIN"
+    try:
+        marker_count = sum((root / path).read_text(encoding="utf-8").count(marker) for path in guide_paths)
+    except (OSError, UnicodeError) as exc:
+        errors.append(f"V2-02 Getting Started guides are unreadable: {exc}")
+    else:
+        if marker_count != 1:
+            errors.append("V2-02 must contain exactly one canonical universal starter prompt")
+
+    accepted = manifest.get("v2_compatibility_profile", {}).get("artifacts", {}).get("compatibility_profile", {}).get("path")
+    profile = validate_json(root / accepted, errors) if isinstance(accepted, str) else None
+    if isinstance(profile, dict):
+        class_b = profile.get("provider_capability_classes", {}).get("CLASS_B", {})
+        expected_b = {
+            "repository_read": True,
+            "repository_write": False,
+            "command_execution": False,
+            "artifact_transfer": True,
+            "grants_floppy_authority": False,
+            "grants_repository_writer": False,
+        }
+        if any(class_b.get(key) is not value for key, value in expected_b.items()):
+            errors.append("V2-02 Class-B controlling capability profile is invalid")
+
+# === V2-02 PROVIDER-INDEPENDENT USER ONBOARDING END ===
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -4254,6 +4417,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_project_seed_provisioning(root, manifest, errors)
     validate_final_closure_extension(root, manifest, errors)
     validate_v2_compatibility_profile(root, manifest, errors)
+    validate_v2_user_onboarding(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():

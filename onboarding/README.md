@@ -94,3 +94,10 @@ Roadmap acceptance must not authorize implementation. After acceptance, create o
 - **Floppy E** remains the only project execution authorization.
 
 These roles must not be silently combined.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## Boundary with V2 user onboarding
+
+`docs/getting-started/README.md` performs user entry, capability recording, and Route A/B/C selection. `Floppy_1E.md` remains project onboarding: it defines and bounds the project from the verified starting state. Neither user onboarding nor Floppy 1E grants implementation authority.
+
+<!-- V2_02_USER_ONBOARDING_END -->

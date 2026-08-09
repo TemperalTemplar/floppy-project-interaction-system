@@ -31,6 +31,12 @@ BOOT_PACKAGE_FILE_PATHS = (
     "docs/Architecture.md",
     "docs/Migration-Notes.md",
     "docs/User-Guide.md",
+    "docs/getting-started/ChatGPT.md",
+    "docs/getting-started/DeepSeek.md",
+    "docs/getting-started/Gemini.md",
+    "docs/getting-started/Grok.md",
+    "docs/getting-started/Other-AI.md",
+    "docs/getting-started/README.md",
     "onboarding/Floppy_1E.md",
     "onboarding/README.md",
     "orchestrator/Floppy_Z.md",
@@ -1578,6 +1584,16 @@ def command_initialize(args: list[str]) -> int:
     module.print_result(result, system_version)
     return 0
 
+
+def command_onboarding(root: Path) -> int:
+    """Print the registered V2-02 user-onboarding contract without mutation."""
+    manifest = _read_json(root / "system-manifest.json", "system manifest")
+    registry = manifest.get("user_onboarding")
+    if not isinstance(registry, dict):
+        raise CliError("system manifest user-onboarding registry is missing")
+    print(json.dumps(registry, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+    return 0
+
 def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     root_value: str | None = None
     remaining: list[str] = []
@@ -1598,7 +1614,7 @@ def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     if not remaining:
         raise CliError("command is required: status, validate, inspect, or initialize")
     command = remaining[0]
-    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "export", "verify-export", "initialize"}:
+    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "export", "verify-export", "onboarding", "initialize"}:
         raise CliError(f"unknown command: {command}")
     return _root_path(root_value), command, remaining[1:]
 
@@ -1611,6 +1627,11 @@ def _legacy_main(argv: list[str] | None = None) -> int:
             if args:
                 raise CliError("status accepts no arguments")
             return command_status(root)
+
+        if command == "onboarding":
+            if args:
+                raise CliError("onboarding accepts no arguments")
+            return command_onboarding(root)
 
         if command == "inspect":
             if len(args) != 1:

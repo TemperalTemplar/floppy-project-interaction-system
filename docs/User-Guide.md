@@ -162,3 +162,10 @@ The model should explain these boundaries when they matter, but a first-time use
 ## Safety
 
 Do not store passwords, tokens, private keys, recovery codes, or secret values in Floppies. Record only a credential's name, role, owner, storage location, consumer relationship, and authorization status.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## Provider-independent first use
+
+The maintained Getting Started guides are under `docs/getting-started/`. All providers share one canonical starter prompt. Provider brand never selects Class A/B/C; the four actual session capabilities do. Route B preserves existing non-Floppy projects before adoption, while Route C resumes an existing Floppy project from its accepted control state.
+
+<!-- V2_02_USER_ONBOARDING_END -->

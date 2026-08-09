@@ -52,6 +52,12 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "docs/Architecture.md",
     "docs/Migration-Notes.md",
     "docs/User-Guide.md",
+    "docs/getting-started/ChatGPT.md",
+    "docs/getting-started/DeepSeek.md",
+    "docs/getting-started/Gemini.md",
+    "docs/getting-started/Grok.md",
+    "docs/getting-started/Other-AI.md",
+    "docs/getting-started/README.md",
     "onboarding/Floppy_1E.md",
     "onboarding/README.md",
     "orchestrator/Floppy_Z.md",
@@ -252,7 +258,7 @@ class ValidatedBootPackageTests(unittest.TestCase):
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 52)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 58)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")

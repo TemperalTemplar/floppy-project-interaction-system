@@ -19,7 +19,8 @@
     "source_policy": "protocols/00-source-repository-policy.md",
     "project_orchestrator_registry_template": "project-seed/.floppy/orchestrator-registry.json",
     "project_orchestrator_handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md",
-    "project_lifecycle_state_template": "project-seed/.floppy/lifecycle-state.json"
+    "project_lifecycle_state_template": "project-seed/.floppy/lifecycle-state.json",
+    "user_onboarding": "docs/getting-started/README.md"
   },
   "architecture": {
     "name": "BCE — Bootable Context Environment",
@@ -42,7 +43,7 @@
     "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
     "canonical_path": "onboarding/Floppy_1E.md",
     "readme_path": "onboarding/README.md",
-    "sha256": "e693f12373ead374d90ad576696fcd68482a3e10fcf6305f0d4cc2ed59070b9b",
+    "sha256": "fdd311ee981c69181ba7d26423442d5e50ddb2a19a5849690c2e50ca5d32a95a",
     "default_action": "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
     "project_state_file": false,
     "copied_into_project_seed": false,
@@ -230,11 +231,11 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "364cad52f1ac3875f62cde011eec63a73a02d48ce399f79c14289fa6c9914e66"
+        "sha256": "bc1b0b26e0562cc36b35759bc92cbb18db30930a5aac070f62f642fd008ea97d"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689"
+        "sha256": "5ba1625465d4af367caa53e9c5007f6a11f5f940eab2a42b7ae67708d4def2c4"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
@@ -294,11 +295,11 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689"
+        "sha256": "5ba1625465d4af367caa53e9c5007f6a11f5f940eab2a42b7ae67708d4def2c4"
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "364cad52f1ac3875f62cde011eec63a73a02d48ce399f79c14289fa6c9914e66"
+        "sha256": "bc1b0b26e0562cc36b35759bc92cbb18db30930a5aac070f62f642fd008ea97d"
       },
       "tests": {
         "path": "tests/test_final_closure.py",
@@ -328,6 +329,130 @@
         "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
         "$id": "urn:floppy-project-interaction-system:schema:bce-compatibility-profile:2.0.0",
         "sha256": "b6b7aeac97289c225a2c4884a6c01dbace94295ec7c636efde9ce0b6eca9bbac"
+      }
+    }
+  },
+  "user_onboarding": {
+    "owner": "V2-02",
+    "status": "reusable_product",
+    "canonical_starter": "docs/getting-started/README.md",
+    "provider_guides": {
+      "ChatGPT": "docs/getting-started/ChatGPT.md",
+      "Gemini": "docs/getting-started/Gemini.md",
+      "Grok": "docs/getting-started/Grok.md",
+      "DeepSeek": "docs/getting-started/DeepSeek.md",
+      "Other-AI": "docs/getting-started/Other-AI.md"
+    },
+    "capability_fields": [
+      "repository_read",
+      "repository_write",
+      "command_execution",
+      "artifact_transfer"
+    ],
+    "provider_brand_selects_class": false,
+    "capability_grants_authority": false,
+    "workflow_classes": {
+      "CLASS_A": "DIRECT_REPOSITORY_WRITE_TECHNICALLY_AVAILABLE_WHEN_SEPARATELY_AUTHORIZED",
+      "CLASS_B": "DIRECT_REPOSITORY_READ_WITH_ADMINISTRATOR_APPLIED_REPOSITORY_MUTATIONS",
+      "CLASS_C": "MANUAL_FILE_EVIDENCE_EXCHANGE_REQUIRED_FOR_REPOSITORY_INTERACTION"
+    },
+    "routes": {
+      "A": {
+        "kind": "IDEA_ONLY",
+        "next": "onboarding/Floppy_1E.md"
+      },
+      "B": {
+        "kind": "EXISTING_NON_FLOPPY_PROJECT",
+        "preserve_existing_project": true,
+        "next": "FORMAL_ADOPTION_THEN_FLOPPY_1E_FROM_VERIFIED_STATE"
+      },
+      "C": {
+        "kind": "EXISTING_FLOPPY_PROJECT",
+        "first_read": ".floppy/manifest.json",
+        "follow_required_read_order": true,
+        "restart_on_context_loss": false
+      }
+    },
+    "onboarding_separation": {
+      "user_onboarding": "TRANSPORT_AND_ROUTE_SELECTION",
+      "project_onboarding": "onboarding/Floppy_1E.md",
+      "user_onboarding_grants_implementation_authority": false,
+      "project_onboarding_grants_implementation_authority": false
+    },
+    "paired_bootstrap_handoff": {
+      "owner": "V2-02",
+      "trigger": [
+        "NEW_PROJECT_ACCEPTANCE",
+        "FORMAL_ADOPTION_OF_EXISTING_NON_FLOPPY_PROJECT"
+      ],
+      "issue_prompts_together": true,
+      "separate_conversations": true,
+      "same_accepted_project_origin": true,
+      "shared_origin_minimum": [
+        "project identity",
+        "original intended observable outcome",
+        "accepted scope",
+        "accepted exclusions",
+        "major constraints",
+        "verified starting state",
+        "accepted project plan and roadmap",
+        "exact repository checkpoint where applicable",
+        "authority state",
+        "Continuity Overseer identity",
+        "initial Project Orchestrator identity"
+      ],
+      "creates_implementation_authority": false,
+      "creates_repository_writer": false,
+      "automatic_prompt_generation_runtime": false,
+      "runtime_owner": "V2-04"
+    },
+    "not_implemented_here": [
+      "durable_project_origin_storage_or_schema",
+      "continuity_overseer_runtime",
+      "continuity_overseer_persistence",
+      "automatic_paired_prompt_generation_runtime",
+      "durable_overseer_orchestrator_linkage",
+      "scope_drift_detection",
+      "orchestrator_succession",
+      "replacement_orchestrator_lineage",
+      "official_project_plan_generation_or_binding"
+    ],
+    "validated_boot_package_paths_added": [
+      "docs/getting-started/ChatGPT.md",
+      "docs/getting-started/DeepSeek.md",
+      "docs/getting-started/Gemini.md",
+      "docs/getting-started/Grok.md",
+      "docs/getting-started/Other-AI.md",
+      "docs/getting-started/README.md"
+    ],
+    "artifacts": {
+      "canonical_starter": {
+        "path": "docs/getting-started/README.md",
+        "sha256": "82c5c7c44f59a2816e842fce120a9afac30c370fd948e1bc24116dd9b02955a2"
+      },
+      "tests": {
+        "path": "tests/test_user_onboarding.py",
+        "sha256": "8936951be77b47413f4aa5d549aaea125924307f868090dc3a4438330c9bcde3"
+      },
+      "provider_chatgpt": {
+        "path": "docs/getting-started/ChatGPT.md",
+        "sha256": "b7839a78638c137ff2624e2d8fde445407ad658465018a658589e8de1c48b07b"
+      },
+      "provider_gemini": {
+        "path": "docs/getting-started/Gemini.md",
+        "sha256": "1ba8a424087b183e0952b56b92644fac4d3c11ae61eb0d617a32e0063f9b6d72"
+      },
+      "provider_grok": {
+        "path": "docs/getting-started/Grok.md",
+        "sha256": "09468d5292cf7e8eaa6be3bf950ace70a0e793fc8a149bc85a5366536511c8db"
+      },
+      "provider_deepseek": {
+        "path": "docs/getting-started/DeepSeek.md",
+        "sha256": "64d7de0ed9a47bb4e42a0c34e349d8364664c0d9f32ed4ca6873d53d36394b5a"
+      },
+      "provider_other_ai": {
+        "path": "docs/getting-started/Other-AI.md",
+        "sha256": "85ad9fcd411a10f21b65d182d8222ce77b6f42806471d2518cce697fe99ce2cf"
       }
     }
   }

@@ -174,3 +174,10 @@ status and role never grant write authority.
 These records are administrative state, not runtime detection. Do not add
 monitoring, heartbeats, automatic conversation creation, automatic authority
 transfer, private-conversation inspection, or hidden-context inference.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## V2 user-entry bootstrap
+
+For a human entering Floppy, read `docs/getting-started/README.md` before project onboarding. Determine actual session capabilities, select the repository-interaction class and project route, then continue into Floppy 1E only when project onboarding is required. Existing Floppy projects continue from `.floppy/manifest.json` and its required read order.
+
+<!-- V2_02_USER_ONBOARDING_END -->

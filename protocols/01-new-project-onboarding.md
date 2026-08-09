@@ -193,3 +193,10 @@ For an established codebase, onboarding must describe the verified current state
 ## Re-onboarding boundary
 
 Ordinary roadmap revisions do not rerun Floppy 1E. Load it again only when the user explicitly orders controlled re-onboarding because the project purpose or completion path has materially changed. Preserve the earlier accepted roadmap as historical evidence.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## V2 route-aware entry
+
+Before this project-onboarding protocol begins, V2 user onboarding identifies Route A (idea only), Route B (existing non-Floppy project), or Route C (existing Floppy project). Route B must preserve existing code/evidence/history/architecture/behavior before formal adoption. Route C does not restart this protocol merely because conversation context was lost; it reads `.floppy/manifest.json` first and continues from accepted state.
+
+<!-- V2_02_USER_ONBOARDING_END -->

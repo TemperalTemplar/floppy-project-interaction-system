@@ -471,3 +471,10 @@ does not require an executable or installer.
 ## Validated final-project closure
 
 Version `1.0.0` includes bounded final-project closure support in the existing validator and `floppyctl`. It preserves distinct no-migration and migration-applied routes, requires separate proposal and application operations, validates the canonical proposal digest before application, and rejects active authority, partial path sets, cross-route application, and history deletion. Final closure remains unavailable until every required section is closed.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## Start here — provider-independent onboarding
+
+New users begin at `docs/getting-started/README.md`. It contains the one canonical universal starter prompt and routes actual session capability evidence into Class A/B/C plus Route A/B/C. Provider guides describe transport only. User onboarding does not grant implementation authority.
+
+<!-- V2_02_USER_ONBOARDING_END -->

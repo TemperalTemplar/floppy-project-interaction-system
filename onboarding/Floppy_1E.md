@@ -782,3 +782,12 @@ Any “no” answer must be resolved or disclosed before acceptance.
 # 19. Core statement
 
 > Floppy 1E turns a project idea or existing codebase into an accepted, bounded, evidence-driven roadmap. It helps the user understand the path to completion and helps the model execute one controlled section at a time without losing scope, safety, or continuity.
+
+<!-- V2_02_PAIRED_BOOTSTRAP_HANDOFF_BEGIN -->
+## V2 R1 paired-bootstrap handoff
+
+When Floppy 1E reaches **new-project acceptance** or **formal adoption of an existing non-Floppy project**, its user-facing handoff must present the Continuity Overseer prompt and initial Project Orchestrator / Floppy Z prompt together. The user opens them as separate conversations. Both prompts must carry the same accepted project origin: project identity, original intended observable outcome, accepted scope, accepted exclusions, major constraints, verified starting state, accepted plan/roadmap, repository checkpoint where applicable, authority state, Continuity Overseer identity, and initial Project Orchestrator identity.
+
+This handoff creates **no implementation authority** and **no repository writer**. V2-02 does not implement automatic prompt-generation runtime, durable origin storage, Continuity Overseer persistence/linkage, drift detection, succession, or Official Project Plan generation.
+
+<!-- V2_02_PAIRED_BOOTSTRAP_HANDOFF_END -->
