@@ -130,9 +130,10 @@ Provider capability describes technical access only. It is not Floppy authority.
 
 - **CLASS A:** direct repository read, bounded repository write, command
   execution, and artifact transfer are technically available.
-- **CLASS B:** direct repository read, bounded connected repository write, and
-  artifact transfer are technically available, but general local command
-  execution is not.
+- **CLASS B:** direct repository read is technically available; repository
+  mutations are administrator-applied. General local command execution is not
+  available in the accepted Class B profile, and artifact transfer remains
+  technically available.
 - **CLASS C:** no direct repository write or command execution is available;
   administrator-mediated commands or artifact transfer are required.
 
@@ -204,3 +205,11 @@ enforcement, Continuity Overseer runtime behavior, orchestrator succession
 runtime behavior, Official Project Plan generation, automatic migration, GUI,
 installer, executable packaging, public release, integration into `main`, or
 V2-02 through V2-05.
+
+<!-- V2_02_CLASS_B_SUPERSESSION_BEGIN -->
+## V2-02 controlling Class-B supersession
+
+Under explicit `V2_02_IMPLEMENTATION` authority, V2-02 supersedes the future operational Class-B transport semantics without reopening V2-01. The original V2-01 acceptance remains immutable in Git history. For future V2 operation, Class B means direct repository read is available while repository mutations are administrator-applied. Provider capability remains technical transport only and grants neither Floppy authority nor repository-writer status.
+
+V2-01 reopened: **NO**.
+<!-- V2_02_CLASS_B_SUPERSESSION_END -->

@@ -318,11 +318,11 @@
     "artifacts": {
       "architecture_spec": {
         "path": "specs/v2-architecture-compatibility.md",
-        "sha256": "6af91bb81d1a40a83a1ba38f082eeb3049a7a6ae51152752753b02308674b3ea"
+        "sha256": "f4c5905dbccd479a67249dbf976560355ebcdd64ef9af1698005dbdc0a75cdfb"
       },
       "compatibility_profile": {
         "path": "specs/v2-compatibility-profile.json",
-        "sha256": "29b9fb85ab4cb057ab30f93a379e2a374e9d855ce44cb3df9c0546c8d3731369"
+        "sha256": "fa366d55b6e94000519f89a90f152a23b4cef87e17ebb7f6f5cc5068523ab0a0"
       },
       "compatibility_profile_schema": {
         "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",

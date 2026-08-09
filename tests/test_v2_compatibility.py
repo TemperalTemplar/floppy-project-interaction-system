@@ -204,5 +204,16 @@ class V2CompatibilityTests(unittest.TestCase):
             )
 
 
+    def test_v2_02_class_b_supersession_is_read_only_repository_transport(self) -> None:
+        class_b = self.profile["provider_capability_classes"]["CLASS_B"]
+        self.assertTrue(class_b["repository_read"])
+        self.assertFalse(class_b["repository_write"])
+        self.assertFalse(class_b["command_execution"])
+        self.assertTrue(class_b["artifact_transfer"])
+        self.assertFalse(class_b["grants_floppy_authority"])
+        self.assertFalse(class_b["grants_repository_writer"])
+        self.assertIn("administrator-applied", class_b["description"])
+
+
 if __name__ == "__main__":
     unittest.main()

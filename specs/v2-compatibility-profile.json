@@ -187,9 +187,9 @@
       "grants_repository_writer": false
     },
     "CLASS_B": {
-      "description": "Direct repository read, bounded connected repository write, and artifact transfer are available, but general local command execution is not.",
+      "description": "Direct repository read and artifact transfer are technically available; repository mutations are administrator-applied and general local command execution is not available.",
       "repository_read": true,
-      "repository_write": true,
+      "repository_write": false,
       "command_execution": false,
       "artifact_transfer": true,
       "grants_floppy_authority": false,
