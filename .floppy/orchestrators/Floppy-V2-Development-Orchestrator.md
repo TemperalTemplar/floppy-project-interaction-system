@@ -43,7 +43,7 @@ V2-01 is CLOSED. Its original accepted Class B definition remains preserved in G
 # 4. Exact V2 roadmap
 
 1. `V2-01` — V2 Architecture and Compatibility Contract — CLOSED
-2. `V2-02` — User Onboarding and Provider-Independent Adoption — IMPLEMENTATION IN PROGRESS
+2. `V2-02` — User Onboarding and Provider-Independent Adoption — IMPLEMENTATION COMPLETE / VERIFICATION PENDING
 3. `V2-03` — Accepted-State Continuity Protection — PLANNED / NOT AUTHORIZED
 4. `V2-04` — Continuity Overseer and Orchestrator Succession — PLANNED / NOT AUTHORIZED
 5. `V2-05` — Official Project Plan, Integration, Compatibility Validation, and V2 Release — PLANNED / NOT AUTHORIZED
@@ -208,3 +208,10 @@ Implementation is in progress under `V2_02_IMPLEMENTATION` / `V2_02_WORKING_MODE
 S1 `6c3afb660bb72f85d828c388d0f05696a2f9f26f` / `e84a815e83e2b27ec62ec51e7e8139061d541748` is validated and controlling for future Class-B semantics. V2-01 remains closed. Normal P1 onboarding implementation is now the next legal operation.
 
 <!-- V2_02_S2_END -->
+
+<!-- V2_02_C1_BEGIN -->
+# V2-02 C1 implementation completion
+
+P1 `5dabb87da1c0fb7d16dde27cfaa47bb297c4f32c` / `4f8342045209ea530b9fff806a6d6fa2016ab2fb` is complete. Run the required source, focused, tracked-JSON, validated-boot-package, and regression verification. Only if all pass may the single authorized complete repository suite run.
+
+<!-- V2_02_C1_END -->

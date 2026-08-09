@@ -111,7 +111,7 @@
     {
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
-      "status": "IMPLEMENTATION_IN_PROGRESS",
+      "status": "IMPLEMENTATION_COMPLETE_VERIFICATION_PENDING",
       "dependency": [
         "V2-01"
       ],
@@ -245,7 +245,11 @@
       "a1_tree": "7b949f07d6ce0f40e8e60b087e5e12b59debaa87",
       "s1_commit": "6c3afb660bb72f85d828c388d0f05696a2f9f26f",
       "s1_tree": "e84a815e83e2b27ec62ec51e7e8139061d541748",
-      "s2_status": "VERIFIED_SUPERSESSION_RECORDED"
+      "s2_status": "VERIFIED_SUPERSESSION_RECORDED",
+      "implementation_state": "COMPLETE",
+      "verification_state": "PENDING",
+      "p1_commit": "5dabb87da1c0fb7d16dde27cfaa47bb297c4f32c",
+      "p1_tree": "4f8342045209ea530b9fff806a6d6fa2016ab2fb"
     },
     {
       "id": "V2-03",
