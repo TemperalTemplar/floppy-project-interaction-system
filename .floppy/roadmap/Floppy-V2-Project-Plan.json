@@ -3,12 +3,24 @@
   "format_version": 1,
   "plan_version": "2.0",
   "plan_status": "ACCEPTED",
+  "current_plan_revision": "R1",
   "administrator_acceptance": {
     "actor": "Alva Roberts",
     "date": "2026-08-08",
     "decision": "Follow the supplied V2 project plan, place it in the V2 development control state, and make it happen.",
     "implementation_authority_granted": false
   },
+  "plan_revisions": [
+    {
+      "id": "R1",
+      "date": "2026-08-09",
+      "actor": "Alva Roberts",
+      "record": ".floppy/roadmap/Floppy-V2-Project-Plan-Revision-R1.md",
+      "title": "Paired Continuity Overseer and Initial Project Orchestrator Bootstrap",
+      "scope": "Require paired Continuity Overseer and initial Project Orchestrator prompts at new-project acceptance or formal adoption into Floppy, both bound to the same project-origin record; preserve original project intent and accepted scope across orchestrator succession while allowing lawful administrator-approved revision.",
+      "implementation_authority_granted": false
+    }
+  ],
   "implementation_authority": "NONE",
   "repository": "TemperalTemplar/floppy-project-interaction-system",
   "published_v1_release": "v1.0.0",
@@ -22,10 +34,58 @@
   "governing_principle": "Context loss is not authority to reconstruct accepted work.",
   "authoritative_markdown": ".floppy/roadmap/Floppy-V2-Project-Plan.md",
   "authoritative_markdown_git_blob_sha1": "a33a181a5d5414d5c89adc6d7801a4bba3da443a",
+  "authoritative_plan_documents": [
+    ".floppy/roadmap/Floppy-V2-Project-Plan.md",
+    ".floppy/roadmap/Floppy-V2-Project-Plan-Revision-R1.md"
+  ],
   "roadmap_change_control": {
     "bounded_work_package_count": 5,
     "additional_package_implicit": false,
-    "additional_work_requires_administrator_plan_revision": true
+    "additional_work_requires_administrator_plan_revision": true,
+    "accepted_revision_count": 1,
+    "current_revision": "R1"
+  },
+  "project_genesis_continuity_bootstrap": {
+    "status": "ACCEPTED_REQUIREMENT",
+    "trigger": [
+      "new Floppy project accepted into controlled project operation",
+      "existing non-Floppy project formally adopted into Floppy"
+    ],
+    "issuance": "CONTINUITY_OVERSEER_AND_INITIAL_PROJECT_ORCHESTRATOR_PROMPTS_TOGETHER",
+    "separate_conversations": true,
+    "same_project_origin_required": true,
+    "shared_origin_minimum": [
+      "project identity",
+      "original intended observable outcome",
+      "accepted scope",
+      "accepted exclusions",
+      "major constraints",
+      "verified starting state",
+      "accepted project plan and roadmap",
+      "exact repository checkpoint where applicable",
+      "authority state",
+      "Continuity Overseer identity",
+      "initial Project Orchestrator identity"
+    ],
+    "role_lifetime": {
+      "continuity_overseer": "PROJECT_LIFETIME_CONTINUITY_ROLE",
+      "project_orchestrator": "REPLACEABLE_OPERATIONAL_PROJECT_COORDINATION_ROLE",
+      "section_working_model": "REPLACEABLE_BOUNDED_WORK_ROLE"
+    },
+    "scope_protection": {
+      "continuity_overseer_preserves_original_intent": true,
+      "continuity_overseer_preserves_accepted_scope": true,
+      "lawful_revision_allowed": true,
+      "material_goal_or_scope_change_requires_explicit_administrator_project_revision": true,
+      "silent_scope_drift_forbidden": true,
+      "continuity_role_does_not_create_implementation_authority": true
+    },
+    "work_package_placement": {
+      "V2-02": "Define the user-facing trigger and onboarding/adoption handoff into paired continuity bootstrap without implementing V2-04 runtime behavior.",
+      "V2-03": "Protect project-origin, original-intent, accepted-scope, and accepted-plan records from silent reconstruction or drift.",
+      "V2-04": "Implement paired Continuity Overseer/initial Orchestrator bootstrap, durable linkage, and orchestrator succession.",
+      "V2-05": "Bind the Official Project Plan to the shared project origin and prove the paired bootstrap end to end."
+    }
   },
   "work_packages": [
     {
@@ -52,35 +112,49 @@
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
       "status": "PLANNED_NOT_AUTHORIZED",
-      "dependency": ["V2-01"],
+      "dependency": [
+        "V2-01"
+      ],
       "objective": "Make Floppy usable by a person who has never seen the system before and make that entry path independent of any single AI provider.",
       "acceptance_boundaries": [
         "All maintained provider guides use the same canonical Floppy semantics.",
         "Provider-specific access instructions do not create provider-specific authority rules.",
         "Class A/B/C workflows are documented.",
         "Existing-project preservation is explicit.",
-        "Onboarding never silently authorizes implementation."
+        "Onboarding never silently authorizes implementation.",
+        "New-project acceptance and formal Floppy adoption define a user-facing handoff in which the Continuity Overseer prompt and initial Project Orchestrator prompt are issued together from one shared project origin.",
+        "V2-02 defines the paired-bootstrap trigger and user-facing handoff without prematurely implementing V2-04 Continuity Overseer runtime or succession behavior."
       ]
     },
     {
       "id": "V2-03",
       "title": "Accepted-State Continuity Protection",
       "status": "PLANNED_NOT_AUTHORIZED",
-      "dependency": ["V2-01"],
+      "dependency": [
+        "V2-01"
+      ],
       "objective": "Prevent context loss, model replacement, or re-onboarding from silently destroying or reconstructing accepted state.",
       "acceptance_boundaries": [
         "A fresh model can read protected accepted state.",
-        "Protected accepted state cannot be replaced without the lawful revision pathway."
+        "Protected accepted state cannot be replaced without the lawful revision pathway.",
+        "Project-origin, original-intent, accepted-scope, and accepted-plan records are protected accepted state and may change only through the lawful revision/supersession pathway."
       ]
     },
     {
       "id": "V2-04",
       "title": "Continuity Overseer and Orchestrator Succession",
       "status": "PLANNED_NOT_AUTHORIZED",
-      "dependency": ["V2-01", "V2-03"],
-      "objective": "Add project-level continuity across project-orchestrator lifetimes.",
+      "dependency": [
+        "V2-01",
+        "V2-03"
+      ],
+      "objective": "Add project-level continuity across project-orchestrator lifetimes, beginning with a paired Continuity Overseer and initial Project Orchestrator bootstrap from one project origin.",
       "acceptance_boundaries": [
+        "At new-project acceptance or formal adoption into Floppy, the Continuity Overseer prompt and initial Project Orchestrator prompt are generated or issued together as separate conversations bound to the same project-origin record.",
+        "The Continuity Overseer persists across Project Orchestrator replacements and preserves the original accepted project intent, accepted scope, exclusions, and constraints against silent drift.",
+        "Material change to the original project goal or fundamental scope is surfaced as an explicit administrator project-level revision rather than ordinary orchestrator drift.",
         "Bounded orchestrator handoff succeeds without project restart.",
+        "Replacement orchestrators remain linked to the same Continuity Overseer and project-origin chain.",
         "Accepted work is not recreated.",
         "Authority does not change merely because the orchestrator changes."
       ]
@@ -89,7 +163,11 @@
       "id": "V2-05",
       "title": "Official Project Plan, Integration, Compatibility Validation, and V2 Release",
       "status": "PLANNED_NOT_AUTHORIZED",
-      "dependency": ["V2-02", "V2-03", "V2-04"],
+      "dependency": [
+        "V2-02",
+        "V2-03",
+        "V2-04"
+      ],
       "objective": "Complete the design-to-execution handoff capability, integrate all v2 additions, prove compatibility, and publish v2.0.0.",
       "acceptance_boundaries": [
         "New-user end-to-end proof passes.",
@@ -97,6 +175,8 @@
         "Existing-v1-project compatibility/adoption proof passes.",
         "Orchestrator-continuity proof passes.",
         "Provider-independence proof passes.",
+        "The Official Project Plan and the paired Continuity Overseer/initial Project Orchestrator bootstrap are bound to the same accepted project origin.",
+        "End-to-end new-project and adoption proofs show both prompts issued together before orchestrated implementation begins.",
         "v2.0.0 is released only from exact accepted final main."
       ]
     }
