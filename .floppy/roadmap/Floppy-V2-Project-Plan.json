@@ -111,7 +111,7 @@
     {
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
-      "status": "AUTHORIZED_NOT_STARTED",
+      "status": "IMPLEMENTATION_IN_PROGRESS",
       "dependency": [
         "V2-01"
       ],
@@ -187,7 +187,9 @@
         "tools/validate_floppy.py",
         "tools/floppyctl.py",
         "tests/test_validated_boot_package.py"
-      ]
+      ],
+      "a1_commit": "bb42b43b00d7995cfbba3432499af6f9fb99ef34",
+      "a1_tree": "7b949f07d6ce0f40e8e60b087e5e12b59debaa87"
     },
     {
       "id": "V2-03",

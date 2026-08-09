@@ -43,7 +43,7 @@ V2-01 is CLOSED. Its original accepted Class B definition remains preserved in G
 # 4. Exact V2 roadmap
 
 1. `V2-01` — V2 Architecture and Compatibility Contract — CLOSED
-2. `V2-02` — User Onboarding and Provider-Independent Adoption — AUTHORIZED / NOT STARTED
+2. `V2-02` — User Onboarding and Provider-Independent Adoption — IMPLEMENTATION IN PROGRESS
 3. `V2-03` — Accepted-State Continuity Protection — PLANNED / NOT AUTHORIZED
 4. `V2-04` — Continuity Overseer and Orchestrator Succession — PLANNED / NOT AUTHORIZED
 5. `V2-05` — Official Project Plan, Integration, Compatibility Validation, and V2 Release — PLANNED / NOT AUTHORIZED
@@ -194,3 +194,10 @@ Base: `c52726ad8fdb8a3d77252016ebd3b784a92dc4ff` / `33cac03fec71f578836e7d43abff
 S1 may proceed only after distinct B1 implementation-start control. P1 remains blocked until verified S2.
 
 <!-- V2_02_A1_END -->
+
+<!-- V2_02_B1_BEGIN -->
+# V2-02 B1 implementation start
+
+Implementation is in progress under `V2_02_IMPLEMENTATION` / `V2_02_WORKING_MODEL`. S1 Class-B supersession must be implemented and verified, then S2 must be recorded before P1 begins.
+
+<!-- V2_02_B1_END -->
