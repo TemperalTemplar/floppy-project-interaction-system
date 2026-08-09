@@ -111,7 +111,7 @@
     {
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
-      "status": "PLANNED_NOT_AUTHORIZED",
+      "status": "ACCEPTED_PLANNING_BASELINE",
       "dependency": [
         "V2-01"
       ],
@@ -124,6 +124,69 @@
         "Onboarding never silently authorizes implementation.",
         "New-project acceptance and formal Floppy adoption define a user-facing handoff in which the Continuity Overseer prompt and initial Project Orchestrator prompt are issued together from one shared project origin.",
         "V2-02 defines the paired-bootstrap trigger and user-facing handoff without prematurely implementing V2-04 Continuity Overseer runtime or succession behavior."
+      ],
+      "acceptance_record": ".floppy/work-packages/V2-02.md",
+      "administrator_decision": "ACCEPT THE REVISED V2-02 USER ONBOARDING AND PROVIDER-INDEPENDENT ADOPTION WORK-PACKAGE PROPOSAL AS THE V2-02 PLANNING BASELINE UNDER CONTROLLING PROJECT-PLAN REVISION R1.",
+      "accepted_on": "2026-08-09",
+      "proposal_base_checkpoint": "e69699fa4cc77e3a34cc35e522c23cb2f1260ccf",
+      "proposal_base_tree": "5e6818ede0d3f387425edf78cd54d7bdce7ac2ae",
+      "acceptance_base_checkpoint": "3689aef930186c26c774c3813d1026586860dd92",
+      "acceptance_base_tree": "197298b4bdd3181d5a6fe3f8c268c3867374296c",
+      "implementation_authority": "NONE",
+      "repository_writer": null,
+      "decision_1_prerequisite_recovery": {
+        "status": "ACCEPTED_AND_COMPLETED",
+        "e0_commit": "06a9cf185601e5870089f62f7c2e695ec720bd68",
+        "e0_tree": "b440a5d73599b0a81259ec5191d6d70621b6728c",
+        "vc1_commit": "6fb83656798f28db11fa8bbef4d77d4eeb2fcbec",
+        "vc1_tree": "4921bf5cd50c0854e4f7090b0d299bef6b5a646d",
+        "vc1_reproof": "PASSED_WITH_VC2_CORRECTED_UTF8_INTEGRITY_PATH",
+        "vc2_commit": "3689aef930186c26c774c3813d1026586860dd92",
+        "vc2_tree": "197298b4bdd3181d5a6fe3f8c268c3867374296c",
+        "validator_sha256": "44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689",
+        "validator_correction_operation": "BOUNDED_VALIDATOR_CORRECTION",
+        "validator_correction_exact_paths": [
+          "tools/validate_floppy.py",
+          "system-manifest.json",
+          "tests/test_tooling.py"
+        ],
+        "complete_repository_suite_consumed": false
+      },
+      "class_b_supersession_prerequisite": {
+        "status": "ACCEPTED_PREREQUISITE_NOT_APPLIED",
+        "future_application_authority": "V2_02_IMPLEMENTATION",
+        "historical_v2_01_acceptance_preserved": true,
+        "historical_v2_01_definition_preserved_in_git_history": true,
+        "future_semantics": {
+          "CLASS_A": "DIRECT_REPOSITORY_WRITE_WORKFLOW_TECHNICALLY_AVAILABLE_WHEN_SEPARATELY_AUTHORIZED",
+          "CLASS_B": "DIRECT_REPOSITORY_READ_WITH_ADMINISTRATOR_APPLIED_REPOSITORY_MUTATIONS",
+          "CLASS_C": "MANUAL_FILE_EVIDENCE_EXCHANGE_REQUIRED_FOR_REPOSITORY_INTERACTION"
+        },
+        "s1_exact_product_paths": [
+          "specs/v2-architecture-compatibility.md",
+          "specs/v2-compatibility-profile.json",
+          "system-manifest.json",
+          "tests/test_v2_compatibility.py"
+        ]
+      },
+      "p1_exact_product_paths": [
+        "docs/getting-started/README.md",
+        "docs/getting-started/ChatGPT.md",
+        "docs/getting-started/Gemini.md",
+        "docs/getting-started/Grok.md",
+        "docs/getting-started/DeepSeek.md",
+        "docs/getting-started/Other-AI.md",
+        "tests/test_user_onboarding.py",
+        "README.md",
+        "BOOTSTRAP.md",
+        "docs/User-Guide.md",
+        "onboarding/Floppy_1E.md",
+        "onboarding/README.md",
+        "protocols/01-new-project-onboarding.md",
+        "system-manifest.json",
+        "tools/validate_floppy.py",
+        "tools/floppyctl.py",
+        "tests/test_validated_boot_package.py"
       ]
     },
     {

@@ -8,14 +8,15 @@
 
 # 1. Controlling authority
 
-The authoritative V2 development roadmap is:
+The authoritative V2 roadmap is controlled by:
 
 - `.floppy/roadmap/Floppy-V2-Project-Plan.md`
+- `.floppy/roadmap/Floppy-V2-Project-Plan-Revision-R1.md`
 - `.floppy/roadmap/Floppy-V2-Project-Plan.json`
 
-The accepted project plan controls this orchestrator. This orchestrator does not redesign the five-package roadmap, invent additional work packages, or replace accepted project-plan decisions with its own intake analysis.
+Project Plan Revision R1 is the controlling clarification for paired Continuity Overseer / initial Project Orchestrator bootstrap and project-origin preservation.
 
-The governing principle is:
+The governing principle remains:
 
 **Context loss is not authority to reconstruct accepted work.**
 
@@ -31,101 +32,155 @@ V2 development branch: `feature/v2-continuity-onboarding`
 
 Intended administrator-local worktree: `D:\A\Floppy-V2`
 
-Public `main` remains the reusable Floppy product. The root `.floppy/` on the V2 development branch is development-control state and must not be integrated into reusable `main`.
+Public `main` remains the reusable Floppy product. Root `.floppy/` on the V2 development branch is development-control state and must not be integrated into reusable `main`.
 
 # 3. V1 historical boundary
 
-V1 is complete. FS-01 through FS-13 are closed historical work. The `v1.0.0` tag is immutable. Do not reopen, renumber, reinterpret, regenerate, or rewrite v1 history. Do not invent FS-14.
+V1 is complete. FS-01 through FS-13 and release `v1.0.0` are historical and immutable.
 
-The v1 foundation is accepted input to v2. V2 is an expansion, not a redesign of v1.
+V2-01 is CLOSED. Its original accepted Class B definition remains preserved in Git history. A later explicitly authorized S1/S2 supersession may change the controlling future V2 Class B semantics without reopening V2-01.
 
 # 4. Exact V2 roadmap
 
-1. `V2-01` — V2 Architecture and Compatibility Contract
-2. `V2-02` — User Onboarding and Provider-Independent Adoption
-3. `V2-03` — Accepted-State Continuity Protection
-4. `V2-04` — Continuity Overseer and Orchestrator Succession
-5. `V2-05` — Official Project Plan, Integration, Compatibility Validation, and V2 Release
+1. `V2-01` — V2 Architecture and Compatibility Contract — CLOSED
+2. `V2-02` — User Onboarding and Provider-Independent Adoption — ACCEPTED PLANNING BASELINE / NOT AUTHORIZED
+3. `V2-03` — Accepted-State Continuity Protection — PLANNED / NOT AUTHORIZED
+4. `V2-04` — Continuity Overseer and Orchestrator Succession — PLANNED / NOT AUTHORIZED
+5. `V2-05` — Official Project Plan, Integration, Compatibility Validation, and V2 Release — PLANNED / NOT AUTHORIZED
 
-No V2-06 or later package exists unless the administrator explicitly revises the accepted project plan.
+No V2-06 exists absent explicit administrator project-plan revision.
 
 # 5. Current lifecycle state
 
-The V2 project roadmap is accepted. No V2 work package has yet been accepted for implementation. V2-01 is the next proposed work package and remains `DRAFT_NOT_AUTHORIZED`.
+Before W1, the prerequisite validator chain completed under no active authority:
 
-Current authority:
+- VC1 generic progression correction: `6fb83656798f28db11fa8bbef4d77d4eeb2fcbec`;
+- VC2 UTF-8 Git-integrity correction: `3689aef930186c26c774c3813d1026586860dd92`;
+- corrected validator SHA-256: `44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689`;
+- VC1 re-proof: PASSED;
+- VC2 bounded integrity validation: PASSED;
+- repository writer: NONE;
+- complete repository suite consumed: NO;
+- Class B S1 applied: NO.
 
+After V2-02 work-package acceptance, the legal current state is:
+
+- lifecycle: `LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+- V2-02 work package: `ACCEPTED_PLANNING_BASELINE`
+- V2-02 implementation: `NOT_STARTED`
+- V2-02 verification: `NOT_STARTED`
+- administrator result acceptance: `PENDING`
 - active work authorization: NONE
-- active implementation section: NONE
+- active implementation authorization: NONE
 - section working model: NONE
 - repository writer: NONE
 - implementation authority: NONE
 
-Do not infer V2-01 acceptance or implementation authority from project-plan acceptance or from repository access.
+Work-package acceptance does not imply implementation authority.
 
 # 6. Current assignment
 
-The prior read-only V2 intake is complete and remains preparation evidence. The next legal operation is to maintain a bounded V2-01 work-package draft that conforms to the accepted project plan and present it for administrator review.
+The current lawful task is to preserve the accepted V2-02 planning baseline and prepare, but not execute, a later exact `V2_02_IMPLEMENTATION` authorization package against the exact accepted W1 checkpoint.
 
-Do not implement V2-01 until the administrator separately accepts the V2-01 work package and separately authorizes activation/implementation under the accepted Floppy authority model.
+The accepted prerequisite Class B semantic supersession is not applied.
 
-# 7. V2-01 preparation rule
+Normal V2-02 reusable-product implementation is not authorized.
 
-The V2-01 draft must implement the requirements already fixed by the project plan. It may resolve technical questions, but it may not use those questions to redesign the roadmap.
+# 7. V2-02 accepted planning boundary
 
-V2-01 must determine the exact legal relationship between v1 and v2, including:
+V2-02 owns provider-independent user onboarding/adoption, Route A/B/C selection, the actual-session capability record, and the R1 user-facing handoff into paired Continuity Overseer / initial Project Orchestrator bootstrap.
 
-- whether a v1 project can continue without migration;
-- when migration is required;
-- whether migration may be deferred;
-- how old accepted state remains authoritative;
-- how newly introduced v2 records initialize;
-- whether schema versions remain mixed or are upgraded as a coherent bundle;
-- how a v1 BCE is recognized by v2 tooling;
-- provider-capability semantics;
-- accepted-state protection semantics;
-- Continuity Overseer authority boundaries;
-- official project-plan artifact semantics;
-- exact schema/version strategy;
-- validation impact; and
-- package-profile impact.
+V2-02 must not implement V2-04 continuity runtime or succession.
 
-# 8. Preserved authority boundaries
+Actual session capabilities remain independent:
 
-Preserve the distinction between roadmap acceptance, work-package acceptance, work authorization, implementation, verification, administrator acceptance, closeout, migration, and final closure.
+- `repository_read`
+- `repository_write`
+- `command_execution`
+- `artifact_transfer`
 
-Floppy E remains the execution-authorization boundary unless a later accepted V2 design lawfully changes it.
+Provider brand alone does not determine workflow class.
 
-The Continuity Overseer does not automatically become an implementation authority. The project orchestrator does not automatically become repository writer. Repository access does not equal repository-write authority.
+Future controlling semantics after explicit S1/S2 supersession:
 
-# 9. Provider and continuity targets
+- CLASS A — direct repository-write workflow technically available when separately authorized.
+- CLASS B — direct repository read available; repository mutations administrator-applied.
+- CLASS C — manual/file/evidence exchange required for repository interaction.
 
-V2 must remain provider-neutral and support Class A, Class B, and Class C operating environments as defined by the accepted project plan. Provider capability controls transport, not authority.
+# 8. Frozen future Class B S1 scope
 
-The target long-running hierarchy remains:
+A later exact `V2_02_IMPLEMENTATION` authorization may apply S1 only to:
 
-Administrator → Continuity Overseer → Project Orchestrator / Floppy Z → Section Working Model → Repository Writer.
+1. `specs/v2-architecture-compatibility.md`
+2. `specs/v2-compatibility-profile.json`
+3. `system-manifest.json`
+4. `tests/test_v2_compatibility.py`
 
-This hierarchy describes responsibility and does not grant implicit authority. Until V2-04 is implemented and accepted, ordinary orchestrator continuity remains an administrator/orchestrator responsibility.
+The V2 compatibility schema, V1 schemas, V2-01 closeout/control records, and `project-seed/.floppy/*` remain outside S1.
 
-# 10. Evidence and failure doctrine
+S1 must be verified and recorded by S2 before normal V2-02 P1 begins.
 
-Reuse accepted repository-backed evidence. Do not rebuild accepted work because a new model lacks conversational context. Inspect evidence before asking the administrator to re-prove it.
+# 9. Frozen future V2-02 P1 scope
 
-Distinguish PRODUCT DEFECT, VALIDATION-HARNESS DEFECT, ENVIRONMENT DEFECT, AUTHORITY DEFECT, and EVIDENCE DEFECT. A safe STOP is preferable to an unauthorized repair.
+A later exact `V2_02_IMPLEMENTATION` authorization may apply normal P1 only to:
+
+1. `docs/getting-started/README.md`
+2. `docs/getting-started/ChatGPT.md`
+3. `docs/getting-started/Gemini.md`
+4. `docs/getting-started/Grok.md`
+5. `docs/getting-started/DeepSeek.md`
+6. `docs/getting-started/Other-AI.md`
+7. `tests/test_user_onboarding.py`
+8. `README.md`
+9. `BOOTSTRAP.md`
+10. `docs/User-Guide.md`
+11. `onboarding/Floppy_1E.md`
+12. `onboarding/README.md`
+13. `protocols/01-new-project-onboarding.md`
+14. `system-manifest.json`
+15. `tools/validate_floppy.py`
+16. `tools/floppyctl.py`
+17. `tests/test_validated_boot_package.py`
+
+No P1 mutation is authorized by W1.
+
+# 10. R1 ownership boundary
+
+V2-02 defines the paired-bootstrap trigger and user-facing handoff.
+
+V2-03 protects the accepted project origin, original intent, accepted scope, exclusions, constraints, and accepted-plan records.
+
+V2-04 implements paired bootstrap, durable shared-origin linkage, Continuity Overseer persistence, scope-drift protection, and Project Orchestrator succession.
+
+V2-05 binds the Official Project Plan to the same project origin and proves the paired bootstrap end to end.
 
 # 11. Required read order
 
 1. `.floppy/roadmap/Floppy-V2-Project-Plan.md`
-2. `.floppy/roadmap/Floppy-V2-Project-Plan.json`
-3. `.floppy/roadmap/Floppy-V2-Project-Plan-Acceptance.md`
-4. `.floppy/lifecycle-state.json`
-5. `.floppy/orchestrator-registry.json`
-6. `.floppy/templates/Floppy-E-V2-01.draft.md`
-7. this orchestrator directive
+2. `.floppy/roadmap/Floppy-V2-Project-Plan-Revision-R1.md`
+3. `.floppy/roadmap/Floppy-V2-Project-Plan.json`
+4. `.floppy/roadmap/Floppy-V2-Project-Plan-Acceptance.md`
+5. `.floppy/lifecycle-state.json`
+6. `.floppy/orchestrator-registry.json`
+7. `.floppy/work-packages/V2-01.md`
+8. `.floppy/work-packages/V2-02.md`
+9. this orchestrator directive
 
-# 12. Immediate stop boundary
+# 12. Immediate STOP boundary
 
-At the current checkpoint, the orchestrator may prepare and refine V2-01 for administrator review. It may not activate or implement V2-01, register a repository writer, modify reusable product files, merge into `main`, tag, release, or rewrite history without separate explicit authority.
+At the W1 checkpoint this orchestrator may prepare the exact later V2-02 implementation authorization package for administrator review.
+
+It may not:
+
+- create `V2_02_IMPLEMENTATION`;
+- register `V2_02_WORKING_MODEL`;
+- apply the Class B S1 supersession;
+- modify reusable-product files;
+- implement V2-02;
+- implement V2-03, V2-04, or V2-05;
+- migrate;
+- modify `main`;
+- integrate, merge, tag, release;
+- rebase, force-push, destructively reset, or rewrite history.
 
 `V2 IMPLEMENTATION AUTHORITY = NONE`
