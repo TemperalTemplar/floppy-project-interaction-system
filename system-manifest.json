@@ -234,7 +234,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "5b7966da9c6d4aa0986ae079f41141504bc7a9bd766b3249f8b8a07e90ddc515"
+        "sha256": "44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
@@ -294,7 +294,7 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "5b7966da9c6d4aa0986ae079f41141504bc7a9bd766b3249f8b8a07e90ddc515"
+        "sha256": "44564b3c848f7e23f0a8c7aa4d7a3a8c98eb4060171475cf5b3b3c7fb07c1689"
       },
       "cli": {
         "path": "tools/floppyctl.py",

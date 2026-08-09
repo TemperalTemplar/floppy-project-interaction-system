@@ -1378,6 +1378,8 @@ def _git_integrity_run(root: Path, *arguments: str) -> subprocess.CompletedProce
             *arguments,
         ],
         text=True,
+        encoding="utf-8",
+        errors="replace",
         capture_output=True,
         check=False,
     )

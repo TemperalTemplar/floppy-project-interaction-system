@@ -219,5 +219,93 @@ class V2DevelopmentProgressionTests(unittest.TestCase):
             errors,
         )
 
+class GitIntegrityUtf8ManifestTests(unittest.TestCase):
+    CORRECTION_SCOPE = (
+        "tools/validate_floppy.py",
+        "system-manifest.json",
+        "tests/test_tooling.py",
+    )
+
+    def git(self, root: Path, *args: str) -> str:
+        result = subprocess.run(
+            [
+                "git",
+                "-c",
+                f"safe.directory={root.as_posix()}",
+                "-C",
+                str(root),
+                *args,
+            ],
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            capture_output=True,
+            shell=False,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return result.stdout.strip()
+
+    def test_unicode_manifest_passes_actual_bounded_integrity_comparison_path(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "repo"
+            root.mkdir()
+            self.git(root, "init", "--initial-branch=fixture/v2-utf8")
+            self.git(root, "config", "user.name", "Floppy UTF8 Test")
+            self.git(root, "config", "user.email", "floppy-utf8@example.invalid")
+
+            manifest = {
+                "project_name": "Floppy — UTF-8 manifest café",
+                "active_work_authorization": None,
+                "authority": {
+                    "active_work_authorization": None,
+                    "active_implementation_authorization": None,
+                    "active_implementation_section": None,
+                    "repository_writer": None,
+                    "writer_authorization_reference": None,
+                    "implementation_authority": "NONE",
+                },
+            }
+            manifest_path = root / ".floppy" / "manifest.json"
+            manifest_path.parent.mkdir(parents=True)
+            manifest_path.write_text(
+                json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            for relative in self.CORRECTION_SCOPE:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("baseline\n", encoding="utf-8", newline="\n")
+            self.git(root, "add", "--", ".floppy/manifest.json", *self.CORRECTION_SCOPE)
+            self.git(root, "commit", "-m", "unicode baseline")
+
+            for relative in self.CORRECTION_SCOPE:
+                path = root / relative
+                path.write_text("baseline\ncandidate\n", encoding="utf-8", newline="\n")
+            self.git(root, "add", "--", *self.CORRECTION_SCOPE)
+            self.git(root, "commit", "-m", "bounded UTF-8 correction candidate")
+            head = self.git(root, "rev-parse", "HEAD")
+
+            working_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            self.assertEqual(VALIDATOR._git_integrity_manifest_at(root, head), working_manifest)
+            self.assertEqual(VALIDATOR._git_integrity_manifest_at(root, f"{head}^"), working_manifest)
+
+            environment = {
+                "FLOPPY_EXPECTED_HEAD": head,
+                "FLOPPY_SCOPE_COMMIT": head,
+                "FLOPPY_CONTROL_OPERATION": "BOUNDED_VALIDATOR_CORRECTION",
+                "FLOPPY_CONTROL_SCOPE": json.dumps(list(self.CORRECTION_SCOPE)),
+                "FLOPPY_CONTROL_BRANCH": "fixture/v2-utf8",
+            }
+            errors = VALIDATOR.validate_authorization_git_integrity(
+                root,
+                working_manifest,
+                environment,
+            )
+            self.assertNotIn("GIT_INTEGRITY_CANDIDATE_MANIFEST_MISMATCH", errors)
+            self.assertNotIn("GIT_INTEGRITY_BOUNDED_CORRECTION_MANIFEST_CHANGED", errors)
+            self.assertEqual(errors, [])
+
 if __name__ == "__main__":
     unittest.main()
