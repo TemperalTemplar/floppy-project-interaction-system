@@ -201,3 +201,10 @@ S1 may proceed only after distinct B1 implementation-start control. P1 remains b
 Implementation is in progress under `V2_02_IMPLEMENTATION` / `V2_02_WORKING_MODEL`. S1 Class-B supersession must be implemented and verified, then S2 must be recorded before P1 begins.
 
 <!-- V2_02_B1_END -->
+
+<!-- V2_02_S2_BEGIN -->
+# V2-02 S2 verified supersession
+
+S1 `6c3afb660bb72f85d828c388d0f05696a2f9f26f` / `e84a815e83e2b27ec62ec51e7e8139061d541748` is validated and controlling for future Class-B semantics. V2-01 remains closed. Normal P1 onboarding implementation is now the next legal operation.
+
+<!-- V2_02_S2_END -->

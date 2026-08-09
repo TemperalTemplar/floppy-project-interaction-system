@@ -153,7 +153,7 @@
         "complete_repository_suite_consumed": false
       },
       "class_b_supersession_prerequisite": {
-        "status": "ACCEPTED_PREREQUISITE_NOT_APPLIED",
+        "status": "APPLIED_VERIFIED",
         "future_application_authority": "V2_02_IMPLEMENTATION",
         "historical_v2_01_acceptance_preserved": true,
         "historical_v2_01_definition_preserved_in_git_history": true,
@@ -167,7 +167,60 @@
           "specs/v2-compatibility-profile.json",
           "system-manifest.json",
           "tests/test_v2_compatibility.py"
-        ]
+        ],
+        "s1_commit": "6c3afb660bb72f85d828c388d0f05696a2f9f26f",
+        "s1_tree": "e84a815e83e2b27ec62ec51e7e8139061d541748",
+        "validation_result": "PASSED",
+        "validation_evidence": {
+          "working": {
+            "source_validation": "PASSED",
+            "compatibility_tests": "15 passed, 16 subtests passed in 0.27s",
+            "tracked_json": "PASSED",
+            "class_b_vector": {
+              "description": "Direct repository read and artifact transfer are technically available; repository mutations are administrator-applied and general local command execution is not available.",
+              "repository_read": true,
+              "repository_write": false,
+              "command_execution": false,
+              "artifact_transfer": true,
+              "grants_floppy_authority": false,
+              "grants_repository_writer": false
+            },
+            "v2_schema_unchanged": true,
+            "v1_schemas_unchanged": true,
+            "project_seed_unchanged": true
+          },
+          "committed": {
+            "source_validation": "PASSED",
+            "compatibility_tests": "15 passed, 16 subtests passed in 0.26s",
+            "tracked_json": "PASSED",
+            "class_b_vector": {
+              "description": "Direct repository read and artifact transfer are technically available; repository mutations are administrator-applied and general local command execution is not available.",
+              "repository_read": true,
+              "repository_write": false,
+              "command_execution": false,
+              "artifact_transfer": true,
+              "grants_floppy_authority": false,
+              "grants_repository_writer": false
+            },
+            "v2_schema_unchanged": true,
+            "v1_schemas_unchanged": true,
+            "project_seed_unchanged": true
+          }
+        },
+        "future_controlling_semantics": {
+          "CLASS_A": "DIRECT_REPOSITORY_WRITE_WORKFLOW_TECHNICALLY_AVAILABLE_WHEN_SEPARATELY_AUTHORIZED",
+          "CLASS_B": "DIRECT_REPOSITORY_READ_WITH_ADMINISTRATOR_APPLIED_REPOSITORY_MUTATIONS",
+          "CLASS_C": "MANUAL_FILE_EVIDENCE_EXCHANGE_REQUIRED_FOR_REPOSITORY_INTERACTION"
+        },
+        "class_b_capability_vector": {
+          "repository_read": true,
+          "repository_write": false,
+          "command_execution": false,
+          "artifact_transfer": true,
+          "grants_floppy_authority": false,
+          "grants_repository_writer": false
+        },
+        "v2_01_reopened": false
       },
       "p1_exact_product_paths": [
         "docs/getting-started/README.md",
@@ -189,7 +242,10 @@
         "tests/test_validated_boot_package.py"
       ],
       "a1_commit": "bb42b43b00d7995cfbba3432499af6f9fb99ef34",
-      "a1_tree": "7b949f07d6ce0f40e8e60b087e5e12b59debaa87"
+      "a1_tree": "7b949f07d6ce0f40e8e60b087e5e12b59debaa87",
+      "s1_commit": "6c3afb660bb72f85d828c388d0f05696a2f9f26f",
+      "s1_tree": "e84a815e83e2b27ec62ec51e7e8139061d541748",
+      "s2_status": "VERIFIED_SUPERSESSION_RECORDED"
     },
     {
       "id": "V2-03",
