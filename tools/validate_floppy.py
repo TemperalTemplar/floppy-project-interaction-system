@@ -3990,6 +3990,96 @@ def _is_v2_development_control_manifest(manifest: dict[str, Any]) -> bool:
     )
 
 
+
+V2_DEVELOPMENT_CURRENT_PACKAGE_STATUSES = frozenset(
+    {
+        "PLANNED_NOT_AUTHORIZED",
+        "ACCEPTED_PLANNING_BASELINE",
+        "AUTHORIZED_NOT_STARTED",
+        "IMPLEMENTATION_IN_PROGRESS",
+        "IMPLEMENTATION_COMPLETE_VERIFICATION_PENDING",
+        "IMPLEMENTATION_COMPLETE_VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
+        "ACCEPTED_CLOSEOUT_NOT_PROPOSED",
+        "ACCEPTED_CLOSEOUT_PROPOSED_NOT_APPLIED",
+        "CLOSED",
+    }
+)
+
+
+def _validate_v2_development_work_package_progression(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    roadmap = manifest.get("roadmap")
+    if not isinstance(roadmap, dict):
+        errors.append("V2 development roadmap control record is invalid")
+        return
+
+    current = roadmap.get("current_work_package")
+    if not isinstance(current, str) or re.fullmatch(r"V2-[0-9]{2}", current) is None:
+        errors.append("V2 development current work-package identity is invalid")
+        return
+
+    machine_readable = _semantic_repository_path(roadmap.get("machine_readable"))
+    if machine_readable is None:
+        errors.append("V2 development machine-readable roadmap path is invalid")
+        return
+
+    plan = validate_json(root / machine_readable, errors)
+    if not isinstance(plan, dict):
+        return
+
+    records = plan.get("work_packages")
+    if not isinstance(records, list) or not records:
+        errors.append("V2 development roadmap work-package order is invalid")
+        return
+
+    ordered: list[str] = []
+    for record in records:
+        identifier = record.get("id") if isinstance(record, dict) else None
+        if (
+            not isinstance(identifier, str)
+            or re.fullmatch(r"V2-[0-9]{2}", identifier) is None
+            or identifier in ordered
+        ):
+            errors.append("V2 development roadmap work-package order is invalid")
+            return
+        ordered.append(identifier)
+
+    packages = manifest.get("v2_work_packages")
+    if not isinstance(packages, dict) or set(packages) != set(ordered):
+        errors.append("V2 development work-package set does not match accepted roadmap")
+        return
+
+    if current not in ordered:
+        errors.append("V2 development current work package is absent from accepted roadmap")
+        return
+
+    current_index = ordered.index(current)
+
+    for previous in ordered[:current_index]:
+        if packages.get(previous) != "CLOSED":
+            errors.append(
+                f"V2 development previous work package must remain CLOSED "
+                f"before {current}: {previous}"
+            )
+
+    current_status = packages.get(current)
+    if current_status not in V2_DEVELOPMENT_CURRENT_PACKAGE_STATUSES:
+        errors.append(
+            f"V2 development current work-package status is invalid: "
+            f"{current}={current_status}"
+        )
+
+    for later in ordered[current_index + 1 :]:
+        if packages.get(later) != "PLANNED_NOT_AUTHORIZED":
+            errors.append(
+                f"V2 development later work package advanced prematurely "
+                f"while {current} is current: {later}"
+            )
+
+
 def validate_v2_development_control_mode(
     root: Path,
     manifest: dict[str, Any],
@@ -4046,21 +4136,7 @@ def validate_v2_development_control_mode(
     if not isinstance(current, str) or re.fullmatch(r"V2-[0-9]{2}", current) is None:
         errors.append("V2 development current work-package identity is invalid")
 
-    packages = manifest.get("v2_work_packages")
-    if not isinstance(packages, dict) or set(packages) != {
-        "V2-01",
-        "V2-02",
-        "V2-03",
-        "V2-04",
-        "V2-05",
-    }:
-        errors.append("V2 development work-package set is invalid")
-    else:
-        for later in ("V2-02", "V2-03", "V2-04", "V2-05"):
-            if packages.get(later) != "PLANNED_NOT_AUTHORIZED":
-                errors.append(
-                    f"{later} must remain inactive/not authorized during V2-01"
-                )
+    _validate_v2_development_work_package_progression(root, manifest, errors)
 
     authority = manifest.get("authority")
     authority = authority if isinstance(authority, dict) else {}
