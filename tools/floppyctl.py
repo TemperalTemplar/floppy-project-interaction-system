@@ -76,6 +76,7 @@ BOOT_PACKAGE_FILE_PATHS = (
     "schemas/floppy-fields.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
+    "specs/lifecycle-write-contract.json",
     "specs/v2-architecture-compatibility.md",
     "specs/v2-compatibility-profile.json",
     "system-manifest.json",

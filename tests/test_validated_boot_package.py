@@ -97,6 +97,7 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "schemas/floppy-fields.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
+    "specs/lifecycle-write-contract.json",
     "specs/v2-architecture-compatibility.md",
     "specs/v2-compatibility-profile.json",
     "system-manifest.json",
@@ -252,13 +253,17 @@ class ValidatedBootPackageTests(unittest.TestCase):
             CLI.BOOT_PACKAGE_FILE_PATHS,
         )
 
+    def test_fs09_lifecycle_write_contract_is_in_validated_boot_inventory(self) -> None:
+        self.assertIn("specs/lifecycle-write-contract.json", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertTrue((ROOT / "specs/lifecycle-write-contract.json").is_file())
+
     def test_explicit_inventory_matches_source_boundary(self) -> None:
         self.assertEqual(CLI.BOOT_PACKAGE_FILE_PATHS, EXPECTED_BOOT_PACKAGE_PATHS)
         self.assertEqual(
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 58)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 59)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")
