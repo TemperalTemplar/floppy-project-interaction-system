@@ -3,8 +3,8 @@
 **Identifier:** `FLOPPY-V2-DEVELOPMENT-ORCHESTRATOR-01`  
 **Role:** Project development orchestrator  
 **Reports to:** Administrator  
-**Repository writer:** NONE  
-**V2 implementation authority:** NONE
+**Repository writer:** `V2_02_WORKING_MODEL`
+**V2 implementation authority:** `V2_02_IMPLEMENTATION`
 
 # 1. Controlling authority
 
@@ -43,7 +43,7 @@ V2-01 is CLOSED. Its original accepted Class B definition remains preserved in G
 # 4. Exact V2 roadmap
 
 1. `V2-01` — V2 Architecture and Compatibility Contract — CLOSED
-2. `V2-02` — User Onboarding and Provider-Independent Adoption — ACCEPTED PLANNING BASELINE / NOT AUTHORIZED
+2. `V2-02` — User Onboarding and Provider-Independent Adoption — AUTHORIZED / NOT STARTED
 3. `V2-03` — Accepted-State Continuity Protection — PLANNED / NOT AUTHORIZED
 4. `V2-04` — Continuity Overseer and Orchestrator Succession — PLANNED / NOT AUTHORIZED
 5. `V2-05` — Official Project Plan, Integration, Compatibility Validation, and V2 Release — PLANNED / NOT AUTHORIZED
@@ -184,3 +184,13 @@ It may not:
 - rebase, force-push, destructively reset, or rewrite history.
 
 `V2 IMPLEMENTATION AUTHORITY = NONE`
+
+<!-- V2_02_A1_BEGIN -->
+# V2-02 A1 authorization
+
+Exact authority: `V2_02_IMPLEMENTATION`
+Sole repository writer: `V2_02_WORKING_MODEL`
+Base: `c52726ad8fdb8a3d77252016ebd3b784a92dc4ff` / `33cac03fec71f578836e7d43abff7a3a5dd941f4`
+S1 may proceed only after distinct B1 implementation-start control. P1 remains blocked until verified S2.
+
+<!-- V2_02_A1_END -->

@@ -21,7 +21,7 @@
       "implementation_authority_granted": false
     }
   ],
-  "implementation_authority": "NONE",
+  "implementation_authority": "V2_02_IMPLEMENTATION",
   "repository": "TemperalTemplar/floppy-project-interaction-system",
   "published_v1_release": "v1.0.0",
   "development_base": {
@@ -111,7 +111,7 @@
     {
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
-      "status": "ACCEPTED_PLANNING_BASELINE",
+      "status": "AUTHORIZED_NOT_STARTED",
       "dependency": [
         "V2-01"
       ],
@@ -132,8 +132,8 @@
       "proposal_base_tree": "5e6818ede0d3f387425edf78cd54d7bdce7ac2ae",
       "acceptance_base_checkpoint": "3689aef930186c26c774c3813d1026586860dd92",
       "acceptance_base_tree": "197298b4bdd3181d5a6fe3f8c268c3867374296c",
-      "implementation_authority": "NONE",
-      "repository_writer": null,
+      "implementation_authority": "V2_02_IMPLEMENTATION",
+      "repository_writer": "V2_02_WORKING_MODEL",
       "decision_1_prerequisite_recovery": {
         "status": "ACCEPTED_AND_COMPLETED",
         "e0_commit": "06a9cf185601e5870089f62f7c2e695ec720bd68",
@@ -245,9 +245,9 @@
     }
   ],
   "authority_state": {
-    "active_work_authorization": null,
+    "active_work_authorization": "V2_02_IMPLEMENTATION",
     "active_implementation_section": null,
-    "repository_writer": null,
-    "v2_implementation_authority": "NONE"
+    "repository_writer": "V2_02_WORKING_MODEL",
+    "v2_implementation_authority": "V2_02_IMPLEMENTATION"
   }
 }
