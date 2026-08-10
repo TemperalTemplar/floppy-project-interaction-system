@@ -353,3 +353,41 @@ new explicit administrator authority. It is NOT EXECUTED by W1.
 `V2 IMPLEMENTATION AUTHORITY = NONE`
 <!-- V2_04_W1_END -->
 
+
+
+<!-- V2_04_A1_BEGIN -->
+# V2-04 A1 implementation authorization
+
+Administrator decision:
+
+`AUTHORIZE V2-04 IMPLEMENTATION UNDER TR-003-AUTHORIZE-SECTION-IMPLEMENTATION FROM ACCEPTED W1 CHECKPOINT fb600f5a372a1ab8e239517a4f8cff5084a82042 TREE c533249e080a5913efdca03eb333b1d1a569c19e.`
+
+Transition: `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
+
+Authorization base: `fb600f5a372a1ab8e239517a4f8cff5084a82042` / `c533249e080a5913efdca03eb333b1d1a569c19e`
+
+Resulting lifecycle: `LC-SECTION-AUTHORIZED-NOT-STARTED`
+
+Authorization record: `.floppy/authorizations/V2-04-implementation.json`
+
+Authorization ID/status: `V2_04_IMPLEMENTATION` / `ACTIVE`
+
+Sole repository writer: `V2_04_WORKING_MODEL`
+
+Writer authorization reference: `V2_04_IMPLEMENTATION`
+
+V1-compatible lifecycle representation remains `section = null` and
+`active_implementation_sections = []`.
+
+Implementation remains `NOT_STARTED`; verification remains `NOT_STARTED`;
+administrator result acceptance remains `PENDING`; closeout remains
+`NOT_PROPOSED`.
+
+A1 modifies no reusable-product path, does not execute B1, and does not
+authorize the complete repository suite.
+
+V2-05 remains `PLANNED_NOT_AUTHORIZED`.
+
+STOP after A1. Next possible transition is `TR-004-START-SECTION-IMPLEMENTATION`
+under a separate later operation.
+<!-- V2_04_A1_END -->
