@@ -427,7 +427,7 @@
     {
       "id": "V2-04",
       "title": "Continuity Overseer and Orchestrator Succession",
-      "status": "PLANNED_NOT_AUTHORIZED",
+      "status": "ACCEPTED_PLANNING_BASELINE",
       "dependency": [
         "V2-01",
         "V2-03"
@@ -441,7 +441,59 @@
         "Replacement orchestrators remain linked to the same Continuity Overseer and project-origin chain.",
         "Accepted work is not recreated.",
         "Authority does not change merely because the orchestrator changes."
-      ]
+      ],
+      "acceptance_record": ".floppy/work-packages/V2-04.md",
+      "administrator_decision": "ACCEPT THE CORRECTED V2-04 CONTINUITY OVERSEER AND ORCHESTRATOR SUCCESSION WORK-PACKAGE PROPOSAL AS THE V2-04 PLANNING BASELINE UNDER CONTROLLING PROJECT-PLAN REVISION R1.",
+      "accepted_on": "2026-08-10",
+      "acceptance_base_checkpoint": "7460bfb0eb4429d0dbb4772201d77860e41457ea",
+      "acceptance_base_tree": "27f189dafd6971a70fcb9b10c5b2a9a82282b9e4",
+      "implementation_authority": "NONE",
+      "repository_writer": null,
+      "implementation_state": "NOT_STARTED",
+      "verification_state": "NOT_STARTED",
+      "administrator_result_acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "p1_exact_product_paths": [
+        "orchestrator/Continuity_Overseer.md",
+        "protocols/06-orchestrator-succession.md",
+        "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+        "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
+        "tests/test_continuity_overseer.py",
+        "BOOTSTRAP.md",
+        "onboarding/Floppy_1E.md",
+        "orchestrator/Floppy_Z.md",
+        "orchestrator/README.md",
+        "project-seed/.floppy/START-HERE.md",
+        "project-seed/.floppy/handoffs/README.md",
+        "project-seed/.floppy/templates/orchestrator-handoff.md",
+        "protocols/01-new-project-onboarding.md",
+        "specs/v2-architecture-compatibility.md",
+        "specs/v2-compatibility-profile.json",
+        "system-manifest.json",
+        "tools/validate_floppy.py",
+        "tools/floppyctl.py",
+        "tests/test_export_integrity.py",
+        "tests/test_floppyctl.py",
+        "tests/test_orchestrator_registry.py",
+        "tests/test_user_onboarding.py",
+        "tests/test_v2_compatibility.py",
+        "tests/test_validated_boot_package.py"
+      ],
+      "future_control_scope_counts": {
+        "W1": 5,
+        "A1": 7,
+        "B1": 5,
+        "P1": 24,
+        "C1": 5,
+        "V1": 7
+      },
+      "verification_expectations": {
+        "pre_v2_04_tracked_json": 73,
+        "v2_04_v1_tracked_json": 76,
+        "current_validated_boot_inventory": 61,
+        "future_validated_boot_inventory": 65,
+        "complete_repository_suite": "ONE_LATER_AUTHORIZED_ATTEMPT_ONLY"
+      }
     },
     {
       "id": "V2-05",

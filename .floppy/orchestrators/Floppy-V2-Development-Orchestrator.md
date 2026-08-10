@@ -306,3 +306,50 @@ Stop for the separate administrator result-acceptance decision.
 
 `V2 IMPLEMENTATION AUTHORITY = NONE`
 <!-- V2_03_V1_END -->
+
+<!-- V2_04_W1_BEGIN -->
+# V2-04 W1 work-package acceptance
+
+Administrator decision:
+
+`ACCEPT THE CORRECTED V2-04 CONTINUITY OVERSEER AND ORCHESTRATOR SUCCESSION WORK-PACKAGE PROPOSAL AS THE V2-04 PLANNING BASELINE UNDER CONTROLLING PROJECT-PLAN REVISION R1.`
+
+Transition: `TR-002-ACCEPT-WORK-PACKAGE`
+
+Acceptance base: `7460bfb0eb4429d0dbb4772201d77860e41457ea` / `27f189dafd6971a70fcb9b10c5b2a9a82282b9e4`
+
+Resulting lifecycle: `LC-WORK-PACKAGE-ACCEPTED-NO-ACTIVE-WORK`
+
+- V2-01: CLOSED
+- V2-02: CLOSED
+- V2-03: CLOSED
+- V2-04 work package: ACCEPTED_PLANNING_BASELINE
+- V2-04 implementation: NOT_STARTED
+- V2-04 verification: NOT_STARTED
+- V2-04 administrator result acceptance: PENDING
+- V2-04 closeout: NOT_PROPOSED
+- active work authorization: NONE
+- active implementation authorization: NONE
+- repository writer: NONE
+- V2-05: PLANNED_NOT_AUTHORIZED
+
+The exact future V2-04 P1 scope is frozen to 24 reusable-product paths in
+`.floppy/work-packages/V2-04.md`.
+
+Frozen future control scopes: W1 5, A1 7, B1 5, P1 24, C1 5, V1 7.
+
+Expected future V2-04 V1 tracked JSON: 76.
+Expected future validated boot inventory: 65 paths.
+Complete repository suite: one later-authorized attempt only after bounded
+validation gates pass.
+
+Identity, shared-origin, paired-bootstrap ordering, activation/presence rules,
+authority fingerprinting, recovery succession, scope-drift boundaries, and
+Class A/B/C compatibility are frozen in the accepted V2-04 work-package record.
+
+Next possible transition is `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`, requiring
+new explicit administrator authority. It is NOT EXECUTED by W1.
+
+`V2 IMPLEMENTATION AUTHORITY = NONE`
+<!-- V2_04_W1_END -->
+
