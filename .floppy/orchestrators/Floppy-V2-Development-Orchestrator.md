@@ -3,8 +3,8 @@
 **Identifier:** `FLOPPY-V2-DEVELOPMENT-ORCHESTRATOR-01`  
 **Role:** Project development orchestrator  
 **Reports to:** Administrator  
-**Repository writer:** NONE
-**V2 implementation authority:** NONE
+**Repository writer:** V2_03_WORKING_MODEL
+**V2 implementation authority:** V2_03_IMPLEMENTATION
 
 # 1. Controlling authority
 
@@ -254,3 +254,20 @@ Next possible lifecycle operation: `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`, re
 `V2 IMPLEMENTATION AUTHORITY = NONE`
 <!-- V2_03_W1_END -->
 
+<!-- V2_03_A1_BEGIN -->
+# V2-03 A1 implementation authorization
+
+`TR-003-AUTHORIZE-SECTION-IMPLEMENTATION` is applied under explicit administrator authority.
+
+Authorization: `V2_03_IMPLEMENTATION`  
+Sole repository writer: `V2_03_WORKING_MODEL`  
+Base: `33e3f831303ea25defa41acbbe474b6cc8baff96` / `6ad0bf21373a2cc23a678def44fc4eebd932d368`
+
+Lifecycle: `LC-SECTION-AUTHORIZED-NOT-STARTED`
+
+Implementation remains `NOT_STARTED`; verification remains `NOT_STARTED`; administrator result acceptance remains `PENDING`; closeout remains `NOT_PROPOSED`.
+
+The exact future P1 scope is the eleven reusable-product paths frozen in `.floppy/work-packages/V2-03.md`.
+
+`V2 IMPLEMENTATION AUTHORITY = V2_03_IMPLEMENTATION`
+<!-- V2_03_A1_END -->

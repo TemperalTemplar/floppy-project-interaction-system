@@ -320,7 +320,7 @@
     {
       "id": "V2-03",
       "title": "Accepted-State Continuity Protection",
-      "status": "ACCEPTED_PLANNING_BASELINE",
+      "status": "AUTHORIZED_NOT_STARTED",
       "dependency": [
         "V2-01"
       ],
@@ -337,8 +337,8 @@
       "proposal_base_tree": "c6b9114cbbcb0d8ac24345a97a1f9150cadaf0f0",
       "acceptance_base_checkpoint": "6ad7c67fdd7f22732681c193694ac3a13f0d9ea0",
       "acceptance_base_tree": "ca483d6cf2c097824289f02818c0ab4196e960e5",
-      "implementation_authority": "NONE",
-      "repository_writer": null,
+      "implementation_authority": "V2_03_IMPLEMENTATION",
+      "repository_writer": "V2_03_WORKING_MODEL",
       "implementation_state": "NOT_STARTED",
       "verification_state": "NOT_STARTED",
       "administrator_result_acceptance": "PENDING",
@@ -355,7 +355,11 @@
         "tools/floppyctl.py",
         "tests/test_user_onboarding.py",
         "tests/test_validated_boot_package.py"
-      ]
+      ],
+      "authorization_id": "V2_03_IMPLEMENTATION",
+      "implementation_authorization_base_checkpoint": "33e3f831303ea25defa41acbbe474b6cc8baff96",
+      "implementation_authorization_base_tree": "6ad0bf21373a2cc23a678def44fc4eebd932d368",
+      "p1_status": "NOT_IMPLEMENTED"
     },
     {
       "id": "V2-04",
