@@ -320,7 +320,7 @@
     {
       "id": "V2-03",
       "title": "Accepted-State Continuity Protection",
-      "status": "PLANNED_NOT_AUTHORIZED",
+      "status": "ACCEPTED_PLANNING_BASELINE",
       "dependency": [
         "V2-01"
       ],
@@ -329,6 +329,32 @@
         "A fresh model can read protected accepted state.",
         "Protected accepted state cannot be replaced without the lawful revision pathway.",
         "Project-origin, original-intent, accepted-scope, and accepted-plan records are protected accepted state and may change only through the lawful revision/supersession pathway."
+      ],
+      "acceptance_record": ".floppy/work-packages/V2-03.md",
+      "administrator_decision": "ACCEPT THE V2-03 ACCEPTED-STATE CONTINUITY PROTECTION WORK-PACKAGE PROPOSAL AS THE V2-03 PLANNING BASELINE UNDER CONTROLLING PROJECT-PLAN REVISION R1.",
+      "accepted_on": "2026-08-10",
+      "proposal_base_checkpoint": "2220f8c50641b87a212e6ed39b38b4d704d3c2fd",
+      "proposal_base_tree": "c6b9114cbbcb0d8ac24345a97a1f9150cadaf0f0",
+      "acceptance_base_checkpoint": "6ad7c67fdd7f22732681c193694ac3a13f0d9ea0",
+      "acceptance_base_tree": "ca483d6cf2c097824289f02818c0ab4196e960e5",
+      "implementation_authority": "NONE",
+      "repository_writer": null,
+      "implementation_state": "NOT_STARTED",
+      "verification_state": "NOT_STARTED",
+      "administrator_result_acceptance": "PENDING",
+      "closeout": "NOT_PROPOSED",
+      "p1_exact_product_paths": [
+        "schemas/bce/2.0.0/bce-accepted-state.schema.json",
+        "specs/accepted-state-continuity.md",
+        "tests/test_accepted_state_continuity.py",
+        "onboarding/Floppy_1E.md",
+        "protocols/01-new-project-onboarding.md",
+        "protocols/05-revision-application.md",
+        "system-manifest.json",
+        "tools/validate_floppy.py",
+        "tools/floppyctl.py",
+        "tests/test_user_onboarding.py",
+        "tests/test_validated_boot_package.py"
       ]
     },
     {
