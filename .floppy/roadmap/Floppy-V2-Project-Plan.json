@@ -320,7 +320,7 @@
     {
       "id": "V2-03",
       "title": "Accepted-State Continuity Protection",
-      "status": "AUTHORIZED_NOT_STARTED",
+      "status": "IMPLEMENTATION_IN_PROGRESS",
       "dependency": [
         "V2-01"
       ],
@@ -339,7 +339,7 @@
       "acceptance_base_tree": "ca483d6cf2c097824289f02818c0ab4196e960e5",
       "implementation_authority": "V2_03_IMPLEMENTATION",
       "repository_writer": "V2_03_WORKING_MODEL",
-      "implementation_state": "NOT_STARTED",
+      "implementation_state": "IN_PROGRESS",
       "verification_state": "NOT_STARTED",
       "administrator_result_acceptance": "PENDING",
       "closeout": "NOT_PROPOSED",
@@ -359,7 +359,10 @@
       "authorization_id": "V2_03_IMPLEMENTATION",
       "implementation_authorization_base_checkpoint": "33e3f831303ea25defa41acbbe474b6cc8baff96",
       "implementation_authorization_base_tree": "6ad0bf21373a2cc23a678def44fc4eebd932d368",
-      "p1_status": "NOT_IMPLEMENTED"
+      "p1_status": "NOT_IMPLEMENTED",
+      "a1_commit": "325290a9ca632aca7610f2db96fd741f06777781",
+      "a1_tree": "5ace914e451c26269760216cd9058f1d360a69dc",
+      "b1_transition": "TR-004-START-SECTION-IMPLEMENTATION"
     },
     {
       "id": "V2-04",

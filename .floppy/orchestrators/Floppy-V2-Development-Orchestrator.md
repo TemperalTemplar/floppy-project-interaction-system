@@ -271,3 +271,11 @@ The exact future P1 scope is the eleven reusable-product paths frozen in `.flopp
 
 `V2 IMPLEMENTATION AUTHORITY = V2_03_IMPLEMENTATION`
 <!-- V2_03_A1_END -->
+
+<!-- V2_03_B1_BEGIN -->
+# V2-03 B1 implementation start
+
+`TR-004-START-SECTION-IMPLEMENTATION` is applied. V2-03 implementation is `IN_PROGRESS` under `V2_03_IMPLEMENTATION` / `V2_03_WORKING_MODEL`.
+
+No reusable-product path is changed by B1. P1 remains a separate exact eleven-path commit.
+<!-- V2_03_B1_END -->
