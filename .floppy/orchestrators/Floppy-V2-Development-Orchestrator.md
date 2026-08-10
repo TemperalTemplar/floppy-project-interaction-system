@@ -279,3 +279,13 @@ The exact future P1 scope is the eleven reusable-product paths frozen in `.flopp
 
 No reusable-product path is changed by B1. P1 remains a separate exact eleven-path commit.
 <!-- V2_03_B1_END -->
+
+<!-- V2_03_C1_BEGIN -->
+# V2-03 C1 implementation completion
+
+The exact eleven-path P1 commit is complete and `TR-005-RECORD-IMPLEMENTATION-COMPLETE` is applied.
+
+Implementation is `COMPLETE`. Verification is `PENDING`. `V2_03_IMPLEMENTATION` and `V2_03_WORKING_MODEL` remain active only through the authorized verification boundary.
+
+Run the exact bounded V2-03 verification gates. Only after all bounded gates pass may complete repository pytest-suite attempt 1 run.
+<!-- V2_03_C1_END -->
