@@ -111,7 +111,7 @@
     {
       "id": "V2-02",
       "title": "User Onboarding and Provider-Independent Adoption",
-      "status": "IMPLEMENTATION_COMPLETE_VERIFICATION_COMPLETE_ACCEPTANCE_PENDING",
+      "status": "CLOSED",
       "dependency": [
         "V2-01"
       ],
@@ -250,7 +250,7 @@
       "verification_state": "COMPLETE",
       "p1_commit": "5dabb87da1c0fb7d16dde27cfaa47bb297c4f32c",
       "p1_tree": "4f8342045209ea530b9fff806a6d6fa2016ab2fb",
-      "administrator_result_acceptance": "PENDING",
+      "administrator_result_acceptance": "ACCEPTED",
       "c1_commit": "49c0c3b5a2f978e5e347b107cf3b85885da7991c",
       "c1_tree": "d9aac2ee6726c183cd134eb86ed6f91c6b6da4a4",
       "c2_commit": "79cf6a7759518e9834f00d12255c47ad6c7b4671",
