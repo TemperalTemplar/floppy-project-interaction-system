@@ -791,3 +791,22 @@ When Floppy 1E reaches **new-project acceptance** or **formal adoption of an exi
 This handoff creates **no implementation authority** and **no repository writer**. V2-02 does not implement automatic prompt-generation runtime, durable origin storage, Continuity Overseer persistence/linkage, drift detection, succession, or Official Project Plan generation.
 
 <!-- V2_02_PAIRED_BOOTSTRAP_HANDOFF_END -->
+
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_BEGIN -->
+## V2-03 accepted-state continuity at project acceptance
+
+When this V2 source capability is available, new-project roadmap acceptance or formal adoption must establish accepted-state continuity as one accepted transaction:
+
+1. generate one random canonical lowercase UUIDv4 `project_id`;
+2. create `.floppy/accepted-state.json` with immutable `ORIGINAL` accepted state;
+3. bind accepted project origin, original intent, accepted scope, and accepted plan inside `protected_state`;
+4. calculate `protected_state_sha256` using the exact V2-03 canonical JSON rule;
+5. register `.floppy/manifest.json#accepted_state_continuity` as `ACTIVE`;
+6. preserve implementation authority and repository-writer state independently.
+
+Activation and record must not be created separately. Do not create a blank accepted-state file in the source seed. Do not fabricate `project_id` for an older Floppy project that never adopted V2-03; it may continue lawfully until an explicit controlled adoption establishes the contract.
+
+Accepted-state existence grants no implementation, repository-writer, migration, integration, or release authority. A later project-level change to protected accepted state must use the lawful append-only accepted revision path. Ordinary section progress, closeout, model replacement, or context loss must not rewrite the original record.
+
+Canonical contract: `specs/accepted-state-continuity.md`.
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->

@@ -200,3 +200,17 @@ Ordinary roadmap revisions do not rerun Floppy 1E. Load it again only when the u
 Before this project-onboarding protocol begins, V2 user onboarding identifies Route A (idea only), Route B (existing non-Floppy project), or Route C (existing Floppy project). Route B must preserve existing code/evidence/history/architecture/behavior before formal adoption. Route C does not restart this protocol merely because conversation context was lost; it reads `.floppy/manifest.json` first and continues from accepted state.
 
 <!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_BEGIN -->
+## V2-03 accepted-state establishment
+
+For a new project accepted under a V2-03-capable source, roadmap acceptance must atomically establish `.floppy/accepted-state.json` and `.floppy/manifest.json#accepted_state_continuity` with status `ACTIVE`.
+
+Generate `project_id` once as a random canonical lowercase UUIDv4. Do not derive it from repository identity, paths, Git state, administrator identity, provider, model, conversation, scope, or outcome.
+
+The `ORIGINAL` protected state must bind the accepted project origin, original intent, accepted scope, and accepted plan. Its digest is lowercase SHA-256 of `json.dumps(protected_state, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")`.
+
+The accepted-state record grants no implementation authority and creates no repository writer. Route C context recovery must read an existing accepted-state record when activation is present and must not reconstruct it from conversation memory.
+
+An older Floppy project with no prior V2-03 activation remains a valid legacy project. Adoption requires explicit controlled acceptance; no automatic backfill or fabricated project ID is permitted.
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->

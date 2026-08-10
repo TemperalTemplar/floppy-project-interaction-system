@@ -90,11 +90,13 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/2.0.0/bce-accepted-state.schema.json",
     "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
     "schemas/floppy-fields.md",
+    "specs/accepted-state-continuity.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
     "specs/lifecycle-write-contract.json",
@@ -263,11 +265,21 @@ class ValidatedBootPackageTests(unittest.TestCase):
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 59)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 61)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")
             self.assertFalse(relative.startswith((".floppy/", "legacy/", "tests/")))
+
+
+    def test_v2_03_accepted_state_artifacts_are_in_validated_boot_inventory(self) -> None:
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 61)
+        self.assertIn(
+            "schemas/bce/2.0.0/bce-accepted-state.schema.json",
+            CLI.BOOT_PACKAGE_FILE_PATHS,
+        )
+        self.assertIn("specs/accepted-state-continuity.md", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertIn("specs/lifecycle-write-contract.json", CLI.BOOT_PACKAGE_FILE_PATHS)
 
     def test_unapproved_repository_content_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as td:

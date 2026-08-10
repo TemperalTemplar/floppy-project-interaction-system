@@ -181,7 +181,6 @@ class V2UserOnboardingTests(unittest.TestCase):
     def test_later_work_package_runtime_is_not_implemented(self) -> None:
         excluded = self.registry["not_implemented_here"]
         expected = {
-            "durable_project_origin_storage_or_schema",
             "continuity_overseer_runtime",
             "continuity_overseer_persistence",
             "automatic_paired_prompt_generation_runtime",
@@ -205,6 +204,27 @@ class V2UserOnboardingTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(json.loads(result.stdout), self.registry)
+
+
+    def test_v2_03_accepted_state_continuity_is_registered_without_later_runtime(self) -> None:
+        continuity = self.system["accepted_state_continuity"]
+        self.assertEqual(continuity["owner"], "V2-03")
+        self.assertEqual(continuity["runtime_record"], ".floppy/accepted-state.json")
+        self.assertFalse(continuity["automatic_migration"])
+        self.assertFalse(continuity["automatic_backfill"])
+        self.assertNotIn(
+            "durable_project_origin_storage_or_schema",
+            self.registry["not_implemented_here"],
+        )
+        for later in (
+            "continuity_overseer_runtime",
+            "orchestrator_succession",
+            "official_project_plan_generation_or_binding",
+        ):
+            self.assertIn(later, self.registry["not_implemented_here"])
+        text = (ROOT / "onboarding/Floppy_1E.md").read_text(encoding="utf-8")
+        self.assertIn("V2_03_ACCEPTED_STATE_CONTINUITY_BEGIN", text)
+        self.assertIn(".floppy/accepted-state.json", text)
 
 
 if __name__ == "__main__":

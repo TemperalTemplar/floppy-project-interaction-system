@@ -39,6 +39,7 @@ SOURCE_REQUIRED = [
     "project-seed/.floppy/manifest.json",
     "project-seed/.floppy/roadmap/roadmap.json",
     "project-seed/.floppy/roadmap/roadmap.md",
+    "specs/accepted-state-continuity.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
@@ -47,6 +48,7 @@ SOURCE_REQUIRED = [
     "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
+    "schemas/bce/2.0.0/bce-accepted-state.schema.json",
     "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
     "specs/v2-architecture-compatibility.md",
     "specs/v2-compatibility-profile.json",
@@ -4374,6 +4376,323 @@ def validate_v2_user_onboarding(root: Path, manifest: dict[str, Any], errors: li
 
 # === V2-02 PROVIDER-INDEPENDENT USER ONBOARDING END ===
 
+# === V2-03 ACCEPTED-STATE CONTINUITY BEGIN ===
+
+V2_ACCEPTED_STATE_SCHEMA_PATH = "schemas/bce/2.0.0/bce-accepted-state.schema.json"
+V2_ACCEPTED_STATE_SPEC_PATH = "specs/accepted-state-continuity.md"
+V2_ACCEPTED_STATE_TEST_PATH = "tests/test_accepted_state_continuity.py"
+V2_ACCEPTED_STATE_RUNTIME_PATH = ".floppy/accepted-state.json"
+V2_ACCEPTED_STATE_ACTIVATION_KEY = "accepted_state_continuity"
+V2_ACCEPTED_STATE_SCHEMA_ID = (
+    "urn:floppy-project-interaction-system:"
+    "schema:bce-accepted-state:2.0.0"
+)
+V2_PROJECT_ID_PATTERN = re.compile(
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-"
+    r"[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+)
+V2_AUTHORITY_ISOLATION = {
+    "grants_implementation_authority": False,
+    "grants_repository_writer": False,
+    "grants_migration_authority": False,
+    "grants_integration_authority": False,
+    "grants_release_authority": False,
+}
+
+
+def _v2_accepted_add(errors: list[str], code: str) -> None:
+    if code not in errors:
+        errors.append(code)
+
+
+def canonical_v2_protected_state_bytes(protected_state: Any) -> bytes:
+    return json.dumps(
+        protected_state,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def canonical_v2_protected_state_sha256(protected_state: Any) -> str:
+    return hashlib.sha256(canonical_v2_protected_state_bytes(protected_state)).hexdigest()
+
+
+def resolve_v2_accepted_state_roles(record: dict[str, Any]) -> dict[str, Any]:
+    revisions = record.get("revisions")
+    revisions = revisions if isinstance(revisions, list) else []
+    revision_ids = [
+        item.get("revision_id")
+        for item in revisions
+        if isinstance(item, dict) and isinstance(item.get("revision_id"), str)
+    ]
+    current = record.get("current_accepted_revision")
+    historical = ["ORIGINAL", *revision_ids]
+    return {
+        "original_revision": "ORIGINAL",
+        "current_accepted_revision": current,
+        "superseded_but_historical": [item for item in historical if item != current],
+    }
+
+
+def _validate_v2_revision_hash(revision: dict[str, Any], errors: list[str]) -> None:
+    try:
+        actual = canonical_v2_protected_state_sha256(revision.get("protected_state"))
+    except (TypeError, ValueError, OverflowError):
+        _v2_accepted_add(errors, "ACCEPTED_STATE_SILENT_DRIFT")
+        return
+    if revision.get("protected_state_sha256") != actual:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_SILENT_DRIFT")
+
+
+def validate_v2_accepted_state_record(
+    record: dict[str, Any],
+    *,
+    previous_record: dict[str, Any] | None = None,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(record, dict):
+        return ["ACCEPTED_STATE_RECORD_INVALID"]
+
+    project_id = record.get("project_id")
+    if not isinstance(project_id, str) or V2_PROJECT_ID_PATTERN.fullmatch(project_id) is None:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_PROJECT_ID_INVALID")
+    if record.get("authority_isolation") != V2_AUTHORITY_ISOLATION:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_AUTHORITY_ISOLATION_VIOLATION")
+
+    original = record.get("original")
+    revisions = record.get("revisions")
+    if not isinstance(original, dict) or original.get("revision_id") != "ORIGINAL":
+        _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+        original = {}
+    if not isinstance(revisions, list) or not all(isinstance(item, dict) for item in revisions):
+        _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+        revisions = []
+
+    _validate_v2_revision_hash(original, errors)
+    for revision in revisions:
+        _validate_v2_revision_hash(revision, errors)
+
+    ids: list[str] = []
+    expected_supersedes = "ORIGINAL"
+    for revision in revisions:
+        revision_id = revision.get("revision_id")
+        if (
+            not isinstance(revision_id, str)
+            or not revision_id
+            or revision_id == "ORIGINAL"
+            or revision_id in ids
+        ):
+            _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            continue
+        if revision.get("supersedes_revision_id") != expected_supersedes:
+            _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+        ids.append(revision_id)
+        expected_supersedes = revision_id
+
+    expected_current = ids[-1] if ids else "ORIGINAL"
+    if record.get("current_accepted_revision") != expected_current:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+
+    if previous_record is not None:
+        if not isinstance(previous_record, dict):
+            _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+        else:
+            if previous_record.get("project_id") != record.get("project_id"):
+                _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            if previous_record.get("original") != record.get("original"):
+                _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            previous_revisions = previous_record.get("revisions")
+            if not isinstance(previous_revisions, list):
+                _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+                previous_revisions = []
+            if len(revisions) < len(previous_revisions):
+                _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            elif revisions[: len(previous_revisions)] != previous_revisions:
+                _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            elif len(revisions) == len(previous_revisions):
+                if record != previous_record:
+                    _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+            else:
+                previous_current = previous_record.get("current_accepted_revision")
+                first_new = revisions[len(previous_revisions)]
+                if first_new.get("supersedes_revision_id") != previous_current:
+                    _v2_accepted_add(errors, "ACCEPTED_STATE_HISTORY_REWRITE")
+
+    return errors
+
+
+def _v2_accepted_git_json(root: Path, revision: str, relative: str) -> dict[str, Any] | None:
+    result = _git_integrity_run(root, "show", f"{revision}:{relative}")
+    if result.returncode != 0:
+        return None
+    try:
+        value = json.loads(result.stdout)
+    except Exception:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _v2_accepted_previous_pair(
+    root: Path,
+    current_manifest: dict[str, Any],
+    current_record: dict[str, Any] | None,
+) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    head_manifest = _v2_accepted_git_json(root, "HEAD", ".floppy/manifest.json")
+    head_record = _v2_accepted_git_json(root, "HEAD", V2_ACCEPTED_STATE_RUNTIME_PATH)
+    if head_manifest is None:
+        return None, None
+    previous_revision = "HEAD^" if head_manifest == current_manifest and head_record == current_record else "HEAD"
+    return (
+        _v2_accepted_git_json(root, previous_revision, ".floppy/manifest.json"),
+        _v2_accepted_git_json(root, previous_revision, V2_ACCEPTED_STATE_RUNTIME_PATH),
+    )
+
+
+def _v2_accepted_activation_active(manifest: dict[str, Any] | None) -> bool:
+    if not isinstance(manifest, dict):
+        return False
+    activation = manifest.get(V2_ACCEPTED_STATE_ACTIVATION_KEY)
+    return isinstance(activation, dict) and activation.get("status") == "ACTIVE"
+
+
+def validate_v2_accepted_state_continuity_project(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    record_path = root / V2_ACCEPTED_STATE_RUNTIME_PATH
+    record = validate_json(record_path, errors) if record_path.is_file() else None
+    previous_manifest, previous_record = _v2_accepted_previous_pair(root, manifest, record)
+    previous_active = _v2_accepted_activation_active(previous_manifest)
+
+    activation = manifest.get(V2_ACCEPTED_STATE_ACTIVATION_KEY)
+    if activation is None:
+        if record_path.exists():
+            _v2_accepted_add(errors, "ACCEPTED_STATE_UNREGISTERED_RECORD")
+        if previous_active:
+            _v2_accepted_add(errors, "ACCEPTED_STATE_SILENT_DRIFT")
+        return
+    if not isinstance(activation, dict):
+        _v2_accepted_add(errors, "ACCEPTED_STATE_ACTIVATION_INVALID")
+        return
+
+    expected_activation = {
+        "status": "ACTIVE",
+        "contract_version": "2.0.0",
+        "record": V2_ACCEPTED_STATE_RUNTIME_PATH,
+        "schema": V2_ACCEPTED_STATE_SCHEMA_PATH,
+    }
+    if activation != expected_activation:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_ACTIVATION_INVALID")
+
+    if not record_path.is_file() or record is None:
+        _v2_accepted_add(errors, "ACCEPTED_STATE_REQUIRED_RECORD_MISSING")
+        if previous_active:
+            _v2_accepted_add(errors, "ACCEPTED_STATE_SILENT_DRIFT")
+        return
+
+    source_root = Path(__file__).resolve().parents[1]
+    schema = validate_json(source_root / V2_ACCEPTED_STATE_SCHEMA_PATH, errors)
+    if schema is not None:
+        try:
+            from jsonschema import Draft202012Validator
+        except ImportError as exc:
+            errors.append(f"jsonschema is required for V2-03 accepted-state validation: {exc}")
+        else:
+            failures = sorted(
+                Draft202012Validator(schema).iter_errors(record),
+                key=lambda item: (tuple(str(part) for part in item.absolute_path), item.message),
+            )
+            if failures:
+                first = failures[0]
+                location = ".".join(str(part) for part in first.absolute_path) or "<root>"
+                errors.append(f"ACCEPTED_STATE_SCHEMA_INVALID: {location}: {first.message}")
+
+    previous_for_history = previous_record if previous_active else None
+    for item in validate_v2_accepted_state_record(record, previous_record=previous_for_history):
+        _v2_accepted_add(errors, item)
+
+
+def validate_v2_accepted_state_continuity_source(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    registry = manifest.get("accepted_state_continuity")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register V2-03 accepted-state continuity")
+        return
+    expected = {
+        "owner": "V2-03",
+        "status": "reusable_product",
+        "record_family": "accepted-state",
+        "runtime_record": V2_ACCEPTED_STATE_RUNTIME_PATH,
+        "activation_registration": ".floppy/manifest.json#accepted_state_continuity",
+        "schema_version": "2.0.0",
+        "validator": "tools/validate_floppy.py",
+        "automatic_migration": False,
+        "automatic_backfill": False,
+    }
+    for field, value in expected.items():
+        if registry.get(field) != value:
+            errors.append(f"V2-03 accepted-state {field} is invalid")
+    if manifest.get("entrypoints", {}).get("accepted_state_continuity") != V2_ACCEPTED_STATE_SPEC_PATH:
+        errors.append("V2-03 accepted-state entrypoint is invalid")
+    if registry.get("authority_isolation") != V2_AUTHORITY_ISOLATION:
+        errors.append("V2-03 accepted-state authority isolation is invalid")
+    if registry.get("history_roles") != ["ORIGINAL", "CURRENT_ACCEPTED", "SUPERSEDED_BUT_HISTORICAL"]:
+        errors.append("V2-03 accepted-state history roles are invalid")
+    deterministic = registry.get("deterministic_errors")
+    if not isinstance(deterministic, list) or not {"ACCEPTED_STATE_HISTORY_REWRITE", "ACCEPTED_STATE_SILENT_DRIFT"}.issubset(set(deterministic)):
+        errors.append("V2-03 accepted-state deterministic errors are incomplete")
+    if registry.get("validated_boot_package_paths_added") != [V2_ACCEPTED_STATE_SCHEMA_PATH, V2_ACCEPTED_STATE_SPEC_PATH]:
+        errors.append("V2-03 boot-package additions are invalid")
+
+    artifacts = registry.get("artifacts")
+    expected_artifacts = {
+        "schema": (V2_ACCEPTED_STATE_SCHEMA_PATH, V2_ACCEPTED_STATE_SCHEMA_ID),
+        "specification": (V2_ACCEPTED_STATE_SPEC_PATH, None),
+        "tests": (V2_ACCEPTED_STATE_TEST_PATH, None),
+    }
+    if not isinstance(artifacts, dict) or set(artifacts) != set(expected_artifacts):
+        errors.append("V2-03 accepted-state artifact registry is invalid")
+        return
+    for name, (relative, expected_id) in expected_artifacts.items():
+        item = artifacts.get(name)
+        if not isinstance(item, dict) or item.get("path") != relative:
+            errors.append(f"V2-03 accepted-state artifact path is invalid: {name}")
+            continue
+        path = root / relative
+        if not path.is_file():
+            errors.append(f"V2-03 accepted-state artifact is missing: {relative}")
+            continue
+        if item.get("sha256") != sha256(path):
+            errors.append(f"V2-03 accepted-state artifact digest does not match: {relative}")
+        if expected_id is not None and item.get("$id") != expected_id:
+            errors.append(f"V2-03 accepted-state artifact $id is invalid: {name}")
+
+    schema = validate_json(root / V2_ACCEPTED_STATE_SCHEMA_PATH, errors)
+    if schema is not None:
+        if schema.get("$id") != V2_ACCEPTED_STATE_SCHEMA_ID:
+            errors.append("V2-03 accepted-state schema $id is invalid")
+        if schema.get("schema_version") != "2.0.0":
+            errors.append("V2-03 accepted-state schema version is invalid")
+        if schema.get("owner") != "V2-03":
+            errors.append("V2-03 accepted-state schema owner is invalid")
+        if schema.get("production_enforcement") is not False:
+            errors.append("V2-03 accepted-state schema production_enforcement must be false")
+        try:
+            from jsonschema import Draft202012Validator
+            Draft202012Validator.check_schema(schema)
+        except Exception as exc:
+            errors.append(f"V2-03 accepted-state schema is invalid: {exc}")
+    if (root / "project-seed/.floppy/accepted-state.json").exists():
+        errors.append("V2-03 must not seed a blank accepted-state record")
+
+# === V2-03 ACCEPTED-STATE CONTINUITY END ===
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -4418,6 +4737,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_final_closure_extension(root, manifest, errors)
     validate_v2_compatibility_profile(root, manifest, errors)
     validate_v2_user_onboarding(root, manifest, errors)
+    validate_v2_accepted_state_continuity_source(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():
@@ -4486,6 +4806,7 @@ def validate_project(root: Path, errors: list[str]) -> None:
                 errors.append("provisioned project orchestrator-registry record is missing")
             if lifecycle_path.is_file() and registry_path.is_file():
                 validate_provisioned_project_control_state(root, manifest, errors)
+        validate_v2_accepted_state_continuity_project(root, manifest, errors)
         errors.extend(validate_closeout_completeness(manifest, root))
 
     if roadmap:
