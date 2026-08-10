@@ -73,3 +73,52 @@ V2-03 is identified as the next planned package but remains `PLANNED_NOT_AUTHORI
 Operative proposal:
 
 `PROPOSE V2-02 SECTION CLOSEOUT AT ACCEPTED CHECKPOINT 57c5a5f6db8e1d63ce172201b5d6dd50f619013a, PRESERVING THE ACCEPTED IMPLEMENTATION, VERIFICATION, ADMINISTRATOR ACCEPTANCE, VERIFIED CLASS B SUPERSESSION, VERIFIED 59-PATH BOOT-PACKAGE CORRECTION, AND COMPLETE-SUITE EVIDENCE; DO NOT APPLY CLOSEOUT AND DO NOT AUTHORIZE V2-03 OR ANY LATER WORK.`
+
+
+<!-- V2_02_CLOSEOUT_APPLICATION_BEGIN -->
+## V2-02 final closeout application
+
+Administrator directive:
+
+`AUTHORIZE V2-02 CLOSEOUT APPLICATION UNDER TR-009-APPLY-SECTION-CLOSEOUT FROM PROPOSAL COMMIT 6b1c3280234acfa57b9c71076ea4467294c227a7 TREE 9ffddfb369a060c24f97344f9fc1c87bcaa5b1c2 USING PROPOSAL SHA-256 f5bc22deb5c4848d22b743b2188a9abc749947a74a8b740ea2a6989f9ab5919d; CLOSE V2-02, PRESERVE ITS COMPLETE ACCEPTED HISTORICAL RESULT, AND KEEP V2-03 PLANNED_NOT_AUTHORIZED.`
+
+```text
+Transition: TR-009-APPLY-SECTION-CLOSEOUT
+Source state: LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED
+Resulting global state: LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE
+V2-02 status: CLOSED
+Implementation: COMPLETE
+Verification: COMPLETE
+Administrator acceptance: ACCEPTED
+Closeout: APPLIED
+Class B supersession: APPLIED / VERIFIED
+Boot-package completeness correction: APPLIED / VERIFIED
+Validated boot inventory: 59 paths
+Required FS-09 contract: specs/lifecycle-write-contract.json INCLUDED
+Complete repository suite attempt 1: PASSED / CONSUMED
+Complete-suite log SHA-256: 7229c8b5a01f22ea1005b5004e19c535f379abf32cdac1306bb575e241d01cc1
+Proposal commit: 6b1c3280234acfa57b9c71076ea4467294c227a7
+Proposal tree: 9ffddfb369a060c24f97344f9fc1c87bcaa5b1c2
+Proposal SHA-256: f5bc22deb5c4848d22b743b2188a9abc749947a74a8b740ea2a6989f9ab5919d
+Application checkpoint: THIS_COMMIT
+Active work authorization: NONE
+Active implementation authorization: NONE
+Repository writer: NONE
+Migration: NONE
+V2-03: PLANNED_NOT_AUTHORIZED
+main modification: NOT_AUTHORIZED
+Integration / merge / tag / release: NOT_AUTHORIZED
+```
+
+The entire TR-008 proposal record above is preserved byte-for-byte as the approved proposal. This distinct application block applies TR-009 and closes V2-02 only.
+
+The resulting global lifecycle is the next-section-inactive representation. Its `NOT_ACCEPTED`, `NOT_STARTED`, and `PENDING` dimensions describe only the inactive next-section slot; they do **not** rewrite the authoritative closed V2-02 historical result, which remains implementation COMPLETE, verification COMPLETE, administrator acceptance ACCEPTED, and closeout APPLIED.
+
+V2-03 becomes the next current planned package only in roadmap order and remains `PLANNED_NOT_AUTHORIZED`. No V2-03 work-package acceptance, authorization, activation, implementation start, or repository writer is created by this application.
+
+The accepted V2-02 product and verification history remains authoritative, including the verified Class B supersession, verified 59-path validated boot package containing `specs/lifecycle-write-contract.json`, and complete repository suite attempt 1 PASSED / CONSUMED with log SHA-256 `7229c8b5a01f22ea1005b5004e19c535f379abf32cdac1306bb575e241d01cc1`.
+
+<!-- V2_02_CLOSEOUT_APPLICATION_CANONICAL_BEGIN -->
+{"active_implementation_authorization":null,"active_work_authorization":null,"administrator_acceptance":"ACCEPTED","administrator_decision":"AUTHORIZE V2-02 CLOSEOUT APPLICATION UNDER TR-009-APPLY-SECTION-CLOSEOUT FROM PROPOSAL COMMIT 6b1c3280234acfa57b9c71076ea4467294c227a7 TREE 9ffddfb369a060c24f97344f9fc1c87bcaa5b1c2 USING PROPOSAL SHA-256 f5bc22deb5c4848d22b743b2188a9abc749947a74a8b740ea2a6989f9ab5919d; CLOSE V2-02, PRESERVE ITS COMPLETE ACCEPTED HISTORICAL RESULT, AND KEEP V2-03 PLANNED_NOT_AUTHORIZED.","application_checkpoint":"THIS_COMMIT","application_status":"APPLIED","application_transition":"TR-009-APPLY-SECTION-CLOSEOUT","approved_proposal_checkpoint":"6b1c3280234acfa57b9c71076ea4467294c227a7","approved_proposal_sha256":"f5bc22deb5c4848d22b743b2188a9abc749947a74a8b740ea2a6989f9ab5919d","approved_proposal_tree":"9ffddfb369a060c24f97344f9fc1c87bcaa5b1c2","boot_package_completeness_correction":"APPLIED_VERIFIED","class_b_supersession":"APPLIED_VERIFIED","closed_v2_02_historical_disposition":{"administrator_acceptance":"ACCEPTED","closeout":"APPLIED","implementation":"COMPLETE","verification":"COMPLETE"},"closeout":"APPLIED","closeout_applied":true,"complete_repository_suite":{"attempt":1,"log_sha256":"7229c8b5a01f22ea1005b5004e19c535f379abf32cdac1306bb575e241d01cc1","status":"PASSED_CONSUMED","summary":"333 passed, 2 warnings, 148 subtests passed in 289.40s (0:04:49)"},"format_version":"1.0.0","global_next_section_dimensions":{"acceptance":"PENDING","implementation":"NOT_STARTED","scope":"NEXT_SECTION_INACTIVE_SLOT_ONLY","verification":"NOT_STARTED","work_package":"NOT_ACCEPTED"},"implementation_state":"COMPLETE","integration_merge_tag_release":"NOT_AUTHORIZED","main_modification":"NOT_AUTHORIZED","migration":"NONE","next_current_planned_package":"V2-03","proposal_record_path":".floppy/closeouts/V2-02-closeout.md","repository_writer":null,"required_boot_contract":"specs/lifecycle-write-contract.json","resulting_lifecycle_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","section":"V2-02","source_state":"LC-SECTION-ACCEPTED-CLOSEOUT-PROPOSED","target_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","v2_02_status":"CLOSED","v2_03":"PLANNED_NOT_AUTHORIZED","validated_boot_inventory":59,"verification_state":"COMPLETE","verified_result_checkpoint":"0b42204c42634e9817ab35c986fec0adfac55bc9","verified_result_tree":"9594fbcd3fca1680df8a53890c3e95dd04cb6b31"}
+<!-- V2_02_CLOSEOUT_APPLICATION_CANONICAL_END -->
+<!-- V2_02_CLOSEOUT_APPLICATION_END -->
