@@ -27,6 +27,7 @@ SOURCE_REQUIRED = [
     "system-manifest.json",
     "orchestrator/Floppy_Z.md",
     "orchestrator/README.md",
+    "orchestrator/Continuity_Overseer.md",
     "onboarding/Floppy_1E.md",
     "onboarding/README.md",
     "protocols/00-source-repository-policy.md",
@@ -35,6 +36,7 @@ SOURCE_REQUIRED = [
     "protocols/03-active-session.md",
     "protocols/04-everyday-closeout.md",
     "protocols/05-revision-application.md",
+    "protocols/06-orchestrator-succession.md",
     "project-seed/.floppy/lifecycle-state.json",
     "project-seed/.floppy/manifest.json",
     "project-seed/.floppy/roadmap/roadmap.json",
@@ -50,6 +52,8 @@ SOURCE_REQUIRED = [
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "schemas/bce/2.0.0/bce-accepted-state.schema.json",
     "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+    "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+    "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
     "specs/v2-architecture-compatibility.md",
     "specs/v2-compatibility-profile.json",
     "tools/initialize_project.py",
@@ -4693,6 +4697,812 @@ def validate_v2_accepted_state_continuity_source(
 
 # === V2-03 ACCEPTED-STATE CONTINUITY END ===
 
+# === V2-04 CONTINUITY OVERSEER AND ORCHESTRATOR SUCCESSION BEGIN ===
+
+V2_CONTINUITY_SCHEMA_PATH = "schemas/bce/2.0.0/bce-continuity-overseer.schema.json"
+V2_SUCCESSION_SCHEMA_PATH = "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json"
+V2_CONTINUITY_RUNTIME_PATH = ".floppy/continuity-overseer.json"
+V2_CONTINUITY_ACTIVATION_KEY = "continuity_overseer"
+V2_CONTINUITY_SCHEMA_ID = (
+    "urn:floppy-project-interaction-system:"
+    "schema:bce-continuity-overseer:2.0.0"
+)
+V2_SUCCESSION_SCHEMA_ID = (
+    "urn:floppy-project-interaction-system:"
+    "schema:bce-orchestrator-succession:2.0.0"
+)
+V2_CONTINUITY_PROMPT_PATH = "orchestrator/Continuity_Overseer.md"
+V2_SUCCESSION_PROTOCOL_PATH = "protocols/06-orchestrator-succession.md"
+V2_CONTINUITY_TEST_PATH = "tests/test_continuity_overseer.py"
+V2_CONTINUITY_AUTHORITY_ISOLATION = {
+    "grants_implementation_authority": False,
+    "grants_repository_writer": False,
+    "grants_migration_authority": False,
+    "grants_integration_authority": False,
+    "grants_acceptance_authority": False,
+    "grants_release_authority": False,
+}
+V2_AUTHORITY_STATE_FIELDS = (
+    "lifecycle_state",
+    "active_work_authorization",
+    "active_implementation_authorization",
+    "active_implementation_section",
+    "current_section_working_model",
+    "repository_writer",
+    "writer_authorization_reference",
+)
+V2_SUCCESSION_ID_PATTERN = re.compile(r"^ORCH-SUCC-([0-9]{6})$")
+V2_SUCCESSOR_ID_PATTERN = re.compile(
+    r"^ORCH-([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-"
+    r"[89ab][0-9a-f]{3}-[0-9a-f]{12})-([0-9]{8})$"
+)
+
+
+def canonical_v2_continuity_bytes(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def canonical_v2_continuity_sha256(value: Any) -> str:
+    return hashlib.sha256(canonical_v2_continuity_bytes(value)).hexdigest()
+
+
+def v2_current_accepted_revision(
+    accepted_state: dict[str, Any],
+) -> dict[str, Any] | None:
+    current = accepted_state.get("current_accepted_revision")
+    if current == "ORIGINAL":
+        original = accepted_state.get("original")
+        return original if isinstance(original, dict) else None
+    revisions = accepted_state.get("revisions")
+    if not isinstance(revisions, list):
+        return None
+    return next(
+        (
+            item
+            for item in revisions
+            if isinstance(item, dict) and item.get("revision_id") == current
+        ),
+        None,
+    )
+
+
+def v2_shared_origin_projection(
+    record: dict[str, Any],
+) -> dict[str, Any]:
+    accepted = record.get("accepted_state")
+    accepted = accepted if isinstance(accepted, dict) else {}
+    return {
+        "project_id": record.get("project_id"),
+        "accepted_state_record": accepted.get("record"),
+        "origin_revision_id": accepted.get("origin_revision_id"),
+        "origin_protected_state_sha256": accepted.get(
+            "origin_protected_state_sha256"
+        ),
+        "continuity_overseer_id": record.get("continuity_overseer_id"),
+        "initial_project_orchestrator_id": record.get(
+            "initial_project_orchestrator_id"
+        ),
+        "orchestrator_registry": record.get("orchestrator_registry"),
+    }
+
+
+def v2_authority_state_projection(
+    lifecycle: dict[str, Any],
+    manifest: dict[str, Any],
+    registry: dict[str, Any],
+) -> dict[str, Any]:
+    authority = manifest.get("authority")
+    authority = authority if isinstance(authority, dict) else {}
+    assignments = registry.get("current_assignments")
+    assignments = assignments if isinstance(assignments, dict) else {}
+    active_work = authority.get("active_work_authorization")
+    if active_work is None:
+        active_work = manifest.get("active_work_authorization")
+    return {
+        "lifecycle_state": lifecycle.get("state_id"),
+        "active_work_authorization": active_work,
+        "active_implementation_authorization": authority.get(
+            "active_implementation_authorization"
+        ),
+        "active_implementation_section": authority.get(
+            "active_implementation_section"
+        ),
+        "current_section_working_model": assignments.get(
+            "current_section_working_model"
+        ),
+        "repository_writer": assignments.get("repository_writer"),
+        "writer_authorization_reference": assignments.get(
+            "writer_authorization_reference"
+        ),
+    }
+
+
+def resolve_v2_scope_change(
+    *,
+    material_goal_or_fundamental_scope_conflict: bool,
+    accepted_project_revision_present: bool,
+) -> str:
+    if material_goal_or_fundamental_scope_conflict:
+        if accepted_project_revision_present:
+            return "ACCEPTED_PROJECT_REVISION"
+        return "SCOPE_DRIFT_REVIEW_REQUIRED"
+    return "ORDINARY_IMPLEMENTATION_ADAPTATION"
+
+
+def validate_v2_continuity_overseer_record(
+    record: dict[str, Any],
+    *,
+    accepted_state: dict[str, Any] | None = None,
+    previous_record: dict[str, Any] | None = None,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(record, dict):
+        return ["CONTINUITY_OVERSEER_RECORD_INVALID"]
+
+    project_id = record.get("project_id")
+    if (
+        not isinstance(project_id, str)
+        or V2_PROJECT_ID_PATTERN.fullmatch(project_id) is None
+    ):
+        errors.append("CONTINUITY_OVERSEER_PROJECT_ID_INVALID")
+    expected_id = f"CO-{project_id}" if isinstance(project_id, str) else None
+    if record.get("continuity_overseer_id") != expected_id:
+        errors.append("CONTINUITY_OVERSEER_ID_INVALID")
+    if record.get("reports_to") != "ADMINISTRATOR":
+        errors.append("CONTINUITY_OVERSEER_REPORTING_INVALID")
+    if record.get("orchestrator_registry") != ".floppy/orchestrator-registry.json":
+        errors.append("CONTINUITY_OVERSEER_REGISTRY_LINK_INVALID")
+    if record.get("authority_isolation") != V2_CONTINUITY_AUTHORITY_ISOLATION:
+        errors.append("CONTINUITY_OVERSEER_AUTHORITY_ISOLATION_VIOLATION")
+    if "current_orchestrator" in record:
+        errors.append("CONTINUITY_OVERSEER_COMPETING_REGISTRY_FIELD")
+
+    accepted = record.get("accepted_state")
+    if not isinstance(accepted, dict):
+        errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+        accepted = {}
+    if accepted.get("record") != ".floppy/accepted-state.json":
+        errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+    if accepted.get("origin_revision_id") != "ORIGINAL":
+        errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+
+    try:
+        shared = canonical_v2_continuity_sha256(
+            v2_shared_origin_projection(record)
+        )
+    except (TypeError, ValueError, OverflowError):
+        shared = None
+    if record.get("shared_origin_sha256") != shared:
+        errors.append("CONTINUITY_OVERSEER_SHARED_ORIGIN_MISMATCH")
+
+    history = record.get("succession_history")
+    if (
+        not isinstance(history, list)
+        or len(history) != len(set(history))
+        or any(
+            not isinstance(item, str)
+            or V2_SUCCESSION_ID_PATTERN.fullmatch(item) is None
+            for item in history
+        )
+    ):
+        errors.append("CONTINUITY_OVERSEER_SUCCESSION_HISTORY_INVALID")
+
+    if isinstance(accepted_state, dict):
+        if accepted_state.get("project_id") != project_id:
+            errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_REQUIRED")
+        original = accepted_state.get("original")
+        original = original if isinstance(original, dict) else {}
+        if accepted.get("origin_protected_state_sha256") != original.get(
+            "protected_state_sha256"
+        ):
+            errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+        current = v2_current_accepted_revision(accepted_state)
+        if not isinstance(current, dict):
+            errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+        else:
+            if accepted.get("current_accepted_revision") != accepted_state.get(
+                "current_accepted_revision"
+            ):
+                errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+            if accepted.get("current_protected_state_sha256") != current.get(
+                "protected_state_sha256"
+            ):
+                errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_LINK_INVALID")
+
+    if isinstance(previous_record, dict):
+        immutable_fields = (
+            "project_id",
+            "continuity_overseer_id",
+            "reports_to",
+            "initial_project_orchestrator_id",
+            "orchestrator_registry",
+            "shared_origin_sha256",
+            "authority_isolation",
+        )
+        if any(
+            previous_record.get(field) != record.get(field)
+            for field in immutable_fields
+        ):
+            errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+        previous_accepted = previous_record.get("accepted_state")
+        if isinstance(previous_accepted, dict):
+            for field in (
+                "record",
+                "origin_revision_id",
+                "origin_protected_state_sha256",
+            ):
+                if previous_accepted.get(field) != accepted.get(field):
+                    errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+                    break
+        previous_history = previous_record.get("succession_history")
+        if not isinstance(previous_history, list):
+            errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+        elif not isinstance(history, list) or history[: len(previous_history)] != (
+            previous_history
+        ):
+            errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+
+    return list(dict.fromkeys(errors))
+
+
+def validate_v2_orchestrator_succession_record(
+    record: dict[str, Any],
+    *,
+    current_authority_state: dict[str, Any] | None = None,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(record, dict):
+        return ["ORCHESTRATOR_SUCCESSION_RECORD_INVALID"]
+
+    succession_id = record.get("succession_id")
+    match = (
+        V2_SUCCESSION_ID_PATTERN.fullmatch(succession_id)
+        if isinstance(succession_id, str)
+        else None
+    )
+    if match is None or record.get("sequence") != int(match.group(1)):
+        errors.append("ORCHESTRATOR_SUCCESSION_ID_INVALID")
+
+    project_id = record.get("project_id")
+    if (
+        not isinstance(project_id, str)
+        or V2_PROJECT_ID_PATTERN.fullmatch(project_id) is None
+    ):
+        errors.append("ORCHESTRATOR_SUCCESSION_PROJECT_ID_INVALID")
+    if record.get("continuity_overseer_id") != (
+        f"CO-{project_id}" if isinstance(project_id, str) else None
+    ):
+        errors.append("ORCHESTRATOR_SUCCESSION_CONTINUITY_LINK_INVALID")
+
+    successor = record.get("successor_orchestrator_id")
+    successor_match = (
+        V2_SUCCESSOR_ID_PATTERN.fullmatch(successor)
+        if isinstance(successor, str)
+        else None
+    )
+    if successor_match is None or successor_match.group(1) != project_id:
+        errors.append("ORCHESTRATOR_SUCCESSION_SUCCESSOR_ID_INVALID")
+
+    availability = record.get("predecessor_availability")
+    mode = record.get("recovery_mode")
+    if (
+        (availability == "AVAILABLE" and mode != "NORMAL")
+        or (availability == "UNAVAILABLE" and mode != "REPOSITORY_BACKED")
+    ):
+        errors.append("ORCHESTRATOR_SUCCESSION_RECOVERY_MODE_INVALID")
+
+    authority_state = record.get("authority_state")
+    if not isinstance(authority_state, dict) or set(authority_state) != set(
+        V2_AUTHORITY_STATE_FIELDS
+    ):
+        errors.append("ORCHESTRATOR_SUCCESSION_AUTHORITY_STATE_INVALID")
+    else:
+        expected = canonical_v2_continuity_sha256(authority_state)
+        if record.get("authority_state_sha256") != expected:
+            errors.append("ORCHESTRATOR_SUCCESSION_AUTHORITY_STATE_INVALID")
+        if (
+            current_authority_state is not None
+            and record.get("phase") != "APPLIED"
+            and canonical_v2_continuity_sha256(current_authority_state)
+            != record.get("authority_state_sha256")
+        ):
+            errors.append("STALE_SUCCESSION_HANDOFF")
+
+    if record.get("authority_isolation") != V2_CONTINUITY_AUTHORITY_ISOLATION:
+        errors.append("ORCHESTRATOR_SUCCESSION_AUTHORITY_ISOLATION_VIOLATION")
+
+    phase = record.get("phase")
+    readiness = record.get("readiness")
+    readiness = readiness if isinstance(readiness, dict) else {}
+    cutover = record.get("administrator_cutover")
+    cutover = cutover if isinstance(cutover, dict) else {}
+    result = record.get("result")
+
+    if phase in {"PREPARED", "READINESS_VERIFIED", "CUTOVER_ACCEPTED"}:
+        if readiness.get("predecessor_status") != "ACTIVE":
+            errors.append("ORCHESTRATOR_SUCCESSION_PREDECESSOR_STATE_INVALID")
+        if readiness.get("successor_status") != "HANDOFF_PENDING":
+            errors.append("ORCHESTRATOR_SUCCESSION_SUCCESSOR_STATE_INVALID")
+        if result is not None:
+            errors.append("ORCHESTRATOR_SUCCESSION_PREMATURE_APPLICATION")
+    if phase == "PREPARED":
+        if readiness.get("successor_readiness_verified") is not False:
+            errors.append("ORCHESTRATOR_SUCCESSION_READINESS_INVALID")
+        if cutover.get("status") != "PENDING":
+            errors.append("ORCHESTRATOR_SUCCESSION_CUTOVER_INVALID")
+    elif phase == "READINESS_VERIFIED":
+        if readiness.get("successor_readiness_verified") is not True:
+            errors.append("ORCHESTRATOR_SUCCESSION_READINESS_INVALID")
+        if cutover.get("status") != "PENDING":
+            errors.append("ORCHESTRATOR_SUCCESSION_CUTOVER_INVALID")
+    elif phase == "CUTOVER_ACCEPTED":
+        if readiness.get("successor_readiness_verified") is not True:
+            errors.append("ORCHESTRATOR_SUCCESSION_READINESS_INVALID")
+        if cutover.get("status") != "ACCEPTED":
+            errors.append("ORCHESTRATOR_SUCCESSION_CUTOVER_INVALID")
+    elif phase == "APPLIED":
+        if cutover.get("status") != "ACCEPTED":
+            errors.append("ORCHESTRATOR_SUCCESSION_CUTOVER_INVALID")
+        if readiness.get("successor_readiness_verified") is not True:
+            errors.append("ORCHESTRATOR_SUCCESSION_READINESS_INVALID")
+        if not isinstance(result, dict):
+            errors.append("ORCHESTRATOR_SUCCESSION_APPLICATION_INVALID")
+        else:
+            if result.get("predecessor_status") != "RETIRED":
+                errors.append("ORCHESTRATOR_SUCCESSION_APPLICATION_INVALID")
+            if result.get("successor_status") != "ACTIVE":
+                errors.append("ORCHESTRATOR_SUCCESSION_APPLICATION_INVALID")
+            if result.get("current_orchestrator") != successor:
+                errors.append("ORCHESTRATOR_SUCCESSION_APPLICATION_INVALID")
+    else:
+        errors.append("ORCHESTRATOR_SUCCESSION_PHASE_INVALID")
+
+    return list(dict.fromkeys(errors))
+
+
+def _v2_continuity_git_json(
+    root: Path,
+    revision: str,
+    relative: str,
+) -> dict[str, Any] | None:
+    result = _git_integrity_run(root, "show", f"{revision}:{relative}")
+    if result.returncode != 0:
+        return None
+    try:
+        value = json.loads(result.stdout)
+    except Exception:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _v2_continuity_previous_pair(
+    root: Path,
+    current_manifest: dict[str, Any],
+    current_record: dict[str, Any] | None,
+) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    head_manifest = _v2_continuity_git_json(
+        root, "HEAD", ".floppy/manifest.json"
+    )
+    head_record = _v2_continuity_git_json(
+        root, "HEAD", V2_CONTINUITY_RUNTIME_PATH
+    )
+    if head_manifest is None:
+        return None, None
+    previous_revision = (
+        "HEAD^"
+        if head_manifest == current_manifest and head_record == current_record
+        else "HEAD"
+    )
+    return (
+        _v2_continuity_git_json(
+            root, previous_revision, ".floppy/manifest.json"
+        ),
+        _v2_continuity_git_json(
+            root, previous_revision, V2_CONTINUITY_RUNTIME_PATH
+        ),
+    )
+
+
+def _v2_continuity_activation_active(
+    manifest: dict[str, Any] | None,
+) -> bool:
+    if not isinstance(manifest, dict):
+        return False
+    activation = manifest.get(V2_CONTINUITY_ACTIVATION_KEY)
+    return isinstance(activation, dict) and activation.get("status") == "ACTIVE"
+
+
+def validate_v2_continuity_overseer_project(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    record_path = root / V2_CONTINUITY_RUNTIME_PATH
+    record = validate_json(record_path, errors) if record_path.is_file() else None
+    previous_manifest, previous_record = _v2_continuity_previous_pair(
+        root, manifest, record
+    )
+    previous_active = _v2_continuity_activation_active(previous_manifest)
+
+    activation = manifest.get(V2_CONTINUITY_ACTIVATION_KEY)
+    if activation is None:
+        if record_path.exists():
+            errors.append("CONTINUITY_OVERSEER_UNREGISTERED_RECORD")
+        if previous_active:
+            errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+        return
+    if not isinstance(activation, dict):
+        errors.append("CONTINUITY_OVERSEER_ACTIVATION_INVALID")
+        return
+
+    expected_activation = {
+        "status": "ACTIVE",
+        "contract_version": "2.0.0",
+        "record": V2_CONTINUITY_RUNTIME_PATH,
+        "schema": V2_CONTINUITY_SCHEMA_PATH,
+    }
+    if activation != expected_activation:
+        errors.append("CONTINUITY_OVERSEER_ACTIVATION_INVALID")
+
+    accepted_activation = manifest.get(V2_ACCEPTED_STATE_ACTIVATION_KEY)
+    if not (
+        isinstance(accepted_activation, dict)
+        and accepted_activation.get("status") == "ACTIVE"
+    ):
+        errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_REQUIRED")
+        return
+
+    accepted_path = root / V2_ACCEPTED_STATE_RUNTIME_PATH
+    accepted_state = (
+        validate_json(accepted_path, errors)
+        if accepted_path.is_file()
+        else None
+    )
+    if not isinstance(accepted_state, dict):
+        errors.append("CONTINUITY_OVERSEER_ACCEPTED_STATE_REQUIRED")
+        return
+
+    if not record_path.is_file() or record is None:
+        errors.append("CONTINUITY_OVERSEER_REQUIRED_RECORD_MISSING")
+        if previous_active:
+            errors.append("CONTINUITY_OVERSEER_SILENT_DRIFT")
+        return
+
+    source_root = Path(__file__).resolve().parents[1]
+    schema = validate_json(source_root / V2_CONTINUITY_SCHEMA_PATH, errors)
+    if schema is not None:
+        try:
+            from jsonschema import Draft202012Validator
+        except ImportError as exc:
+            errors.append(
+                "jsonschema is required for V2-04 continuity validation: "
+                f"{exc}"
+            )
+        else:
+            failures = sorted(
+                Draft202012Validator(schema).iter_errors(record),
+                key=lambda item: (
+                    tuple(str(part) for part in item.absolute_path),
+                    item.message,
+                ),
+            )
+            if failures:
+                first = failures[0]
+                location = ".".join(
+                    str(part) for part in first.absolute_path
+                ) or "<root>"
+                errors.append(
+                    "CONTINUITY_OVERSEER_SCHEMA_INVALID: "
+                    f"{location}: {first.message}"
+                )
+
+    for item in validate_v2_continuity_overseer_record(
+        record,
+        accepted_state=accepted_state,
+        previous_record=previous_record if previous_active else None,
+    ):
+        if item not in errors:
+            errors.append(item)
+
+    registry = validate_json(
+        root / ".floppy/orchestrator-registry.json", errors
+    )
+    lifecycle = validate_json(root / ".floppy/lifecycle-state.json", errors)
+    if not isinstance(registry, dict) or not isinstance(lifecycle, dict):
+        return
+
+    assignments = registry.get("current_assignments")
+    assignments = assignments if isinstance(assignments, dict) else {}
+    current_orchestrator = assignments.get("current_orchestrator")
+    orchestrators = [
+        item
+        for item in registry.get("orchestrators", [])
+        if isinstance(item, dict)
+    ]
+    by_id = {
+        item.get("id"): item
+        for item in orchestrators
+        if isinstance(item.get("id"), str)
+    }
+    if current_orchestrator not in by_id:
+        errors.append("CONTINUITY_OVERSEER_CURRENT_ORCHESTRATOR_INVALID")
+    else:
+        if by_id[current_orchestrator].get("reports_to") != record.get(
+            "continuity_overseer_id"
+        ):
+            errors.append("CONTINUITY_OVERSEER_REPORTING_CHAIN_INVALID")
+    if len(
+        [item for item in orchestrators if item.get("status") == "ACTIVE"]
+    ) > 1:
+        errors.append("CONTINUITY_OVERSEER_MULTIPLE_ACTIVE_ORCHESTRATORS")
+
+    live_authority = v2_authority_state_projection(
+        lifecycle, manifest, registry
+    )
+
+    history = record.get("succession_history")
+    seen_successors: set[str] = set()
+    if isinstance(history, list):
+        for succession_id in history:
+            match = (
+                V2_SUCCESSION_ID_PATTERN.fullmatch(succession_id)
+                if isinstance(succession_id, str)
+                else None
+            )
+            if match is None:
+                continue
+            relative = (
+                ".floppy/handoffs/orchestrator-succession-"
+                f"{match.group(1)}.json"
+            )
+            succession = validate_json(root / relative, errors)
+            if not isinstance(succession, dict):
+                errors.append(
+                    f"ORCHESTRATOR_SUCCESSION_RECORD_MISSING: {succession_id}"
+                )
+                continue
+
+            succession_schema = validate_json(
+                source_root / V2_SUCCESSION_SCHEMA_PATH, errors
+            )
+            if succession_schema is not None:
+                try:
+                    from jsonschema import Draft202012Validator
+                except ImportError as exc:
+                    errors.append(
+                        "jsonschema is required for V2-04 succession "
+                        f"validation: {exc}"
+                    )
+                else:
+                    failures = list(
+                        Draft202012Validator(
+                            succession_schema
+                        ).iter_errors(succession)
+                    )
+                    if failures:
+                        errors.append(
+                            "ORCHESTRATOR_SUCCESSION_SCHEMA_INVALID: "
+                            f"{succession_id}"
+                        )
+            successor_id = succession.get("successor_orchestrator_id")
+            if isinstance(successor_id, str):
+                if (
+                    successor_id in seen_successors
+                    or successor_id == record.get("initial_project_orchestrator_id")
+                ):
+                    errors.append(
+                        "ORCHESTRATOR_SUCCESSION_SUCCESSOR_ID_REUSED"
+                    )
+                seen_successors.add(successor_id)
+
+            current = (
+                live_authority
+                if succession_id == history[-1]
+                and succession.get("phase") != "APPLIED"
+                else None
+            )
+            for item in validate_v2_orchestrator_succession_record(
+                succession,
+                current_authority_state=current,
+            ):
+                if item not in errors:
+                    errors.append(item)
+
+
+def validate_v2_continuity_overseer_source(
+    root: Path,
+    manifest: dict[str, Any],
+    errors: list[str],
+) -> None:
+    registry = manifest.get("continuity_overseer")
+    if not isinstance(registry, dict):
+        errors.append(
+            "system manifest does not register V2-04 continuity overseer"
+        )
+        return
+
+    expected = {
+        "owner": "V2-04",
+        "status": "reusable_product",
+        "record_family": "continuity-overseer",
+        "runtime_record": V2_CONTINUITY_RUNTIME_PATH,
+        "activation_registration": (
+            ".floppy/manifest.json#continuity_overseer"
+        ),
+        "schema_version": "2.0.0",
+        "validator": "tools/validate_floppy.py",
+        "accepted_state_authority": ".floppy/accepted-state.json",
+        "orchestrator_registry_authority": (
+            ".floppy/orchestrator-registry.json"
+        ),
+        "automatic_migration": False,
+        "automatic_backfill": False,
+        "automatic_conversation_creation": False,
+        "automatic_authority_transfer": False,
+    }
+    for field, value in expected.items():
+        if registry.get(field) != value:
+            errors.append(f"V2-04 continuity overseer {field} is invalid")
+
+    if manifest.get("entrypoints", {}).get("continuity_overseer") != (
+        V2_CONTINUITY_PROMPT_PATH
+    ):
+        errors.append("V2-04 continuity overseer entrypoint is invalid")
+    if manifest.get("entrypoints", {}).get("orchestrator_succession") != (
+        V2_SUCCESSION_PROTOCOL_PATH
+    ):
+        errors.append("V2-04 succession entrypoint is invalid")
+    if registry.get("authority_isolation") != (
+        V2_CONTINUITY_AUTHORITY_ISOLATION
+    ):
+        errors.append("V2-04 continuity authority isolation is invalid")
+    if registry.get("continuity_overseer_id") != (
+        'DETERMINISTIC_"CO-"+project_id'
+    ):
+        errors.append("V2-04 continuity identity rule is invalid")
+    if registry.get("maximum_active_project_orchestrators") != 1:
+        errors.append("V2-04 active Project Orchestrator limit is invalid")
+    if registry.get("competing_current_controller_registry") is not False:
+        errors.append("V2-04 continuity creates competing controller registry")
+
+    expected_boot = [
+        "orchestrator/Continuity_Overseer.md",
+        "protocols/06-orchestrator-succession.md",
+        V2_CONTINUITY_SCHEMA_PATH,
+        V2_SUCCESSION_SCHEMA_PATH,
+    ]
+    if registry.get("validated_boot_package_paths_added") != expected_boot:
+        errors.append("V2-04 boot-package additions are invalid")
+
+    expected_artifacts = {
+        "continuity_overseer_prompt": (
+            V2_CONTINUITY_PROMPT_PATH,
+            None,
+        ),
+        "succession_protocol": (
+            V2_SUCCESSION_PROTOCOL_PATH,
+            None,
+        ),
+        "continuity_schema": (
+            V2_CONTINUITY_SCHEMA_PATH,
+            V2_CONTINUITY_SCHEMA_ID,
+        ),
+        "succession_schema": (
+            V2_SUCCESSION_SCHEMA_PATH,
+            V2_SUCCESSION_SCHEMA_ID,
+        ),
+        "tests": (
+            V2_CONTINUITY_TEST_PATH,
+            None,
+        ),
+    }
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, dict) or set(artifacts) != set(
+        expected_artifacts
+    ):
+        errors.append("V2-04 continuity artifact registry is invalid")
+    else:
+        for name, (relative, expected_id) in expected_artifacts.items():
+            item = artifacts.get(name)
+            if not isinstance(item, dict) or item.get("path") != relative:
+                errors.append(
+                    f"V2-04 continuity artifact path is invalid: {name}"
+                )
+                continue
+            path = root / relative
+            if not path.is_file():
+                errors.append(
+                    f"V2-04 continuity artifact is missing: {relative}"
+                )
+                continue
+            if item.get("sha256") != sha256(path):
+                errors.append(
+                    f"V2-04 continuity artifact digest mismatch: {relative}"
+                )
+            if expected_id is not None and item.get("$id") != expected_id:
+                errors.append(
+                    f"V2-04 continuity artifact $id is invalid: {name}"
+                )
+
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        errors.append(
+            f"jsonschema is required for V2-04 source validation: {exc}"
+        )
+        return
+
+    for relative, expected_id in (
+        (V2_CONTINUITY_SCHEMA_PATH, V2_CONTINUITY_SCHEMA_ID),
+        (V2_SUCCESSION_SCHEMA_PATH, V2_SUCCESSION_SCHEMA_ID),
+    ):
+        schema = validate_json(root / relative, errors)
+        if schema is None:
+            continue
+        if schema.get("$id") != expected_id:
+            errors.append(f"V2-04 schema $id is invalid: {relative}")
+        if schema.get("schema_version") != "2.0.0":
+            errors.append(f"V2-04 schema version is invalid: {relative}")
+        if schema.get("owner") != "V2-04":
+            errors.append(f"V2-04 schema owner is invalid: {relative}")
+        if schema.get("production_enforcement") is not False:
+            errors.append(
+                f"V2-04 schema production_enforcement invalid: {relative}"
+            )
+        try:
+            Draft202012Validator.check_schema(schema)
+        except Exception as exc:
+            errors.append(f"V2-04 schema is invalid {relative}: {exc}")
+
+    profile_path = root / "specs/v2-compatibility-profile.json"
+    profile = validate_json(profile_path, errors)
+    if isinstance(profile, dict):
+        continuity = profile.get("future_record_families", {}).get(
+            "continuity_overseer"
+        )
+        if not isinstance(continuity, dict):
+            errors.append(
+                "V2-04 compatibility continuity family is missing"
+            )
+        else:
+            if continuity.get("implemented") is not False:
+                errors.append(
+                    "V2-04 changed frozen V2-01 implemented flag/schema"
+                )
+            if continuity.get("authority_by_existence") is not False:
+                errors.append(
+                    "V2-04 continuity grants authority by existence"
+                )
+            if continuity.get("repository_writer_by_role") is not False:
+                errors.append(
+                    "V2-04 continuity grants writer status by role"
+                )
+            semantics = continuity.get("semantics")
+            if not isinstance(semantics, list) or not any(
+                isinstance(item, str)
+                and item.startswith("V2-04_IMPLEMENTED:")
+                for item in semantics
+            ):
+                errors.append(
+                    "V2-04 implemented compatibility semantics are missing"
+                )
+
+    forbidden_seed = (
+        root / "project-seed/.floppy/continuity-overseer.json",
+    )
+    if any(path.exists() for path in forbidden_seed):
+        errors.append(
+            "V2-04 must not automatically seed a continuity runtime record"
+        )
+
+# === V2-04 CONTINUITY OVERSEER AND ORCHESTRATOR SUCCESSION END ===
+
 def validate_source(root: Path, errors: list[str]) -> None:
     manifest = validate_json(root / "system-manifest.json", errors)
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
@@ -4738,6 +5548,7 @@ def validate_source(root: Path, errors: list[str]) -> None:
     validate_v2_compatibility_profile(root, manifest, errors)
     validate_v2_user_onboarding(root, manifest, errors)
     validate_v2_accepted_state_continuity_source(root, manifest, errors)
+    validate_v2_continuity_overseer_source(root, manifest, errors)
 
     control_path = root / ".floppy/manifest.json"
     if control_path.is_file():
@@ -4807,6 +5618,7 @@ def validate_project(root: Path, errors: list[str]) -> None:
             if lifecycle_path.is_file() and registry_path.is_file():
                 validate_provisioned_project_control_state(root, manifest, errors)
         validate_v2_accepted_state_continuity_project(root, manifest, errors)
+        validate_v2_continuity_overseer_project(root, manifest, errors)
         errors.extend(validate_closeout_completeness(manifest, root))
 
     if roadmap:

@@ -62,3 +62,25 @@ present. Orchestrator status and role never grant write authority.
 The receiving orchestrator must verify the exact checkpoint and registry before
 changing status from `HANDOFF_PENDING`. Authority is never transferred
 automatically.
+
+<!-- V2_04_SUCCESSION_FIELDS_BEGIN -->
+## V2-04 succession fields
+
+When this handoff is used for Project Orchestrator succession, also record:
+
+- Continuity Overseer ID:
+- Succession ID:
+- Predecessor Project Orchestrator ID:
+- Predecessor availability (`AVAILABLE` / `UNAVAILABLE`):
+- Recovery mode (`NORMAL` / `REPOSITORY_BACKED`):
+- Successor Project Orchestrator ID:
+- Exact authority-state projection:
+- Authority state SHA-256:
+- Successor readiness:
+- Administrator cutover decision:
+- Stale-handoff verification result:
+
+The predecessor remains `ACTIVE` and the successor remains `HANDOFF_PENDING`
+until administrator-accepted cutover. Succession does not itself change
+implementation authority or repository-writer authority.
+<!-- V2_04_SUCCESSION_FIELDS_END -->

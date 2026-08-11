@@ -212,10 +212,11 @@
       "authority_by_existence": false,
       "repository_writer_by_role": false,
       "semantics": [
-        "May read accepted roadmap, control, handoff, and evidence records and prepare continuity handoff evidence.",
-        "May verify orchestrator succession completeness and report conflicts.",
-        "May not grant authority, accept results, close work, migrate state, modify main, implement work, or become repository writer merely by role.",
-        "V2-01 defines the boundary only; no V2-04 runtime behavior or durable V2-04 record is created here."
+        "V2-04_IMPLEMENTED: source support now defines and validates the Continuity Overseer runtime record, paired accepted-origin linkage, and Project Orchestrator succession record family.",
+        "V2-04_IMPLEMENTED: Continuity Overseer may read repository-backed accepted roadmap, control, handoff, authorization, and evidence records; it is not the current-controller registry.",
+        "V2-04_IMPLEMENTED: authority-state fingerprint invariance and STALE_SUCCESSION_HANDOFF protect succession; repository-backed recovery succession never invents conversation-only facts.",
+        "V2-04_IMPLEMENTED: material project-goal or fundamental-scope conflict without a lawful accepted V2-03 revision surfaces SCOPE_DRIFT_REVIEW_REQUIRED.",
+        "Authority by existence remains false; repository-writer status by role remains false; automatic conversation creation, authority transfer, backfill, and migration remain forbidden."
       ]
     },
     "official_project_plan": {

@@ -810,3 +810,25 @@ Accepted-state existence grants no implementation, repository-writer, migration,
 
 Canonical contract: `specs/accepted-state-continuity.md`.
 <!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->
+
+<!-- V2_04_PAIRED_BOOTSTRAP_BEGIN -->
+## V2-04 acceptance-time continuity establishment
+
+When the accepted source capability includes V2-04 and the project is
+lawfully adopting it, complete accepted-state establishment before issuing
+runtime prompts:
+
+1. validate the V2-03 accepted origin and immutable `project_id`;
+2. determine `CO-<project_id>` and the initial Project Orchestrator ID;
+3. compute deterministic `shared_origin_sha256`;
+4. establish the V2-04 runtime linkage without changing operational authority;
+5. commit that durable linkage where Git applies;
+6. render the Continuity Overseer and Project Orchestrator prompts from the
+   committed linkage;
+7. bind both prompts to the same exact checkpoint and authority state;
+8. present both prompts together for separate conversations.
+
+Prompt rendering does not automatically create conversations, implementation
+authority, or a repository writer. V2-03 accepted state remains the sole
+accepted-project-origin authority.
+<!-- V2_04_PAIRED_BOOTSTRAP_END -->

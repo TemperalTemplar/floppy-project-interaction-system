@@ -56,3 +56,18 @@ The JSON file provides machine-readable section identity, dependencies, statuses
 During initial onboarding, create or finalize complete Floppies A–E and accept the first roadmap version. After onboarding, ordinary sessions use delta revision packets and section closeouts. Do not regenerate all five Floppies or rerun Floppy 1E during routine work.
 
 A material project redefinition requires explicit controlled re-onboarding and must preserve the earlier accepted roadmap as historical evidence.
+
+<!-- V2_04_PROJECT_CONTINUITY_BEGIN -->
+## Optional V2-04 project continuity records
+
+A project that has explicitly adopted V2-04 may contain:
+
+- `.floppy/continuity-overseer.json`;
+- `.floppy/handoffs/orchestrator-succession-######.json`.
+
+Do not create either merely because a V2-capable source is present. If
+`.floppy/manifest.json#continuity_overseer` is `ACTIVE`, load and validate the
+continuity record after the accepted-state record and before relying on
+orchestrator succession. `.floppy/orchestrator-registry.json` remains the sole
+current-controller/writer registry.
+<!-- V2_04_PROJECT_CONTINUITY_END -->

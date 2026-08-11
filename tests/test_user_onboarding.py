@@ -227,5 +227,19 @@ class V2UserOnboardingTests(unittest.TestCase):
         self.assertIn(".floppy/accepted-state.json", text)
 
 
+# V2_04_USER_ONBOARDING_TEST
+class V204PairedBootstrapTests(unittest.TestCase):
+    def test_v2_04_paired_bootstrap_is_post_origin_and_separate(self) -> None:
+        bootstrap = (ROOT / "BOOTSTRAP.md").read_text(encoding="utf-8")
+        builder = (ROOT / "onboarding/Floppy_1E.md").read_text(
+            encoding="utf-8"
+        )
+        for text in (bootstrap, builder):
+            self.assertIn("V2-04", text)
+            self.assertIn("Continuity Overseer", text)
+            self.assertIn("same exact checkpoint", text)
+            self.assertIn("separate conversations", text)
+        self.assertIn("Do not automatically create", bootstrap)
+
 if __name__ == "__main__":
     unittest.main()

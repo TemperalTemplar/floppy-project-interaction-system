@@ -709,3 +709,23 @@ Registry status is durable administrative state. Floppy Z must not infer it
 from runtime presence and must not introduce monitoring, heartbeats, automatic
 conversation creation, automatic authority transfer, private-conversation
 inspection, or hidden-context inference.
+
+<!-- V2_04_ORCHESTRATOR_SUCCESSION_BEGIN -->
+## V2-04 Continuity Overseer reporting and succession
+
+When `.floppy/manifest.json#continuity_overseer` is `ACTIVE`, this Project
+Orchestrator reports through the project continuity chain identified by
+`.floppy/continuity-overseer.json`. The Continuity Overseer is not a competing
+current orchestrator and does not grant authority.
+
+Before any Project Orchestrator replacement, use
+`protocols/06-orchestrator-succession.md`. Preserve the exact repository
+checkpoint, unresolved work, accepted state, and seven-field authority
+fingerprint. Keep the predecessor `ACTIVE` and successor `HANDOFF_PENDING`
+until readiness is verified and the administrator accepts cutover.
+
+If the prepared authority fingerprint no longer matches repository-backed
+state, stop with `STALE_SUCCESSION_HANDOFF`. If material project-goal or
+fundamental-scope drift lacks a lawful accepted project revision, surface
+`SCOPE_DRIFT_REVIEW_REQUIRED`.
+<!-- V2_04_ORCHESTRATOR_SUCCESSION_END -->

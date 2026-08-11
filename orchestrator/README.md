@@ -190,3 +190,16 @@ Floppy Z does not perform those writes by default.
 - New and existing projects may use the coordinator by loading the canonical source file before project intake.
 - Direct project-model sessions may continue to use the existing project bootstrap, but they do not receive coordinator behavior unless Floppy Z is explicitly loaded.
 - No project repository should be rewritten merely to adopt this orchestrator layer.
+
+<!-- V2_04_CONTINUITY_ROLE_MAP_BEGIN -->
+## V2-04 continuity role map
+
+`Continuity_Overseer.md` is the project-level continuity/check-valve role.
+`Floppy_Z.md` remains the Project Orchestrator role.
+
+The Continuity Overseer persists across Project Orchestrator succession but
+does not occupy the registry's `current_orchestrator` assignment and cannot
+become repository writer by role. Project Orchestrator succession is governed
+by `protocols/06-orchestrator-succession.md`; authority transfer is never
+automatic.
+<!-- V2_04_CONTINUITY_ROLE_MAP_END -->

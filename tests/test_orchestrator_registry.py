@@ -492,5 +492,34 @@ class CanonicalIntegratedControlModeTests(unittest.TestCase):
             )
 
 
+# V2_04_ORCHESTRATOR_REGISTRY_TEST
+class V204OrchestratorRegistryBoundaryTests(unittest.TestCase):
+    def test_continuity_overseer_does_not_replace_registry(self) -> None:
+        system = load_json(SYSTEM_MANIFEST_PATH)
+        registry = load_json(REGISTRY_PATH)
+        continuity = system["continuity_overseer"]
+        self.assertEqual(
+            continuity["orchestrator_registry_authority"],
+            ".floppy/orchestrator-registry.json",
+        )
+        self.assertFalse(
+            continuity["competing_current_controller_registry"]
+        )
+        self.assertEqual(
+            registry["rules"]["maximum_active_orchestrators"], 1
+        )
+
+    def test_handoff_template_contains_v2_04_succession_fingerprint(self) -> None:
+        text = HANDOFF_PATH.read_text(encoding="utf-8")
+        for value in (
+            "Continuity Overseer ID",
+            "Succession ID",
+            "Authority state SHA-256",
+            "Predecessor availability",
+            "Successor Project Orchestrator ID",
+            "Stale-handoff verification result",
+        ):
+            self.assertIn(value, text)
+
 if __name__ == "__main__":
     unittest.main()

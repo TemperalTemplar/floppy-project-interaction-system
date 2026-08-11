@@ -214,3 +214,18 @@ The accepted-state record grants no implementation authority and creates no repo
 
 An older Floppy project with no prior V2-03 activation remains a valid legacy project. Adoption requires explicit controlled acceptance; no automatic backfill or fabricated project ID is permitted.
 <!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->
+
+<!-- V2_04_PROJECT_ACCEPTANCE_CONTINUITY_BEGIN -->
+## V2-04 project-acceptance continuity handoff
+
+For a project lawfully adopting V2-04, V2-03 accepted-state establishment is
+the origin authority. After that accepted origin exists, determine the
+Continuity Overseer and initial Project Orchestrator identities, calculate the
+shared-origin digest, establish durable V2-04 linkage, commit it where Git
+applies, and only then render the paired prompts from the same exact checkpoint
+and authority state.
+
+Present the two prompts together for separate conversations. Do not create the
+conversations automatically and do not infer implementation authority from
+paired prompt issuance.
+<!-- V2_04_PROJECT_ACCEPTANCE_CONTINUITY_END -->

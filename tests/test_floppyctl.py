@@ -412,5 +412,17 @@ class FloppyCtlTests(unittest.TestCase):
         )
 
 
+# V2_04_FLOPPYCTL_REGISTRATION_TEST
+class V204FloppyCtlRegistrationTests(unittest.TestCase):
+    def test_v2_04_boot_sources_are_registered_in_cli(self) -> None:
+        text = (ROOT / "tools/floppyctl.py").read_text(encoding="utf-8")
+        for relative in (
+            "orchestrator/Continuity_Overseer.md",
+            "protocols/06-orchestrator-succession.md",
+            "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+            "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
+        ):
+            self.assertIn(f'"{relative}"', text)
+
 if __name__ == "__main__":
     unittest.main()

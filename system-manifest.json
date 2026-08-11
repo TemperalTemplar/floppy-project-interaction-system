@@ -21,7 +21,9 @@
     "project_orchestrator_handoff_template": "project-seed/.floppy/templates/orchestrator-handoff.md",
     "project_lifecycle_state_template": "project-seed/.floppy/lifecycle-state.json",
     "user_onboarding": "docs/getting-started/README.md",
-    "accepted_state_continuity": "specs/accepted-state-continuity.md"
+    "accepted_state_continuity": "specs/accepted-state-continuity.md",
+    "continuity_overseer": "orchestrator/Continuity_Overseer.md",
+    "orchestrator_succession": "protocols/06-orchestrator-succession.md"
   },
   "architecture": {
     "name": "BCE — Bootable Context Environment",
@@ -32,7 +34,7 @@
     "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
     "canonical_path": "orchestrator/Floppy_Z.md",
     "readme_path": "orchestrator/README.md",
-    "sha256": "0c73f16ff5a896ba336d9c1e8a131b1070f0121b931b4537aa109fc92ab6ba69",
+    "sha256": "229522a4ae5f5c3fbc0301641d9a6dcc41418dfe8d2a85e6508b9e238f4cb259",
     "default_mode": "project-model-briefing",
     "default_action": "read-reconstruct-evaluate-instruct",
     "project_state_file": false,
@@ -44,7 +46,7 @@
     "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
     "canonical_path": "onboarding/Floppy_1E.md",
     "readme_path": "onboarding/README.md",
-    "sha256": "296771adb15b02cb704bd64671f8507efadac5c13b8ab45ef51df95d6f12a6af",
+    "sha256": "f8628d497fd06e9b0fdad2b07fa2ce0aee083e1970b4f9c28324c3745acdf010",
     "default_action": "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
     "project_state_file": false,
     "copied_into_project_seed": false,
@@ -134,11 +136,11 @@
       },
       "handoff_template": {
         "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
-        "sha256": "aafe1e0f9c91cc8acc26296506e3bdb44440e63e1c05dd98bd0c17fd417810e8"
+        "sha256": "f2cd9f996d3cba2343036d7f68744596c3bfda8a3487f8eec64114a0c0dd211c"
       },
       "tests": {
         "path": "tests/test_orchestrator_registry.py",
-        "sha256": "4419226cbf19246f14f2b2ef3ef244232a1d7875f98562e40fc442031097e076"
+        "sha256": "b0625a2b2ea6c83686eaae74fb30eb27ca8b42985f392daacb5fb676ddc4f5e2"
       }
     }
   },
@@ -232,11 +234,11 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "d99a661ba7aadc63bbbc2d7ccc46bdc2a0e3c7eb945332a084a60b7404edd19b"
+        "sha256": "d6e795bcf5b48ffcf1af64d0ddbbb83a94100b8da9d4d22f1f6a324ef2f46489"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "ad1ac3917072a34f328579289d9169dbbb7e9a180457b830d9952ae1cf406c66"
+        "sha256": "4a20602d489a4b7e1249131507984c8554d738c0586b8ec06526fc08d52f959c"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
@@ -296,11 +298,11 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "ad1ac3917072a34f328579289d9169dbbb7e9a180457b830d9952ae1cf406c66"
+        "sha256": "4a20602d489a4b7e1249131507984c8554d738c0586b8ec06526fc08d52f959c"
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "d99a661ba7aadc63bbbc2d7ccc46bdc2a0e3c7eb945332a084a60b7404edd19b"
+        "sha256": "d6e795bcf5b48ffcf1af64d0ddbbb83a94100b8da9d4d22f1f6a324ef2f46489"
       },
       "tests": {
         "path": "tests/test_final_closure.py",
@@ -320,11 +322,11 @@
     "artifacts": {
       "architecture_spec": {
         "path": "specs/v2-architecture-compatibility.md",
-        "sha256": "f4c5905dbccd479a67249dbf976560355ebcdd64ef9af1698005dbdc0a75cdfb"
+        "sha256": "1995355db7fc8d9c9df6a8b9ede1e21a562ed2c15b3f31189594f1c8d165fc55"
       },
       "compatibility_profile": {
         "path": "specs/v2-compatibility-profile.json",
-        "sha256": "fa366d55b6e94000519f89a90f152a23b4cef87e17ebb7f6f5cc5068523ab0a0"
+        "sha256": "3a1eb37cc5f197a4c942fd61c2c2b86ce4f98709419dcc62ee53b1760477cb86"
       },
       "compatibility_profile_schema": {
         "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
@@ -432,7 +434,7 @@
       },
       "tests": {
         "path": "tests/test_user_onboarding.py",
-        "sha256": "fc3c0f7ec4b152ef71b1f41dec4b89eb2f037b734d1564da804368f812544e79"
+        "sha256": "3117d6d59066510e80b195b9c1c6fc3c96fea28309633c6be0a20b5d3aa26d67"
       },
       "provider_chatgpt": {
         "path": "docs/getting-started/ChatGPT.md",
@@ -528,5 +530,113 @@
       "continuity_overseer_runtime": "V2-04",
       "official_project_plan_final_binding": "V2-05"
     }
+  },
+  "continuity_overseer": {
+    "owner": "V2-04",
+    "status": "reusable_product",
+    "record_family": "continuity-overseer",
+    "runtime_record": ".floppy/continuity-overseer.json",
+    "activation_registration": ".floppy/manifest.json#continuity_overseer",
+    "schema_version": "2.0.0",
+    "validator": "tools/validate_floppy.py",
+    "accepted_state_authority": ".floppy/accepted-state.json",
+    "orchestrator_registry_authority": ".floppy/orchestrator-registry.json",
+    "automatic_migration": false,
+    "automatic_backfill": false,
+    "automatic_conversation_creation": false,
+    "automatic_authority_transfer": false,
+    "continuity_overseer_id": "DETERMINISTIC_\"CO-\"+project_id",
+    "maximum_active_project_orchestrators": 1,
+    "competing_current_controller_registry": false,
+    "shared_origin_fields": [
+      "project_id",
+      "accepted_state_record",
+      "origin_revision_id",
+      "origin_protected_state_sha256",
+      "continuity_overseer_id",
+      "initial_project_orchestrator_id",
+      "orchestrator_registry"
+    ],
+    "authority_state_fields": [
+      "lifecycle_state",
+      "active_work_authorization",
+      "active_implementation_authorization",
+      "active_implementation_section",
+      "current_section_working_model",
+      "repository_writer",
+      "writer_authorization_reference"
+    ],
+    "presence_rules": {
+      "inactive_record_absent": "VALID_V2_04_NOT_ADOPTED",
+      "active_record_missing": "CONTINUITY_OVERSEER_REQUIRED_RECORD_MISSING",
+      "record_unregistered": "CONTINUITY_OVERSEER_UNREGISTERED_RECORD",
+      "active_record_present": "VALIDATE_FULL_CONTINUITY_CONTRACT",
+      "prior_activation_removal": "CONTINUITY_OVERSEER_SILENT_DRIFT",
+      "accepted_state_required": "CONTINUITY_OVERSEER_ACCEPTED_STATE_REQUIRED"
+    },
+    "deterministic_errors": [
+      "CONTINUITY_OVERSEER_REQUIRED_RECORD_MISSING",
+      "CONTINUITY_OVERSEER_UNREGISTERED_RECORD",
+      "CONTINUITY_OVERSEER_SILENT_DRIFT",
+      "CONTINUITY_OVERSEER_ACCEPTED_STATE_REQUIRED",
+      "STALE_SUCCESSION_HANDOFF",
+      "SCOPE_DRIFT_REVIEW_REQUIRED"
+    ],
+    "succession": {
+      "record_family": "orchestrator-succession",
+      "record_path_pattern": ".floppy/handoffs/orchestrator-succession-######.json",
+      "id_pattern": "ORCH-SUCC-######",
+      "normal": true,
+      "repository_backed_recovery": true,
+      "administrator_cutover_required": true,
+      "authority_fingerprint_invariant": true,
+      "predecessor_remains_active_until_cutover": true,
+      "successor_handoff_pending_before_cutover": true,
+      "never_two_active_project_orchestrators": true
+    },
+    "scope_drift": {
+      "ordinary_implementation_adaptation": "CONTINUE_WITHIN_ACCEPTED_BOUNDS",
+      "accepted_project_revision": "RECOGNIZE_V2_03_ACCEPTED_REVISION",
+      "material_unaccepted_goal_or_fundamental_scope_change": "SCOPE_DRIFT_REVIEW_REQUIRED",
+      "continuity_overseer_accepts_revision": false
+    },
+    "authority_isolation": {
+      "grants_implementation_authority": false,
+      "grants_repository_writer": false,
+      "grants_migration_authority": false,
+      "grants_integration_authority": false,
+      "grants_acceptance_authority": false,
+      "grants_release_authority": false
+    },
+    "artifacts": {
+      "continuity_overseer_prompt": {
+        "path": "orchestrator/Continuity_Overseer.md",
+        "sha256": "434c156c92857c276ddce1635a868bb264c88e69041b4a74f1737b009226c26b"
+      },
+      "succession_protocol": {
+        "path": "protocols/06-orchestrator-succession.md",
+        "sha256": "45becd178c908610c5b5713f2ba2f7637804f73d2956be0f32088541f133d962"
+      },
+      "continuity_schema": {
+        "path": "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-continuity-overseer:2.0.0",
+        "sha256": "e88130a0ef94e261c62c39d537ad5b290de2179f924a9462166667dd301f7176"
+      },
+      "succession_schema": {
+        "path": "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-orchestrator-succession:2.0.0",
+        "sha256": "849f9d6d365532a6a63fae469ad7b42462e5e158ae10dd7ea1a7a50ca615aa58"
+      },
+      "tests": {
+        "path": "tests/test_continuity_overseer.py",
+        "sha256": "c6ce0676500407be82533c4f3139fc71565547809dfd958998ba0fc017beae04"
+      }
+    },
+    "validated_boot_package_paths_added": [
+      "orchestrator/Continuity_Overseer.md",
+      "protocols/06-orchestrator-succession.md",
+      "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+      "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json"
+    ]
   }
 }

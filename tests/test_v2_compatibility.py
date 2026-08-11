@@ -215,5 +215,25 @@ class V2CompatibilityTests(unittest.TestCase):
         self.assertIn("administrator-applied", class_b["description"])
 
 
+# V2_04_COMPATIBILITY_TRANSITION_TEST
+class V204CompatibilityTransitionTests(unittest.TestCase):
+    def test_v2_04_semantic_supersession_preserves_frozen_profile_schema(self) -> None:
+        profile = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+        record = profile["future_record_families"]["continuity_overseer"]
+        self.assertFalse(record["implemented"])
+        self.assertFalse(record["authority_by_existence"])
+        self.assertFalse(record["repository_writer_by_role"])
+        self.assertTrue(
+            any(
+                item.startswith("V2-04_IMPLEMENTED:")
+                for item in record["semantics"]
+            )
+        )
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(
+            schema["$defs"]["future_family"]["properties"]["implemented"],
+            {"const": False},
+        )
+
 if __name__ == "__main__":
     unittest.main()

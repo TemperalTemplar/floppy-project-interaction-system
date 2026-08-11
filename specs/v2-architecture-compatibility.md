@@ -213,3 +213,34 @@ Under explicit `V2_02_IMPLEMENTATION` authority, V2-02 supersedes the future ope
 
 V2-01 reopened: **NO**.
 <!-- V2_02_CLASS_B_SUPERSESSION_END -->
+
+<!-- V2_04_IMPLEMENTED_CONTINUITY_BEGIN -->
+## 13. V2-04 implemented continuity/succession capability
+
+V2-04 lawfully supersedes only the earlier V2-01 **future capability**
+description for Continuity Overseer runtime support. Historical V2-01 text and
+acceptance remain unchanged.
+
+Current V2-04 source support provides:
+
+- a distinct Continuity Overseer record schema;
+- a distinct Project Orchestrator succession record schema;
+- project-side presence and continuity validation;
+- deterministic `CO-<project_id>` identity;
+- deterministic shared-origin hashing from V2-03 ORIGINAL accepted state;
+- authority-state fingerprinting and stale-handoff STOP behavior;
+- normal and repository-backed recovery succession;
+- paired Continuity Overseer / Project Orchestrator bootstrap instructions;
+- material scope-drift surfacing without AI revision authority.
+
+The compatibility-profile family and its schema remain `2.0.0`. Existing V1
+schemas remain immutable. The historical
+`future_record_families.continuity_overseer.implemented` flag remains `false`
+because its frozen V2-01 schema defines that historical allocation; its
+`semantics` now explicitly records the V2-04 implemented supersession. Current
+implementation status is registered separately in `system-manifest.json`.
+
+Authority by existence remains false, repository-writer status by role remains
+false, and automatic migration/authority transfer/conversation creation remain
+forbidden.
+<!-- V2_04_IMPLEMENTED_CONTINUITY_END -->

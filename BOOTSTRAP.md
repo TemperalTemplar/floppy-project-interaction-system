@@ -181,3 +181,25 @@ transfer, private-conversation inspection, or hidden-context inference.
 For a human entering Floppy, read `docs/getting-started/README.md` before project onboarding. Determine actual session capabilities, select the repository-interaction class and project route, then continue into Floppy 1E only when project onboarding is required. Existing Floppy projects continue from `.floppy/manifest.json` and its required read order.
 
 <!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_04_CONTINUITY_BOOTSTRAP_BEGIN -->
+## 5. V2-04 paired Continuity Overseer / Project Orchestrator bootstrap
+
+When V2-04 is lawfully adopted, first validate the V2-03 accepted project
+origin. Establish `.floppy/continuity-overseer.json` and its manifest
+activation without replacing `.floppy/accepted-state.json` or
+`.floppy/orchestrator-registry.json`.
+
+Use `orchestrator/Continuity_Overseer.md` for the project-level continuity
+conversation and `orchestrator/Floppy_Z.md` for the Project Orchestrator
+conversation. Render the two prompts only after durable linkage is committed
+where Git applies, bind both to the same exact checkpoint and authority state,
+and present them together for use as **separate conversations**.
+
+Do not automatically create either conversation. Issuing or activating these
+roles creates no implementation authority and no repository writer.
+
+Project Orchestrator replacement must use
+`protocols/06-orchestrator-succession.md`. A stale authority fingerprint stops
+with `STALE_SUCCESSION_HANDOFF`.
+<!-- V2_04_CONTINUITY_BOOTSTRAP_END -->
