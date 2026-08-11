@@ -46,9 +46,9 @@ class ToolingTests(unittest.TestCase):
         manifest = json.loads(
             (ROOT / "system-manifest.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(version, "2.0.0-dev")
-        self.assertEqual(manifest["system_version"], "2.0.0-dev")
-        self.assertEqual(manifest["status"], "development")
+        self.assertEqual(version, "2.0.0")
+        self.assertEqual(manifest["system_version"], "2.0.0")
+        self.assertEqual(manifest["status"], "stable-release")
         self.assertEqual(
             manifest["v2_compatibility_profile"]["profile_version"],
             "2.0.0",
@@ -68,8 +68,8 @@ class ToolingTests(unittest.TestCase):
             manifest = json.loads((project / ".floppy/manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["project_name"], "Sample Project")
             self.assertEqual(manifest["system"]["source_repository"], "owner/floppy-source")
-            self.assertEqual(manifest["system"]["version"], "2.0.0-dev")
-            self.assertIn("2.0.0-dev", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["system"]["version"], "2.0.0")
+            self.assertIn("2.0.0", (project / ".floppy/START-HERE.md").read_text(encoding="utf-8"))
             validation = self.run_cmd(str(VALIDATE), str(project), "--mode", "project")
             self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
 
