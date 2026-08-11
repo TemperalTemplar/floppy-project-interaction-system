@@ -400,3 +400,19 @@ under a separate later operation.
 No reusable-product path is changed by B1. P1 remains a separate exact twenty-four-path commit.
 <!-- V2_04_B1_END -->
 
+<!-- V2_04_C1_BEGIN -->
+## V2-04 C1 implementation-completion checkpoint
+
+Applied transition: `TR-005-RECORD-IMPLEMENTATION-COMPLETE`
+
+Verified P1 checkpoint: `1ea2fdc1b57c876ef831cdb6bc879e8efd24dcae`  
+Verified P1 tree: `8ed2c6ff493bb16035cfabaf47f904d335cf60c3`
+
+V2-04 implementation is `COMPLETE`; verification is `PENDING`.
+`V2_04_IMPLEMENTATION` remains ACTIVE and `V2_04_WORKING_MODEL` remains the
+sole repository writer through the later verification boundary.
+
+C1 records implementation completion only. It executes no bounded verification,
+no complete repository suite, no V1, no result acceptance, no closeout, and no
+V2-05 operation.
+<!-- V2_04_C1_END -->
