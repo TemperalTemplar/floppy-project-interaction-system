@@ -49,3 +49,9 @@ production_enforcement: false
 
 No migration, schema adoption, integration, merge, tag, release, FS-02 work, or
 FS-03 work is implied or authorized by the presence of these artifacts.
+
+<!-- V2_05_OPP_MIGRATION_BEGIN -->
+## V2.0.0 OPP adoption and migration
+
+No existing V1 project is automatically migrated or assigned an OPP/project UUID. Supported V1 projects may continue under their exact V1 profile. Explicit V2 adoption may establish accepted-state/OPP origin from verified existing state without rewriting V1 history. Any real migration remains a separately authorized operation.
+<!-- V2_05_OPP_MIGRATION_END -->

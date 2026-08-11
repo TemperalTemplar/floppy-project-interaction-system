@@ -52,8 +52,15 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "docs/Architecture.md",
     "docs/Migration-Notes.md",
     "docs/User-Guide.md",
+    "docs/getting-started/ChatGPT.md",
+    "docs/getting-started/DeepSeek.md",
+    "docs/getting-started/Gemini.md",
+    "docs/getting-started/Grok.md",
+    "docs/getting-started/Other-AI.md",
+    "docs/getting-started/README.md",
     "onboarding/Floppy_1E.md",
     "onboarding/README.md",
+    "orchestrator/Continuity_Overseer.md",
     "orchestrator/Floppy_Z.md",
     "orchestrator/README.md",
     "project-seed/.floppy/START-HERE.md",
@@ -79,17 +86,28 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "protocols/03-active-session.md",
     "protocols/04-everyday-closeout.md",
     "protocols/05-revision-application.md",
+    "protocols/06-orchestrator-succession.md",
     "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/2.0.0/bce-accepted-state.schema.json",
+    "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+    "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+    "schemas/bce/2.0.0/bce-official-project-plan.schema.json",
+    "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
     "schemas/floppy-fields.md",
+    "specs/accepted-state-continuity.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
+    "specs/lifecycle-write-contract.json",
+    "specs/official-project-plan.md",
+    "specs/v2-architecture-compatibility.md",
+    "specs/v2-compatibility-profile.json",
     "system-manifest.json",
     "tools/floppyctl.py",
     "tools/initialize_project.py",
@@ -243,17 +261,31 @@ class ValidatedBootPackageTests(unittest.TestCase):
             CLI.BOOT_PACKAGE_FILE_PATHS,
         )
 
+    def test_fs09_lifecycle_write_contract_is_in_validated_boot_inventory(self) -> None:
+        self.assertIn("specs/lifecycle-write-contract.json", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertTrue((ROOT / "specs/lifecycle-write-contract.json").is_file())
+
     def test_explicit_inventory_matches_source_boundary(self) -> None:
         self.assertEqual(CLI.BOOT_PACKAGE_FILE_PATHS, EXPECTED_BOOT_PACKAGE_PATHS)
         self.assertEqual(
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 49)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")
             self.assertFalse(relative.startswith((".floppy/", "legacy/", "tests/")))
+
+
+    def test_v2_03_accepted_state_artifacts_are_in_validated_boot_inventory(self) -> None:
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
+        self.assertIn(
+            "schemas/bce/2.0.0/bce-accepted-state.schema.json",
+            CLI.BOOT_PACKAGE_FILE_PATHS,
+        )
+        self.assertIn("specs/accepted-state-continuity.md", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertIn("specs/lifecycle-write-contract.json", CLI.BOOT_PACKAGE_FILE_PATHS)
 
     def test_unapproved_repository_content_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -711,6 +743,27 @@ class HistoricalOperationEvidenceTests(unittest.TestCase):
         self.assertNotIn("safe.directory=*", helper_source)
 
 
+
+# V2_04_VALIDATED_BOOT_PACKAGE_TEST
+class V204ValidatedBootPackageTests(unittest.TestCase):
+    def test_v2_04_boot_inventory_is_exactly_65(self) -> None:
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
+        for relative in (
+            "orchestrator/Continuity_Overseer.md",
+            "protocols/06-orchestrator-succession.md",
+            "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+            "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
+        ):
+            self.assertIn(relative, CLI.BOOT_PACKAGE_FILE_PATHS)
+
+
+
+# V2_05_BOOT_TARGET_TEST
+class V205BootTargetTests(unittest.TestCase):
+    def test_v2_05_opp_artifacts_extend_boot_inventory_to_67(self) -> None:
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
+        self.assertIn("schemas/bce/2.0.0/bce-official-project-plan.schema.json", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertIn("specs/official-project-plan.md", CLI.BOOT_PACKAGE_FILE_PATHS)
 
 if __name__ == "__main__":
     unittest.main()

@@ -782,3 +782,65 @@ Any “no” answer must be resolved or disclosed before acceptance.
 # 19. Core statement
 
 > Floppy 1E turns a project idea or existing codebase into an accepted, bounded, evidence-driven roadmap. It helps the user understand the path to completion and helps the model execute one controlled section at a time without losing scope, safety, or continuity.
+
+<!-- V2_02_PAIRED_BOOTSTRAP_HANDOFF_BEGIN -->
+## V2 R1 paired-bootstrap handoff
+
+When Floppy 1E reaches **new-project acceptance** or **formal adoption of an existing non-Floppy project**, its user-facing handoff must present the Continuity Overseer prompt and initial Project Orchestrator / Floppy Z prompt together. The user opens them as separate conversations. Both prompts must carry the same accepted project origin: project identity, original intended observable outcome, accepted scope, accepted exclusions, major constraints, verified starting state, accepted plan/roadmap, repository checkpoint where applicable, authority state, Continuity Overseer identity, and initial Project Orchestrator identity.
+
+This handoff creates **no implementation authority** and **no repository writer**. V2-02 does not implement automatic prompt-generation runtime, durable origin storage, Continuity Overseer persistence/linkage, drift detection, succession, or Official Project Plan generation.
+
+<!-- V2_02_PAIRED_BOOTSTRAP_HANDOFF_END -->
+
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_BEGIN -->
+## V2-03 accepted-state continuity at project acceptance
+
+When this V2 source capability is available, new-project roadmap acceptance or formal adoption must establish accepted-state continuity as one accepted transaction:
+
+1. generate one random canonical lowercase UUIDv4 `project_id`;
+2. create `.floppy/accepted-state.json` with immutable `ORIGINAL` accepted state;
+3. bind accepted project origin, original intent, accepted scope, and accepted plan inside `protected_state`;
+4. calculate `protected_state_sha256` using the exact V2-03 canonical JSON rule;
+5. register `.floppy/manifest.json#accepted_state_continuity` as `ACTIVE`;
+6. preserve implementation authority and repository-writer state independently.
+
+Activation and record must not be created separately. Do not create a blank accepted-state file in the source seed. Do not fabricate `project_id` for an older Floppy project that never adopted V2-03; it may continue lawfully until an explicit controlled adoption establishes the contract.
+
+Accepted-state existence grants no implementation, repository-writer, migration, integration, or release authority. A later project-level change to protected accepted state must use the lawful append-only accepted revision path. Ordinary section progress, closeout, model replacement, or context loss must not rewrite the original record.
+
+Canonical contract: `specs/accepted-state-continuity.md`.
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->
+
+<!-- V2_04_PAIRED_BOOTSTRAP_BEGIN -->
+## V2-04 acceptance-time continuity establishment
+
+When the accepted source capability includes V2-04 and the project is
+lawfully adopting it, complete accepted-state establishment before issuing
+runtime prompts:
+
+1. validate the V2-03 accepted origin and immutable `project_id`;
+2. determine `CO-<project_id>` and the initial Project Orchestrator ID;
+3. compute deterministic `shared_origin_sha256`;
+4. establish the V2-04 runtime linkage without changing operational authority;
+5. commit that durable linkage where Git applies;
+6. render the Continuity Overseer and Project Orchestrator prompts from the
+   committed linkage;
+7. bind both prompts to the same exact checkpoint and authority state;
+8. present both prompts together for separate conversations.
+
+Prompt rendering does not automatically create conversations, implementation
+authority, or a repository writer. V2-03 accepted state remains the sole
+accepted-project-origin authority.
+<!-- V2_04_PAIRED_BOOTSTRAP_END -->
+
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_ADOPTION_BEGIN -->
+# V2-05 Official Project Plan adoption
+
+Floppy 1E now ends review by rendering an `OFFICIAL PROJECT PLAN REVIEW CANDIDATE`, not by inventing durable project identity. Its machine object contains exactly `candidate_format = floppy-official-project-plan-review-candidate`, `candidate_format_version = 1.0.0`, and the exact sixteen-field `substantive_plan`. The deterministic `candidate_substantive_sha256` is external review evidence and is not stored inside the candidate. The candidate is noncanonical and nonauthoritative.
+
+On explicit administrator acceptance, perform one accepted-origin transaction: freeze the candidate digest; create one lowercase UUIDv4 `project_id`; derive `OPP-<project_id>`, `CO-<project_id>`, and `ORCH-<project_id>-00000001`; complete the accepted OPP machine record around the unchanged substantive projection; render the immutable human companion with Plan ID, Plan revision, and canonical accepted-machine SHA-256; bind the accepted OPP from V2-03 accepted state without placing accepted-state/shared-origin digests back inside the OPP; prove candidate/final substantive digest equality; establish roadmap and downstream shared-origin linkage; then render the paired Continuity Overseer and initial Project Orchestrator prompts. Issue those prompts together into separate conversations only after accepted state exists.
+
+The first proposed implementation section remains `DRAFT_NOT_AUTHORIZED`, with `work_package_acceptance = NOT_ACCEPTED`, implementation and verification `NOT_STARTED`, and mandatory null implementation authorization, section working model, and repository writer. Floppy 1E acceptance does not grant implementation authority or a repository writer.
+
+For an existing non-Floppy project, preserve the verified existing project and perform formal adoption from that state. For an existing V1 Floppy project, do not backfill automatically: V2 adoption is explicit and does not rewrite V1 lifecycle history or imply migration.
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_ADOPTION_END -->

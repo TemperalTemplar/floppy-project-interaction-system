@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-continuity-overseer:2.0.0",
+  "title": "BCE Continuity Overseer Record",
+  "description": "V2-04 project-level Continuity Overseer linkage. The record preserves continuity across Project Orchestrator succession without becoming a competing current-controller registry or granting authority.",
+  "status": "normative",
+  "schema_version": "2.0.0",
+  "owner": "V2-04",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "format_version",
+    "project_id",
+    "continuity_overseer_id",
+    "reports_to",
+    "accepted_state",
+    "initial_project_orchestrator_id",
+    "orchestrator_registry",
+    "shared_origin_sha256",
+    "succession_history",
+    "authority_isolation"
+  ],
+  "properties": {
+    "format": {
+      "const": "floppy-continuity-overseer"
+    },
+    "format_version": {
+      "const": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "continuity_overseer_id": {
+      "type": "string",
+      "pattern": "^CO-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "reports_to": {
+      "const": "ADMINISTRATOR"
+    },
+    "accepted_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "origin_revision_id",
+        "origin_protected_state_sha256",
+        "current_accepted_revision",
+        "current_protected_state_sha256"
+      ],
+      "properties": {
+        "record": {
+          "const": ".floppy/accepted-state.json"
+        },
+        "origin_revision_id": {
+          "const": "ORIGINAL"
+        },
+        "origin_protected_state_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "current_accepted_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_protected_state_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "initial_project_orchestrator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orchestrator_registry": {
+      "const": ".floppy/orchestrator-registry.json"
+    },
+    "shared_origin_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "succession_history": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^ORCH-SUCC-[0-9]{6}$"
+      }
+    },
+    "authority_isolation": {
+      "$ref": "#/$defs/authority_isolation"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authority_isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grants_implementation_authority",
+        "grants_repository_writer",
+        "grants_migration_authority",
+        "grants_integration_authority",
+        "grants_acceptance_authority",
+        "grants_release_authority"
+      ],
+      "properties": {
+        "grants_implementation_authority": {
+          "const": false
+        },
+        "grants_repository_writer": {
+          "const": false
+        },
+        "grants_migration_authority": {
+          "const": false
+        },
+        "grants_integration_authority": {
+          "const": false
+        },
+        "grants_acceptance_authority": {
+          "const": false
+        },
+        "grants_release_authority": {
+          "const": false
+        }
+      }
+    }
+  }
+}

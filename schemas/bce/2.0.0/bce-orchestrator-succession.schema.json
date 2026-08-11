@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-orchestrator-succession:2.0.0",
+  "title": "BCE Project Orchestrator Succession Record",
+  "description": "V2-04 bounded Project Orchestrator succession evidence. Succession preserves authority and requires administrator-accepted cutover.",
+  "status": "normative",
+  "schema_version": "2.0.0",
+  "owner": "V2-04",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "format_version",
+    "succession_id",
+    "sequence",
+    "project_id",
+    "continuity_overseer_id",
+    "predecessor_orchestrator_id",
+    "successor_orchestrator_id",
+    "predecessor_availability",
+    "recovery_mode",
+    "repository_checkpoint",
+    "authority_state",
+    "authority_state_sha256",
+    "phase",
+    "readiness",
+    "administrator_cutover",
+    "result",
+    "completed_work",
+    "unresolved_work",
+    "next_legal_operation",
+    "prohibited_operations",
+    "authority_isolation"
+  ],
+  "properties": {
+    "format": {
+      "const": "floppy-orchestrator-succession"
+    },
+    "format_version": {
+      "const": 1
+    },
+    "succession_id": {
+      "type": "string",
+      "pattern": "^ORCH-SUCC-[0-9]{6}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "continuity_overseer_id": {
+      "type": "string",
+      "pattern": "^CO-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "predecessor_orchestrator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "successor_orchestrator_id": {
+      "type": "string",
+      "pattern": "^ORCH-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}-[0-9]{8}$"
+    },
+    "predecessor_availability": {
+      "enum": [
+        "AVAILABLE",
+        "UNAVAILABLE"
+      ]
+    },
+    "recovery_mode": {
+      "enum": [
+        "NORMAL",
+        "REPOSITORY_BACKED"
+      ]
+    },
+    "repository_checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "branch",
+        "checkpoint"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checkpoint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "authority_state": {
+      "$ref": "#/$defs/authority_state"
+    },
+    "authority_state_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "phase": {
+      "enum": [
+        "PREPARED",
+        "READINESS_VERIFIED",
+        "CUTOVER_ACCEPTED",
+        "APPLIED"
+      ]
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "predecessor_status",
+        "successor_status",
+        "successor_readiness_verified"
+      ],
+      "properties": {
+        "predecessor_status": {
+          "enum": [
+            "ACTIVE",
+            "RETIRED"
+          ]
+        },
+        "successor_status": {
+          "enum": [
+            "HANDOFF_PENDING",
+            "ACTIVE"
+          ]
+        },
+        "successor_readiness_verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "administrator_cutover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "decision"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PENDING",
+            "ACCEPTED"
+          ]
+        },
+        "decision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "result": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "predecessor_status",
+        "successor_status",
+        "current_orchestrator"
+      ],
+      "properties": {
+        "predecessor_status": {
+          "const": "RETIRED"
+        },
+        "successor_status": {
+          "const": "ACTIVE"
+        },
+        "current_orchestrator": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "completed_work": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unresolved_work": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_legal_operation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prohibited_operations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authority_isolation": {
+      "$ref": "#/$defs/authority_isolation"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authority_value": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "authority_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lifecycle_state",
+        "active_work_authorization",
+        "active_implementation_authorization",
+        "active_implementation_section",
+        "current_section_working_model",
+        "repository_writer",
+        "writer_authorization_reference"
+      ],
+      "properties": {
+        "lifecycle_state": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "active_work_authorization": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "active_implementation_authorization": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "active_implementation_section": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "current_section_working_model": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "repository_writer": {
+          "$ref": "#/$defs/authority_value"
+        },
+        "writer_authorization_reference": {
+          "$ref": "#/$defs/authority_value"
+        }
+      }
+    },
+    "authority_isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grants_implementation_authority",
+        "grants_repository_writer",
+        "grants_migration_authority",
+        "grants_integration_authority",
+        "grants_acceptance_authority",
+        "grants_release_authority"
+      ],
+      "properties": {
+        "grants_implementation_authority": {
+          "const": false
+        },
+        "grants_repository_writer": {
+          "const": false
+        },
+        "grants_migration_authority": {
+          "const": false
+        },
+        "grants_integration_authority": {
+          "const": false
+        },
+        "grants_acceptance_authority": {
+          "const": false
+        },
+        "grants_release_authority": {
+          "const": false
+        }
+      }
+    }
+  }
+}

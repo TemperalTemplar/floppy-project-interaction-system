@@ -193,3 +193,47 @@ For an established codebase, onboarding must describe the verified current state
 ## Re-onboarding boundary
 
 Ordinary roadmap revisions do not rerun Floppy 1E. Load it again only when the user explicitly orders controlled re-onboarding because the project purpose or completion path has materially changed. Preserve the earlier accepted roadmap as historical evidence.
+
+<!-- V2_02_USER_ONBOARDING_BEGIN -->
+## V2 route-aware entry
+
+Before this project-onboarding protocol begins, V2 user onboarding identifies Route A (idea only), Route B (existing non-Floppy project), or Route C (existing Floppy project). Route B must preserve existing code/evidence/history/architecture/behavior before formal adoption. Route C does not restart this protocol merely because conversation context was lost; it reads `.floppy/manifest.json` first and continues from accepted state.
+
+<!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_BEGIN -->
+## V2-03 accepted-state establishment
+
+For a new project accepted under a V2-03-capable source, roadmap acceptance must atomically establish `.floppy/accepted-state.json` and `.floppy/manifest.json#accepted_state_continuity` with status `ACTIVE`.
+
+Generate `project_id` once as a random canonical lowercase UUIDv4. Do not derive it from repository identity, paths, Git state, administrator identity, provider, model, conversation, scope, or outcome.
+
+The `ORIGINAL` protected state must bind the accepted project origin, original intent, accepted scope, and accepted plan. Its digest is lowercase SHA-256 of `json.dumps(protected_state, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")`.
+
+The accepted-state record grants no implementation authority and creates no repository writer. Route C context recovery must read an existing accepted-state record when activation is present and must not reconstruct it from conversation memory.
+
+An older Floppy project with no prior V2-03 activation remains a valid legacy project. Adoption requires explicit controlled acceptance; no automatic backfill or fabricated project ID is permitted.
+<!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->
+
+<!-- V2_04_PROJECT_ACCEPTANCE_CONTINUITY_BEGIN -->
+## V2-04 project-acceptance continuity handoff
+
+For a project lawfully adopting V2-04, V2-03 accepted-state establishment is
+the origin authority. After that accepted origin exists, determine the
+Continuity Overseer and initial Project Orchestrator identities, calculate the
+shared-origin digest, establish durable V2-04 linkage, commit it where Git
+applies, and only then render the paired prompts from the same exact checkpoint
+and authority state.
+
+Present the two prompts together for separate conversations. Do not create the
+conversations automatically and do not infer implementation authority from
+paired prompt issuance.
+<!-- V2_04_PROJECT_ACCEPTANCE_CONTINUITY_END -->
+
+<!-- V2_05_NEW_PROJECT_ORIGIN_BEGIN -->
+## V2-05 accepted project origin
+
+For Route A or formal Route B adoption, review the OPP substantive candidate before creating project identity. Administrator acceptance establishes one project UUIDv4, accepted-state ORIGINAL, OPP ORIGINAL history and active aliases, roadmap binding, Continuity Overseer identity, and initial Project Orchestrator identity as one accepted-origin transaction. Candidate and accepted substantive SHA-256 values must match exactly.
+
+For Route C, continue existing accepted state first. Do not reconstruct or backfill an OPP merely because V2 tooling can read the repository. Explicit adoption/revision is required.
+<!-- V2_05_NEW_PROJECT_ORIGIN_END -->

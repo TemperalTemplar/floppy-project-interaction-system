@@ -62,3 +62,37 @@ present. Orchestrator status and role never grant write authority.
 The receiving orchestrator must verify the exact checkpoint and registry before
 changing status from `HANDOFF_PENDING`. Authority is never transferred
 automatically.
+
+<!-- V2_04_SUCCESSION_FIELDS_BEGIN -->
+## V2-04 succession fields
+
+When this handoff is used for Project Orchestrator succession, also record:
+
+- Continuity Overseer ID:
+- Succession ID:
+- Predecessor Project Orchestrator ID:
+- Predecessor availability (`AVAILABLE` / `UNAVAILABLE`):
+- Recovery mode (`NORMAL` / `REPOSITORY_BACKED`):
+- Successor Project Orchestrator ID:
+- Exact authority-state projection:
+- Authority state SHA-256:
+- Successor readiness:
+- Administrator cutover decision:
+- Stale-handoff verification result:
+
+The predecessor remains `ACTIVE` and the successor remains `HANDOFF_PENDING`
+until administrator-accepted cutover. Succession does not itself change
+implementation authority or repository-writer authority.
+<!-- V2_04_SUCCESSION_FIELDS_END -->
+
+<!-- V2_05_OPP_HANDOFF_TEMPLATE_BEGIN -->
+## Official Project Plan continuity
+
+- Plan ID: `NONE_OR_OPP-ID`
+- Plan revision ID: `NONE_OR_REVISION-ID`
+- Accepted-state revision ID: `NONE_OR_REVISION-ID`
+- OPP substantive SHA-256: `NONE_OR_SHA256`
+- Active OPP alias: `.floppy/project-plan/official-project-plan.json`
+
+These fields carry accepted planning context only. Re-read current lifecycle, authorization, and orchestrator-registry records before any write.
+<!-- V2_05_OPP_HANDOFF_TEMPLATE_END -->

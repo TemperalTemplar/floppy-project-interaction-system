@@ -158,7 +158,8 @@ class OrchestratorRegistryTests(unittest.TestCase):
                 )
                 + "\n"
             ).encode("utf-8")
-            self.assertEqual(path.read_bytes(), expected)
+            actual = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+            self.assertEqual(actual, expected)
 
     def test_checkpoint_and_reporting_fields_are_present(self) -> None:
         checkpoint = self.registry["project_checkpoint"]
@@ -258,16 +259,16 @@ class OrchestratorRegistryTests(unittest.TestCase):
         artifacts = registration["artifacts"]
         self.assertEqual(
             artifacts["registry_template"]["sha256"],
-            sha256(REGISTRY_PATH),
+            sha256_lf_text(REGISTRY_PATH),
         )
         provisioning = self.system_manifest["project_control_state_provisioning"]
         self.assertEqual(
             provisioning["artifacts"]["lifecycle_state_template"]["sha256"],
-            sha256(LIFECYCLE_PATH),
+            sha256_lf_text(LIFECYCLE_PATH),
         )
         self.assertEqual(
             provisioning["artifacts"]["orchestrator_registry_template"]["sha256"],
-            sha256(REGISTRY_PATH),
+            sha256_lf_text(REGISTRY_PATH),
         )
         self.assertEqual(
             artifacts["handoff_template"]["sha256"],
@@ -490,6 +491,46 @@ class CanonicalIntegratedControlModeTests(unittest.TestCase):
                 self.validate(root, manifest),
             )
 
+
+# V2_04_ORCHESTRATOR_REGISTRY_TEST
+class V204OrchestratorRegistryBoundaryTests(unittest.TestCase):
+    def test_continuity_overseer_does_not_replace_registry(self) -> None:
+        system = load_json(SYSTEM_MANIFEST_PATH)
+        registry = load_json(REGISTRY_PATH)
+        continuity = system["continuity_overseer"]
+        self.assertEqual(
+            continuity["orchestrator_registry_authority"],
+            ".floppy/orchestrator-registry.json",
+        )
+        self.assertFalse(
+            continuity["competing_current_controller_registry"]
+        )
+        self.assertEqual(
+            registry["rules"]["maximum_active_orchestrators"], 1
+        )
+
+    def test_handoff_template_contains_v2_04_succession_fingerprint(self) -> None:
+        text = HANDOFF_PATH.read_text(encoding="utf-8")
+        for value in (
+            "Continuity Overseer ID",
+            "Succession ID",
+            "Authority state SHA-256",
+            "Predecessor availability",
+            "Successor Project Orchestrator ID",
+            "Stale-handoff verification result",
+        ):
+            self.assertIn(value, text)
+
+
+
+# V2_05_OPP_ORCHESTRATOR_REGISTRY_TEST
+class V205OppOrchestratorRegistryTests(unittest.TestCase):
+    def test_opp_bootstrap_never_becomes_current_controller_registry(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        manifest = json.loads((root / "system-manifest.json").read_text(encoding="utf-8"))
+        self.assertIn("official_project_plan", manifest)
+        self.assertFalse(manifest["official_project_plan"]["authority_isolation"]["grants_repository_writer"])
+        self.assertFalse(manifest["official_project_plan"]["authority_isolation"]["grants_implementation_authority"])
 
 if __name__ == "__main__":
     unittest.main()

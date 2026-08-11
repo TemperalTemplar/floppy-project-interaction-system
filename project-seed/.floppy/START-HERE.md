@@ -56,3 +56,24 @@ The JSON file provides machine-readable section identity, dependencies, statuses
 During initial onboarding, create or finalize complete Floppies A–E and accept the first roadmap version. After onboarding, ordinary sessions use delta revision packets and section closeouts. Do not regenerate all five Floppies or rerun Floppy 1E during routine work.
 
 A material project redefinition requires explicit controlled re-onboarding and must preserve the earlier accepted roadmap as historical evidence.
+
+<!-- V2_04_PROJECT_CONTINUITY_BEGIN -->
+## Optional V2-04 project continuity records
+
+A project that has explicitly adopted V2-04 may contain:
+
+- `.floppy/continuity-overseer.json`;
+- `.floppy/handoffs/orchestrator-succession-######.json`.
+
+Do not create either merely because a V2-capable source is present. If
+`.floppy/manifest.json#continuity_overseer` is `ACTIVE`, load and validate the
+continuity record after the accepted-state record and before relying on
+orchestrator succession. `.floppy/orchestrator-registry.json` remains the sole
+current-controller/writer registry.
+<!-- V2_04_PROJECT_CONTINUITY_END -->
+
+<!-- V2_05_PROJECT_PLAN_BOOTSTRAP_BEGIN -->
+## V2-05 Official Project Plan
+
+Do not create a blank OPP during project-seed provisioning. Before formal adoption the OPP record does not exist. After administrator acceptance, the accepted-origin transaction creates `.floppy/project-plan/history/<revision>.json|md` and the two active aliases. If the project manifest registers an active OPP, read the active OPP immediately after accepted-state/project-origin records and verify its revision linkage before continuing.
+<!-- V2_05_PROJECT_PLAN_BOOTSTRAP_END -->

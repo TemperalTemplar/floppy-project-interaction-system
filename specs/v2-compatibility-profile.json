@@ -1,0 +1,245 @@
+{
+  "format": "floppy-v2-compatibility-profile",
+  "profile_version": "2.0.0",
+  "strategy": "EXPLICIT_V2_COMPATIBILITY_PROFILE_FAMILY",
+  "source_identity": "2.0.0",
+  "numeric_latest_schema_inference": false,
+  "automatic_migration": false,
+  "context_loss_rule": "Context loss is not authority to reconstruct accepted work.",
+  "selector_fields": [
+    "source_lineage",
+    "lifecycle_schema",
+    "verification_only_extension",
+    "final_closure_extension",
+    "compatibility_profile"
+  ],
+  "compatibility_combinations": [
+    {
+      "combination_id": "V1_BASE_1_0",
+      "selector": {
+        "source_lineage": "v1.0.0",
+        "lifecycle_schema": "1.0.0",
+        "verification_only_extension": false,
+        "final_closure_extension": false,
+        "compatibility_profile": null
+      },
+      "disposition": "CONTINUE_V1",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Recognize the original V1 lifecycle contract exactly as V1; no V2 adoption or migration is implied."
+    },
+    {
+      "combination_id": "V1_VERIFICATION_ONLY_1_1",
+      "selector": {
+        "source_lineage": "v1.0.0",
+        "lifecycle_schema": "1.1.0",
+        "verification_only_extension": true,
+        "final_closure_extension": false,
+        "compatibility_profile": null
+      },
+      "disposition": "CONTINUE_V1",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Recognize the V1 verification-only extension exactly; 1.2.0 does not supersede it by numeric ordering."
+    },
+    {
+      "combination_id": "V1_FINAL_CLOSURE_1_2",
+      "selector": {
+        "source_lineage": "v1.0.0",
+        "lifecycle_schema": "1.2.0",
+        "verification_only_extension": false,
+        "final_closure_extension": true,
+        "compatibility_profile": null
+      },
+      "disposition": "CONTINUE_V1",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Recognize the V1 final-closure extension exactly; it does not retroactively replace the distinct 1.1.0 profile."
+    },
+    {
+      "combination_id": "V2_PROFILE_OVER_V1_1_0",
+      "selector": {
+        "source_lineage": "v2.0.0",
+        "lifecycle_schema": "1.0.0",
+        "verification_only_extension": false,
+        "final_closure_extension": false,
+        "compatibility_profile": "2.0.0"
+      },
+      "disposition": "V2_ADOPTION_OPTIONAL",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Explicit V2 compatibility composition over unchanged V1 lifecycle 1.0.0."
+    },
+    {
+      "combination_id": "V2_PROFILE_OVER_V1_1_1",
+      "selector": {
+        "source_lineage": "v2.0.0",
+        "lifecycle_schema": "1.1.0",
+        "verification_only_extension": true,
+        "final_closure_extension": false,
+        "compatibility_profile": "2.0.0"
+      },
+      "disposition": "V2_ADOPTION_OPTIONAL",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Explicit V2 compatibility composition over unchanged V1 verification-only lifecycle 1.1.0."
+    },
+    {
+      "combination_id": "V2_PROFILE_OVER_V1_1_2",
+      "selector": {
+        "source_lineage": "v2.0.0",
+        "lifecycle_schema": "1.2.0",
+        "verification_only_extension": false,
+        "final_closure_extension": true,
+        "compatibility_profile": "2.0.0"
+      },
+      "disposition": "V2_ADOPTION_OPTIONAL",
+      "automatic_migration": false,
+      "historical_state_preserved": true,
+      "description": "Explicit V2 compatibility composition over unchanged V1 final-closure lifecycle 1.2.0."
+    }
+  ],
+  "adoption_dispositions": {
+    "CONTINUE_V1": {
+      "meaning": "Remain a lawful V1 project; V2 tooling may read and validate the exact supported V1 profile without creating durable V2-only state.",
+      "stop": false,
+      "automatic_migration": false,
+      "durable_v2_state_permitted": false
+    },
+    "V2_ADOPTION_OPTIONAL": {
+      "meaning": "The V1 project may continue unchanged, or the administrator may explicitly adopt the V2 compatibility/profile contract.",
+      "stop": false,
+      "automatic_migration": false,
+      "durable_v2_state_permitted": true
+    },
+    "V2_ADOPTION_REQUIRED": {
+      "meaning": "A requested capability requires durable V2-only state; stop before that write until explicit administrator-approved V2 adoption and any separately authorized required migration.",
+      "stop": true,
+      "automatic_migration": false,
+      "durable_v2_state_permitted": false
+    },
+    "V2_ADOPTION_DEFERRED": {
+      "meaning": "Adoption is possible but a prerequisite is not satisfied; continue only within the existing lawful V1 boundary.",
+      "stop": false,
+      "automatic_migration": false,
+      "durable_v2_state_permitted": false
+    },
+    "UNSUPPORTED_INCOMPATIBLE": {
+      "meaning": "Observed profile is unknown, unsupported, contradictory, or cannot be resolved exactly; stop instead of guessing.",
+      "stop": true,
+      "automatic_migration": false,
+      "durable_v2_state_permitted": false
+    }
+  },
+  "adoption_policy": [
+    {
+      "condition": "SUPPORTED_V1_AND_NO_DURABLE_V2_ONLY_STATE_REQUIRED",
+      "disposition": "CONTINUE_V1",
+      "rule": "Continue under the exact recognized V1 contract without migration."
+    },
+    {
+      "condition": "SUPPORTED_V1_AND_ADMINISTRATOR_ELECTS_V2_ADOPTION",
+      "disposition": "V2_ADOPTION_OPTIONAL",
+      "rule": "Adoption is explicit; reading V1 with V2 tooling is not adoption."
+    },
+    {
+      "condition": "REQUESTED_CAPABILITY_REQUIRES_DURABLE_V2_ONLY_STATE",
+      "disposition": "V2_ADOPTION_REQUIRED",
+      "rule": "Stop before the V2-only write until explicit adoption and any required migration are separately authorized."
+    },
+    {
+      "condition": "V2_ADOPTION_PREREQUISITE_NOT_YET_SATISFIED",
+      "disposition": "V2_ADOPTION_DEFERRED",
+      "rule": "Preserve accepted V1 state and defer the V2-only capability."
+    },
+    {
+      "condition": "UNKNOWN_AMBIGUOUS_UNSUPPORTED_OR_CONTRADICTORY_PROFILE",
+      "disposition": "UNSUPPORTED_INCOMPATIBLE",
+      "rule": "Stop safely; never choose a schema by numeric version ordering."
+    }
+  ],
+  "accepted_state_precedence": [
+    "COMMITTED_ACCEPTED_REPOSITORY_STATE",
+    "HISTORICAL_ACCEPTED_RECORDS",
+    "CURRENT_OPERATIONAL_STATE",
+    "DRAFTS",
+    "EXPLICIT_ADMINISTRATOR_EVIDENCE",
+    "LIVE_REPOSITORY_EVIDENCE",
+    "CONVERSATION_MEMORY"
+  ],
+  "accepted_state_semantics": {
+    "COMMITTED_ACCEPTED_REPOSITORY_STATE": "Primary accepted-state truth; authoritative until a lawful explicit revision or supersession is applied.",
+    "HISTORICAL_ACCEPTED_RECORDS": "Immutable accepted lineage and dispositions; later profiles do not rewrite them retroactively.",
+    "CURRENT_OPERATIONAL_STATE": "Current continuation state when it does not contradict a higher accepted record.",
+    "DRAFTS": "Proposals only; existence never constitutes acceptance or authority.",
+    "EXPLICIT_ADMINISTRATOR_EVIDENCE": "May authorize or accept an exact known action or artifact, but does not permit reconstruction of different accepted content and must be applied through the lawful lifecycle mechanism.",
+    "LIVE_REPOSITORY_EVIDENCE": "May prove current Git or file facts, but observation alone does not prove administrator acceptance.",
+    "CONVERSATION_MEMORY": "Advisory context only; never overrides repository-backed accepted state."
+  },
+  "provider_capability_classes": {
+    "CLASS_A": {
+      "description": "Direct repository read, bounded repository write, command execution, and artifact transfer are technically available.",
+      "repository_read": true,
+      "repository_write": true,
+      "command_execution": true,
+      "artifact_transfer": true,
+      "grants_floppy_authority": false,
+      "grants_repository_writer": false
+    },
+    "CLASS_B": {
+      "description": "Direct repository read and artifact transfer are technically available; repository mutations are administrator-applied and general local command execution is not available.",
+      "repository_read": true,
+      "repository_write": false,
+      "command_execution": false,
+      "artifact_transfer": true,
+      "grants_floppy_authority": false,
+      "grants_repository_writer": false
+    },
+    "CLASS_C": {
+      "description": "No direct repository write or command execution is available; administrator-mediated commands or artifact transfer are required.",
+      "repository_read": false,
+      "repository_write": false,
+      "command_execution": false,
+      "artifact_transfer": true,
+      "grants_floppy_authority": false,
+      "grants_repository_writer": false
+    }
+  },
+  "future_record_families": {
+    "continuity_overseer": {
+      "owner_work_package": "V2-04",
+      "implemented": true,
+      "authority_by_existence": false,
+      "repository_writer_by_role": false,
+      "semantics": [
+        "V2-04_IMPLEMENTED: source support now defines and validates the Continuity Overseer runtime record, paired accepted-origin linkage, and Project Orchestrator succession record family.",
+        "V2-04_IMPLEMENTED: Continuity Overseer may read repository-backed accepted roadmap, control, handoff, authorization, and evidence records; it is not the current-controller registry.",
+        "V2-04_IMPLEMENTED: authority-state fingerprint invariance and STALE_SUCCESSION_HANDOFF protect succession; repository-backed recovery succession never invents conversation-only facts.",
+        "V2-04_IMPLEMENTED: material project-goal or fundamental-scope conflict without a lawful accepted V2-03 revision surfaces SCOPE_DRIFT_REVIEW_REQUIRED.",
+        "Authority by existence remains false; repository-writer status by role remains false; automatic conversation creation, authority transfer, backfill, and migration remain forbidden."
+      ]
+    },
+    "official_project_plan": {
+      "owner_work_package": "V2-05",
+      "implemented": true,
+      "authority_by_existence": false,
+      "repository_writer_by_role": false,
+      "semantics": [
+        "After explicit administrator acceptance, the future Official Project Plan may become a planning baseline only.",
+        "Plan existence or acceptance does not grant implementation, migration, integration, tag, release, or repository-writer authority.",
+        "V2-01 defines authority semantics only; no V2-05 plan generator is implemented here."
+      ]
+    }
+  },
+  "v1_contracts": {
+    "schemas_immutable": true,
+    "v1_release_immutable": true,
+    "silent_migration_forbidden": true,
+    "numeric_supersession_forbidden": true,
+    "supported_lifecycle_schemas": [
+      "1.0.0",
+      "1.1.0",
+      "1.2.0"
+    ]
+  }
+}

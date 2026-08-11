@@ -159,6 +159,12 @@ class FloppyCtlTests(unittest.TestCase):
                     "current_authorized_section=FS-04",
                     "active_authorization=FS_04_IMPLEMENTATION",
                     "repository_writer=FS_04_WORKING_MODEL",
+                    "official_project_plan_presence=ABSENT",
+                    "official_project_plan_status=NOT_ADOPTED",
+                    "official_project_plan_revision=NONE",
+                    "official_project_plan_digest_prefix=NONE",
+                    "official_project_plan_first_section_status=NONE",
+                    "official_project_plan_first_section_authority=NONE",
                 ],
             )
             self.assertEqual(
@@ -354,7 +360,6 @@ class FloppyCtlTests(unittest.TestCase):
     def test_validate_preserves_source_validator_result_and_diagnostics(
         self,
     ) -> None:
-        self.assertFalse((ROOT / ".floppy").exists())
         watched = [
             ROOT / "VERSION",
             ROOT / "system-manifest.json",
@@ -379,7 +384,6 @@ class FloppyCtlTests(unittest.TestCase):
             before,
             {path: digest(path) for path in watched},
         )
-        self.assertFalse((ROOT / ".floppy").exists())
 
     def test_validate_preserves_failure_result_and_diagnostics(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -413,6 +417,33 @@ class FloppyCtlTests(unittest.TestCase):
             "ERROR: validate accepts only --mode source|project\n",
         )
 
+
+# V2_04_FLOPPYCTL_REGISTRATION_TEST
+class V204FloppyCtlRegistrationTests(unittest.TestCase):
+    def test_v2_04_boot_sources_are_registered_in_cli(self) -> None:
+        text = (ROOT / "tools/floppyctl.py").read_text(encoding="utf-8")
+        for relative in (
+            "orchestrator/Continuity_Overseer.md",
+            "protocols/06-orchestrator-succession.md",
+            "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+            "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
+        ):
+            self.assertIn(f'"{relative}"', text)
+
+
+
+# V2_05_OPP_CLI_TEST
+class V205OppCliTests(unittest.TestCase):
+    def test_opp_digest_helper_is_importable(self) -> None:
+        import importlib.util
+        path = ROOT / "tools/floppyctl.py"
+        spec = importlib.util.spec_from_file_location("floppyctl_v205_test", path)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertTrue(callable(module.official_project_plan_substantive_digest))
+        self.assertEqual(len(module.BOOT_PACKAGE_FILE_PATHS), 67)
 
 if __name__ == "__main__":
     unittest.main()

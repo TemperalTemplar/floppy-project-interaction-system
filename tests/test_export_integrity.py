@@ -510,5 +510,46 @@ class ExportIntegrityTests(unittest.TestCase):
         )
 
 
+# V2_04_EXPORT_INTEGRITY_TEST
+class V204ContinuityExportTests(unittest.TestCase):
+    def test_context_export_carries_adopted_continuity_and_succession(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td)
+            root = make_project(base)
+            handoffs = root / ".floppy/handoffs"
+            handoffs.mkdir(parents=True, exist_ok=True)
+            (root / ".floppy/continuity-overseer.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            (handoffs / "orchestrator-succession-000001.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            git(root, "add", ".floppy")
+            git(root, "commit", "-m", "add continuity context")
+            destination = base / "out"
+            destination.mkdir()
+            payload = CLI.build_context_export(root, destination)
+            archive_path, _ = artifacts(payload)
+            with zipfile.ZipFile(archive_path) as archive:
+                self.assertIn(
+                    ".floppy/continuity-overseer.json",
+                    archive.namelist(),
+                )
+                self.assertIn(
+                    ".floppy/handoffs/orchestrator-succession-000001.json",
+                    archive.namelist(),
+                )
+
+
+
+# V2_05_OPP_EXPORT_TEST
+class V205OppExportTests(unittest.TestCase):
+    def test_context_export_registers_opp_binding_verification(self) -> None:
+        self.assertTrue(callable(CLI._v205_opp_export_binding))
+        self.assertTrue(callable(CLI.build_context_export))
+        self.assertTrue(callable(CLI.verify_context_export))
+        self.assertEqual(CLI.V2_OPP_ACTIVE_JSON, ".floppy/project-plan/official-project-plan.json")
+        self.assertEqual(CLI.V2_OPP_ACTIVE_MD, ".floppy/project-plan/official-project-plan.md")
+
 if __name__ == "__main__":
     unittest.main()

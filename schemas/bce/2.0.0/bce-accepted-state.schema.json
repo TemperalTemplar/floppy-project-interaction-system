@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:floppy-project-interaction-system:schema:bce-accepted-state:2.0.0",
+  "title": "BCE Accepted-State Continuity Record",
+  "description": "V2-03 durable accepted-state continuity record. It preserves accepted project origin and append-only accepted revision history without granting operational authority.",
+  "status": "normative",
+  "schema_version": "2.0.0",
+  "owner": "V2-03",
+  "production_enforcement": false,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "format_version",
+    "project_id",
+    "original",
+    "revisions",
+    "current_accepted_revision",
+    "authority_isolation"
+  ],
+  "properties": {
+    "format": {"const": "floppy-accepted-state"},
+    "format_version": {"const": 1},
+    "project_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "original": {"$ref": "#/$defs/original_revision"},
+    "revisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/accepted_revision"}
+    },
+    "current_accepted_revision": {"$ref": "#/$defs/revision_id"},
+    "authority_isolation": {"$ref": "#/$defs/authority_isolation"}
+  },
+  "$defs": {
+    "revision_id": {"type": "string", "minLength": 1},
+    "checkpoint": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "administrator_acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "authority", "accepted_at", "decision"],
+      "properties": {
+        "status": {"const": "ACCEPTED"},
+        "authority": {"type": "string", "minLength": 1},
+        "accepted_at": {"type": "string", "minLength": 1},
+        "decision": {"type": "string", "minLength": 1}
+      }
+    },
+    "protected_state": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["project_origin", "original_intent", "accepted_scope", "accepted_plan"],
+      "properties": {
+        "project_origin": {"type": "object", "minProperties": 1},
+        "original_intent": {},
+        "accepted_scope": {},
+        "accepted_plan": {"type": "object", "minProperties": 1},
+        "accepted_exclusions": {"type": "array"},
+        "major_constraints": {"type": "array"},
+        "verified_starting_state": {}
+      }
+    },
+    "original_revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision_id", "accepted_checkpoint", "administrator_acceptance", "protected_state", "protected_state_sha256"],
+      "properties": {
+        "revision_id": {"const": "ORIGINAL"},
+        "accepted_checkpoint": {"$ref": "#/$defs/checkpoint"},
+        "administrator_acceptance": {"$ref": "#/$defs/administrator_acceptance"},
+        "protected_state": {"$ref": "#/$defs/protected_state"},
+        "protected_state_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "accepted_revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision_id", "supersedes_revision_id", "accepted_checkpoint", "administrator_acceptance", "protected_state", "protected_state_sha256"],
+      "properties": {
+        "revision_id": {"type": "string", "minLength": 1, "not": {"const": "ORIGINAL"}},
+        "supersedes_revision_id": {"$ref": "#/$defs/revision_id"},
+        "accepted_checkpoint": {"$ref": "#/$defs/checkpoint"},
+        "administrator_acceptance": {"$ref": "#/$defs/administrator_acceptance"},
+        "protected_state": {"$ref": "#/$defs/protected_state"},
+        "protected_state_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authority_isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grants_implementation_authority", "grants_repository_writer", "grants_migration_authority", "grants_integration_authority", "grants_release_authority"],
+      "properties": {
+        "grants_implementation_authority": {"const": false},
+        "grants_repository_writer": {"const": false},
+        "grants_migration_authority": {"const": false},
+        "grants_integration_authority": {"const": false},
+        "grants_release_authority": {"const": false}
+      }
+    }
+  }
+}

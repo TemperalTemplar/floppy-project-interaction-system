@@ -31,8 +31,15 @@ BOOT_PACKAGE_FILE_PATHS = (
     "docs/Architecture.md",
     "docs/Migration-Notes.md",
     "docs/User-Guide.md",
+    "docs/getting-started/ChatGPT.md",
+    "docs/getting-started/DeepSeek.md",
+    "docs/getting-started/Gemini.md",
+    "docs/getting-started/Grok.md",
+    "docs/getting-started/Other-AI.md",
+    "docs/getting-started/README.md",
     "onboarding/Floppy_1E.md",
     "onboarding/README.md",
+    "orchestrator/Continuity_Overseer.md",
     "orchestrator/Floppy_Z.md",
     "orchestrator/README.md",
     "project-seed/.floppy/START-HERE.md",
@@ -58,17 +65,28 @@ BOOT_PACKAGE_FILE_PATHS = (
     "protocols/03-active-session.md",
     "protocols/04-everyday-closeout.md",
     "protocols/05-revision-application.md",
+    "protocols/06-orchestrator-succession.md",
     "schemas/bce/1.0.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.0.0/bce-lifecycle-transition.schema.json",
     "schemas/bce/1.0.0/bce-work-authorization.schema.json",
     "schemas/bce/1.1.0/bce-lifecycle-state.schema.json",
     "schemas/bce/1.2.0/bce-lifecycle-state.schema.json",
+    "schemas/bce/2.0.0/bce-accepted-state.schema.json",
+    "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
+    "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+    "schemas/bce/2.0.0/bce-official-project-plan.schema.json",
+    "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
     "schemas/drafts/bce-work-authorization.schema.json",
     "schemas/floppy-fields.md",
+    "specs/accepted-state-continuity.md",
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
+    "specs/lifecycle-write-contract.json",
+    "specs/official-project-plan.md",
+    "specs/v2-architecture-compatibility.md",
+    "specs/v2-compatibility-profile.json",
     "system-manifest.json",
     "tools/floppyctl.py",
     "tools/initialize_project.py",
@@ -1447,6 +1465,13 @@ def command_status(root: Path) -> int:
     print(f"current_authorized_section={_none(current_section)}")
     print(f"active_authorization={_none(authorization_id)}")
     print(f"repository_writer={_none(writer)}")
+    opp = official_project_plan_status(root)
+    print(f"official_project_plan_presence={_none(opp.get("presence"))}")
+    print(f"official_project_plan_status={_none(opp.get("status"))}")
+    print(f"official_project_plan_revision={_none(opp.get("plan_revision"))}")
+    print(f"official_project_plan_digest_prefix={_none(opp.get("digest_prefix"))}")
+    print(f"official_project_plan_first_section_status={_none(opp.get("first_section_status"))}")
+    print(f"official_project_plan_first_section_authority={_none(opp.get("implementation_authorization"))}")
     return 0
 
 
@@ -1575,6 +1600,16 @@ def command_initialize(args: list[str]) -> int:
     module.print_result(result, system_version)
     return 0
 
+
+def command_onboarding(root: Path) -> int:
+    """Print the registered V2-02 user-onboarding contract without mutation."""
+    manifest = _read_json(root / "system-manifest.json", "system manifest")
+    registry = manifest.get("user_onboarding")
+    if not isinstance(registry, dict):
+        raise CliError("system manifest user-onboarding registry is missing")
+    print(json.dumps(registry, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+    return 0
+
 def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     root_value: str | None = None
     remaining: list[str] = []
@@ -1595,7 +1630,7 @@ def _parse(argv: list[str]) -> tuple[Path, str, list[str]]:
     if not remaining:
         raise CliError("command is required: status, validate, inspect, or initialize")
     command = remaining[0]
-    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "export", "verify-export", "initialize"}:
+    if command not in {"status", "validate", "inspect", "scan", "package", "verify-package", "export", "verify-export", "onboarding", "initialize"}:
         raise CliError(f"unknown command: {command}")
     return _root_path(root_value), command, remaining[1:]
 
@@ -1608,6 +1643,11 @@ def _legacy_main(argv: list[str] | None = None) -> int:
             if args:
                 raise CliError("status accepts no arguments")
             return command_status(root)
+
+        if command == "onboarding":
+            if args:
+                raise CliError("onboarding accepts no arguments")
+            return command_onboarding(root)
 
         if command == "inspect":
             if len(args) != 1:
@@ -2580,6 +2620,252 @@ def main(argv: list[str] | None = None) -> int:
             sys.argv = original
     return _legacy_main(arguments)
 # === FS-09 CONTROLLED LIFECYCLE WRITES END ===
+
+# === V2-05 OFFICIAL PROJECT PLAN TOOLING BEGIN ===
+V2_OPP_SUBSTANTIVE_FIELDS = ('project_identity', 'intended_observable_final_outcome', 'accepted_scope', 'accepted_exclusions', 'major_constraints', 'verified_starting_state', 'important_assumptions', 'known_unknowns', 'accepted_architectural_decisions', 'section_roadmap', 'deferred_work', 'explicitly_rejected_work', 'migration_deployment_considerations', 'project_level_risks', 'authority_model', 'first_proposed_work_section')
+V2_OPP_ACCEPTED_ROOT_FIELDS = ('format', 'format_version', 'contract_version', 'plan_id', 'plan_revision_id', 'project_id', 'accepted_state_revision_id', 'project_identity', 'intended_observable_final_outcome', 'accepted_scope', 'accepted_exclusions', 'major_constraints', 'verified_starting_state', 'important_assumptions', 'known_unknowns', 'accepted_architectural_decisions', 'section_roadmap', 'deferred_work', 'explicitly_rejected_work', 'migration_deployment_considerations', 'project_level_risks', 'authority_model', 'first_proposed_work_section', 'roadmap_binding', 'project_origin_binding', 'source_provenance', 'acceptance', 'revision')
+V2_OPP_ACTIVE_JSON = ".floppy/project-plan/official-project-plan.json"
+V2_OPP_ACTIVE_MD = ".floppy/project-plan/official-project-plan.md"
+V2_OPP_SCHEMA_PATH = "schemas/bce/2.0.0/bce-official-project-plan.schema.json"
+
+
+def official_project_plan_substantive_projection(plan: dict[str, Any]) -> dict[str, Any]:
+    return {name: plan.get(name) for name in V2_OPP_SUBSTANTIVE_FIELDS}
+
+
+def official_project_plan_substantive_digest(value: Any) -> str:
+    data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(data).hexdigest()
+
+
+def official_project_plan_machine_digest(value: Any) -> str:
+    data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(data).hexdigest()
+
+
+def validate_official_project_plan_candidate(candidate: dict[str, Any]) -> str:
+    if not isinstance(candidate, dict) or set(candidate) != {"candidate_format", "candidate_format_version", "substantive_plan"}:
+        raise CliError("Official Project Plan review candidate fields are invalid")
+    if candidate.get("candidate_format") != "floppy-official-project-plan-review-candidate" or candidate.get("candidate_format_version") != "1.0.0":
+        raise CliError("Official Project Plan review candidate identity is invalid")
+    substantive = candidate.get("substantive_plan")
+    if not isinstance(substantive, dict) or set(substantive) != set(V2_OPP_SUBSTANTIVE_FIELDS):
+        raise CliError("Official Project Plan substantive field set is invalid")
+    first = substantive.get("first_proposed_work_section")
+    if not isinstance(first, dict) or first.get("status") != "DRAFT_NOT_AUTHORIZED" or first.get("work_package_acceptance") != "NOT_ACCEPTED" or first.get("implementation_authorization") is not None or first.get("section_working_model") is not None or first.get("repository_writer") is not None:
+        raise CliError("Official Project Plan first proposed work section incorrectly grants authority")
+    authority = substantive.get("authority_model")
+    if not isinstance(authority, dict) or authority.get("plan_acceptance_grants_implementation_authority") is not False or authority.get("plan_acceptance_grants_repository_writer") is not False or authority.get("plan_acceptance_grants_migration_authority") is not False or authority.get("plan_acceptance_grants_release_authority") is not False:
+        raise CliError("Official Project Plan authority isolation is invalid")
+    return official_project_plan_substantive_digest(substantive)
+
+
+def validate_official_project_plan_accepted(plan: dict[str, Any]) -> str:
+    if not isinstance(plan, dict) or set(plan) != set(V2_OPP_ACCEPTED_ROOT_FIELDS):
+        raise CliError("accepted Official Project Plan root fields are invalid")
+    digest = official_project_plan_substantive_digest(official_project_plan_substantive_projection(plan))
+    provenance = plan.get("source_provenance") if isinstance(plan.get("source_provenance"), dict) else {}
+    acceptance = plan.get("acceptance") if isinstance(plan.get("acceptance"), dict) else {}
+    revision = plan.get("revision") if isinstance(plan.get("revision"), dict) else {}
+    values = {
+        digest,
+        provenance.get("review_candidate_substantive_sha256"),
+        acceptance.get("review_candidate_substantive_sha256"),
+        revision.get("review_candidate_substantive_sha256"),
+        revision.get("substantive_projection_sha256"),
+    }
+    if len(values) != 1:
+        raise CliError("OFFICIAL_PROJECT_PLAN_UNREVIEWED_SUBSTANTIVE_CHANGE")
+    project_id = plan.get("project_id")
+    if plan.get("plan_id") != f"OPP-{project_id}" or plan.get("plan_revision_id") != plan.get("accepted_state_revision_id") or revision.get("revision_id") != plan.get("plan_revision_id"):
+        raise CliError("accepted Official Project Plan identity/revision binding is invalid")
+    origin = plan.get("project_origin_binding") if isinstance(plan.get("project_origin_binding"), dict) else {}
+    if origin.get("project_id") != project_id or origin.get("accepted_state_revision_id") != plan.get("accepted_state_revision_id") or "protected_state_sha256" in origin or "shared_origin_sha256" in origin:
+        raise CliError("accepted Official Project Plan origin binding is invalid")
+    first = plan.get("first_proposed_work_section") if isinstance(plan.get("first_proposed_work_section"), dict) else {}
+    if first.get("status") != "DRAFT_NOT_AUTHORIZED" or first.get("implementation_authorization") is not None or first.get("repository_writer") is not None:
+        raise CliError("accepted Official Project Plan incorrectly grants authority")
+    return digest
+
+
+def official_project_plan_status(root: Path) -> dict[str, Any]:
+    manifest = _read_json(root / MANIFEST_PATH, "control manifest")
+    activation = manifest.get("official_project_plan")
+    active_path = root / V2_OPP_ACTIVE_JSON
+    if activation is None:
+        return {
+            "presence": "ABSENT",
+            "status": "NOT_ADOPTED",
+            "plan_revision": None,
+            "digest_prefix": None,
+            "first_section_status": None,
+            "implementation_authorization": None,
+            "repository_writer": None,
+        }
+    if not isinstance(activation, dict) or activation.get("status") != "ACTIVE":
+        raise CliError("Official Project Plan activation record is invalid")
+    plan = _read_json(active_path, "active Official Project Plan")
+    digest = validate_official_project_plan_accepted(plan)
+    first = plan.get("first_proposed_work_section") if isinstance(plan.get("first_proposed_work_section"), dict) else {}
+    return {
+        "presence": "PRESENT",
+        "status": "ACCEPTED",
+        "plan_revision": plan.get("plan_revision_id"),
+        "digest_prefix": digest[:12],
+        "first_section_status": first.get("status"),
+        "implementation_authorization": first.get("implementation_authorization"),
+        "repository_writer": first.get("repository_writer"),
+    }
+
+
+def _v205_opp_path(root: Path, value: str) -> Path:
+    candidate = Path(value).expanduser()
+    if not candidate.is_absolute():
+        candidate = root / candidate
+    resolved = candidate.resolve()
+    return resolved
+
+
+def _v205_opp_root_and_args(arguments: list[str]) -> tuple[Path, str, list[str]]:
+    root_value: str | None = None
+    remaining: list[str] = []
+    index = 0
+    while index < len(arguments):
+        if arguments[index] == "--root":
+            if root_value is not None or index + 1 >= len(arguments):
+                raise CliError("--root requires exactly one path")
+            root_value = arguments[index + 1]
+            index += 2
+            continue
+        remaining.append(arguments[index])
+        index += 1
+    if not remaining:
+        raise CliError("OPP command is missing")
+    return _root_path(root_value), remaining[0], remaining[1:]
+
+
+def command_opp_digest(root: Path, value: str) -> int:
+    path = _v205_opp_path(root, value)
+    candidate = _read_json(path, "Official Project Plan review candidate")
+    digest = validate_official_project_plan_candidate(candidate)
+    source_root = Path(__file__).resolve().parents[1]
+    schema = _read_json(source_root / V2_OPP_SCHEMA_PATH, "Official Project Plan schema")
+    try:
+        from jsonschema import Draft202012Validator, RefResolver
+        resolver = RefResolver.from_schema(schema)
+        failures = list(Draft202012Validator(schema["$defs"]["review_candidate"], resolver=resolver).iter_errors(candidate))
+    except Exception as exc:
+        raise CliError(f"Official Project Plan review-candidate schema validation failed: {exc}") from exc
+    if failures:
+        raise CliError("Official Project Plan review candidate fails the normative V2-05 contract")
+    print(json.dumps({"status": "VALID_REVIEW_CANDIDATE", "candidate_substantive_sha256": digest}, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
+def command_opp_validate(root: Path, value: str) -> int:
+    path = _v205_opp_path(root, value)
+    plan = _read_json(path, "accepted Official Project Plan")
+    digest = validate_official_project_plan_accepted(plan)
+    source_root = Path(__file__).resolve().parents[1]
+    schema = _read_json(source_root / V2_OPP_SCHEMA_PATH, "Official Project Plan schema")
+    try:
+        from jsonschema import Draft202012Validator
+        failures = list(Draft202012Validator(schema).iter_errors(plan))
+    except Exception as exc:
+        raise CliError(f"accepted Official Project Plan schema validation failed: {exc}") from exc
+    if failures:
+        raise CliError("accepted Official Project Plan fails the normative V2-05 contract")
+    print(json.dumps({"status": "VALID_ACCEPTED_OPP", "plan_id": plan.get("plan_id"), "plan_revision_id": plan.get("plan_revision_id"), "substantive_projection_sha256": digest, "machine_sha256": official_project_plan_machine_digest(plan)}, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
+def command_opp_status(root: Path) -> int:
+    print(json.dumps(official_project_plan_status(root), ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
+def _v205_opp_export_binding(archive_path: Path) -> dict[str, Any] | None:
+    try:
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            names = set(archive.namelist())
+            if V2_OPP_ACTIVE_JSON not in names:
+                return None
+            required = {V2_OPP_ACTIVE_JSON, V2_OPP_ACTIVE_MD, ".floppy/accepted-state.json"}
+            missing = sorted(required - names)
+            if missing:
+                raise CliError(f"exported OPP context is incomplete: {missing[0]}")
+            plan_bytes = archive.read(V2_OPP_ACTIVE_JSON)
+            plan = json.loads(plan_bytes.decode("utf-8"))
+            if not isinstance(plan, dict):
+                raise CliError("exported OPP is invalid")
+            digest = validate_official_project_plan_accepted(plan)
+            revision = plan.get("plan_revision_id")
+            history_json = f".floppy/project-plan/history/{revision}.json"
+            history_md = f".floppy/project-plan/history/{revision}.md"
+            for relative in (history_json, history_md):
+                if relative not in names:
+                    raise CliError(f"exported OPP history is incomplete: {relative}")
+            if archive.read(history_json) != plan_bytes or archive.read(history_md) != archive.read(V2_OPP_ACTIVE_MD):
+                raise CliError("exported OPP active aliases do not match immutable history")
+            accepted = json.loads(archive.read(".floppy/accepted-state.json").decode("utf-8"))
+            if not isinstance(accepted, dict) or accepted.get("project_id") != plan.get("project_id") or accepted.get("current_accepted_revision") != revision:
+                raise CliError("exported OPP accepted-state linkage is invalid")
+            return {
+                "plan_id": plan.get("plan_id"),
+                "plan_revision_id": revision,
+                "accepted_state_revision_id": accepted.get("current_accepted_revision"),
+                "substantive_projection_sha256": digest,
+                "machine_sha256": official_project_plan_machine_digest(plan),
+            }
+    except (OSError, UnicodeError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
+        raise CliError(f"exported OPP context is unreadable: {exc}") from exc
+
+
+_v205_build_context_export_base = build_context_export
+_v205_verify_context_export_base = verify_context_export
+
+
+def build_context_export(root: Path, destination: Path) -> dict[str, Any]:
+    payload = _v205_build_context_export_base(root, destination)
+    binding = _v205_opp_export_binding(Path(payload["archive"]["path"]))
+    if binding is not None:
+        payload["official_project_plan"] = binding
+    return payload
+
+
+def verify_context_export(archive_path: Path, manifest_path: Path) -> dict[str, Any]:
+    payload = _v205_verify_context_export_base(archive_path, manifest_path)
+    binding = _v205_opp_export_binding(archive_path.expanduser().resolve())
+    if binding is not None:
+        payload["official_project_plan"] = binding
+    return payload
+
+
+_v205_main_base = main
+
+
+def main(argv: list[str] | None = None) -> int:
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if any(command in arguments for command in ("opp-digest", "opp-validate", "opp-status")):
+        try:
+            root, command, args = _v205_opp_root_and_args(arguments)
+            if command == "opp-digest":
+                if len(args) != 1:
+                    raise CliError("opp-digest requires exactly one candidate JSON path")
+                return command_opp_digest(root, args[0])
+            if command == "opp-validate":
+                if len(args) != 1:
+                    raise CliError("opp-validate requires exactly one accepted OPP JSON path")
+                return command_opp_validate(root, args[0])
+            if command == "opp-status":
+                if args:
+                    raise CliError("opp-status does not accept positional arguments")
+                return command_opp_status(root)
+            raise CliError(f"unknown OPP command: {command}")
+        except CliError as exc:
+            return _error(str(exc))
+    return _v205_main_base(argv)
+# === V2-05 OFFICIAL PROJECT PLAN TOOLING END ===
 
 if __name__ == "__main__":
     raise SystemExit(main())
