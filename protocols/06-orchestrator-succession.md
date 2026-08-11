@@ -115,3 +115,9 @@ Succession must not:
 - infer missing predecessor conversation facts;
 - perform migration, integration, merge, tag, or release work merely because a
   succession record exists.
+
+<!-- V2_05_OPP_SUCCESSION_BEGIN -->
+## V2-05 OPP continuity during succession
+
+A successor Project Orchestrator reads the current accepted OPP alias together with accepted-state, Continuity Overseer, roadmap, lifecycle, authorization, and orchestrator-registry records. The OPP supplies accepted project intent/scope and roadmap context; it does not replace the current-controller registry and does not confer writer authority. Succession must preserve OPP plan id/revision and shared-origin linkage unless a separate accepted project revision lawfully changes them.
+<!-- V2_05_OPP_SUCCESSION_END -->

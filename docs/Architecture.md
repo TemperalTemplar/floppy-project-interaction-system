@@ -129,3 +129,9 @@ grants Floppy authority or repository-writer status.
 
 V2-01 defines future Continuity Overseer and Official Project Plan authority
 boundaries but does not implement either capability.
+
+<!-- V2_05_OPP_ARCHITECTURE_BEGIN -->
+## Official Project Plan architecture
+
+The OPP is a V2 record family layered above the unchanged V1 lifecycle schemas. Accepted state owns durable accepted revision truth; the OPP owns the human/machine accepted planning baseline; the Continuity Overseer owns continuity and succession checks; the orchestrator registry remains the sole current-controller/writer registry. The OPP therefore cannot grant authority by existence and does not create a competing controller.
+<!-- V2_05_OPP_ARCHITECTURE_END -->

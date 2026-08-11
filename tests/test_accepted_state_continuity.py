@@ -257,5 +257,16 @@ class AcceptedStateContinuityTests(unittest.TestCase):
             self.assertIn("ACCEPTED_STATE_SILENT_DRIFT", errors)
 
 
+
+
+# V2_05_ACCEPTED_STATE_OPP_LINK_TEST
+class V205AcceptedStateOppLinkTests(unittest.TestCase):
+    def test_normative_spec_records_opp_link_without_schema_rewrite(self) -> None:
+        text = SPEC_PATH.read_text(encoding="utf-8")
+        self.assertIn("V2_05_OFFICIAL_PROJECT_PLAN_LINKAGE_BEGIN", text)
+        self.assertIn("OFFICIAL_PROJECT_PLAN_UNREVIEWED_SUBSTANTIVE_CHANGE", text)
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(schema["owner"], "V2-03")
+
 if __name__ == "__main__":
     unittest.main()

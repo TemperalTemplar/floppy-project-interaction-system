@@ -3804,7 +3804,7 @@ def validate_v2_compatibility_profile(
         "owner": "V2-01",
         "status": "reusable_product",
         "profile_version": "2.0.0",
-        "source_identity": "2.0.0-dev",
+        "source_identity": "2.0.0",
         "strategy": "explicit_v2_compatibility_profile_family",
         "numeric_latest_schema_inference": False,
         "automatic_migration": False,
@@ -3968,8 +3968,8 @@ def validate_v2_compatibility_profile(
             if not isinstance(record, dict):
                 errors.append(f"V2 future record-family boundary is missing: {name}")
                 continue
-            if record.get("implemented") is not False:
-                errors.append(f"V2-01 incorrectly implements future capability: {name}")
+            if record.get("implemented") is not True:
+                errors.append(f"V2 finalized future capability is not implemented: {name}")
             if record.get("authority_by_existence") is not False:
                 errors.append(f"future capability grants authority by existence: {name}")
             if record.get("repository_writer_by_role") is not False:
@@ -5471,9 +5471,9 @@ def validate_v2_continuity_overseer_source(
                 "V2-04 compatibility continuity family is missing"
             )
         else:
-            if continuity.get("implemented") is not False:
+            if continuity.get("implemented") is not True:
                 errors.append(
-                    "V2-04 changed frozen V2-01 implemented flag/schema"
+                    "V2-05 finalized Continuity Overseer implemented flag is invalid"
                 )
             if continuity.get("authority_by_existence") is not False:
                 errors.append(
@@ -5935,6 +5935,608 @@ def validate_closeout_completeness(manifest, root):
     return _validate_verification_only_closeout_completeness(manifest, root, section, record)
 
 # END CTRL-02 VERIFICATION-ONLY CLOSEOUT CORRECTION
+
+# === V2-05 OFFICIAL PROJECT PLAN / SOURCE FINALIZATION BEGIN ===
+V2_OPP_SCHEMA_PATH = 'schemas/bce/2.0.0/bce-official-project-plan.schema.json'
+V2_OPP_SPEC_PATH = 'specs/official-project-plan.md'
+V2_OPP_ACTIVE_JSON = '.floppy/project-plan/official-project-plan.json'
+V2_OPP_ACTIVE_MD = '.floppy/project-plan/official-project-plan.md'
+V2_OPP_HISTORY_DIR = ".floppy/project-plan/history"
+V2_OPP_SUBSTANTIVE_FIELDS = ('project_identity', 'intended_observable_final_outcome', 'accepted_scope', 'accepted_exclusions', 'major_constraints', 'verified_starting_state', 'important_assumptions', 'known_unknowns', 'accepted_architectural_decisions', 'section_roadmap', 'deferred_work', 'explicitly_rejected_work', 'migration_deployment_considerations', 'project_level_risks', 'authority_model', 'first_proposed_work_section')
+V2_OPP_ACCEPTED_ROOT_FIELDS = ('format', 'format_version', 'contract_version', 'plan_id', 'plan_revision_id', 'project_id', 'accepted_state_revision_id', 'project_identity', 'intended_observable_final_outcome', 'accepted_scope', 'accepted_exclusions', 'major_constraints', 'verified_starting_state', 'important_assumptions', 'known_unknowns', 'accepted_architectural_decisions', 'section_roadmap', 'deferred_work', 'explicitly_rejected_work', 'migration_deployment_considerations', 'project_level_risks', 'authority_model', 'first_proposed_work_section', 'roadmap_binding', 'project_origin_binding', 'source_provenance', 'acceptance', 'revision')
+V2_OPP_RELEASE_STATUS_SEMANTICS = {
+    "status_field_scope": "SOURCE_CONTENT_MATURITY_ONLY",
+    "stable_release_means": "FINAL_INTENDED_V2_0_0_SOURCE_CONTENT_WITH_NO_PLANNED_PRE_RELEASE_SOURCE_MUTATION",
+    "asserts_source_verification": False,
+    "asserts_administrator_result_acceptance": False,
+    "asserts_main_integration": False,
+    "asserts_git_tag": False,
+    "asserts_public_release": False,
+    "verification_evidence_source": "V2_05_VERIFICATION_AND_TR_006",
+    "administrator_acceptance_evidence_source": "TR_007_ACCEPT_SECTION",
+    "main_integration_evidence_source": "SEPARATELY_AUTHORIZED_I1",
+    "tag_evidence_source": "SEPARATELY_AUTHORIZED_T1_AND_GIT_STATE",
+    "publication_evidence_source": "SEPARATELY_AUTHORIZED_REL1_AND_RELEASE_PLATFORM_STATE",
+}
+V2_OPP_RELEASE_FACTS_AT_P1 = {
+    "SOURCE_CONTENT_FINAL": True,
+    "SOURCE_VERIFICATION": "PENDING",
+    "ADMINISTRATOR_RESULT_ACCEPTANCE": "PENDING",
+    "MAIN_INTEGRATION": "NOT_AUTHORIZED",
+    "TAG": "NOT_AUTHORIZED",
+    "PUBLIC_RELEASE": "NOT_AUTHORIZED",
+}
+for _v205_required_path in (V2_OPP_SCHEMA_PATH, V2_OPP_SPEC_PATH):
+    if _v205_required_path not in SOURCE_REQUIRED:
+        SOURCE_REQUIRED.append(_v205_required_path)
+
+
+def canonical_v2_opp_substantive_bytes(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def canonical_v2_opp_substantive_sha256(value: Any) -> str:
+    return hashlib.sha256(canonical_v2_opp_substantive_bytes(value)).hexdigest()
+
+
+def canonical_v2_opp_machine_sha256(plan: Any) -> str:
+    return hashlib.sha256(canonical_v2_opp_substantive_bytes(plan)).hexdigest()
+
+
+def v2_opp_substantive_projection(plan: dict[str, Any]) -> dict[str, Any]:
+    return {name: plan.get(name) for name in V2_OPP_SUBSTANTIVE_FIELDS}
+
+
+def _v205_opp_authority_model_valid(value: Any) -> bool:
+    expected = {
+        "administrator_final_authority": True,
+        "plan_acceptance_grants_implementation_authority": False,
+        "plan_acceptance_grants_repository_writer": False,
+        "plan_acceptance_grants_migration_authority": False,
+        "plan_acceptance_grants_main_modification_authority": False,
+        "plan_acceptance_grants_integration_authority": False,
+        "plan_acceptance_grants_tag_authority": False,
+        "plan_acceptance_grants_release_authority": False,
+        "role_or_provider_capability_grants_authority": False,
+        "automatic_authority_transfer": False,
+        "implementation_authorization": "SEPARATE_EXPLICIT_ACTION_REQUIRED",
+        "first_section_requires_separate_work_package_acceptance": True,
+    }
+    return isinstance(value, dict) and value == expected
+
+
+def _v205_opp_first_section_valid(value: Any) -> bool:
+    return (
+        isinstance(value, dict)
+        and set(value) == {
+            "section_id", "draft_path", "status", "work_package_acceptance",
+            "implementation", "verification", "implementation_authorization",
+            "section_working_model", "repository_writer",
+        }
+        and isinstance(value.get("section_id"), str) and bool(value.get("section_id"))
+        and isinstance(value.get("draft_path"), str) and bool(value.get("draft_path"))
+        and value.get("status") == "DRAFT_NOT_AUTHORIZED"
+        and value.get("work_package_acceptance") == "NOT_ACCEPTED"
+        and value.get("implementation") == "NOT_STARTED"
+        and value.get("verification") == "NOT_STARTED"
+        and value.get("implementation_authorization") is None
+        and value.get("section_working_model") is None
+        and value.get("repository_writer") is None
+    )
+
+
+def validate_v2_official_project_plan_candidate(candidate: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(candidate, dict) or set(candidate) != {
+        "candidate_format", "candidate_format_version", "substantive_plan"
+    }:
+        return ["OFFICIAL_PROJECT_PLAN_REVIEW_CANDIDATE_FIELDS_INVALID"]
+    if candidate.get("candidate_format") != "floppy-official-project-plan-review-candidate":
+        errors.append("OFFICIAL_PROJECT_PLAN_REVIEW_CANDIDATE_FORMAT_INVALID")
+    if candidate.get("candidate_format_version") != "1.0.0":
+        errors.append("OFFICIAL_PROJECT_PLAN_REVIEW_CANDIDATE_VERSION_INVALID")
+    substantive = candidate.get("substantive_plan")
+    if not isinstance(substantive, dict) or set(substantive) != set(V2_OPP_SUBSTANTIVE_FIELDS):
+        errors.append("OFFICIAL_PROJECT_PLAN_REVIEW_CANDIDATE_SUBSTANTIVE_FIELDS_INVALID")
+        return errors
+    try:
+        canonical_v2_opp_substantive_sha256(substantive)
+    except (TypeError, ValueError, OverflowError):
+        errors.append("OFFICIAL_PROJECT_PLAN_REVIEW_CANDIDATE_DIGEST_INVALID")
+    first = substantive.get("first_proposed_work_section")
+    if not _v205_opp_first_section_valid(first):
+        errors.append("OFFICIAL_PROJECT_PLAN_FIRST_SECTION_AUTHORITY_INVALID")
+    roadmap = substantive.get("section_roadmap")
+    if not isinstance(roadmap, list) or not roadmap or not isinstance(first, dict) or not isinstance(roadmap[0], dict) or roadmap[0].get("section_id") != first.get("section_id"):
+        errors.append("OFFICIAL_PROJECT_PLAN_FIRST_SECTION_AUTHORITY_INVALID")
+    if not _v205_opp_authority_model_valid(substantive.get("authority_model")):
+        errors.append("OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION")
+    return list(dict.fromkeys(errors))
+
+
+def _v205_current_accepted_revision(record: dict[str, Any]) -> dict[str, Any] | None:
+    current = record.get("current_accepted_revision")
+    if current == "ORIGINAL":
+        value = record.get("original")
+        return value if isinstance(value, dict) else None
+    revisions = record.get("revisions")
+    if isinstance(revisions, list):
+        for item in revisions:
+            if isinstance(item, dict) and item.get("revision_id") == current:
+                return item
+    return None
+
+
+def _v205_contains_forbidden_digest_cycle(value: Any) -> bool:
+    if isinstance(value, dict):
+        if "protected_state_sha256" in value or "shared_origin_sha256" in value:
+            return True
+        return any(_v205_contains_forbidden_digest_cycle(item) for item in value.values())
+    if isinstance(value, list):
+        return any(_v205_contains_forbidden_digest_cycle(item) for item in value)
+    return False
+
+
+def validate_v2_official_project_plan_record(
+    plan: dict[str, Any],
+    *,
+    accepted_state: dict[str, Any] | None = None,
+    continuity: dict[str, Any] | None = None,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(plan, dict) or set(plan) != set(V2_OPP_ACCEPTED_ROOT_FIELDS):
+        return ["OFFICIAL_PROJECT_PLAN_ACCEPTED_FIELDS_INVALID"]
+    if plan.get("format") != "floppy-official-project-plan" or plan.get("format_version") != "1.0.0" or plan.get("contract_version") != "2.0.0":
+        errors.append("OFFICIAL_PROJECT_PLAN_IDENTITY_INVALID")
+    project_id = plan.get("project_id")
+    uuid_pattern = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+    if not isinstance(project_id, str) or re.fullmatch(uuid_pattern, project_id) is None:
+        errors.append("OFFICIAL_PROJECT_PLAN_PROJECT_ID_INVALID")
+    if plan.get("plan_id") != f"OPP-{project_id}":
+        errors.append("OFFICIAL_PROJECT_PLAN_PLAN_ID_INVALID")
+    revision_id = plan.get("plan_revision_id")
+    if revision_id != plan.get("accepted_state_revision_id"):
+        errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+
+    try:
+        substantive_digest = canonical_v2_opp_substantive_sha256(v2_opp_substantive_projection(plan))
+        machine_digest = canonical_v2_opp_machine_sha256(plan)
+    except (TypeError, ValueError, OverflowError):
+        substantive_digest = None
+        machine_digest = None
+        errors.append("OFFICIAL_PROJECT_PLAN_DIGEST_MISMATCH")
+
+    provenance = plan.get("source_provenance")
+    provenance = provenance if isinstance(provenance, dict) else {}
+    acceptance = plan.get("acceptance")
+    acceptance = acceptance if isinstance(acceptance, dict) else {}
+    revision = plan.get("revision")
+    revision = revision if isinstance(revision, dict) else {}
+    reviewed = acceptance.get("review_candidate_substantive_sha256")
+    digest_values = {
+        reviewed,
+        provenance.get("review_candidate_substantive_sha256"),
+        revision.get("review_candidate_substantive_sha256"),
+        revision.get("substantive_projection_sha256"),
+        substantive_digest,
+    }
+    if substantive_digest is None or len(digest_values) != 1 or reviewed != substantive_digest:
+        errors.append("OFFICIAL_PROJECT_PLAN_UNREVIEWED_SUBSTANTIVE_CHANGE")
+    if provenance.get("floppy_source_identity") != "2.0.0" or provenance.get("compatibility_profile") != "2.0.0" or provenance.get("onboarding_entrypoint") != "onboarding/Floppy_1E.md":
+        errors.append("OFFICIAL_PROJECT_PLAN_SOURCE_PROVENANCE_INVALID")
+    if provenance.get("provider_capability_class") not in {"CLASS_A", "CLASS_B", "CLASS_C"}:
+        errors.append("OFFICIAL_PROJECT_PLAN_SOURCE_PROVENANCE_INVALID")
+
+    first = plan.get("first_proposed_work_section")
+    if not _v205_opp_first_section_valid(first):
+        errors.append("OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION")
+    roadmap_entries = plan.get("section_roadmap")
+    if not isinstance(roadmap_entries, list) or not roadmap_entries or not isinstance(first, dict) or not isinstance(roadmap_entries[0], dict) or roadmap_entries[0].get("section_id") != first.get("section_id"):
+        errors.append("OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION")
+    if not _v205_opp_authority_model_valid(plan.get("authority_model")):
+        errors.append("OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION")
+    migration = plan.get("migration_deployment_considerations")
+    if not isinstance(migration, dict) or migration.get("automatic_migration") is not False or migration.get("deployment_or_release_grants_implementation_authority") is not False:
+        errors.append("OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION")
+    if _v205_contains_forbidden_digest_cycle(plan.get("project_origin_binding")):
+        errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+
+    origin = plan.get("project_origin_binding")
+    origin = origin if isinstance(origin, dict) else {}
+    if (
+        origin.get("origin_contract") != "V2_ACCEPTED_PROJECT_ORIGIN"
+        or origin.get("project_id") != project_id
+        or origin.get("accepted_state_path") != ".floppy/accepted-state.json"
+        or origin.get("accepted_state_revision_id") != revision_id
+        or origin.get("continuity_overseer_id") != f"CO-{project_id}"
+        or origin.get("initial_project_orchestrator_id") != f"ORCH-{project_id}-00000001"
+        or origin.get("shared_origin_linkage") != "DERIVED_AFTER_ACCEPTED_STATE_ESTABLISHMENT"
+    ):
+        errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+
+    if revision.get("revision_id") != revision_id:
+        errors.append("OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE")
+    expected_json = f".floppy/project-plan/history/{revision_id}.json"
+    expected_md = f".floppy/project-plan/history/{revision_id}.md"
+    if (
+        revision.get("canonical_machine_path") != expected_json
+        or revision.get("canonical_human_path") != expected_md
+        or revision.get("active_machine_alias") != V2_OPP_ACTIVE_JSON
+        or revision.get("active_human_alias") != V2_OPP_ACTIVE_MD
+        or revision.get("active_alias_semantics") != "MUTABLE_POINTER_COPY_TO_CURRENT_ACCEPTED_REVISION"
+        or revision.get("mechanical_completion_verified") is not True
+    ):
+        errors.append("OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE")
+    if revision_id == "ORIGINAL":
+        if revision.get("revision_kind") != "ORIGINAL" or revision.get("supersedes_revision_id") is not None:
+            errors.append("OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE")
+    else:
+        if revision.get("revision_kind") != "LAWFUL_REVISION" or not isinstance(revision.get("supersedes_revision_id"), str) or not revision.get("supersedes_revision_id"):
+            errors.append("OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE")
+
+    roadmap = plan.get("roadmap_binding")
+    roadmap = roadmap if isinstance(roadmap, dict) else {}
+    try:
+        section_digest = canonical_v2_opp_substantive_sha256(plan.get("section_roadmap"))
+    except (TypeError, ValueError, OverflowError):
+        section_digest = None
+    if roadmap.get("machine_path") != ".floppy/roadmap/roadmap.json" or roadmap.get("human_path") != ".floppy/roadmap/roadmap.md" or roadmap.get("section_roadmap_sha256") != section_digest:
+        errors.append("OFFICIAL_PROJECT_PLAN_ROADMAP_DRIFT")
+
+    if accepted_state is not None:
+        if accepted_state.get("project_id") != project_id or accepted_state.get("current_accepted_revision") != revision_id:
+            errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+        current = _v205_current_accepted_revision(accepted_state)
+        if not isinstance(current, dict) or current.get("revision_id") != revision_id:
+            errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+        else:
+            protected = current.get("protected_state")
+            protected = protected if isinstance(protected, dict) else {}
+            accepted_plan = protected.get("accepted_plan")
+            required_binding = {
+                "plan_id": plan.get("plan_id"),
+                "plan_revision_id": revision_id,
+                "canonical_machine_path": expected_json,
+                "active_machine_alias": V2_OPP_ACTIVE_JSON,
+                "machine_sha256": machine_digest,
+                "substantive_projection_sha256": substantive_digest,
+            }
+            if not isinstance(accepted_plan, dict) or any(accepted_plan.get(k) != v for k, v in required_binding.items()):
+                errors.append("OFFICIAL_PROJECT_PLAN_DIGEST_MISMATCH")
+    if continuity is not None:
+        accepted_link = continuity.get("accepted_state")
+        accepted_link = accepted_link if isinstance(accepted_link, dict) else {}
+        current = _v205_current_accepted_revision(accepted_state) if isinstance(accepted_state, dict) else None
+        current_digest = current.get("protected_state_sha256") if isinstance(current, dict) else None
+        if (
+            continuity.get("project_id") != project_id
+            or continuity.get("continuity_overseer_id") != origin.get("continuity_overseer_id")
+            or continuity.get("initial_project_orchestrator_id") != origin.get("initial_project_orchestrator_id")
+            or accepted_link.get("record") != ".floppy/accepted-state.json"
+            or accepted_link.get("current_accepted_revision") != revision_id
+            or (current_digest is not None and accepted_link.get("current_protected_state_sha256") != current_digest)
+        ):
+            errors.append("OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH")
+    return list(dict.fromkeys(errors))
+
+
+def v2_opp_provider_semantic_tuple(
+    plan: dict[str, Any],
+    *,
+    accepted_state_revision: str,
+    shared_origin_sha256: str,
+    roadmap_sha256: str,
+) -> tuple[Any, ...]:
+    first = plan.get("first_proposed_work_section")
+    first = first if isinstance(first, dict) else {}
+    migration = plan.get("migration_deployment_considerations")
+    migration = migration if isinstance(migration, dict) else {}
+    return (
+        plan.get("project_id"),
+        plan.get("plan_id"),
+        plan.get("plan_revision_id"),
+        canonical_v2_opp_substantive_sha256(v2_opp_substantive_projection(plan)),
+        accepted_state_revision,
+        shared_origin_sha256,
+        plan.get("project_origin_binding", {}).get("continuity_overseer_id") if isinstance(plan.get("project_origin_binding"), dict) else None,
+        plan.get("project_origin_binding", {}).get("initial_project_orchestrator_id") if isinstance(plan.get("project_origin_binding"), dict) else None,
+        roadmap_sha256,
+        first.get("status"),
+        "NONE" if first.get("implementation_authorization") is None else first.get("implementation_authorization"),
+        "NONE" if first.get("repository_writer") is None else first.get("repository_writer"),
+        migration.get("migration_disposition"),
+    )
+
+
+def _v205_git_json_at(root: Path, revision: str, relative: str) -> dict[str, Any] | None:
+    result = _git_integrity_run(root, "show", f"{revision}:{relative}")
+    if result.returncode != 0:
+        return None
+    try:
+        value = json.loads(result.stdout)
+    except Exception:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _v205_git_bytes_at(root: Path, revision: str, relative: str) -> bytes | None:
+    result = subprocess.run(
+        ["git", "-c", f"safe.directory={root.as_posix()}", "-C", str(root), "show", f"{revision}:{relative}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.stdout if result.returncode == 0 else None
+
+
+def _v205_roadmap_corresponds(plan: dict[str, Any], machine: dict[str, Any]) -> bool:
+    source = machine.get("sections")
+    if not isinstance(source, list):
+        source = machine.get("work_packages")
+    if not isinstance(source, list):
+        return False
+    by_id: dict[str, dict[str, Any]] = {}
+    for item in source:
+        if not isinstance(item, dict):
+            continue
+        identifier = item.get("section_id", item.get("id"))
+        if isinstance(identifier, str) and identifier:
+            by_id[identifier] = item
+    roadmap = plan.get("section_roadmap")
+    if not isinstance(roadmap, list) or not roadmap:
+        return False
+    source_ids = [item.get("section_id", item.get("id")) for item in source if isinstance(item, dict)]
+    opp_ids = [item.get("section_id") for item in roadmap if isinstance(item, dict)]
+    if source_ids != opp_ids:
+        return False
+    for expected in roadmap:
+        if not isinstance(expected, dict):
+            return False
+        actual = by_id.get(expected.get("section_id"))
+        if actual is None:
+            return False
+        for key in ("name", "purpose", "observable_outcome", "dependencies", "acceptance_evidence"):
+            if key in actual and actual.get(key) != expected.get(key):
+                return False
+    return True
+
+
+def validate_v2_official_project_plan_source(root: Path, manifest: dict[str, Any], errors: list[str]) -> None:
+    registry = manifest.get("official_project_plan")
+    if not isinstance(registry, dict):
+        errors.append("system manifest does not register V2-05 Official Project Plan")
+        return
+    expected = {
+        "owner": "V2-05",
+        "status": "reusable_product",
+        "record_family": "official-project-plan",
+        "schema_version": "2.0.0",
+        "candidate_format": "floppy-official-project-plan-review-candidate",
+        "candidate_format_version": "1.0.0",
+        "candidate_digest_scope": "substantive_plan_external_evidence",
+        "active_json": V2_OPP_ACTIVE_JSON,
+        "active_markdown": V2_OPP_ACTIVE_MD,
+        "history_directory": V2_OPP_HISTORY_DIR,
+        "validator": "tools/validate_floppy.py",
+        "cli": "tools/floppyctl.py",
+        "automatic_migration": False,
+        "automatic_backfill": False,
+        "paired_bootstrap_after_accepted_state": True,
+    }
+    for field, value in expected.items():
+        if registry.get(field) != value:
+            errors.append(f"V2-05 Official Project Plan {field} is invalid")
+    if manifest.get("entrypoints", {}).get("official_project_plan") != V2_OPP_SPEC_PATH:
+        errors.append("V2-05 Official Project Plan entrypoint is invalid")
+    if registry.get("substantive_fields") != list(V2_OPP_SUBSTANTIVE_FIELDS) or registry.get("accepted_root_field_count") != 28:
+        errors.append("V2-05 Official Project Plan field inventory is invalid")
+    if registry.get("validated_boot_package_paths_added") != [V2_OPP_SCHEMA_PATH, V2_OPP_SPEC_PATH]:
+        errors.append("V2-05 Official Project Plan boot additions are invalid")
+    artifacts = registry.get("artifacts")
+    expected_artifacts = {
+        "schema": V2_OPP_SCHEMA_PATH,
+        "specification": V2_OPP_SPEC_PATH,
+        "tests": "tests/test_official_project_plan.py",
+        "release_tests": "tests/test_v2_release.py",
+    }
+    if not isinstance(artifacts, dict) or set(artifacts) != set(expected_artifacts):
+        errors.append("V2-05 Official Project Plan artifact registry is invalid")
+    else:
+        for name, relative in expected_artifacts.items():
+            record = artifacts.get(name)
+            if not isinstance(record, dict) or record.get("path") != relative:
+                errors.append(f"V2-05 Official Project Plan artifact path is invalid: {name}")
+                continue
+            path = root / relative
+            if not path.is_file():
+                errors.append(f"V2-05 Official Project Plan artifact is missing: {relative}")
+            elif record.get("sha256") != sha256(path):
+                errors.append(f"V2-05 Official Project Plan artifact digest mismatch: {relative}")
+    schema = validate_json(root / V2_OPP_SCHEMA_PATH, errors)
+    if isinstance(schema, dict):
+        if schema.get("$id") != "urn:floppy-project-interaction-system:schema:bce-official-project-plan:2.0.0" or schema.get("required") != list(V2_OPP_ACCEPTED_ROOT_FIELDS):
+            errors.append("V2-05 Official Project Plan schema identity/root is invalid")
+        candidate = schema.get("$defs", {}).get("review_candidate") if isinstance(schema.get("$defs"), dict) else None
+        if not isinstance(candidate, dict) or candidate.get("required") != ["candidate_format", "candidate_format_version", "substantive_plan"]:
+            errors.append("V2-05 Official Project Plan review-candidate schema is invalid")
+        try:
+            from jsonschema import Draft202012Validator
+            Draft202012Validator.check_schema(schema)
+        except Exception as exc:
+            errors.append(f"V2-05 Official Project Plan schema is invalid: {exc}")
+    if (root / "project-seed/.floppy/project-plan/official-project-plan.json").exists():
+        errors.append("V2-05 must not seed a blank Official Project Plan")
+
+    if (root / "VERSION").read_text(encoding="utf-8").strip() != "2.0.0" or manifest.get("system_version") != "2.0.0" or manifest.get("status") != "stable-release":
+        errors.append("V2-05 source release identity is invalid")
+    if manifest.get("release_status_semantics") != V2_OPP_RELEASE_STATUS_SEMANTICS:
+        errors.append("V2-05 stable-release semantics are invalid")
+    if manifest.get("release_facts_at_p1") != V2_OPP_RELEASE_FACTS_AT_P1:
+        errors.append("V2-05 release facts are not temporally separated")
+    profile = validate_json(root / "specs/v2-compatibility-profile.json", errors)
+    if isinstance(profile, dict):
+        if profile.get("source_identity") != "2.0.0" or manifest.get("v2_compatibility_profile", {}).get("source_identity") != "2.0.0":
+            errors.append("V2-05 compatibility source identity is invalid")
+        families = profile.get("future_record_families")
+        if not isinstance(families, dict) or any(not isinstance(value, dict) or value.get("implemented") is not True or value.get("authority_by_existence") is not False or value.get("repository_writer_by_role") is not False for value in families.values()):
+            errors.append("V2-05 compatibility family finalization is invalid")
+    freshness = manifest.get("provider_documentation_freshness")
+    if not isinstance(freshness, dict) or freshness.get("provider_facts_are_normative_authority") is not False or freshness.get("D1", {}).get("required_before") != "V2-05_VERIFICATION_COMPLETION" or freshness.get("D2", {}).get("material_staleness_result") != "PROVIDER_DOCUMENTATION_REFRESH_REQUIRED":
+        errors.append("V2-05 provider freshness boundary is invalid")
+    for relative in (
+        "docs/getting-started/ChatGPT.md",
+        "docs/getting-started/Gemini.md",
+        "docs/getting-started/Grok.md",
+        "docs/getting-started/DeepSeek.md",
+        "docs/getting-started/Other-AI.md",
+    ):
+        try:
+            text = (root / relative).read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            errors.append(f"V2-05 provider freshness guide is unreadable: {relative}")
+            continue
+        if "V2_05_PROVIDER_FRESHNESS_BEGIN" not in text or "PROVIDER_DOCUMENTATION_REFRESH_REQUIRED" not in text:
+            errors.append(f"V2-05 provider freshness support is missing: {relative}")
+    try:
+        import importlib.util
+        cli_path = root / "tools/floppyctl.py"
+        spec = importlib.util.spec_from_file_location("floppyctl_v205_source_validation", cli_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("unable to load floppyctl")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        inventory = tuple(module.BOOT_PACKAGE_FILE_PATHS)
+        if len(inventory) != 67 or inventory != tuple(sorted(inventory)) or V2_OPP_SCHEMA_PATH not in inventory or V2_OPP_SPEC_PATH not in inventory:
+            errors.append("V2-05 validated boot inventory is not exactly 67")
+    except Exception as exc:
+        errors.append(f"V2-05 validated boot inventory check failed: {exc}")
+
+
+def validate_v2_official_project_plan_project(root: Path, manifest: dict[str, Any], errors: list[str]) -> None:
+    activation = manifest.get("official_project_plan")
+    plan_root = root / ".floppy/project-plan"
+    active_json = root / V2_OPP_ACTIVE_JSON
+    active_md = root / V2_OPP_ACTIVE_MD
+    prior_manifest = _v205_git_json_at(root, "HEAD", ".floppy/manifest.json")
+    prior_active = isinstance(prior_manifest, dict) and isinstance(prior_manifest.get("official_project_plan"), dict) and prior_manifest.get("official_project_plan", {}).get("status") == "ACTIVE"
+    if activation is None:
+        if plan_root.exists() and any(path.is_file() for path in plan_root.rglob("*")):
+            errors.append("OFFICIAL_PROJECT_PLAN_UNREGISTERED_RECORD")
+        if prior_active:
+            errors.append("OFFICIAL_PROJECT_PLAN_SILENT_DRIFT")
+        return
+    if not isinstance(activation, dict):
+        errors.append("OFFICIAL_PROJECT_PLAN_UNREGISTERED_RECORD")
+        return
+    expected_activation = {
+        "status": "ACTIVE",
+        "contract_version": "2.0.0",
+        "record": V2_OPP_ACTIVE_JSON,
+        "human_record": V2_OPP_ACTIVE_MD,
+        "schema": V2_OPP_SCHEMA_PATH,
+        "history_directory": V2_OPP_HISTORY_DIR,
+    }
+    if any(activation.get(k) != v for k, v in expected_activation.items()):
+        errors.append("OFFICIAL_PROJECT_PLAN_UNREGISTERED_RECORD")
+    accepted_activation = manifest.get("accepted_state_continuity")
+    if not isinstance(accepted_activation, dict) or accepted_activation.get("status") != "ACTIVE":
+        errors.append("OFFICIAL_PROJECT_PLAN_ACCEPTED_STATE_REQUIRED")
+        return
+    if not active_json.is_file() or not active_md.is_file():
+        errors.append("OFFICIAL_PROJECT_PLAN_REQUIRED_RECORD_MISSING")
+        return
+    plan = validate_json(active_json, errors)
+    accepted_path = root / ".floppy/accepted-state.json"
+    accepted = validate_json(accepted_path, errors) if accepted_path.is_file() else None
+    if not isinstance(accepted, dict):
+        errors.append("OFFICIAL_PROJECT_PLAN_ACCEPTED_STATE_REQUIRED")
+        return
+    continuity_path = root / ".floppy/continuity-overseer.json"
+    continuity = validate_json(continuity_path, errors) if continuity_path.is_file() else None
+    if not isinstance(plan, dict):
+        return
+    source_root = Path(__file__).resolve().parents[1]
+    schema = validate_json(source_root / V2_OPP_SCHEMA_PATH, errors)
+    if isinstance(schema, dict):
+        try:
+            from jsonschema import Draft202012Validator
+            failures = sorted(Draft202012Validator(schema).iter_errors(plan), key=lambda item: (tuple(str(part) for part in item.absolute_path), item.message))
+        except Exception as exc:
+            errors.append(f"OFFICIAL_PROJECT_PLAN_SCHEMA_INVALID: {exc}")
+        else:
+            if failures:
+                first = failures[0]
+                location = ".".join(str(part) for part in first.absolute_path) or "<root>"
+                errors.append(f"OFFICIAL_PROJECT_PLAN_SCHEMA_INVALID: {location}: {first.message}")
+    for item in validate_v2_official_project_plan_record(plan, accepted_state=accepted, continuity=continuity if isinstance(continuity, dict) else None):
+        if item not in errors:
+            errors.append(item)
+
+    revision_id = plan.get("plan_revision_id")
+    history_json_relative = f".floppy/project-plan/history/{revision_id}.json"
+    history_md_relative = f".floppy/project-plan/history/{revision_id}.md"
+    history_json = root / history_json_relative
+    history_md = root / history_md_relative
+    if not history_json.is_file() or not history_md.is_file():
+        errors.append("OFFICIAL_PROJECT_PLAN_REQUIRED_RECORD_MISSING")
+    else:
+        if active_json.read_bytes() != history_json.read_bytes() or active_md.read_bytes() != history_md.read_bytes():
+            errors.append("OFFICIAL_PROJECT_PLAN_SILENT_DRIFT")
+        try:
+            machine_digest = canonical_v2_opp_machine_sha256(plan)
+        except Exception:
+            machine_digest = ""
+        human_text = active_md.read_text(encoding="utf-8")
+        if f"Plan ID: `{plan.get('plan_id')}`" not in human_text or f"Plan revision: `{revision_id}`" not in human_text or f"Machine SHA-256: `{machine_digest}`" not in human_text:
+            errors.append("OFFICIAL_PROJECT_PLAN_HUMAN_MISMATCH")
+
+    # Any history path already committed at HEAD is immutable. A lawful new revision
+    # creates a previously absent history path; it never changes an existing one.
+    if (root / V2_OPP_HISTORY_DIR).is_dir():
+        for path in sorted((root / V2_OPP_HISTORY_DIR).glob("*.json")) + sorted((root / V2_OPP_HISTORY_DIR).glob("*.md")):
+            relative = path.relative_to(root).as_posix()
+            prior = _v205_git_bytes_at(root, "HEAD", relative)
+            if prior is not None and prior != path.read_bytes():
+                errors.append("OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE")
+                break
+
+    binding = plan.get("roadmap_binding")
+    binding = binding if isinstance(binding, dict) else {}
+    machine_path = root / ".floppy/roadmap/roadmap.json"
+    human_path = root / ".floppy/roadmap/roadmap.md"
+    if not machine_path.is_file() or not human_path.is_file():
+        errors.append("OFFICIAL_PROJECT_PLAN_ROADMAP_DRIFT")
+    else:
+        current_roadmap = validate_json(machine_path, errors)
+        if not isinstance(current_roadmap, dict) or not _v205_roadmap_corresponds(plan, current_roadmap):
+            errors.append("OFFICIAL_PROJECT_PLAN_ROADMAP_DRIFT")
+        if not re.fullmatch(r"[0-9a-f]{64}", str(binding.get("machine_sha256", ""))) or not re.fullmatch(r"[0-9a-f]{64}", str(binding.get("human_sha256", ""))):
+            errors.append("OFFICIAL_PROJECT_PLAN_ROADMAP_DRIFT")
+
+
+_v205_validate_source_base = validate_source
+_v205_validate_project_base = validate_project
+
+
+def validate_source(root: Path, errors: list[str]) -> None:
+    _v205_validate_source_base(root, errors)
+    manifest = validate_json(root / "system-manifest.json", errors)
+    if isinstance(manifest, dict):
+        validate_v2_official_project_plan_source(root, manifest, errors)
+
+
+def validate_project(root: Path, errors: list[str]) -> None:
+    _v205_validate_project_base(root, errors)
+    manifest = validate_json(root / ".floppy/manifest.json", errors)
+    if isinstance(manifest, dict):
+        validate_v2_official_project_plan_project(root, manifest, errors)
+# === V2-05 OFFICIAL PROJECT PLAN / SOURCE FINALIZATION END ===
 
 if __name__ == "__main__":
     raise SystemExit(main())

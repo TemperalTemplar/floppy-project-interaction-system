@@ -540,5 +540,16 @@ class V204ContinuityExportTests(unittest.TestCase):
                     archive.namelist(),
                 )
 
+
+
+# V2_05_OPP_EXPORT_TEST
+class V205OppExportTests(unittest.TestCase):
+    def test_context_export_registers_opp_binding_verification(self) -> None:
+        self.assertTrue(callable(CLI._v205_opp_export_binding))
+        self.assertTrue(callable(CLI.build_context_export))
+        self.assertTrue(callable(CLI.verify_context_export))
+        self.assertEqual(CLI.V2_OPP_ACTIVE_JSON, ".floppy/project-plan/official-project-plan.json")
+        self.assertEqual(CLI.V2_OPP_ACTIVE_MD, ".floppy/project-plan/official-project-plan.md")
+
 if __name__ == "__main__":
     unittest.main()

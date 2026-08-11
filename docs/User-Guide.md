@@ -169,3 +169,9 @@ Do not store passwords, tokens, private keys, recovery codes, or secret values i
 The maintained Getting Started guides are under `docs/getting-started/`. All providers share one canonical starter prompt. Provider brand never selects Class A/B/C; the four actual session capabilities do. Route B preserves existing non-Floppy projects before adoption, while Route C resumes an existing Floppy project from its accepted control state.
 
 <!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_05_OPP_USER_GUIDE_BEGIN -->
+## Using the Official Project Plan
+
+Review the OPP candidate before acceptance. No project UUID or accepted OPP exists during candidate review. After explicit acceptance, use the active OPP aliases as the current planning baseline and keep immutable history. If accepted-state and OPP revisions disagree, stop rather than guessing. Continue to obtain separate authorization before implementation, migration, integration, tag, or release.
+<!-- V2_05_OPP_USER_GUIDE_END -->

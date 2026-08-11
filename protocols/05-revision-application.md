@@ -35,3 +35,9 @@ Do not rewrite an older accepted revision merely to label it superseded. `CURREN
 
 Any historical mutation or non-append replacement must stop with deterministic accepted-state continuity failure rather than being silently reconciled.
 <!-- V2_03_ACCEPTED_STATE_CONTINUITY_END -->
+
+<!-- V2_05_OPP_REVISION_APPLICATION_BEGIN -->
+## V2-05 OPP revision application
+
+When a lawful accepted-state revision changes accepted project-plan substance, create a new immutable `.floppy/project-plan/history/<accepted_state_revision_id>.json` and `.md` pair and then replace the two active OPP aliases with byte-identical copies of that new history revision. Prior OPP history must remain byte-identical. The new OPP revision id must equal the accepted-state revision id and its accepted substantive digest must match the reviewed revision candidate. Revision application does not grant implementation or other operational authority.
+<!-- V2_05_OPP_REVISION_APPLICATION_END -->

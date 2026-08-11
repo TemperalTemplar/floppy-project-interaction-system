@@ -478,3 +478,9 @@ Version `1.0.0` includes bounded final-project closure support in the existing v
 New users begin at `docs/getting-started/README.md`. It contains the one canonical universal starter prompt and routes actual session capability evidence into Class A/B/C plus Route A/B/C. Provider guides describe transport only. User onboarding does not grant implementation authority.
 
 <!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_05_RELEASE_OVERVIEW_BEGIN -->
+## Floppy V2.0.0 source content
+
+V2.0.0 adds the Official Project Plan contract, accepted-origin linkage, durable plan history/active aliases, and paired Continuity Overseer / Project Orchestrator bootstrap while preserving V1 lifecycle schemas and explicit authority boundaries. The source manifest status `stable-release` means only that intended V2.0.0 source content is final; verification, administrator acceptance, clean-main integration, tag, and public release remain separate operations.
+<!-- V2_05_RELEASE_OVERVIEW_END -->

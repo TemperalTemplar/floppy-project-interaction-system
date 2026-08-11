@@ -71,3 +71,9 @@ continuity record after the accepted-state record and before relying on
 orchestrator succession. `.floppy/orchestrator-registry.json` remains the sole
 current-controller/writer registry.
 <!-- V2_04_PROJECT_CONTINUITY_END -->
+
+<!-- V2_05_PROJECT_PLAN_BOOTSTRAP_BEGIN -->
+## V2-05 Official Project Plan
+
+Do not create a blank OPP during project-seed provisioning. Before formal adoption the OPP record does not exist. After administrator acceptance, the accepted-origin transaction creates `.floppy/project-plan/history/<revision>.json|md` and the two active aliases. If the project manifest registers an active OPP, read the active OPP immediately after accepted-state/project-origin records and verify its revision linkage before continuing.
+<!-- V2_05_PROJECT_PLAN_BOOTSTRAP_END -->

@@ -1,7 +1,7 @@
 {
   "system_name": "Floppy Project Interaction System",
-  "system_version": "2.0.0-dev",
-  "status": "development",
+  "system_version": "2.0.0",
+  "status": "stable-release",
   "license": "Apache-2.0",
   "source_repository_role": "canonical method, orchestrators, onboarding controls, BCE documentation, and project seed; no project-specific writes during ordinary project work",
   "entrypoints": {
@@ -23,7 +23,8 @@
     "user_onboarding": "docs/getting-started/README.md",
     "accepted_state_continuity": "specs/accepted-state-continuity.md",
     "continuity_overseer": "orchestrator/Continuity_Overseer.md",
-    "orchestrator_succession": "protocols/06-orchestrator-succession.md"
+    "orchestrator_succession": "protocols/06-orchestrator-succession.md",
+    "official_project_plan": "specs/official-project-plan.md"
   },
   "architecture": {
     "name": "BCE — Bootable Context Environment",
@@ -34,7 +35,7 @@
     "name": "Floppy Z — Project Model Orchestrator and Instruction-Transfer Protocol",
     "canonical_path": "orchestrator/Floppy_Z.md",
     "readme_path": "orchestrator/README.md",
-    "sha256": "229522a4ae5f5c3fbc0301641d9a6dcc41418dfe8d2a85e6508b9e238f4cb259",
+    "sha256": "f5c8e75501416d96dd32cadfa635ceba86662e7e75c8efa1307921c7d65ae0b9",
     "default_mode": "project-model-briefing",
     "default_action": "read-reconstruct-evaluate-instruct",
     "project_state_file": false,
@@ -46,7 +47,7 @@
     "name": "Floppy 1E — Initial Project Definition and Roadmap Builder",
     "canonical_path": "onboarding/Floppy_1E.md",
     "readme_path": "onboarding/README.md",
-    "sha256": "f8628d497fd06e9b0fdad2b07fa2ce0aee083e1970b4f9c28324c3745acdf010",
+    "sha256": "ac4f292adfa3a00f39a63029952bcd7709033618945ee671d2db88e25e45ed15",
     "default_action": "discover-define-bound-decompose-sequence-verify-present-accept-hand-off",
     "project_state_file": false,
     "copied_into_project_seed": false,
@@ -136,11 +137,11 @@
       },
       "handoff_template": {
         "path": "project-seed/.floppy/templates/orchestrator-handoff.md",
-        "sha256": "f2cd9f996d3cba2343036d7f68744596c3bfda8a3487f8eec64114a0c0dd211c"
+        "sha256": "7a7f4f8f1d1eb410a386b400f094015094a7401b510c32daa035716d5a2b2b03"
       },
       "tests": {
         "path": "tests/test_orchestrator_registry.py",
-        "sha256": "b0625a2b2ea6c83686eaae74fb30eb27ca8b42985f392daacb5fb676ddc4f5e2"
+        "sha256": "32f7b8820cedd821810e8ef5e7285b3b33db0f3fe7bf06abde474bb0fe5a2ca6"
       }
     }
   },
@@ -234,11 +235,11 @@
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "d6e795bcf5b48ffcf1af64d0ddbbb83a94100b8da9d4d22f1f6a324ef2f46489"
+        "sha256": "875ee34a7fc9495d8984700d02170da70e6a28805082720a15453e22f93da1a4"
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "4a20602d489a4b7e1249131507984c8554d738c0586b8ec06526fc08d52f959c"
+        "sha256": "3972a9753e124c07f2e042baaf04906557ff1ae65a10db2a36364105a940a26a"
       },
       "tests": {
         "path": "tests/test_project_provisioning.py",
@@ -298,11 +299,11 @@
       },
       "validator": {
         "path": "tools/validate_floppy.py",
-        "sha256": "4a20602d489a4b7e1249131507984c8554d738c0586b8ec06526fc08d52f959c"
+        "sha256": "3972a9753e124c07f2e042baaf04906557ff1ae65a10db2a36364105a940a26a"
       },
       "cli": {
         "path": "tools/floppyctl.py",
-        "sha256": "d6e795bcf5b48ffcf1af64d0ddbbb83a94100b8da9d4d22f1f6a324ef2f46489"
+        "sha256": "875ee34a7fc9495d8984700d02170da70e6a28805082720a15453e22f93da1a4"
       },
       "tests": {
         "path": "tests/test_final_closure.py",
@@ -314,7 +315,7 @@
     "owner": "V2-01",
     "status": "reusable_product",
     "profile_version": "2.0.0",
-    "source_identity": "2.0.0-dev",
+    "source_identity": "2.0.0",
     "strategy": "explicit_v2_compatibility_profile_family",
     "numeric_latest_schema_inference": false,
     "automatic_migration": false,
@@ -322,16 +323,16 @@
     "artifacts": {
       "architecture_spec": {
         "path": "specs/v2-architecture-compatibility.md",
-        "sha256": "1995355db7fc8d9c9df6a8b9ede1e21a562ed2c15b3f31189594f1c8d165fc55"
+        "sha256": "f5547f704d79b1c3ff1020b42eab4ed3ad6a7c9f2c68e395a977ef703d90e827"
       },
       "compatibility_profile": {
         "path": "specs/v2-compatibility-profile.json",
-        "sha256": "3a1eb37cc5f197a4c942fd61c2c2b86ce4f98709419dcc62ee53b1760477cb86"
+        "sha256": "1386f0f5e0bc2f725632a089553f20c2bfff6e78cbc6a865fb8dcc98a3f94e23"
       },
       "compatibility_profile_schema": {
         "path": "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
         "$id": "urn:floppy-project-interaction-system:schema:bce-compatibility-profile:2.0.0",
-        "sha256": "b6b7aeac97289c225a2c4884a6c01dbace94295ec7c636efde9ce0b6eca9bbac"
+        "sha256": "b67863264ea4d0195de5424f32b348ac70012b60bbcc119ed38bd6da7a51bdd6"
       }
     }
   },
@@ -430,31 +431,31 @@
     "artifacts": {
       "canonical_starter": {
         "path": "docs/getting-started/README.md",
-        "sha256": "82c5c7c44f59a2816e842fce120a9afac30c370fd948e1bc24116dd9b02955a2"
+        "sha256": "e06b235e495228e94cf47d1b90bceff3046c799f9a4862106063abdcf2b034c3"
       },
       "tests": {
         "path": "tests/test_user_onboarding.py",
-        "sha256": "3117d6d59066510e80b195b9c1c6fc3c96fea28309633c6be0a20b5d3aa26d67"
+        "sha256": "8d30b912b325e200b02a7f9552bc289eddbfba71d0cc34b9156e14cd744fb706"
       },
       "provider_chatgpt": {
         "path": "docs/getting-started/ChatGPT.md",
-        "sha256": "b7839a78638c137ff2624e2d8fde445407ad658465018a658589e8de1c48b07b"
+        "sha256": "0aff1913828be7f7c89f8f3a28b5512ea07b2fe11512454183cc5c5eece28dd6"
       },
       "provider_gemini": {
         "path": "docs/getting-started/Gemini.md",
-        "sha256": "1ba8a424087b183e0952b56b92644fac4d3c11ae61eb0d617a32e0063f9b6d72"
+        "sha256": "a4ab0f185c9613ca6f48cc74dcc67c2d5ac89cac64c0d23a0137964b0bd569ab"
       },
       "provider_grok": {
         "path": "docs/getting-started/Grok.md",
-        "sha256": "09468d5292cf7e8eaa6be3bf950ace70a0e793fc8a149bc85a5366536511c8db"
+        "sha256": "044ee3e529829d2bb69ed8e31b6e816fa2b6e85ce18ad43fcb5be073f9904786"
       },
       "provider_deepseek": {
         "path": "docs/getting-started/DeepSeek.md",
-        "sha256": "64d7de0ed9a47bb4e42a0c34e349d8364664c0d9f32ed4ca6873d53d36394b5a"
+        "sha256": "a4a1fda9329b5bbdc9ac2af40a4e2573f50a4c7c2efd880e96fa7ad5012db599"
       },
       "provider_other_ai": {
         "path": "docs/getting-started/Other-AI.md",
-        "sha256": "85ad9fcd411a10f21b65d182d8222ce77b6f42806471d2518cce697fe99ce2cf"
+        "sha256": "941a0f6e56fd35dfcc3ad924a20eee6fb325cf9898e3d38c7eeb680c0751c0c7"
       }
     }
   },
@@ -515,11 +516,11 @@
       },
       "specification": {
         "path": "specs/accepted-state-continuity.md",
-        "sha256": "8f1e82d0b520dbca4e2d56d06ca843676af834d42c292b4b82578a446349b1a6"
+        "sha256": "02f7aee0237999d995132440d70328ed2030f6c5c9a49fffa42691becaf1ad9d"
       },
       "tests": {
         "path": "tests/test_accepted_state_continuity.py",
-        "sha256": "4e20891c375b181128259aec325e07281028aab43e12644348d6d455c897e9fe"
+        "sha256": "a795ba9c2d029a73b7e217c20b192dfeb40ee3ec7d79ee8a65c9278c090e8ddd"
       }
     },
     "validated_boot_package_paths_added": [
@@ -611,11 +612,11 @@
     "artifacts": {
       "continuity_overseer_prompt": {
         "path": "orchestrator/Continuity_Overseer.md",
-        "sha256": "434c156c92857c276ddce1635a868bb264c88e69041b4a74f1737b009226c26b"
+        "sha256": "d6025186d0bbe8259fad1edda6bf0265fdbfefa71de3abe219e7578126fb230c"
       },
       "succession_protocol": {
         "path": "protocols/06-orchestrator-succession.md",
-        "sha256": "45becd178c908610c5b5713f2ba2f7637804f73d2956be0f32088541f133d962"
+        "sha256": "6c04d74ae743edc4bf4e957bc77f5fe4c63f071468c85cd5315eaa7bbb232e72"
       },
       "continuity_schema": {
         "path": "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
@@ -629,7 +630,7 @@
       },
       "tests": {
         "path": "tests/test_continuity_overseer.py",
-        "sha256": "c6ce0676500407be82533c4f3139fc71565547809dfd958998ba0fc017beae04"
+        "sha256": "fd3d43960969f7c8bc15b7edc4263677a73f8047af6802a55eeb729f3b38d070"
       }
     },
     "validated_boot_package_paths_added": [
@@ -638,5 +639,132 @@
       "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
       "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json"
     ]
+  },
+  "release_status_semantics": {
+    "status_field_scope": "SOURCE_CONTENT_MATURITY_ONLY",
+    "stable_release_means": "FINAL_INTENDED_V2_0_0_SOURCE_CONTENT_WITH_NO_PLANNED_PRE_RELEASE_SOURCE_MUTATION",
+    "asserts_source_verification": false,
+    "asserts_administrator_result_acceptance": false,
+    "asserts_main_integration": false,
+    "asserts_git_tag": false,
+    "asserts_public_release": false,
+    "verification_evidence_source": "V2_05_VERIFICATION_AND_TR_006",
+    "administrator_acceptance_evidence_source": "TR_007_ACCEPT_SECTION",
+    "main_integration_evidence_source": "SEPARATELY_AUTHORIZED_I1",
+    "tag_evidence_source": "SEPARATELY_AUTHORIZED_T1_AND_GIT_STATE",
+    "publication_evidence_source": "SEPARATELY_AUTHORIZED_REL1_AND_RELEASE_PLATFORM_STATE"
+  },
+  "release_facts_at_p1": {
+    "SOURCE_CONTENT_FINAL": true,
+    "SOURCE_VERIFICATION": "PENDING",
+    "ADMINISTRATOR_RESULT_ACCEPTANCE": "PENDING",
+    "MAIN_INTEGRATION": "NOT_AUTHORIZED",
+    "TAG": "NOT_AUTHORIZED",
+    "PUBLIC_RELEASE": "NOT_AUTHORIZED"
+  },
+  "provider_documentation_freshness": {
+    "owner": "V2-05",
+    "provider_facts_are_normative_authority": false,
+    "D1": {
+      "required_before": "V2-05_VERIFICATION_COMPLETION",
+      "status_at_source_finalization": "REQUIRED_NOT_YET_RECORDED",
+      "record_fields": [
+        "provider",
+        "official_documentation_reviewed",
+        "review_date",
+        "material_facts",
+        "result",
+        "capability_class_guidance"
+      ]
+    },
+    "D2": {
+      "required_after": "CLEAN_MAIN_INTEGRATION",
+      "required_before": "TAG_OR_PUBLICATION",
+      "material_staleness_result": "PROVIDER_DOCUMENTATION_REFRESH_REQUIRED"
+    }
+  },
+  "official_project_plan": {
+    "owner": "V2-05",
+    "status": "reusable_product",
+    "record_family": "official-project-plan",
+    "schema_version": "2.0.0",
+    "candidate_format": "floppy-official-project-plan-review-candidate",
+    "candidate_format_version": "1.0.0",
+    "candidate_digest_scope": "substantive_plan_external_evidence",
+    "substantive_fields": [
+      "project_identity",
+      "intended_observable_final_outcome",
+      "accepted_scope",
+      "accepted_exclusions",
+      "major_constraints",
+      "verified_starting_state",
+      "important_assumptions",
+      "known_unknowns",
+      "accepted_architectural_decisions",
+      "section_roadmap",
+      "deferred_work",
+      "explicitly_rejected_work",
+      "migration_deployment_considerations",
+      "project_level_risks",
+      "authority_model",
+      "first_proposed_work_section"
+    ],
+    "accepted_root_field_count": 28,
+    "active_json": ".floppy/project-plan/official-project-plan.json",
+    "active_markdown": ".floppy/project-plan/official-project-plan.md",
+    "history_directory": ".floppy/project-plan/history",
+    "history_json_pattern": ".floppy/project-plan/history/<accepted_state_revision_id>.json",
+    "history_markdown_pattern": ".floppy/project-plan/history/<accepted_state_revision_id>.md",
+    "validator": "tools/validate_floppy.py",
+    "cli": "tools/floppyctl.py",
+    "automatic_migration": false,
+    "automatic_backfill": false,
+    "paired_bootstrap_after_accepted_state": true,
+    "authority_isolation": {
+      "grants_implementation_authority": false,
+      "grants_repository_writer": false,
+      "grants_migration_authority": false,
+      "grants_integration_authority": false,
+      "grants_tag_authority": false,
+      "grants_release_authority": false
+    },
+    "deterministic_errors": [
+      "OFFICIAL_PROJECT_PLAN_REQUIRED_RECORD_MISSING",
+      "OFFICIAL_PROJECT_PLAN_UNREGISTERED_RECORD",
+      "OFFICIAL_PROJECT_PLAN_SCHEMA_INVALID",
+      "OFFICIAL_PROJECT_PLAN_ACCEPTED_STATE_REQUIRED",
+      "OFFICIAL_PROJECT_PLAN_ORIGIN_LINK_MISMATCH",
+      "OFFICIAL_PROJECT_PLAN_DIGEST_MISMATCH",
+      "OFFICIAL_PROJECT_PLAN_HUMAN_MISMATCH",
+      "OFFICIAL_PROJECT_PLAN_ROADMAP_DRIFT",
+      "OFFICIAL_PROJECT_PLAN_HISTORY_REWRITE",
+      "OFFICIAL_PROJECT_PLAN_SILENT_DRIFT",
+      "OFFICIAL_PROJECT_PLAN_AUTHORITY_VIOLATION",
+      "OFFICIAL_PROJECT_PLAN_UNREVIEWED_SUBSTANTIVE_CHANGE",
+      "PROVIDER_DOCUMENTATION_REFRESH_REQUIRED"
+    ],
+    "validated_boot_package_paths_added": [
+      "schemas/bce/2.0.0/bce-official-project-plan.schema.json",
+      "specs/official-project-plan.md"
+    ],
+    "artifacts": {
+      "schema": {
+        "path": "schemas/bce/2.0.0/bce-official-project-plan.schema.json",
+        "$id": "urn:floppy-project-interaction-system:schema:bce-official-project-plan:2.0.0",
+        "sha256": "c23a6d48069adc522b3143d5e3d39d4c8390ccf8ebc2e30afef7f7562a91a481"
+      },
+      "specification": {
+        "path": "specs/official-project-plan.md",
+        "sha256": "f2586032042ca51656f194566d762c5ecb3b7779ce8b8b10718a5b55c4a88316"
+      },
+      "tests": {
+        "path": "tests/test_official_project_plan.py",
+        "sha256": "dc5a73102dbd38d973296b30146312c105cca4d12c8ed46894cb7c5d21c70381"
+      },
+      "release_tests": {
+        "path": "tests/test_v2_release.py",
+        "sha256": "89c5c53d6b186d8285b3720a1703c2fc0c94d349492416355c4d09b961a41e5e"
+      }
+    }
   }
 }

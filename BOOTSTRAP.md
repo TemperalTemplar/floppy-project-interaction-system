@@ -203,3 +203,11 @@ Project Orchestrator replacement must use
 `protocols/06-orchestrator-succession.md`. A stale authority fingerprint stops
 with `STALE_SUCCESSION_HANDOFF`.
 <!-- V2_04_CONTINUITY_BOOTSTRAP_END -->
+
+<!-- V2_05_OPP_BOOTSTRAP_BEGIN -->
+## V2-05 source-final bootstrap
+
+The V2.0.0 validated boot package contains 67 paths. V2-05 adds `schemas/bce/2.0.0/bce-official-project-plan.schema.json` and `specs/official-project-plan.md` to the prior 65-path inventory.
+
+If an adopted project registers accepted-state and Official Project Plan continuity, validate accepted-state first, then the active OPP/history aliases and project-origin binding, then Continuity Overseer/orchestrator succession state. Do not create missing OPP state automatically. Paired CO and initial Project Orchestrator prompts may be generated only after the accepted-origin transaction exists. `stable-release` means source content final, not public release.
+<!-- V2_05_OPP_BOOTSTRAP_END -->

@@ -521,5 +521,16 @@ class V204OrchestratorRegistryBoundaryTests(unittest.TestCase):
         ):
             self.assertIn(value, text)
 
+
+
+# V2_05_OPP_ORCHESTRATOR_REGISTRY_TEST
+class V205OppOrchestratorRegistryTests(unittest.TestCase):
+    def test_opp_bootstrap_never_becomes_current_controller_registry(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        manifest = json.loads((root / "system-manifest.json").read_text(encoding="utf-8"))
+        self.assertIn("official_project_plan", manifest)
+        self.assertFalse(manifest["official_project_plan"]["authority_isolation"]["grants_repository_writer"])
+        self.assertFalse(manifest["official_project_plan"]["authority_isolation"]["grants_implementation_authority"])
+
 if __name__ == "__main__":
     unittest.main()

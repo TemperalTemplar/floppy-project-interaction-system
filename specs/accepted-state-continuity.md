@@ -107,3 +107,13 @@ V2-03 does not modify frozen V1 lifecycle or authorization schemas, `schemas/bce
 ## 13. Later-package boundary
 
 V2-03 provides the stable accepted-origin substrate only. V2-04 owns Continuity Overseer runtime, paired role linkage, persistence, scope-drift orchestration, and Project Orchestrator succession. V2-05 owns Official Project Plan final binding, end-to-end paired-bootstrap proof, integration, and release.
+
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_LINKAGE_BEGIN -->
+## V2-05 Official Project Plan linkage
+
+V2-03 remains the authority for durable accepted state. V2-05 adds a non-circular Official Project Plan binding without changing the V2-03 schema or hashing algorithm. For an OPP-active accepted revision, `protected_state.accepted_plan` binds `plan_id`, `plan_revision_id`, `canonical_machine_path`, `active_machine_alias`, the canonical accepted OPP `machine_sha256`, and `substantive_projection_sha256`. These values must agree with the active accepted OPP.
+
+During initial formal adoption, the reviewed OPP substantive digest is frozen before `project_id` exists. One UUIDv4 is then created, the accepted-state ORIGINAL record and OPP ORIGINAL history revision are established in the same accepted-origin transaction, and the final OPP substantive digest must equal the candidate digest. A mismatch is `OFFICIAL_PROJECT_PLAN_UNREVIEWED_SUBSTANTIVE_CHANGE`.
+
+A later accepted-state revision creates a new immutable OPP history revision; prior OPP history is not rewritten. OPP acceptance grants no operational authority and V1 projects receive no automatic backfill or migration.
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_LINKAGE_END -->

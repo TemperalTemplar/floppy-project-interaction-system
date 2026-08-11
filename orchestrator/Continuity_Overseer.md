@@ -110,3 +110,11 @@ The third case is:
 
 The Continuity Overseer surfaces the conflict and evidence; only the
 administrator can accept a project-level revision.
+
+<!-- V2_05_OPP_CONTINUITY_OVERSEER_BEGIN -->
+# V2-05 Official Project Plan continuity
+
+The Continuity Overseer treats the active Official Project Plan alias as the current accepted planning baseline only when it is registered and linked to the current accepted-state revision. It checks plan ID, plan revision, project ID, Continuity Overseer identity, initial Project Orchestrator identity, and the accepted-state current revision linkage before using the OPP for handoff context. `protected_state_sha256` and `shared_origin_sha256` remain downstream V2-03/V2-04 evidence and are deliberately not embedded in the OPP.
+
+The Continuity Overseer may detect OPP/accepted-state drift and require review, but it cannot accept an OPP revision, create authority, assign a writer, migrate, integrate, tag, or release.
+<!-- V2_05_OPP_CONTINUITY_OVERSEER_END -->

@@ -229,3 +229,11 @@ Present the two prompts together for separate conversations. Do not create the
 conversations automatically and do not infer implementation authority from
 paired prompt issuance.
 <!-- V2_04_PROJECT_ACCEPTANCE_CONTINUITY_END -->
+
+<!-- V2_05_NEW_PROJECT_ORIGIN_BEGIN -->
+## V2-05 accepted project origin
+
+For Route A or formal Route B adoption, review the OPP substantive candidate before creating project identity. Administrator acceptance establishes one project UUIDv4, accepted-state ORIGINAL, OPP ORIGINAL history and active aliases, roadmap binding, Continuity Overseer identity, and initial Project Orchestrator identity as one accepted-origin transaction. Candidate and accepted substantive SHA-256 values must match exactly.
+
+For Route C, continue existing accepted state first. Do not reconstruct or backfill an OPP merely because V2 tooling can read the repository. Explicit adoption/revision is required.
+<!-- V2_05_NEW_PROJECT_ORIGIN_END -->

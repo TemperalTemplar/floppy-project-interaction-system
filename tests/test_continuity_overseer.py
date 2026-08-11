@@ -285,5 +285,15 @@ class ContinuityOverseerTests(unittest.TestCase):
             )
 
 
+
+
+# V2_05_OPP_CONTINUITY_TEST
+class V205OppContinuityTests(unittest.TestCase):
+    def test_opp_does_not_change_continuity_authority_isolation(self) -> None:
+        manifest = json.loads((ROOT / "system-manifest.json").read_text(encoding="utf-8"))
+        self.assertIn("official_project_plan", manifest)
+        self.assertEqual(manifest["official_project_plan"]["owner"], "V2-05")
+        self.assertEqual(manifest["continuity_overseer"]["authority_isolation"], AUTHORITY_ISOLATION)
+
 if __name__ == "__main__":
     unittest.main()

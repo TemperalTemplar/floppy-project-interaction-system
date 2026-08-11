@@ -101,3 +101,9 @@ These roles must not be silently combined.
 `docs/getting-started/README.md` performs user entry, capability recording, and Route A/B/C selection. `Floppy_1E.md` remains project onboarding: it defines and bounds the project from the verified starting state. Neither user onboarding nor Floppy 1E grants implementation authority.
 
 <!-- V2_02_USER_ONBOARDING_END -->
+
+<!-- V2_05_OPP_ONBOARDING_BEGIN -->
+## V2-05 onboarding result
+
+The accepted onboarding result is an Official Project Plan plus accepted-state/project-origin linkage. Review candidates have no `project_id`; accepted plans do. Initial CO/Project-Orchestrator prompts are paired only after the accepted-origin transaction completes. No onboarding route grants implementation, migration, integration, tag, release, or repository-writer authority.
+<!-- V2_05_OPP_ONBOARDING_END -->

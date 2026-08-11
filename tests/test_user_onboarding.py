@@ -241,5 +241,17 @@ class V204PairedBootstrapTests(unittest.TestCase):
             self.assertIn("separate conversations", text)
         self.assertIn("Do not automatically create", bootstrap)
 
+
+
+# V2_05_OPP_ONBOARDING_TEST
+class V205OppOnboardingTests(unittest.TestCase):
+    def test_global_v2_05_opp_is_implemented_while_v2_02_history_remains_historical(self) -> None:
+        system = json.loads((ROOT / "system-manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(system["official_project_plan"]["owner"], "V2-05")
+        self.assertIn("official_project_plan_generation_or_binding", system["user_onboarding"]["not_implemented_here"])
+        text = (ROOT / "onboarding/Floppy_1E.md").read_text(encoding="utf-8")
+        self.assertIn("OFFICIAL PROJECT PLAN REVIEW CANDIDATE", text)
+        self.assertIn("ORCH-<project_id>-00000001", text)
+
 if __name__ == "__main__":
     unittest.main()

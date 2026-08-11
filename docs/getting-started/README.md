@@ -84,3 +84,9 @@ These are user-facing handoff templates, not automatic prompt-generation runtime
 ## Next step
 
 Use the transport guide for the AI you are actually using, then paste the canonical starter prompt above into that conversation. UI labels may evolve; capability evidence and Floppy authority rules do not.
+
+<!-- V2_05_OPP_GETTING_STARTED_BEGIN -->
+## V2-05 accepted project plan
+
+Provider brand does not change OPP semantics. Class A, B, and C sessions follow the same candidate-review and accepted-origin rules; only repository transport differs. Route A creates a review candidate and later accepted origin. Route B preserves the existing non-Floppy project and formally adopts from verified state. Route C reads existing Floppy accepted state first and never backfills an OPP automatically.
+<!-- V2_05_OPP_GETTING_STARTED_END -->

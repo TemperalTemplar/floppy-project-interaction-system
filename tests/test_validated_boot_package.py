@@ -95,6 +95,7 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "schemas/bce/2.0.0/bce-accepted-state.schema.json",
     "schemas/bce/2.0.0/bce-compatibility-profile.schema.json",
     "schemas/bce/2.0.0/bce-continuity-overseer.schema.json",
+    "schemas/bce/2.0.0/bce-official-project-plan.schema.json",
     "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
     "schemas/drafts/bce-lifecycle-state.schema.json",
     "schemas/drafts/bce-lifecycle-transition.schema.json",
@@ -104,6 +105,7 @@ EXPECTED_BOOT_PACKAGE_PATHS = (
     "specs/lifecycle-state-model.md",
     "specs/lifecycle-transition-table.json",
     "specs/lifecycle-write-contract.json",
+    "specs/official-project-plan.md",
     "specs/v2-architecture-compatibility.md",
     "specs/v2-compatibility-profile.json",
     "system-manifest.json",
@@ -269,7 +271,7 @@ class ValidatedBootPackageTests(unittest.TestCase):
             list(CLI.BOOT_PACKAGE_FILE_PATHS),
             sorted(CLI.BOOT_PACKAGE_FILE_PATHS),
         )
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 65)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
         for relative in CLI.BOOT_PACKAGE_FILE_PATHS:
             self.assertTrue((ROOT / relative).is_file(), relative)
             self.assertNotEqual(relative, ".gitignore")
@@ -277,7 +279,7 @@ class ValidatedBootPackageTests(unittest.TestCase):
 
 
     def test_v2_03_accepted_state_artifacts_are_in_validated_boot_inventory(self) -> None:
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 65)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
         self.assertIn(
             "schemas/bce/2.0.0/bce-accepted-state.schema.json",
             CLI.BOOT_PACKAGE_FILE_PATHS,
@@ -745,7 +747,7 @@ class HistoricalOperationEvidenceTests(unittest.TestCase):
 # V2_04_VALIDATED_BOOT_PACKAGE_TEST
 class V204ValidatedBootPackageTests(unittest.TestCase):
     def test_v2_04_boot_inventory_is_exactly_65(self) -> None:
-        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 65)
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
         for relative in (
             "orchestrator/Continuity_Overseer.md",
             "protocols/06-orchestrator-succession.md",
@@ -753,6 +755,15 @@ class V204ValidatedBootPackageTests(unittest.TestCase):
             "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
         ):
             self.assertIn(relative, CLI.BOOT_PACKAGE_FILE_PATHS)
+
+
+
+# V2_05_BOOT_TARGET_TEST
+class V205BootTargetTests(unittest.TestCase):
+    def test_v2_05_opp_artifacts_extend_boot_inventory_to_67(self) -> None:
+        self.assertEqual(len(CLI.BOOT_PACKAGE_FILE_PATHS), 67)
+        self.assertIn("schemas/bce/2.0.0/bce-official-project-plan.schema.json", CLI.BOOT_PACKAGE_FILE_PATHS)
+        self.assertIn("specs/official-project-plan.md", CLI.BOOT_PACKAGE_FILE_PATHS)
 
 if __name__ == "__main__":
     unittest.main()

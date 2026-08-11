@@ -2,7 +2,7 @@
   "format": "floppy-v2-compatibility-profile",
   "profile_version": "2.0.0",
   "strategy": "EXPLICIT_V2_COMPATIBILITY_PROFILE_FAMILY",
-  "source_identity": "2.0.0-dev",
+  "source_identity": "2.0.0",
   "numeric_latest_schema_inference": false,
   "automatic_migration": false,
   "context_loss_rule": "Context loss is not authority to reconstruct accepted work.",
@@ -208,7 +208,7 @@
   "future_record_families": {
     "continuity_overseer": {
       "owner_work_package": "V2-04",
-      "implemented": false,
+      "implemented": true,
       "authority_by_existence": false,
       "repository_writer_by_role": false,
       "semantics": [
@@ -221,7 +221,7 @@
     },
     "official_project_plan": {
       "owner_work_package": "V2-05",
-      "implemented": false,
+      "implemented": true,
       "authority_by_existence": false,
       "repository_writer_by_role": false,
       "semantics": [

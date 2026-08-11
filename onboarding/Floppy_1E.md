@@ -832,3 +832,15 @@ Prompt rendering does not automatically create conversations, implementation
 authority, or a repository writer. V2-03 accepted state remains the sole
 accepted-project-origin authority.
 <!-- V2_04_PAIRED_BOOTSTRAP_END -->
+
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_ADOPTION_BEGIN -->
+# V2-05 Official Project Plan adoption
+
+Floppy 1E now ends review by rendering an `OFFICIAL PROJECT PLAN REVIEW CANDIDATE`, not by inventing durable project identity. Its machine object contains exactly `candidate_format = floppy-official-project-plan-review-candidate`, `candidate_format_version = 1.0.0`, and the exact sixteen-field `substantive_plan`. The deterministic `candidate_substantive_sha256` is external review evidence and is not stored inside the candidate. The candidate is noncanonical and nonauthoritative.
+
+On explicit administrator acceptance, perform one accepted-origin transaction: freeze the candidate digest; create one lowercase UUIDv4 `project_id`; derive `OPP-<project_id>`, `CO-<project_id>`, and `ORCH-<project_id>-00000001`; complete the accepted OPP machine record around the unchanged substantive projection; render the immutable human companion with Plan ID, Plan revision, and canonical accepted-machine SHA-256; bind the accepted OPP from V2-03 accepted state without placing accepted-state/shared-origin digests back inside the OPP; prove candidate/final substantive digest equality; establish roadmap and downstream shared-origin linkage; then render the paired Continuity Overseer and initial Project Orchestrator prompts. Issue those prompts together into separate conversations only after accepted state exists.
+
+The first proposed implementation section remains `DRAFT_NOT_AUTHORIZED`, with `work_package_acceptance = NOT_ACCEPTED`, implementation and verification `NOT_STARTED`, and mandatory null implementation authorization, section working model, and repository writer. Floppy 1E acceptance does not grant implementation authority or a repository writer.
+
+For an existing non-Floppy project, preserve the verified existing project and perform formal adoption from that state. For an existing V1 Floppy project, do not backfill automatically: V2 adoption is explicit and does not rewrite V1 lifecycle history or imply migration.
+<!-- V2_05_OFFICIAL_PROJECT_PLAN_ADOPTION_END -->

@@ -159,6 +159,12 @@ class FloppyCtlTests(unittest.TestCase):
                     "current_authorized_section=FS-04",
                     "active_authorization=FS_04_IMPLEMENTATION",
                     "repository_writer=FS_04_WORKING_MODEL",
+                    "official_project_plan_presence=ABSENT",
+                    "official_project_plan_status=NOT_ADOPTED",
+                    "official_project_plan_revision=NONE",
+                    "official_project_plan_digest_prefix=NONE",
+                    "official_project_plan_first_section_status=NONE",
+                    "official_project_plan_first_section_authority=NONE",
                 ],
             )
             self.assertEqual(
@@ -423,6 +429,21 @@ class V204FloppyCtlRegistrationTests(unittest.TestCase):
             "schemas/bce/2.0.0/bce-orchestrator-succession.schema.json",
         ):
             self.assertIn(f'"{relative}"', text)
+
+
+
+# V2_05_OPP_CLI_TEST
+class V205OppCliTests(unittest.TestCase):
+    def test_opp_digest_helper_is_importable(self) -> None:
+        import importlib.util
+        path = ROOT / "tools/floppyctl.py"
+        spec = importlib.util.spec_from_file_location("floppyctl_v205_test", path)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertTrue(callable(module.official_project_plan_substantive_digest))
+        self.assertEqual(len(module.BOOT_PACKAGE_FILE_PATHS), 67)
 
 if __name__ == "__main__":
     unittest.main()

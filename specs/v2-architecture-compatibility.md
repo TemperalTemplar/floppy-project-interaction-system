@@ -244,3 +244,13 @@ Authority by existence remains false, repository-writer status by role remains
 false, and automatic migration/authority transfer/conversation creation remain
 forbidden.
 <!-- V2_04_IMPLEMENTED_CONTINUITY_END -->
+
+<!-- V2_05_SOURCE_FINALIZATION_BEGIN -->
+## V2-05 source finalization
+
+V2-05 finalizes the V2 compatibility source identity from `2.0.0-dev` to `2.0.0` and changes only the shared `future_record_families.*.implemented` schema requirement from `false` to `true`. The six accepted compatibility combinations, provider Class A/B/C semantics, V1 schema contracts, authority flags, numeric-supersession prohibition, and automatic-migration prohibition remain unchanged.
+
+`stable-release` in the source manifest is a source-content maturity state only: `SOURCE_CONTENT_FINAL`. Source verification, administrator result acceptance, clean-main integration, tag, public release, migration, and final closure remain distinct facts and separate authorities.
+
+The Official Project Plan is now the implemented V2-05 record family. It is a planning/continuity contract, never an authority grant.
+<!-- V2_05_SOURCE_FINALIZATION_END -->

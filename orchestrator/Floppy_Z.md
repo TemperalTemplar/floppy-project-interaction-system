@@ -729,3 +729,9 @@ state, stop with `STALE_SUCCESSION_HANDOFF`. If material project-goal or
 fundamental-scope drift lacks a lawful accepted project revision, surface
 `SCOPE_DRIFT_REVIEW_REQUIRED`.
 <!-- V2_04_ORCHESTRATOR_SUCCESSION_END -->
+
+<!-- V2_05_OPP_PROJECT_ORCHESTRATOR_BEGIN -->
+# V2-05 Official Project Plan bootstrap
+
+At initial accepted origin, Floppy Z is issued as `ORCH-<project_id>-00000001` together with the paired `CO-<project_id>` prompt. The Project Orchestrator reads the accepted OPP as the authoritative planning baseline for accepted project intent, scope, exclusions, constraints, architecture decisions, roadmap, risks, and first proposed section. It must still read lifecycle and explicit authorization records before directing implementation; OPP acceptance is not implementation authority.
+<!-- V2_05_OPP_PROJECT_ORCHESTRATOR_END -->

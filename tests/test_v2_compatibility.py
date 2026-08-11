@@ -162,13 +162,13 @@ class V2CompatibilityTests(unittest.TestCase):
                 self.assertFalse(record["grants_floppy_authority"])
                 self.assertFalse(record["grants_repository_writer"])
 
-    def test_future_v2_04_and_v2_05_boundaries_are_non_implementing(self) -> None:
+    def test_v2_04_and_v2_05_record_families_are_finalized_without_authority(self) -> None:
         future = self.profile["future_record_families"]
         self.assertEqual(future["continuity_overseer"]["owner_work_package"], "V2-04")
         self.assertEqual(future["official_project_plan"]["owner_work_package"], "V2-05")
         for name, record in future.items():
             with self.subTest(family=name):
-                self.assertFalse(record["implemented"])
+                self.assertTrue(record["implemented"])
                 self.assertFalse(record["authority_by_existence"])
                 self.assertFalse(record["repository_writer_by_role"])
 
@@ -217,10 +217,10 @@ class V2CompatibilityTests(unittest.TestCase):
 
 # V2_04_COMPATIBILITY_TRANSITION_TEST
 class V204CompatibilityTransitionTests(unittest.TestCase):
-    def test_v2_04_semantic_supersession_preserves_frozen_profile_schema(self) -> None:
+    def test_v2_05_finalization_marks_continuity_implemented(self) -> None:
         profile = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
         record = profile["future_record_families"]["continuity_overseer"]
-        self.assertFalse(record["implemented"])
+        self.assertTrue(record["implemented"])
         self.assertFalse(record["authority_by_existence"])
         self.assertFalse(record["repository_writer_by_role"])
         self.assertTrue(
@@ -232,8 +232,23 @@ class V204CompatibilityTransitionTests(unittest.TestCase):
         schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
         self.assertEqual(
             schema["$defs"]["future_family"]["properties"]["implemented"],
-            {"const": False},
+            {"const": True},
         )
+
+
+
+# V2_05_COMPATIBILITY_FINALIZATION_TEST
+class V205CompatibilityFinalizationTests(unittest.TestCase):
+    def test_source_identity_and_family_finalization(self) -> None:
+        profile = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(profile["source_identity"], "2.0.0")
+        self.assertEqual(schema["properties"]["source_identity"]["const"], "2.0.0")
+        self.assertEqual(len(profile["compatibility_combinations"]), 6)
+        for record in profile["future_record_families"].values():
+            self.assertTrue(record["implemented"])
+            self.assertFalse(record["authority_by_existence"])
+            self.assertFalse(record["repository_writer_by_role"])
 
 if __name__ == "__main__":
     unittest.main()

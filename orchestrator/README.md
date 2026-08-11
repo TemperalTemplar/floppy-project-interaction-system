@@ -203,3 +203,9 @@ become repository writer by role. Project Orchestrator succession is governed
 by `protocols/06-orchestrator-succession.md`; authority transfer is never
 automatic.
 <!-- V2_04_CONTINUITY_ROLE_MAP_END -->
+
+<!-- V2_05_PAIRED_BOOTSTRAP_BEGIN -->
+## V2-05 paired accepted-origin bootstrap
+
+The accepted-origin transaction links accepted state, the Official Project Plan, the Continuity Overseer, and initial Project Orchestrator. CO and Project Orchestrator prompts are rendered only after accepted state exists, share the same exact project origin and checkpoint where applicable, and are issued together into separate conversations. This pairing creates no implementation authority or repository writer.
+<!-- V2_05_PAIRED_BOOTSTRAP_END -->

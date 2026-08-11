@@ -38,7 +38,7 @@
       "const": "EXPLICIT_V2_COMPATIBILITY_PROFILE_FAMILY"
     },
     "source_identity": {
-      "const": "2.0.0-dev"
+      "const": "2.0.0"
     },
     "numeric_latest_schema_inference": {
       "const": false
@@ -379,7 +379,7 @@
           ]
         },
         "implemented": {
-          "const": false
+          "const": true
         },
         "authority_by_existence": {
           "const": false
