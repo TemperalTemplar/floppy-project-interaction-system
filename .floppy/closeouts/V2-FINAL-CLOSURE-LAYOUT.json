@@ -1,0 +1,75 @@
+{
+  "artifact": "v2-development-control-final-closure-layout",
+  "format_version": 1,
+  "status": "ACCEPTED_BOUNDED_CONTROL_CORRECTION",
+  "scope": {
+    "branch": "feature/v2-continuity-onboarding",
+    "project": "Floppy Project Interaction System V2 development-control project",
+    "reusable_main_mutation": false,
+    "release_tag_mutation": false,
+    "migration": "NONE",
+    "v2_06": "NONEXISTENT_NOT_AUTHORIZED"
+  },
+  "reason": "The generic FS-12 final-project-closure engine is hard-coded to the provisioned-project .floppy layout. The V2 development-control project intentionally uses Floppy-V2-Project-Plan.* and Floppy-V2-Development-Orchestrator.md instead of legacy root project README/START-HERE/Floppy-D/Floppy-E/roadmap.* records. Final closure therefore requires an explicit layout adapter rather than fabricated legacy files.",
+  "semantic_equivalence": {
+    "proposal_transition": "TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION",
+    "proposal_state": "LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION",
+    "application_transition": "TR-022-APPLY-FINAL-CLOSURE-NO-MIGRATION",
+    "terminal_state": "LC-PROJECT-FINALLY-CLOSED-NO-MIGRATION",
+    "migration_disposition": "NONE",
+    "proposal_and_application_remain_distinct_commits": true,
+    "proposal_digest_must_bind_application": true,
+    "active_authority_required": "NONE",
+    "repository_writer_required": "NONE"
+  },
+  "v2_layout": {
+    "machine_lifecycle": ".floppy/lifecycle-state.json",
+    "machine_manifest": ".floppy/manifest.json",
+    "machine_orchestrator_registry": ".floppy/orchestrator-registry.json",
+    "machine_roadmap": ".floppy/roadmap/Floppy-V2-Project-Plan.json",
+    "human_roadmap": ".floppy/roadmap/Floppy-V2-Project-Plan.md",
+    "human_orchestrator": ".floppy/orchestrators/Floppy-V2-Development-Orchestrator.md",
+    "final_closure_record": ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    "roadmap_section_inventory_key": "work_packages",
+    "required_terminal_work_packages": [
+      "V2-01",
+      "V2-02",
+      "V2-03",
+      "V2-04",
+      "V2-05"
+    ],
+    "required_terminal_work_package_status": "CLOSED"
+  },
+  "exact_final_closure_path_set": [
+    ".floppy/closeouts/FINAL-PROJECT-CLOSURE.md",
+    ".floppy/lifecycle-state.json",
+    ".floppy/manifest.json",
+    ".floppy/orchestrator-registry.json",
+    ".floppy/orchestrators/Floppy-V2-Development-Orchestrator.md",
+    ".floppy/roadmap/Floppy-V2-Project-Plan.json",
+    ".floppy/roadmap/Floppy-V2-Project-Plan.md"
+  ],
+  "legacy_layout_paths_forbidden_to_fabricate": [
+    ".floppy/README.md",
+    ".floppy/START-HERE.md",
+    ".floppy/floppies/Floppy-D-Project-Map.md",
+    ".floppy/floppies/Floppy-E-Current-Section.md",
+    ".floppy/roadmap/roadmap.json",
+    ".floppy/roadmap/roadmap.md"
+  ],
+  "execution_rules": [
+    "V2-05 section closeout TR-008/TR-009 must complete before TR-021.",
+    "TR-021 may proceed only when V2-01 through V2-05 are all CLOSED and no work/control authorization or repository writer is active.",
+    "TR-021 creates the final-closure record and records the no-migration proposal using the exact seven-path V2 layout above.",
+    "TR-022 requires the exact reviewed TR-021 proposal digest and applies final closure using the same exact seven-path V2 layout.",
+    "Do not create a next-section draft or V2-06.",
+    "Do not mutate reusable main, v2.0.0, the published release, frozen V1 schemas, or accepted historical work-package records except for already-authorized V2-05 closeout state.",
+    "The absence of legacy provisioned-project files is not a closure failure for this V2 development-control project and must not be repaired by provisioning them."
+  ],
+  "release_checkpoint": {
+    "main_commit": "88a0fa646973c4cb8e693cc4e7c512b537825fd2",
+    "main_tree": "18091c741b6764dc64f84e7c7ab78d039b69b521",
+    "tag": "v2.0.0",
+    "public_release": "PUBLISHED"
+  }
+}
