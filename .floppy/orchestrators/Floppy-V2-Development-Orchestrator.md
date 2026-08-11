@@ -527,3 +527,27 @@ STOP after corrected A1. B1 / TR-004 requires a separate later operation.
 
 `V2 IMPLEMENTATION AUTHORITY = V2_05_IMPLEMENTATION`
 <!-- V2_05_A1_END -->
+
+<!-- V2_05_B1_BEGIN -->
+# V2-05 B1 implementation start
+
+B1 starts directly from corrected A1 checkpoint `1ea9c9627113c48354b16d0bfdd73554d7b33fa4` tree `225b9cc908ecac4a90408099ca1fa3068219ee53`.
+
+Transition: `TR-004-START-SECTION-IMPLEMENTATION`
+
+Resulting lifecycle: `LC-SECTION-IMPLEMENTATION-IN-PROGRESS`
+
+Authorization remains `V2_05_IMPLEMENTATION` / `ACTIVE`.
+
+Sole current Section Working Model remains `V2_05_WORKING_MODEL`.
+
+Sole repository writer remains `V2_05_WORKING_MODEL`.
+
+Implementation is `IN_PROGRESS`; verification remains `NOT_STARTED`; administrator result acceptance remains `PENDING`; closeout remains `NOT_PROPOSED`; migration remains `NONE`; main/integration/tag/release authority remains `NONE`; `V2-06 = NONEXISTENT_NOT_AUTHORIZED`.
+
+B1 changes no reusable-product path, preserves the frozen exactly-42-path P1 boundary, runs no tests, and does not execute P1.
+
+STOP after B1. P1 requires a separate later operation.
+
+`V2 IMPLEMENTATION AUTHORITY = V2_05_IMPLEMENTATION`
+<!-- V2_05_B1_END -->
