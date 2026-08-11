@@ -391,3 +391,12 @@ V2-05 remains `PLANNED_NOT_AUTHORIZED`.
 STOP after A1. Next possible transition is `TR-004-START-SECTION-IMPLEMENTATION`
 under a separate later operation.
 <!-- V2_04_A1_END -->
+
+<!-- V2_04_B1_BEGIN -->
+# V2-04 B1 implementation start
+
+`TR-004-START-SECTION-IMPLEMENTATION` is applied. V2-04 implementation is `IN_PROGRESS` under `V2_04_IMPLEMENTATION` / `V2_04_WORKING_MODEL`.
+
+No reusable-product path is changed by B1. P1 remains a separate exact twenty-four-path commit.
+<!-- V2_04_B1_END -->
+

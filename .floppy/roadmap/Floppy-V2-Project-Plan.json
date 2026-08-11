@@ -427,7 +427,7 @@
     {
       "id": "V2-04",
       "title": "Continuity Overseer and Orchestrator Succession",
-      "status": "AUTHORIZED_NOT_STARTED",
+      "status": "IMPLEMENTATION_IN_PROGRESS",
       "dependency": [
         "V2-01",
         "V2-03"
@@ -449,7 +449,7 @@
       "acceptance_base_tree": "27f189dafd6971a70fcb9b10c5b2a9a82282b9e4",
       "implementation_authority": "V2_04_IMPLEMENTATION",
       "repository_writer": "V2_04_WORKING_MODEL",
-      "implementation_state": "NOT_STARTED",
+      "implementation_state": "IN_PROGRESS",
       "verification_state": "NOT_STARTED",
       "administrator_result_acceptance": "PENDING",
       "closeout": "NOT_PROPOSED",
@@ -498,7 +498,11 @@
       "implementation_authorization_base_checkpoint": "fb600f5a372a1ab8e239517a4f8cff5084a82042",
       "implementation_authorization_base_tree": "c533249e080a5913efdca03eb333b1d1a569c19e",
       "implementation_authorization_decision": "AUTHORIZE V2-04 IMPLEMENTATION UNDER TR-003-AUTHORIZE-SECTION-IMPLEMENTATION FROM ACCEPTED W1 CHECKPOINT fb600f5a372a1ab8e239517a4f8cff5084a82042 TREE c533249e080a5913efdca03eb333b1d1a569c19e.",
-      "implementation_authorization_status": "ACTIVE"
+      "implementation_authorization_status": "ACTIVE",
+      "p1_status": "NOT_IMPLEMENTED",
+      "a1_commit": "ed781ba01a9ebcb656a6b3380b956a24e64407e2",
+      "a1_tree": "63125a6fde76b8f681cf90eccafacc60d05a1e61",
+      "b1_transition": "TR-004-START-SECTION-IMPLEMENTATION"
     },
     {
       "id": "V2-05",
