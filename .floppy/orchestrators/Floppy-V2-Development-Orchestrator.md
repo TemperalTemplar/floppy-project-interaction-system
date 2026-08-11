@@ -416,3 +416,27 @@ C1 records implementation completion only. It executes no bounded verification,
 no complete repository suite, no V1, no result acceptance, no closeout, and no
 V2-05 operation.
 <!-- V2_04_C1_END -->
+
+<!-- V2_04_V1_BEGIN -->
+# V2-04 V1 verification completion
+
+All authorized V2-04 bounded verification and complete repository suite attempt 1 passed. `TR-006-RECORD-VERIFICATION-COMPLETE` is applied.
+
+Implementation: `COMPLETE`  
+Verification: `COMPLETE`  
+Administrator result acceptance: `PENDING`  
+Closeout: `NOT_PROPOSED`  
+Active work authorization: `NONE`  
+Active implementation authority: `NONE`  
+Repository writer: `NONE`
+
+Complete repository suite attempt 1: `PASSED / CONSUMED`  
+Suite summary: `364 passed, 2 warnings, 148 subtests passed in 322.74s (0:05:22)`  
+Suite log SHA-256: `7e059cd3b487093b492af960fdab1c166c02486b90dc6e0daf7a18369f3a2148`  
+Suite result JSON SHA-256: `e373e8ef80dc3ff66740ea76e7ffb7f22b6172739f056f53bfadf313efefc424`  
+Complete repository suite attempt 2: `NOT AUTHORIZED`
+
+Stop for the separate administrator result-acceptance decision.
+
+`V2 IMPLEMENTATION AUTHORITY = NONE`
+<!-- V2_04_V1_END -->
