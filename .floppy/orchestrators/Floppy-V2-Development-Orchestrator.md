@@ -491,3 +491,39 @@ Next possible transition is `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`, requiring
 
 `V2 IMPLEMENTATION AUTHORITY = NONE`
 <!-- V2_05_W1_END -->
+
+<!-- V2_05_A1_BEGIN -->
+# V2-05 A1 implementation authorization
+
+Administrator decision:
+
+`AUTHORIZE V2-05 IMPLEMENTATION UNDER TR-003-AUTHORIZE-SECTION-IMPLEMENTATION FROM THE FULLY VERIFIED W1 CHECKPOINT f0a8c0e872a7ebeb82ceb74123b4f77a5ee3aed5 TREE 347130a8d3ea802a53b6363214609a6a92ded946.`
+
+Transition: `TR-003-AUTHORIZE-SECTION-IMPLEMENTATION`
+
+Authorization base: `f0a8c0e872a7ebeb82ceb74123b4f77a5ee3aed5` / `347130a8d3ea802a53b6363214609a6a92ded946`
+
+Resulting lifecycle: `LC-SECTION-AUTHORIZED-NOT-STARTED`
+
+Authorization record: `.floppy/authorizations/V2-05-implementation.json`
+
+Authorization ID/status: `V2_05_IMPLEMENTATION` / `ACTIVE`
+
+Sole current Section Working Model: `V2_05_WORKING_MODEL`
+
+Sole repository writer: `V2_05_WORKING_MODEL`
+
+Writer authorization reference: `V2_05_IMPLEMENTATION`
+
+V1-compatible lifecycle representation remains `section = null` and `active_implementation_sections = []`.
+
+Implementation remains `NOT_STARTED`; verification remains `NOT_STARTED`; administrator result acceptance remains `PENDING`; closeout remains `NOT_PROPOSED`; migration remains `NONE`; main/integration/tag/release authority remains `NONE`; `V2-06 = NONEXISTENT_NOT_AUTHORIZED`.
+
+A1 freezes exactly the accepted 42-path P1 reusable-product scope in `.floppy/work-packages/V2-05.md`, modifies no reusable-product path, runs no tests, and does not execute B1 / `TR-004-START-SECTION-IMPLEMENTATION`.
+
+Recovery: unintended partial commit `8b59347cc58f73ac40ac32bcacb2c32408b93eb4` is `UNINTENDED_PARTIAL_A1_COMMIT_NOT_ACCEPTED`; the repository contents endpoint committed the authorization file before the intended atomic seven-path A1 commit. Administrator authorized a bounded A1 branch correction. No reusable-product mutation occurred.
+
+STOP after corrected A1. B1 / TR-004 requires a separate later operation.
+
+`V2 IMPLEMENTATION AUTHORITY = V2_05_IMPLEMENTATION`
+<!-- V2_05_A1_END -->
