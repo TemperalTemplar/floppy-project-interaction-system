@@ -759,7 +759,7 @@
       },
       "tests": {
         "path": "tests/test_official_project_plan.py",
-        "sha256": "dc5a73102dbd38d973296b30146312c105cca4d12c8ed46894cb7c5d21c70381"
+        "sha256": "b198041c9b40e79c3cee451fb6d6c8560ec080b96f3b3724d4e4eec5eceaf9c2"
       },
       "release_tests": {
         "path": "tests/test_v2_release.py",

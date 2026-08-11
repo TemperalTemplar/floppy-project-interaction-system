@@ -7,7 +7,7 @@ import unittest
 import uuid
 from pathlib import Path
 
-from jsonschema import Draft202012Validator, RefResolver
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR_PATH = ROOT / "tools/validate_floppy.py"
@@ -88,8 +88,16 @@ class OfficialProjectPlanTests(unittest.TestCase):
         Draft202012Validator.check_schema(schema)
         self.assertEqual(len(schema["required"]), 28)
         candidate = {"candidate_format": "floppy-official-project-plan-review-candidate", "candidate_format_version": "1.0.0", "substantive_plan": substantive()}
-        resolver = RefResolver.from_schema(schema)
-        self.assertFalse(list(Draft202012Validator(schema["$defs"]["review_candidate"], resolver=resolver).iter_errors(candidate)))
+        candidate_schema = {
+            "$schema": schema["$schema"],
+            "$defs": schema["$defs"],
+            "$ref": "#/$defs/review_candidate",
+        }
+        self.assertFalse(
+            list(
+                Draft202012Validator(candidate_schema).iter_errors(candidate)
+            )
+        )
         self.assertTrue(list(Draft202012Validator(schema).iter_errors(candidate)))
         self.assertNotIn("project_id", candidate)
 
