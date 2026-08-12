@@ -1,0 +1,48 @@
+name: Collect GitHub Traffic
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 7 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-github-traffic
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Collect traffic snapshot
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: python -B tools/collect_github_traffic.py
+
+      - name: Commit traffic history when changed
+        shell: bash
+        run: |
+          if git diff --quiet -- analytics/github-traffic && \
+             git diff --cached --quiet -- analytics/github-traffic && \
+             [ -z "$(git ls-files --others --exclude-standard analytics/github-traffic)" ]; then
+            echo "No traffic-history changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add analytics/github-traffic
+          git commit -m "chore(analytics): archive GitHub traffic"
+          git push
