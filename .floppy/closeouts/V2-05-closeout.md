@@ -26,3 +26,15 @@ The already-issued administrator directive authorizes the later TR-009
 application as a distinct commit; the transitions remain separate.
 
 <!-- V2_05_CLOSEOUT_PROPOSAL_END -->
+
+<!-- V2_05_CLOSEOUT_APPLICATION_BEGIN -->
+## V2-05 final closeout application
+
+{"application_status":"APPLIED","application_transition":"TR-009-APPLY-SECTION-CLOSEOUT","approved_proposal_checkpoint":"421689604f3b787846b7283b1ee32133ae3777c2","approved_proposal_sha256":"104cb8305f2788f24051c08e853da823dd381a91aa78015cc08f4caeff40e235","approved_proposal_tree":"8544d186235cacd36af94e1f38797d7113d9d223","closeout":"APPLIED","migration":"NONE","resulting_lifecycle_state":"LC-SECTION-CLOSED-NEXT-SECTION-INACTIVE","section":"V2-05","section_status":"CLOSED","terminal_package":true,"v2_06":"NONEXISTENT_NOT_AUTHORIZED"}
+
+V2-05 is CLOSED. The generic next-section-inactive lifecycle representation is
+used only as the legal post-TR-009 state. There is no next V2 package:
+`V2-06 = NONEXISTENT_NOT_AUTHORIZED`.
+
+`main` and `v2.0.0` remain unchanged at `88a0fa646973c4cb8e693cc4e7c512b537825fd2`.
+<!-- V2_05_CLOSEOUT_APPLICATION_END -->
