@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "repository": "TemperalTemplar/floppy-project-interaction-system",
+  "collection_date_local": "2026-08-11",
+  "collection_timezone": "America/Chicago",
+  "source": "Administrator-copied GitHub Insights > Traffic data",
+  "window": "last 14 days as displayed by GitHub at collection time",
+  "totals": {
+    "clones": 162,
+    "unique_cloners": 77,
+    "views": 72,
+    "unique_visitors": 3
+  },
+  "referring_sites": [
+    {
+      "site": "github.com",
+      "views": 66,
+      "unique_visitors": 1
+    }
+  ],
+  "popular_content": [
+    {
+      "content": "Overview",
+      "path": "/TemperalTemplar/floppy-project-interaction-system",
+      "views": 25,
+      "unique_visitors": 3
+    },
+    {
+      "content": "/tree/main",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/tree/main",
+      "views": 7,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/activity",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/activity",
+      "views": 6,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/commits/feature/ctrl-02-verification-only-lifecycle",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/commits/feature/ctrl-02-verification-only-lifecycle",
+      "views": 5,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/branches",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/branches",
+      "views": 4,
+      "unique_visitors": 2
+    },
+    {
+      "content": "/tree/main/legacy/prototype-v0",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/tree/main/legacy/prototype-v0",
+      "views": 3,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/commits/main",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/commits/main",
+      "views": 2,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/tree/feature/ctrl-02-verification-only-lifecycle",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/tree/feature/ctrl-02-verification-only-lifecycle",
+      "views": 2,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/tree/main/legacy/prototype-v0/archive",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/tree/main/legacy/prototype-v0/archive",
+      "views": 2,
+      "unique_visitors": 1
+    },
+    {
+      "content": "/tree/main/project-seed/.floppy",
+      "path": "/TemperalTemplar/floppy-project-interaction-system/tree/main/project-seed/.floppy",
+      "views": 2,
+      "unique_visitors": 1
+    }
+  ],
+  "interpretation_note": "GitHub unique cloners are traffic metrics and are not asserted to equal unique human developers or users."
+}
