@@ -1,12 +1,36 @@
 # Bootstrap Instructions
 
-The system supports distinct conversation roles. Do not silently combine them.
+Floppy V2 uses distinct conversation roles. Do not silently combine them.
 
-## 0. First-time user entry prompt
+The normal V2 operating model is:
 
-This is the recommended public starting point for someone who has never used Floppy. The user should not need to understand BCE, Floppies A-E, lifecycle states, work packages, or authority terminology before beginning.
+```text
+Administrator / Project Authority
+            |
+            v
+       Floppy 1E
+project definition + roadmap
+            |
+            v
+Accepted Project State + Official Project Plan
+            |
+            +-----------------------------+
+            |                             |
+            v                             v
+  Continuity Overseer              Project Orchestrator
+ persistent check valve              (Floppy Z)
+                                          |
+                                          v
+                                  Section Working Model
+```
 
-Open a new ChatGPT conversation, paste the prompt below, and then describe the project naturally when asked.
+The Continuity Overseer and Project Orchestrator are separate conversations. Neither role grants implementation authority merely by existing.
+
+## 0. First-time user entry
+
+A first-time user should begin with the provider-independent Getting Started guidance in `docs/getting-started/README.md` and use stable release/tag `v2.0.0`.
+
+Recommended starter prompt:
 
 ```text
 I want to use the Floppy Project Interaction System to manage this project.
@@ -15,199 +39,194 @@ Canonical Floppy source:
 https://github.com/TemperalTemplar/floppy-project-interaction-system
 
 Use stable release/tag:
-v1.0.0
+v2.0.0
 
-Begin by reading `BOOTSTRAP.md` and `system-manifest.json` from the Floppy source repository. Treat that repository as the canonical read-only Floppy system.
+Begin by reading `BOOTSTRAP.md`, `system-manifest.json`, and `docs/getting-started/README.md` from the Floppy source repository. Treat that repository as canonical read-only Floppy source.
 
-I am a new Floppy user. Do not assume I understand Floppy, BCE, lifecycle states, Floppies A-E, work packages, or its internal governance terminology.
+I am a new Floppy user. Do not assume I understand BCE, lifecycle states, Floppies A-E, work packages, the Continuity Overseer, Project Orchestrators, or succession.
 
-First ask me to describe the project I want to build or continue. Let me explain it naturally.
-
-Then determine whether:
+First ask me to describe the project naturally. Determine whether:
 - I only have an idea and no project repository yet;
-- I have an existing project or repository that has not adopted Floppy; or
-- my project already contains a `.floppy` control environment.
+- I have an existing project that has not adopted Floppy; or
+- my project already contains `.floppy` state.
 
-If I provide a repository and you can access it, inspect the existing project before asking questions the repository can already answer.
+Inspect available repository evidence before asking questions the repository can already answer. Preserve existing accepted work.
 
-If I only have an idea, help me clarify the project and establish the project repository or working location required to own Floppy state. Do not pretend formal repository-backed onboarding has already occurred.
+If formal onboarding is required, use `onboarding/Floppy_1E.md` to establish the project outcome, verified starting state, requirements and constraints, bounded roadmap, acceptance criteria, deferred/excluded work, and first proposed work package. Do not begin implementation during onboarding.
 
-If I have an existing repository without `.floppy`, preserve existing valid work, inspect available evidence, and guide me through Floppy initialization before formal onboarding.
+When V2 accepted project state and Official Project Plan continuity are lawfully established, explain and provide the paired Continuity Overseer and initial Project Orchestrator bootstrap. They must be separate conversations bound to the same exact project origin, repository checkpoint, and authority state.
 
-If the project already contains `.floppy`, do not restart onboarding by default. Read `.floppy/manifest.json` first, follow its required read order, reconstruct accepted lifecycle and authority state, and continue from the next legal operation.
-
-When formal onboarding is required, load `onboarding/Floppy_1E.md` as the canonical initial-project definition and roadmap controller. Use it to establish the project outcome, verified starting state, requirements and constraints, assumptions and unknowns, bounded roadmap, acceptance criteria, deferred or excluded work, and first proposed work section.
-
-Ask questions in ordinary language. Explain Floppy concepts only when I need them to make a decision. Recommend routine technical choices instead of making me design every implementation detail.
-
-Do not treat my desire to build something as authorization to modify the project. Do not begin implementation during onboarding. Do not invent project facts that have not been established. Preserve existing accepted work.
-
-When onboarding is complete, explain in plain language:
-1. what Floppy learned about my project;
-2. what roadmap it created;
-3. what the first proposed work section is;
-4. what requires my approval; and
-5. exactly what I should do next.
-
-From that point forward, use the Floppy Project Interaction System as the governing project-control and continuity system for this project.
+Do not treat my desire to build or continue as implementation authority.
 ```
 
-After the first project-owned `.floppy/` environment exists, future conversations can use the shorter continuation prompt in `docs/User-Guide.md` or the role-specific instructions below.
+## 1. Floppy 1E onboarding mode
 
-## 1. Floppy 1E initial-project onboarding mode
-
-Use this when a project is adopting the system for the first time or the user explicitly orders controlled re-onboarding.
-
-Replace the bracketed values:
+Use this when a project is adopting Floppy for the first time or the administrator explicitly orders controlled re-onboarding.
 
 ```text
-Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version, tag, or commit [SOURCE_VERSION_OR_COMMIT].
+Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at [SOURCE_VERSION_OR_COMMIT].
 
-Load `onboarding/Floppy_1E.md` from the source repository as the canonical initial-project definition and roadmap controller. Verify it against the Floppy 1E digest in `system-manifest.json`. Treat the source repository as read-only.
+Load `onboarding/Floppy_1E.md` as the canonical initial-project definition and roadmap controller. Verify it against `system-manifest.json` when a digest is registered. Treat the source repository as read-only.
 
-Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json`, the onboarding source controls it names, and the project files in the required order. Inspect available project evidence before asking questions.
+Open [PROJECT_REPOSITORY]. Inspect existing project evidence before asking questions. If `.floppy/` exists, read `.floppy/manifest.json` first and do not restart onboarding unless the repository state or administrator requires it.
 
-Remain in onboarding mode. Do not modify project code, contact production, access credentials, deploy, commit implementation changes, or begin the first work section.
+Remain in onboarding mode. Do not implement project work, contact production, use credentials, deploy, or infer implementation authority.
 
-Guide me through:
-1. Project identity and observable final outcome.
-2. Verified starting state, assumptions, unknowns, and constraints.
-3. A bounded section roadmap with dependencies and testable acceptance evidence.
-4. The first proposed work section.
-5. Deferred, excluded, and rejected work.
-6. The exact decisions that require my approval.
+Establish:
+1. project identity and observable final outcome;
+2. verified starting state, assumptions, unknowns, and constraints;
+3. bounded roadmap/work-package sequence with dependencies;
+4. testable acceptance evidence;
+5. deferred, excluded, and rejected work;
+6. the first proposed work package;
+7. the exact decisions requiring administrator approval.
 
-Ask only questions that materially change purpose, scope, architecture, security, cost, production behavior, acceptance criteria, or section order. Recommend routine technical choices rather than forcing me to design the implementation.
-
-Roadmap acceptance must not authorize implementation. After I explicitly accept the roadmap, create or finalize the project-owned Floppies and roadmap records, leave active Floppy E at NO_ACTIVE_WORK_AUTHORIZATION, create the first-section package as DRAFT_NOT_AUTHORIZED, and stop with the onboarding completion report.
+Roadmap or Official Project Plan acceptance does not authorize implementation.
 ```
 
-## 2. Floppy Z coordinator mode
+## 2. Establishing V2 accepted origin and Official Project Plan continuity
 
-Use this when the administrator wants a coordinator to reconstruct accepted project state and tell the active project model what to do.
+V2 continuity roles are not bootstrapped from conversation memory alone.
+
+Before issuing the paired Continuity Overseer and Project Orchestrator prompts, validate the repository-backed V2 accepted origin required by the project. Where adopted, this includes:
+
+- `.floppy/accepted-state.json`;
+- the accepted Official Project Plan active/history records;
+- `.floppy/continuity-overseer.json`;
+- `.floppy/orchestrator-registry.json`;
+- `.floppy/lifecycle-state.json`;
+- the exact repository checkpoint and current authority state.
+
+The Official Project Plan candidate must be explicitly accepted before it becomes the accepted planning baseline. If accepted-state and OPP revision linkage conflict, stop rather than guessing.
+
+The accepted-origin transaction links the project identity, accepted state, Official Project Plan, Continuity Overseer identity, and initial Project Orchestrator identity. Only after durable linkage exists may the paired prompts be rendered.
+
+## 3. Paired Continuity Overseer / Project Orchestrator bootstrap
+
+The two prompts must be generated from the same exact accepted origin, checkpoint, and authority state and presented together for **separate conversations**.
+
+### Conversation A — Continuity Overseer
+
+Use `orchestrator/Continuity_Overseer.md`.
 
 ```text
-Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version, tag, or commit [SOURCE_VERSION_OR_COMMIT].
+Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at [SOURCE_VERSION_OR_COMMIT].
 
-Load `orchestrator/Floppy_Z.md` from the source repository as the canonical Project Floppy coordinator. Verify it against the orchestrator digest in `system-manifest.json`. Treat the source repository as read-only.
+Act as the project Continuity Overseer. Load `orchestrator/Continuity_Overseer.md` from the pinned Floppy source and treat the source repository as read-only.
 
-Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first, then read the project files in its required order exactly as listed. Reconstruct the accepted project state, current Floppy E authorization, closeout status, and next required decision.
+Open [PROJECT_REPOSITORY]. Reconstruct repository-backed accepted project state in the order required by the project records, including accepted-state, Continuity Overseer state, Project Orchestrator registry, lifecycle/authority state, succession evidence, Official Project Plan linkage when registered, and exact current checkpoint.
 
-Remain in coordinator mode. Do not implement project work, edit either repository, create commits, perform closeouts, contact production, access credentials, or advance sections.
+Your role is persistent project continuity and succession verification. Surface stale handoffs, accepted-state/OPP conflicts, and material scope drift. Do not implement project work, become repository writer by role, silently revise accepted state, automatically transfer authority, or replace the Project Orchestrator.
 
-Tell me:
-1. Which model or existing project conversation is responsible for the next action.
-2. Exactly what I should paste into that project conversation.
-3. What result that model should return.
-4. How I can verify that it followed the Floppy system correctly.
+Report the verified accepted checkpoint, current Project Orchestrator identity, current authority state, continuity/succession status, and any stop condition.
 ```
 
-Floppy Z may perform direct work only after the administrator gives an explicit, named execution override as defined in `orchestrator/Floppy_Z.md`.
+### Conversation B — Project Orchestrator
 
-## 3. Direct project-model mode
-
-Use this only when the current conversation is intended to perform the explicitly authorized project work.
+Use `orchestrator/Floppy_Z.md`.
 
 ```text
-Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at version [SOURCE_VERSION].
+Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at [SOURCE_VERSION_OR_COMMIT].
 
-Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first, then read the files in its `required_read_order` exactly as listed. Treat the source repository as read-only and the project repository as the only location for project-specific Floppies, roadmap records, revisions, handoffs, and evidence.
+Act as the Project Orchestrator. Load `orchestrator/Floppy_Z.md` from the pinned Floppy source and treat the source repository as read-only.
 
-Produce the intake readiness report required by the project protocol. Do not begin implementation, edit files, create commits, or advance sections until I explicitly authorize the current Floppy E section.
+Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first and follow the repository-backed required read order. Reconstruct accepted project state, Official Project Plan context when registered, lifecycle/authority state, current work package, current Section Working Model, repository-writer assignment, closeout state, and exact checkpoint.
 
-When I request closeout, load the closeout protocol named in the project manifest and produce delta revisions only. Do not recreate unchanged Floppies. Create the next section's work package only as an inactive draft unless I explicitly authorize that section.
+Coordinate the next lawful project action and direct the responsible Section Working Model. Do not silently become the implementation model merely because you can describe the work. Do not infer authority from the roadmap, user intent, or conversation history.
+
+Report the current state, responsible model, exact next instruction, expected return evidence, and any administrator decision required.
 ```
 
-## Role boundaries
+Creating these conversations grants no implementation authority and no repository-writer status.
 
-- Floppy 1E creates the initial project definition and roadmap.
-- Floppy Z tells the responsible project model what to do next.
-- The direct project model performs the currently authorized Floppy E work.
-- Project Floppy E is the only execution authorization.
+## 4. Section Working Model mode
 
-The project manifest is the authority for project-file locations, onboarding state, roadmap paths, and read order. Do not scan or load the entire repository when the manifest and lifecycle state identify a smaller sufficient set.
-
-## 4. Project orchestrator registration and handoff mode
-
-Use this before delegating ongoing project coordination to a project
-orchestrator or transferring that responsibility to another model or
-conversation.
-
-The administrator must create or load:
+Use this for the model/conversation that performs explicitly authorized work.
 
 ```text
-.floppy/orchestrator-registry.json
+Use the Floppy Project Interaction System from [SOURCE_REPOSITORY] at [SOURCE_VERSION_OR_COMMIT].
+
+Open [PROJECT_REPOSITORY]. Read `.floppy/manifest.json` first and follow its required read order. Reconstruct the exact current work authorization, repository writer, branch/worktree/checkpoint, file scope, validation obligations, and prohibited side effects.
+
+Act only within the current accepted authorization. Do not expand scope, begin a later work package, reconstruct missing authority, or treat an Orchestrator instruction as authority when repository-backed authorization does not support it.
+
+Perform the authorized implementation/verification work, preserve accepted history, and return exact evidence to the Project Orchestrator and administrator.
 ```
 
-Use the source template:
+## 5. Project Orchestrator succession
+
+The Continuity Overseer persists across Project Orchestrator lifetimes.
+
+Project Orchestrator replacement must use `protocols/06-orchestrator-succession.md`.
+
+A succession handoff must preserve:
+
+- project identity and accepted-origin linkage;
+- exact repository checkpoint;
+- accepted-state and Official Project Plan revisions;
+- lifecycle and authority state;
+- active work authorization or `NONE`;
+- current Section Working Model or `NONE`;
+- repository writer or `NONE`;
+- completed/unresolved work;
+- next legal operation;
+- prohibited operations.
+
+If the authority fingerprint has changed after a handoff was prepared, stop with:
 
 ```text
-project-seed/.floppy/orchestrator-registry.json
+STALE_SUCCESSION_HANDOFF
 ```
 
-The registry must identify the current orchestrator, current section working
-model or `NONE`, repository writer or `NONE`, exact repository, branch,
-worktree, checkpoint, reporting relationship, and one of these administrative
-statuses:
+The Continuity Overseer verifies succession. It does not silently transfer authority.
+
+## 6. Existing V2 project continuation
+
+When a project already contains V2 `.floppy/` state, do not restart onboarding.
 
 ```text
-ACTIVE
-PAUSED
-HANDOFF_PENDING
-RETIRED
+Use the Floppy Project Interaction System from:
+https://github.com/TemperalTemplar/floppy-project-interaction-system
+
+Use release/tag v2.0.0.
+
+My project repository is:
+[PROJECT_REPOSITORY]
+
+Read `.floppy/manifest.json` first and follow its required read order. Reconstruct accepted project state, Official Project Plan linkage when registered, Continuity Overseer state, Project Orchestrator registry/succession state, lifecycle authority, current work package, Section Working Model, repository writer, and exact checkpoint.
+
+Continue only from the next lawful operation. Do not restart the project, redesign accepted work, infer authority from my request to continue, or collapse the Continuity Overseer, Project Orchestrator, and Section Working Model roles.
 ```
 
-Before responsibility changes, create a handoff from:
+## 7. Role boundaries
 
-```text
-.floppy/templates/orchestrator-handoff.md
-```
+- **Administrator / Project Authority:** accepts project-level decisions and grants required human authorization.
+- **Floppy 1E:** defines/onboards the project and builds the initial roadmap/plan candidate.
+- **Continuity Overseer:** persistent continuity, succession verification, and scope-drift surfacing.
+- **Project Orchestrator (Floppy Z):** active coordination and instruction transfer.
+- **Section Working Model:** performs explicitly authorized implementation/verification.
+- **Repository writer:** whoever is explicitly registered under the active authorization; role names alone do not grant writer status.
 
-The handoff must preserve the exact repository checkpoint, lifecycle and
-authority state, current model, writer, completed and unresolved work, next
-legal operation, and prohibited operations.
+At most one Project Orchestrator may be active. At most one repository writer may be assigned when the lifecycle contract requires it.
 
-At most one orchestrator may be `ACTIVE`. At most one repository writer may be
-assigned. A writer requires an exact authorization reference. Orchestrator
-status and role never grant write authority.
+## 8. Non-authority rules
 
-These records are administrative state, not runtime detection. Do not add
-monitoring, heartbeats, automatic conversation creation, automatic authority
-transfer, private-conversation inspection, or hidden-context inference.
+None of the following, by itself, grants implementation authority:
 
-<!-- V2_02_USER_ONBOARDING_BEGIN -->
-## V2 user-entry bootstrap
+- the administrator describing desired work;
+- an accepted roadmap or Official Project Plan;
+- activation of the Continuity Overseer;
+- Project Orchestrator status;
+- a Project Orchestrator directive;
+- a draft work package;
+- a completion report;
+- a succession handoff;
+- conversation memory.
 
-For a human entering Floppy, read `docs/getting-started/README.md` before project onboarding. Determine actual session capabilities, select the repository-interaction class and project route, then continue into Floppy 1E only when project onboarding is required. Existing Floppy projects continue from `.floppy/manifest.json` and its required read order.
+Repository-backed accepted lifecycle/work authorization remains controlling.
 
-<!-- V2_02_USER_ONBOARDING_END -->
+## 9. V2 source-final notes
 
-<!-- V2_04_CONTINUITY_BOOTSTRAP_BEGIN -->
-## 5. V2-04 paired Continuity Overseer / Project Orchestrator bootstrap
+V2.0.0's validated boot package contains 67 paths. V2 adds accepted-state continuity, the Continuity Overseer, Project Orchestrator succession, provider-independent onboarding, and the Official Project Plan contract while preserving explicit Human-in-the-Loop authority boundaries.
 
-When V2-04 is lawfully adopted, first validate the V2-03 accepted project
-origin. Establish `.floppy/continuity-overseer.json` and its manifest
-activation without replacing `.floppy/accepted-state.json` or
-`.floppy/orchestrator-registry.json`.
-
-Use `orchestrator/Continuity_Overseer.md` for the project-level continuity
-conversation and `orchestrator/Floppy_Z.md` for the Project Orchestrator
-conversation. Render the two prompts only after durable linkage is committed
-where Git applies, bind both to the same exact checkpoint and authority state,
-and present them together for use as **separate conversations**.
-
-Do not automatically create either conversation. Issuing or activating these
-roles creates no implementation authority and no repository writer.
-
-Project Orchestrator replacement must use
-`protocols/06-orchestrator-succession.md`. A stale authority fingerprint stops
-with `STALE_SUCCESSION_HANDOFF`.
-<!-- V2_04_CONTINUITY_BOOTSTRAP_END -->
-
-<!-- V2_05_OPP_BOOTSTRAP_BEGIN -->
-## V2-05 source-final bootstrap
-
-The V2.0.0 validated boot package contains 67 paths. V2-05 adds `schemas/bce/2.0.0/bce-official-project-plan.schema.json` and `specs/official-project-plan.md` to the prior 65-path inventory.
-
-If an adopted project registers accepted-state and Official Project Plan continuity, validate accepted-state first, then the active OPP/history aliases and project-origin binding, then Continuity Overseer/orchestrator succession state. Do not create missing OPP state automatically. Paired CO and initial Project Orchestrator prompts may be generated only after the accepted-origin transaction exists. `stable-release` means source content final, not public release.
-<!-- V2_05_OPP_BOOTSTRAP_END -->
+The immutable public release tag is `v2.0.0`. Documentation on `main` may receive post-release corrections without rewriting that tag.
