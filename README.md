@@ -1,6 +1,10 @@
 # Floppy Project Interaction System
 
-**Status:** stable release, version `2.0.0`
+**Latest stable release:** `v2.0.0`  
+**Current `main` status:** post-V2 forward integration / pre-V3 development state  
+**V3 status:** candidate planning only; not yet an accepted or released V3 product
+
+> `main` is not identical to the immutable `v2.0.0` release. Users who need the exact released V2 source should use tag `v2.0.0`. See [`MAINLINE_STATUS.md`](MAINLINE_STATUS.md) for the repository-state boundary.
 
 Floppy is a provider-independent AI project orchestration and continuity system that preserves accepted project state, project intent, human authority, and development history across AI sessions, model changes, and Project Orchestrator handoffs.
 
@@ -198,25 +202,28 @@ Normal project work must not write project-specific state back into this source 
 ## Repository layout
 
 ```text
-ABOUT.md                         Conceptual overview and BCE architecture
-BOOTSTRAP.md                     V2 role bootstrap and startup instructions
-system-manifest.json             Machine-readable source map and controller digests
-docs/getting-started/            Provider-independent first-use guidance
-docs/User-Guide.md               Human-facing V2 operating guide
-onboarding/Floppy_1E.md          Initial project definition and roadmap controller
+MAINLINE_STATUS.md                Released-version versus forward-main boundary
+ABOUT.md                          Conceptual overview and BCE architecture
+BOOTSTRAP.md                      V2 role bootstrap and startup instructions
+system-manifest.json              Machine-readable source map and controller digests
+docs/getting-started/             Provider-independent first-use guidance
+docs/User-Guide.md                Human-facing V2 operating guide
+docs/v3/                          Candidate V3 planning material; not accepted V3 by presence alone
+onboarding/Floppy_1E.md           Initial project definition and roadmap controller
 orchestrator/Continuity_Overseer.md
-                                  Persistent project continuity/check-valve role
-orchestrator/Floppy_Z.md          Project Orchestrator protocol
+                                   Persistent project continuity/check-valve role
+orchestrator/Floppy_Z.md           Project Orchestrator protocol
 protocols/06-orchestrator-succession.md
-                                  Project Orchestrator succession protocol
+                                   Project Orchestrator succession protocol
 specs/accepted-state-continuity.md
-                                  Accepted-state continuity contract
-specs/official-project-plan.md    Official Project Plan contract
-project-seed/.floppy/             Project-owned control-state seed
-schemas/                         BCE and V2 contracts
-tools/                           Initialization, validation, and CLI tooling
-tests/                           Repository verification suite
-legacy/prototype-v0/             Preserved original prototype
+                                   Accepted-state continuity contract
+specs/official-project-plan.md     Official Project Plan contract
+project-seed/.floppy/              Project-owned control-state seed
+analytics/github-traffic/          Repository traffic history and snapshots
+schemas/                          BCE and V2 contracts
+tools/                            Initialization, validation, CLI and repository-support tooling
+tests/                            Repository verification suite
+legacy/prototype-v0/              Preserved original prototype
 ```
 
 ## Initialize a project
@@ -235,7 +242,7 @@ Then run the same command without `--dry-run` to provision the project-owned `.f
 
 Initialization alone does not authorize implementation.
 
-## V2 release
+## Release and mainline boundary
 
 The canonical released V2 source is tag `v2.0.0` at commit:
 
@@ -250,9 +257,17 @@ The GitHub release provides:
 - SHA-256 checksums;
 - release notes.
 
-The released tag is immutable. Documentation corrections on `main` after release do not rewrite the published `v2.0.0` tag.
+The released tag is immutable and remains the exact released V2 product.
+
+The `main` branch is the forward integration branch. After the V2 release it may contain post-release documentation corrections, repository maintenance, legal/provenance records, analytics support, and candidate planning for a future version. Those forward changes do **not** rewrite `v2.0.0` and do **not** become a released V3 product merely by existing on `main`.
+
+The repository's `VERSION` file remains `2.0.0` until a later accepted version transition changes it. That value identifies the latest accepted product version; it does not assert that every commit currently on `main` is byte-for-byte identical to the `v2.0.0` tag.
+
+For the explicit branch/release interpretation, read [`MAINLINE_STATUS.md`](MAINLINE_STATUS.md).
 
 ## Version and integrity
+
+For exact released V2 behavior, use tag `v2.0.0`. For forward development or repository maintenance, use an explicitly identified `main` checkpoint or later accepted development branch/checkpoint as applicable.
 
 Canonical controllers should be loaded from a pinned source version, tag, or commit and verified against `system-manifest.json` where a digest is registered. A mismatch is a stop condition, not permission to silently use an altered controller.
 
@@ -264,4 +279,6 @@ Do not store passwords, tokens, private keys, recovery codes, or secret values i
 
 Floppy Project Interaction System version 2.0.0 is licensed under the Apache License, Version 2.0 (`Apache-2.0`). The license permits use, modification, and redistribution, including commercial use, subject to its terms, and includes the Apache patent grant.
 
-The complete license text is preserved in the immutable `v2.0.0` release source and release package.
+Current forward `main` remains distributed under the repository's Apache-2.0 licensing and attribution files unless a later explicit licensing decision lawfully changes future distribution terms. Existing released rights are not rewritten by forward-main documentation.
+
+See the root [`LICENSE`](LICENSE), [`NOTICE`](NOTICE), [`AUTHORS.md`](AUTHORS.md), [`PROVENANCE.md`](PROVENANCE.md), and [`TRADEMARKS.md`](TRADEMARKS.md) for current licensing, attribution, provenance, and project-identity information.
