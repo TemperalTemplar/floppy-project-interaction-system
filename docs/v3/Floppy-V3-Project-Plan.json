@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "project": "Floppy Project Interaction System V3",
+  "repository": "TemperalTemplar/floppy-project-interaction-system",
+  "target_release": "v3.0.0",
+  "plan_status": "DRAFT_FOR_ADMINISTRATOR_ACCEPTANCE",
+  "authoritative_human_readable_plan": "docs/v3/Floppy-V3-Project-Plan.md",
+  "section_count": 9,
+  "allowed_sections": [
+    "V3-01",
+    "V3-02",
+    "V3-03",
+    "V3-04",
+    "V3-05",
+    "V3-06",
+    "V3-07",
+    "V3-08",
+    "V3-09"
+  ],
+  "next_section_after_v3_09": "NONEXISTENT_NOT_AUTHORIZED",
+  "mission": "Make the existing Floppy architecture operate more deterministically, consistently, and efficiently while preserving Human-in-the-Loop authority.",
+  "controlling_principle": "Human decisions stay human. Deterministic consequences of accepted human decisions should be bundled, applied consistently, and validated as atomic transactions.",
+  "design_laws": [
+    {"id": "V3-L1", "name": "Human Authority Is Preserved"},
+    {"id": "V3-L2", "name": "Deterministic Consequences Should Be Bundled"},
+    {"id": "V3-L3", "name": "Transactions Are Atomic"},
+    {"id": "V3-L4", "name": "Capability Does Not Create Authority"},
+    {"id": "V3-L5", "name": "Repository State Remains Recoverable Without a Runtime"},
+    {"id": "V3-L6", "name": "Context Loss Is Not Authority to Reconstruct Accepted Work"},
+    {"id": "V3-L7", "name": "No Unnecessary Human Relay"},
+    {"id": "V3-L8", "name": "No Invented Gates"},
+    {"id": "V3-L9", "name": "Terminal Delivery Has an Owner"}
+  ],
+  "protected_v2_concepts": [
+    "BCE",
+    "repository-backed project state",
+    "Human-in-the-Loop authority",
+    "accepted-state protection",
+    "Official Project Plan",
+    "lifecycle separation",
+    "explicit work authorization",
+    "repository-writer separation",
+    "Continuity Overseer",
+    "Project Orchestrator",
+    "Section Working Model",
+    "orchestrator succession",
+    "provider independence",
+    "project/source repository separation",
+    "deterministic validation",
+    "release packaging",
+    "immutable released tags"
+  ],
+  "administrator_local_environment": {
+    "development_root": "D:\\A\\",
+    "python_installation": "D:\\A\\Tools\\Python313",
+    "python_interpreter": "D:\\A\\Tools\\Python313\\python.exe",
+    "downloads_directory": "C:\\Users\\alvar.TERMINAL1\\Downloads\\",
+    "worktree_rule": "Use the exact repository-recorded V3 worktree once lawfully established; do not invent a V3 worktree path.",
+    "transfer_artifact_rule": "Administrator-transfer scripts and artifacts use the fixed Downloads directory unless explicitly changed by the administrator."
+  },
+  "sections": [
+    {
+      "id": "V3-01",
+      "name": "Architecture and Compatibility Contract",
+      "purpose": "Freeze the V3 design laws, V2 compatibility boundary, authority classifications, repository/runtime boundary, versioning rules, and migration boundary before implementation proceeds.",
+      "dependencies": [],
+      "terminal_outcome": "Stable architecture and compatibility definitions on which V3-02 through V3-09 can rely."
+    },
+    {
+      "id": "V3-02",
+      "name": "Terminal Delivery Contract",
+      "purpose": "Ensure implementation, verification, acceptance, closeout, integration, release, and final-closure obligations always have a defined responsible role and handoff.",
+      "dependencies": ["V3-01"],
+      "terminal_outcome": "No required terminal delivery obligation can become orphaned between roles."
+    },
+    {
+      "id": "V3-03",
+      "name": "Role Capability Contracts",
+      "purpose": "Formalize the read, reason, recommend, prepare, verify, write, commit, transaction, acceptance, authorization, release, succession, and prohibited capabilities of each Floppy role.",
+      "dependencies": ["V3-01", "V3-02"],
+      "terminal_outcome": "Role authority and technical capability are explicitly separated and cross-role authority inheritance is testable."
+    },
+    {
+      "id": "V3-04",
+      "name": "Deterministic Context and Retrieval Profile",
+      "purpose": "Define repository-native Level 0 through Level 3 bounded context selection, read order, expansion rules, stale-record rejection, and accepted-state precedence without requiring permanent runtime or RAG infrastructure.",
+      "dependencies": ["V3-01", "V3-03"],
+      "terminal_outcome": "Fresh compatible models can reconstruct substantially the same required context and authority state from the same repository state."
+    },
+    {
+      "id": "V3-05",
+      "name": "Project Orchestrator Succession V3",
+      "purpose": "Make Project Orchestrator replacement deterministic, repository-backed, checkpoint-bound, Continuity-Overseer-verified, and low-friction while keeping succession acceptance human-controlled.",
+      "dependencies": ["V3-01", "V3-02", "V3-03", "V3-04"],
+      "terminal_outcome": "Validated succession bundles preserve accepted state, authority fingerprint, unresolved work, and terminal obligations across Orchestrator lifetimes."
+    },
+    {
+      "id": "V3-06",
+      "name": "Human-Authority Transaction Bundles",
+      "purpose": "Implement atomic deterministic consequence bundles for accepted human decisions, including authorization, acceptance, closeout, version, succession, and release-preparation transactions.",
+      "dependencies": ["V3-01", "V3-02", "V3-03", "V3-05"],
+      "terminal_outcome": "Human decisions remain discrete while their defined mechanical consequences apply coherently or fail atomically."
+    },
+    {
+      "id": "V3-07",
+      "name": "floppyctl status and Project-State Inspection",
+      "purpose": "Provide canonical human-readable and JSON project-state inspection derived from repository authority, including current roles, lifecycle, authorization, blockers, terminal owner, and next lawful operation.",
+      "dependencies": ["V3-01", "V3-03", "V3-04", "V3-06"],
+      "terminal_outcome": "Humans and models can obtain one authoritative project status surface without manually reconstructing many records."
+    },
+    {
+      "id": "V3-08",
+      "name": "Release Automation and Consistency Validation",
+      "purpose": "Build deterministic release packages and a release-readiness manifest while validating consistency across version, documentation, manifests, compatibility metadata, packages, checksums, notes, and intended tag/commit.",
+      "dependencies": ["V3-01", "V3-02", "V3-03", "V3-06", "V3-07"],
+      "terminal_outcome": "Release preparation detects stale or contradictory public/product state before publication while leaving release approval human-controlled."
+    },
+    {
+      "id": "V3-09",
+      "name": "Integration, Compatibility, Documentation, Packaging, and V3 Release",
+      "purpose": "Own complete terminal V3 delivery from accepted V3-01 through V3-08 results through integration, compatibility validation, documentation reconciliation, packaging, administrator release decision, v3.0.0 publication, and final V3 closure.",
+      "dependencies": ["V3-01", "V3-02", "V3-03", "V3-04", "V3-05", "V3-06", "V3-07", "V3-08"],
+      "terminal_outcome": "v3.0.0 is verified, published, packaged, and V3 is finally closed with V3-10 NONEXISTENT_NOT_AUTHORIZED."
+    }
+  ],
+  "human_decisions": [
+    "Official Project Plan acceptance",
+    "work-section authorization",
+    "material goal or scope revision",
+    "material architecture, security, or cost decision",
+    "administrator acceptance",
+    "Project Orchestrator succession acceptance",
+    "migration approval",
+    "public release approval",
+    "exception approval"
+  ],
+  "deterministic_consequences": [
+    "version propagation",
+    "manifest synchronization",
+    "lifecycle projections",
+    "accepted-state linkage",
+    "evidence registration",
+    "hash and checksum generation",
+    "lawful handoff generation",
+    "inactive next-section draft generation after accepted closeout",
+    "release package construction after authorization",
+    "documentation consistency validation"
+  ],
+  "non_goals": [
+    "persistent Floppy server",
+    "autonomous Floppy agent",
+    "automatic administrator acceptance",
+    "automatic scope changes",
+    "automatic release approval",
+    "automatic Project Orchestrator replacement",
+    "provider-specific authority",
+    "mandatory vector database",
+    "mandatory RAG service",
+    "hosted dashboard",
+    "continuous monitoring",
+    "hidden AI-conversation inspection",
+    "automatic conversation creation"
+  ]
+}
