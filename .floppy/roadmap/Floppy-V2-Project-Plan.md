@@ -970,3 +970,14 @@ During long projects, replacement AI orchestrators should be able to inherit exa
 The repository—not the lifespan of a particular AI conversation—remains the durable source of project continuity, authority, and accepted state.
 
 That is the intended Floppy Project Interaction System v2.0 outcome.
+
+## Final-project closure
+
+```text
+Transition: TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
+Migration: NONE
+V2-01 through V2-05: CLOSED
+V2-06: NONEXISTENT_NOT_AUTHORIZED
+Operation: PROPOSE
+```

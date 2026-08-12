@@ -602,3 +602,13 @@ This transition does not apply administrator result acceptance and grants no
 main integration, merge, tag, release, migration, closeout, final-closure, or
 V2-06 authority.
 <!-- V2_05_V1_END -->
+
+## Final-project closure
+
+```text
+Transition: TR-021-PROPOSE-FINAL-CLOSURE-NO-MIGRATION
+State: LC-PROJECT-CLOSURE-PROPOSED-NO-MIGRATION
+Migration: NONE
+V2-06: NONEXISTENT_NOT_AUTHORIZED
+Operation: PROPOSE
+```
