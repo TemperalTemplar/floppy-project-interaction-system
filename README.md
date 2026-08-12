@@ -1,6 +1,6 @@
 # Floppy Project Interaction System
 
-**Status:** stable release, version `1.0.0`
+**Status:** stable release, version `2.0.0`
 
 The Floppy Project Interaction System is a reusable Human-in-the-Loop project-control layer for AI-assisted development. This repository is the **source of the system**, not the active record for every project that uses it.
 
@@ -19,7 +19,7 @@ Canonical Floppy source:
 https://github.com/TemperalTemplar/floppy-project-interaction-system
 
 Use stable release/tag:
-v1.0.0
+v2.0.0
 
 Begin by reading `BOOTSTRAP.md` and `system-manifest.json` from the Floppy source repository. Treat that repository as the canonical read-only Floppy system.
 
@@ -226,7 +226,7 @@ Canonical source-system controllers must be pinned to a source version, tag, or 
 
 ## Licensing
 
-Floppy Project Interaction System version 1.0.0 is licensed under the Apache License, Version 2.0 (`Apache-2.0`). The license permits use, modification, and redistribution, including commercial use, subject to its terms, and includes an explicit patent license from contributors for applicable patent claims.
+Floppy Project Interaction System version 2.0.0 is licensed under the Apache License, Version 2.0 (`Apache-2.0`). The license permits use, modification, and redistribution, including commercial use, subject to its terms, and includes an explicit patent license from contributors for applicable patent claims.
 
 The complete license text is included below so it is carried in the validated source/boot package without adding a new package-profile path.
 
@@ -351,10 +351,9 @@ The complete license text is included below so it is carried in the validated so
           wherever such third-party notices normally appear. The contents
           of the NOTICE file are for informational purposes only and
           do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+          notices within Derivative Works, alongside or as an addendum to
+          the NOTICE text from the Work, provided that such additional
+          attribution notices cannot be construed as modifying the License.
 
       You may add Your own copyright statement to Your modifications and
       may provide additional or different license terms and conditions
@@ -401,7 +400,7 @@ The complete license text is included below so it is carried in the validated so
    9. Accepting Warranty or Additional Liability. While redistributing
       the Work or Derivative Works thereof, You may choose to offer,
       and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
+      or other liability obligations and/or rights consistent with the
       License. However, in accepting such obligations, You may act only
       on Your own behalf and on Your sole responsibility, not on behalf
       of any other Contributor, and only if You agree to indemnify,
@@ -465,12 +464,12 @@ python tools/floppyctl.py initialize \
 
 Add `--dry-run` to print the exact path plan without writing. The direct
 `tools/initialize_project.py` entrypoint remains available for development and
-verification. Version 1.0.0 is distributed as a GitHub-hosted source system and
+verification. Version 2.0.0 is distributed as a GitHub-hosted source system and
 does not require an executable or installer.
 
 ## Validated final-project closure
 
-Version `1.0.0` includes bounded final-project closure support in the existing validator and `floppyctl`. It preserves distinct no-migration and migration-applied routes, requires separate proposal and application operations, validates the canonical proposal digest before application, and rejects active authority, partial path sets, cross-route application, and history deletion. Final closure remains unavailable until every required section is closed.
+Version `2.0.0` includes bounded final-project closure support in the existing validator and `floppyctl`. It preserves distinct no-migration and migration-applied routes, requires separate proposal and application operations, validates the canonical proposal digest before application, and rejects active authority, partial path sets, cross-route application, and history deletion. Final closure remains unavailable until every required section is closed.
 
 <!-- V2_02_USER_ONBOARDING_BEGIN -->
 ## Start here — provider-independent onboarding
