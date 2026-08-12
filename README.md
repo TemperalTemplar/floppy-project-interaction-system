@@ -351,9 +351,10 @@ The complete license text is included below so it is carried in the validated so
           wherever such third-party notices normally appear. The contents
           of the NOTICE file are for informational purposes only and
           do not modify the License. You may add Your own attribution
-          notices within Derivative Works, alongside or as an addendum to
-          the NOTICE text from the Work, provided that such additional
-          attribution notices cannot be construed as modifying the License.
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
 
       You may add Your own copyright statement to Your modifications and
       may provide additional or different license terms and conditions
@@ -400,7 +401,7 @@ The complete license text is included below so it is carried in the validated so
    9. Accepting Warranty or Additional Liability. While redistributing
       the Work or Derivative Works thereof, You may choose to offer,
       and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with the
+      or other liability obligations and/or rights consistent with this
       License. However, in accepting such obligations, You may act only
       on Your own behalf and on Your sole responsibility, not on behalf
       of any other Contributor, and only if You agree to indemnify,
