@@ -1,0 +1,187 @@
+{
+  "clones": {
+    "clones": [
+      {
+        "count": 2,
+        "timestamp": "2026-08-14T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-15T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-16T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 10,
+        "timestamp": "2026-08-17T00:00:00Z",
+        "uniques": 7
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-18T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-19T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-20T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-21T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 18,
+        "timestamp": "2026-08-22T00:00:00Z",
+        "uniques": 7
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-23T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-24T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-25T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-26T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-27T00:00:00Z",
+        "uniques": 2
+      }
+    ],
+    "count": 52,
+    "uniques": 17
+  },
+  "collected_at_utc": "2026-08-29T13:12:13.024356Z",
+  "collection_date": "2026-08-29",
+  "popular_content": [
+    {
+      "count": 8,
+      "path": "/TemperalTemplar/floppy-project-interaction-system",
+      "title": "Overview",
+      "uniques": 1
+    },
+    {
+      "count": 4,
+      "path": "/TemperalTemplar/floppy-project-interaction-system/graphs/traffic",
+      "title": "/graphs/traffic",
+      "uniques": 1
+    },
+    {
+      "count": 3,
+      "path": "/TemperalTemplar/floppy-project-interaction-system/pulse",
+      "title": "/pulse",
+      "uniques": 1
+    }
+  ],
+  "referrers": [
+    {
+      "count": 10,
+      "referrer": "github.com",
+      "uniques": 1
+    }
+  ],
+  "repository": "TemperalTemplar/floppy-project-interaction-system",
+  "schema_version": "1.0",
+  "source": "GitHub REST traffic API",
+  "views": {
+    "count": 15,
+    "uniques": 1,
+    "views": [
+      {
+        "count": 0,
+        "timestamp": "2026-08-14T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 6,
+        "timestamp": "2026-08-15T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-16T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-17T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 4,
+        "timestamp": "2026-08-18T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-19T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 4,
+        "timestamp": "2026-08-20T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-21T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-22T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-23T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-24T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-25T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-26T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-27T00:00:00Z",
+        "uniques": 0
+      }
+    ]
+  },
+  "window_note": "GitHub traffic endpoints expose a rolling recent window; this snapshot preserves what the API returned at collection time."
+}
