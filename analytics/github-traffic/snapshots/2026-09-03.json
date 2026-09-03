@@ -1,0 +1,169 @@
+{
+  "clones": {
+    "clones": [
+      {
+        "count": 1,
+        "timestamp": "2026-08-20T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-21T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 18,
+        "timestamp": "2026-08-22T00:00:00Z",
+        "uniques": 7
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-23T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-24T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-25T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-08-26T00:00:00Z",
+        "uniques": 3
+      },
+      {
+        "count": 2,
+        "timestamp": "2026-08-27T00:00:00Z",
+        "uniques": 2
+      },
+      {
+        "count": 5,
+        "timestamp": "2026-08-28T00:00:00Z",
+        "uniques": 5
+      },
+      {
+        "count": 4,
+        "timestamp": "2026-08-29T00:00:00Z",
+        "uniques": 4
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-30T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 7,
+        "timestamp": "2026-08-31T00:00:00Z",
+        "uniques": 4
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-09-01T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 3,
+        "timestamp": "2026-09-02T00:00:00Z",
+        "uniques": 3
+      }
+    ],
+    "count": 54,
+    "uniques": 20
+  },
+  "collected_at_utc": "2026-09-03T12:09:11.988467Z",
+  "collection_date": "2026-09-03",
+  "popular_content": [
+    {
+      "count": 5,
+      "path": "/TemperalTemplar/floppy-project-interaction-system",
+      "title": "Overview",
+      "uniques": 1
+    }
+  ],
+  "referrers": [],
+  "repository": "TemperalTemplar/floppy-project-interaction-system",
+  "schema_version": "1.0",
+  "source": "GitHub REST traffic API",
+  "views": {
+    "count": 5,
+    "uniques": 1,
+    "views": [
+      {
+        "count": 4,
+        "timestamp": "2026-08-20T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-21T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-22T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-23T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-24T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 1,
+        "timestamp": "2026-08-25T00:00:00Z",
+        "uniques": 1
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-26T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-27T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-28T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-29T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-30T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-08-31T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-09-01T00:00:00Z",
+        "uniques": 0
+      },
+      {
+        "count": 0,
+        "timestamp": "2026-09-02T00:00:00Z",
+        "uniques": 0
+      }
+    ]
+  },
+  "window_note": "GitHub traffic endpoints expose a rolling recent window; this snapshot preserves what the API returned at collection time."
+}
