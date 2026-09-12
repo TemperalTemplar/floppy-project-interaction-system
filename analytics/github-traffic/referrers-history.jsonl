@@ -30,3 +30,4 @@
 {"collected_at_utc": "2026-09-09T12:23:08.634736Z", "collection_date": "2026-09-09", "referrers": []}
 {"collected_at_utc": "2026-09-10T12:16:38.403938Z", "collection_date": "2026-09-10", "referrers": [{"count": 3, "referrer": "github.com", "uniques": 1}]}
 {"collected_at_utc": "2026-09-11T12:15:21.700362Z", "collection_date": "2026-09-11", "referrers": [{"count": 3, "referrer": "github.com", "uniques": 1}]}
+{"collected_at_utc": "2026-09-12T11:39:12.165268Z", "collection_date": "2026-09-12", "referrers": [{"count": 17, "referrer": "github.com", "uniques": 2}]}
